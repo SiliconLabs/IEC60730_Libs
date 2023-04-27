@@ -1,0 +1,4 @@
+*.json
+GNU ARM */
+Build
+Test/test_script/__pycache__
