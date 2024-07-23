@@ -1,0 +1,470 @@
+# This workflow will triage pull requests and apply a label based on the
+# paths that are modified in the pull request.
+#
+# To use this workflow, you will need to set up a .github/labeler.yml
+# file with configuration.  For more information, see:
+# https://github.com/actions/labeler
+
+name: Check Pull Request
+on: 
+  pull_request:
+      types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
+      
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'iec_efr32'
+      test_command:
+        type: string
+        default: './execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY'
+      aft_test_command:
+        type: string
+        default: 'test_script/get_report.py'
+
+      job2_serialnum:
+        description: 'Serial number of target board to test for GCC MG12'
+        type: string
+        default: '440111030'
+      job2_security:
+        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
+        type: string
+        default: 'APP_SECURE=false'
+      job2_command:
+        type: choice
+        options:
+        - gen-only
+        - run-only
+        - all
+      job2_component:
+        type: choice
+        options:
+        - all
+        - cpu_registers
+        - programme_counter
+        - invariable_memory
+        - system_clock
+        - variable_memory
+        - watchdog
+        - bist
+        - post
+        - irq
+        - integrated
+      job2_hostip:
+        type: string
+        default: '192.168.1.69'
+
+      job3_serialnum:
+        description: 'Serial number of target board to test for GCC MG12'
+        type: string
+        default: '440124068'
+      job3_security:
+        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
+        type: string
+        default: 'APP_SECURE=false'
+      job3_command:
+        type: choice
+        options:
+        - gen-only
+        - run-only
+        - all
+      job3_component:
+        type: choice
+        options:
+        - all
+        - cpu_registers
+        - programme_counter
+        - invariable_memory
+        - system_clock
+        - variable_memory
+        - watchdog
+        - bist
+        - post
+        - irq
+        - integrated
+      job3_hostip:
+        type: string
+        default: '192.168.1.100'
+      
+      job4_serialnum:
+        description: 'Serial number of target board to test for GCC MG12'
+        type: string
+        default: '440111030'
+      job4_security:
+        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
+        type: string
+        default: 'APP_SECURE=false'
+      job4_command:
+        type: choice
+        options:
+        - gen-only
+        - run-only
+        - all
+      job4_component:
+        type: choice
+        options:
+        - all
+        - cpu_registers
+        - programme_counter
+        - invariable_memory
+        - system_clock
+        - variable_memory
+        - watchdog
+        - bist
+        - post
+        - irq
+        - integrated
+      job4_hostip:
+        type: string
+        default: '192.168.1.69'
+      
+      job5_serialnum:
+        description: 'Serial number of target board to test for GCC MG12'
+        type: string
+        default: '440124068'
+      job5_security:
+        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
+        type: string
+        default: 'APP_SECURE=false'
+      job5_command:
+        type: choice
+        options:
+        - gen-only
+        - run-only
+        - all
+      job5_component:
+        type: choice
+        options:
+        - all
+        - cpu_registers
+        - programme_counter
+        - invariable_memory
+        - system_clock
+        - variable_memory
+        - watchdog
+        - bist
+        - post
+        - irq
+        - integrated
+      job5_hostip:
+        type: string
+        default: '192.168.1.100'
+      
+      job6_aft_test_command:
+        description: 'Command to run get result'
+        type: string
+        default: 'get_result.py --rounds $ROUNDS --jenkinURL1 $TEST_JOB'
+      
+env:
+  SECURITY: APP_SECURE=false
+  COMMAND: all
+  COMPONENT: all
+jobs:
+  job1:
+    name: Generate Documents
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      if: github.event_name	== 'pull_request'
+    - name: Remove Libraries
+      run: rm -rf EFR32_ICE60730_Libraries
+    - name: Create directory for Libraries
+      run: mkdir EFR32_ICE60730_Libraries
+    - name: Generate Documents with Doxygen
+      run: doxygen qat.doxygen
+    - name: Upload Documents
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
+          Doc/html/EFR32_ICE60730_Libraries/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+
+  job2:
+    if: ${{ always() }}
+    needs: [job1]
+    name: GCC-MG12 regression test
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      HOST_IP: 192.168.1.69
+      SERIAL_NUM: 440111030
+      COMPILER: GCC
+      PLATFORM: MG12
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      if: github.event_name	== 'pull_request'
+    - name: Setup environment variables
+      run:
+        export HOST_IP=${{ github.event.inputs.job2_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.job2_serialnum }}
+        export SECURITY=${{ github.event.inputs.job2_security }}
+        export COMMAND=${{ github.event.inputs.job2_command }}
+        export COMPONENT=${{ github.event.inputs.job2_component }}
+        
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Check working directory
+      run: 
+        pwd
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test
+        cd Test
+    - name: Assign environment variables
+      run: 
+        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+        whoami
+        export HOST_IP=$HOST_IP
+        export COMPILER=GCC
+        export APP_TYPE=SecureApp
+        
+    - name: Testing
+      run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run: 
+        python test_script/get_report.py
+        cd ../
+    - name: Upload results and logs
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
+          result/
+          artifact/
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job3:
+    if: ${{ always() }}
+    needs: [job1, job2]
+    name: GCC-MG24 regression test
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      HOST_IP: 192.168.1.100
+      SERIAL_NUM: 440124068
+      COMPILER: GCC
+      PLATFORM: MG24
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      if: github.event_name	== 'pull_request'
+    - name: Setup environment variables
+      run:
+        export HOST_IP=${{ github.event.inputs.job3_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.job3_serialnum }}
+        export SECURITY=${{ github.event.inputs.job3_security }}
+        export COMMAND=${{ github.event.inputs.job3_command }}
+        export COMPONENT=${{ github.event.inputs.job3_component }}
+        
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Check working directory
+      run: 
+        pwd
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test
+        cd Test
+    - name: Assign environment variables
+      run: 
+        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+        whoami
+        export HOST_IP=$HOST_IP
+        export COMPILER=GCC
+        export APP_TYPE=SecureApp
+
+    - name: Testing
+      run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run: 
+        python test_script/get_report.py
+        cd ../
+    - name: Upload results and logs
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
+          result/
+          artifact/
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job4:
+    if: ${{ always() }}
+    needs: [job1, job2, job3]
+    name: IAR-MG12 regression test
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      HOST_IP: 192.168.1.69
+      SERIAL_NUM: 440111030
+      COMPILER: IAR
+      PLATFORM: MG12
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      if: github.event_name	== 'pull_request'
+    - name: Setup environment variables
+      run:
+        export HOST_IP=${{ github.event.inputs.job4_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.job4_serialnum }}
+        export SECURITY=${{ github.event.inputs.job4_security }}
+        export COMMAND=${{ github.event.inputs.job4_command }}
+        export COMPONENT=${{ github.event.inputs.job4_component }}
+        
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Check working directory
+      run: 
+        pwd
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test
+        cd Test
+    - name: Assign environment variables
+      run: 
+        whoami
+        export HOST_IP=$HOST_IP
+        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin
+        export APP_TYPE=SecureApp
+
+    - name: Testing
+      run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run: 
+        python test_script/get_report.py
+        cd ../
+    - name: Upload results and logs
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
+          result/
+          artifact/
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job5:
+    if: ${{ always() }}
+    needs: [job1, job2, job3, job4]    
+    name: IAR-MG24 regression test
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      HOST_IP: 192.168.1.100
+      SERIAL_NUM: 440124068
+      COMPILER: IAR
+      PLATFORM: MG24
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      if: github.event_name	== 'pull_request'
+    - name: Setup environment variables
+      run:
+        export HOST_IP=${{ github.event.inputs.job5_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.job5_serialnum }}
+        export SECURITY=${{ github.event.inputs.job5_security }}
+        export COMMAND=${{ github.event.inputs.job5_command }}
+        export COMPONENT=${{ github.event.inputs.job5_component }}
+        
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Check working directory
+      run: 
+        pwd
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test
+        cd Test
+    - name: Assign environment variables
+      run: 
+        whoami
+        export HOST_IP=$HOST_IP
+        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin
+        export APP_TYPE=SecureApp
+
+    - name: Testing
+      run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run: 
+        python test_script/get_report.py
+        cd ../
+    - name: Upload results and logs
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
+          result/
+          artifact/
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+
+  job6:
+    if: ${{ always() }}
+    needs: [job1, job2, job3, job4, job5] 
+    name: Summary Test Result
+    runs-on: self-hosted
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+      if: github.event_name	== 'workflow_dispatch'
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      if: github.event_name	== 'pull_request'
+  
+  
+          
