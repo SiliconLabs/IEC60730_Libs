@@ -16,60 +16,33 @@ on:
         description: 'Branch to test'
         type: string
         default: 'iec_efr32'
-      test_command:
-        type: string
-        default: './execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY'
-      aft_test_command:
-        type: string
-        default: 'test_script/get_report.py'
 
-      job2_serialnum:
+      mg12_serialnum:
         description: 'Serial number of target board to test for GCC MG12'
         type: string
         default: '440111030'
-      job2_security:
-        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
-        type: string
-        default: 'APP_SECURE=false'
-      job2_command:
-        type: choice
-        options:
-        - gen-only
-        - run-only
-        - all
-      job2_component:
-        type: choice
-        options:
-        - all
-        - cpu_registers
-        - programme_counter
-        - invariable_memory
-        - system_clock
-        - variable_memory
-        - watchdog
-        - bist
-        - post
-        - irq
-        - integrated
-      job2_hostip:
+      mg12_hostip:
         type: string
         default: '192.168.1.69'
+      mg24_serialnum:
+        description: 'Serial number of target board to test for GCC MG12'
+        type: string
+        default: '440124068'
+      mg24_hostip:
+        type: string
+        default: '192.168.1.100'
 
-      job3_serialnum:
-        description: 'Serial number of target board to test for GCC MG12'
-        type: string
-        default: '440124068'
-      job3_security:
+      security:
         description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
         type: string
         default: 'APP_SECURE=false'
-      job3_command:
+      command:
         type: choice
         options:
         - gen-only
         - run-only
         - all
-      job3_component:
+      component:
         type: choice
         options:
         - all
@@ -83,78 +56,6 @@ on:
         - post
         - irq
         - integrated
-      job3_hostip:
-        type: string
-        default: '192.168.1.100'
-      
-      job4_serialnum:
-        description: 'Serial number of target board to test for GCC MG12'
-        type: string
-        default: '440111030'
-      job4_security:
-        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
-        type: string
-        default: 'APP_SECURE=false'
-      job4_command:
-        type: choice
-        options:
-        - gen-only
-        - run-only
-        - all
-      job4_component:
-        type: choice
-        options:
-        - all
-        - cpu_registers
-        - programme_counter
-        - invariable_memory
-        - system_clock
-        - variable_memory
-        - watchdog
-        - bist
-        - post
-        - irq
-        - integrated
-      job4_hostip:
-        type: string
-        default: '192.168.1.69'
-      
-      job5_serialnum:
-        description: 'Serial number of target board to test for GCC MG12'
-        type: string
-        default: '440124068'
-      job5_security:
-        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
-        type: string
-        default: 'APP_SECURE=false'
-      job5_command:
-        type: choice
-        options:
-        - gen-only
-        - run-only
-        - all
-      job5_component:
-        type: choice
-        options:
-        - all
-        - cpu_registers
-        - programme_counter
-        - invariable_memory
-        - system_clock
-        - variable_memory
-        - watchdog
-        - bist
-        - post
-        - irq
-        - integrated
-      job5_hostip:
-        type: string
-        default: '192.168.1.100'
-      
-      job6_aft_test_command:
-        description: 'Command to run get result'
-        type: string
-        default: 'get_result.py --rounds $ROUNDS --jenkinURL1 $TEST_JOB'
       
 env:
   SECURITY: APP_SECURE=false
@@ -214,11 +115,11 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.job2_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.job2_serialnum }}
-        export SECURITY=${{ github.event.inputs.job2_security }}
-        export COMMAND=${{ github.event.inputs.job2_command }}
-        export COMPONENT=${{ github.event.inputs.job2_component }}
+        export HOST_IP=${{ github.event.inputs.mg12_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }}
+        export SECURITY=${{ github.event.inputs.security }}
+        export COMMAND=${{ github.event.inputs.command }}
+        export COMPONENT=${{ github.event.inputs.component }}
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
@@ -279,11 +180,11 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.job3_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.job3_serialnum }}
-        export SECURITY=${{ github.event.inputs.job3_security }}
-        export COMMAND=${{ github.event.inputs.job3_command }}
-        export COMPONENT=${{ github.event.inputs.job3_component }}
+        export HOST_IP=${{ github.event.inputs.mg24_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }}
+        export SECURITY=${{ github.event.inputs.security }}
+        export COMMAND=${{ github.event.inputs.command }}
+        export COMPONENT=${{ github.event.inputs.component }}
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
@@ -344,11 +245,11 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.job4_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.job4_serialnum }}
-        export SECURITY=${{ github.event.inputs.job4_security }}
-        export COMMAND=${{ github.event.inputs.job4_command }}
-        export COMPONENT=${{ github.event.inputs.job4_component }}
+        export HOST_IP=${{ github.event.inputs.mg12_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }}
+        export SECURITY=${{ github.event.inputs.security }}
+        export COMMAND=${{ github.event.inputs.command }}
+        export COMPONENT=${{ github.event.inputs.component }}
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
@@ -408,11 +309,11 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.job5_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.job5_serialnum }}
-        export SECURITY=${{ github.event.inputs.job5_security }}
-        export COMMAND=${{ github.event.inputs.job5_command }}
-        export COMPONENT=${{ github.event.inputs.job5_component }}
+        export HOST_IP=${{ github.event.inputs.mg24_hostip }}
+        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }}
+        export SECURITY=${{ github.event.inputs.security }}
+        export COMMAND=${{ github.event.inputs.command }}
+        export COMPONENT=${{ github.event.inputs.component }}
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
