@@ -26,7 +26,7 @@ on:
       mg12_serialnum:
         description: 'Serial number of target board to test for GCC MG12'
         type: string
-        default: '440111030'
+        default: '440189400'
       mg12_hostip:
         type: string
         default: '192.168.1.69'
