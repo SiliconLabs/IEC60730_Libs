@@ -117,7 +117,7 @@ jobs:
     - name: Upload log
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: gcc_mg12_loglog
+        name: gcc_mg12_log
         path: 
           log/
         warn: Output a warning but do not fail the action
@@ -193,7 +193,7 @@ jobs:
         retention-days: 90
   
   job3:
-    if: (success() || failure()) && github.event.inputs.test_mg12 == 'true'
+    if: always() && github.event.inputs.test_mg12 == 'true'
     needs: [job1, job2]
     name: IAR-MG12 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
