@@ -5,7 +5,7 @@
 # file with configuration.  For more information, see:
 # https://github.com/actions/labeler
 
-name: Check Pull Request
+name: Regression Test
 on: 
   pull_request:
       types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
@@ -100,8 +100,6 @@ jobs:
       contents: read
       pull-requests: write
     env: 
-      HOST_IP: 192.168.1.69
-      SERIAL_NUM: 440111030
       COMPILER: GCC
       PLATFORM: MG12
     steps:
@@ -167,9 +165,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env: 
-      HOST_IP: 192.168.1.100
-      SERIAL_NUM: 440124068
+    env:
       COMPILER: GCC
       PLATFORM: MG24
       
@@ -239,8 +235,6 @@ jobs:
       contents: read
       pull-requests: write
     env: 
-      HOST_IP: 192.168.1.69
-      SERIAL_NUM: 440111030
       COMPILER: IAR
       PLATFORM: MG12
       
@@ -309,8 +303,6 @@ jobs:
       contents: read
       pull-requests: write
     env: 
-      HOST_IP: 192.168.1.100
-      SERIAL_NUM: 440124068
       COMPILER: IAR
       PLATFORM: MG24
       
@@ -369,25 +361,6 @@ jobs:
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
-
-  job6:
-    if: ${{ always() }}
-    needs: [job1, job2, job3, job4, job5] 
-    name: Summary Test Result
-    runs-on: [self-hosted, sqa-ds-hn-006]
-    permissions:
-      contents: read
-      pull-requests: write
-
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-      if: github.event_name	== 'workflow_dispatch'
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      if: github.event_name	== 'pull_request'
     
   
   
