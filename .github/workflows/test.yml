@@ -64,7 +64,7 @@ env:
 jobs:
   job1:
     name: Generate Documents
-    runs-on: self-hosted
+    runs-on: [self-hosted, sqa-ds-hn-003]
     permissions:
       contents: read
       pull-requests: write
@@ -95,7 +95,7 @@ jobs:
     if: ${{ always() }}
     needs: [job1]
     name: GCC-MG12 regression test
-    runs-on: self-hosted
+    runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
@@ -163,7 +163,7 @@ jobs:
     if: ${{ always() }}
     needs: [job1, job2]
     name: GCC-MG24 regression test
-    runs-on: self-hosted
+    runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
@@ -234,7 +234,7 @@ jobs:
     if: ${{ always() }}
     needs: [job1, job2, job3]
     name: IAR-MG12 regression test
-    runs-on: self-hosted
+    runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
@@ -304,7 +304,7 @@ jobs:
     if: ${{ always() }}
     needs: [job1, job2, job3, job4]    
     name: IAR-MG24 regression test
-    runs-on: self-hosted
+    runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
@@ -374,7 +374,7 @@ jobs:
     if: ${{ always() }}
     needs: [job1, job2, job3, job4, job5] 
     name: Summary Test Result
-    runs-on: self-hosted
+    runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
