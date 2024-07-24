@@ -163,7 +163,11 @@ jobs:
           result/
           artifact/
           log/
-        warn: Output a warning but do nomg24 == 'true'
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job3:
+    if: github.event.inputs.test_mg24 == 'true'
     needs: [job1, job2]
     name: GCC-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
