@@ -217,6 +217,7 @@ jobs:
       run:
         cd Test/ &&
         ls -la &&
+        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY"
         ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
