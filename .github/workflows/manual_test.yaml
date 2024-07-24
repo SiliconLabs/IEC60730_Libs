@@ -42,7 +42,7 @@ on:
         description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
         type: string
         default: 'APP_SECURE=false'
-      task:
+      command:
         type: choice
         options:
         - gen-only
@@ -122,7 +122,7 @@ jobs:
         export COMPONENT=${{ github.event.inputs.component }} &&
         cd Test/ &&
         ls -la &&
-        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY" 
+        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY" &&
         ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
