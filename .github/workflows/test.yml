@@ -112,7 +112,6 @@ jobs:
       COMPILER: GCC
       PLATFORM: MG12
       HOST_IP: github.event.inputs.mg12_hostip
-      SERIAL_NUM: github.event.inputs.mg12_serialnum
       TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
       APP_TYPE: SecureApp
     steps:
@@ -147,15 +146,12 @@ jobs:
         export HOST_IP=$HOST_IP &&
         export COMPILER=GCC &&
         export APP_TYPE=SecureApp 
-    - name: Checking env variables
-      run:
-        echo "$COMMAND" &&
-        echo "$COMPONENT" &&
-        echo "$SERIAL_NUM" &&
-        echo "$PLATFORM" &&
-        echo "$COMPILER" &&
-        echo "$SECURITY"
-        
+    - name: Env set
+      uses: alsosee/envset@v1.1
+      with:
+        name: SERIAL_NUM
+        value: github.event.inputs.mg12_serialnum
+          
     - name: Testing
       run:
         cd Test/ &&
