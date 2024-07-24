@@ -124,7 +124,7 @@ jobs:
         retention-days: 90
   
   job2:
-    if: (success() || failure()) && github.event.inputs.test_mg24 == 'true'
+    if: (always()) && github.event.inputs.test_mg24 == 'true'
     needs: [job1]
     name: GCC-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
@@ -193,7 +193,7 @@ jobs:
         retention-days: 90
   
   job3:
-    if: always() && github.event.inputs.test_mg12 == 'true'
+    if: (always()) && github.event.inputs.test_mg12 == 'true'
     needs: [job1, job2]
     name: IAR-MG12 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
@@ -262,7 +262,7 @@ jobs:
         retention-days: 90
   
   job4:
-    if: (success() || failure()) && github.event.inputs.test_mg24 == 'true'
+    if: (always()) && github.event.inputs.test_mg24 == 'true'
     needs: [job1, job2, job3]    
     name: IAR-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
