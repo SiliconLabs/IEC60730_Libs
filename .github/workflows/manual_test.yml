@@ -131,12 +131,24 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
@@ -185,12 +197,24 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
@@ -239,12 +263,24 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
@@ -295,12 +331,24 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
