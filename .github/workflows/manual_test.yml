@@ -42,7 +42,7 @@ on:
         description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
         type: string
         default: 'APP_SECURE=false'
-      task:
+      commandcommand:
         type: choice
         options:
         - gen-only
