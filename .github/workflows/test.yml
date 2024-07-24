@@ -22,7 +22,7 @@ on:
         type: boolean
         default: 'true'
       test_mg24:
-        description: 'Run test with MG24MG24?'
+        description: 'Run test with MG24?'
         type: boolean
         default: 'true'
       
@@ -154,7 +154,7 @@ jobs:
       run: 
         cd Test/ &&
         ls -la &&
-        python test_script/get_report.py &&
+        python test_script/get_report.py 
 
     - name: Upload results and logs
       uses: actions/upload-artifact@v4.3.4
@@ -223,7 +223,7 @@ jobs:
       run: 
         cd Test/ &&
         ls -la &&
-        python test_script/get_report.py &&
+        python test_script/get_report.py 
 
     - name: Upload results and logs
       uses: actions/upload-artifact@v4.3.4
@@ -276,7 +276,7 @@ jobs:
 
     - name: Assign environment variables
       run: 
-        whoami
+        whoami &&
         export HOST_IP=$HOST_IP &&
         export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin &&
         export APP_TYPE=SecureApp
@@ -344,7 +344,7 @@ jobs:
 
     - name: Assign environment variables
       run: 
-        whoami
+        whoami &&
         export HOST_IP=$HOST_IP &&
         export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin &&
         export APP_TYPE=SecureApp
