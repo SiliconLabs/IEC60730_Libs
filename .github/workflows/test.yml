@@ -143,6 +143,14 @@ jobs:
         export HOST_IP=$HOST_IP &&
         export COMPILER=GCC &&
         export APP_TYPE=SecureApp 
+    - name: Checking env variables
+      run:
+        echo "$COMMAND" &&
+        echo "$COMPONENT" &&
+        echo "$SERIAL_NUM" &&
+        echo "$PLATFORM" &&
+        echo "$COMPILER" &&
+        echo "$SECURITY"
         
     - name: Testing
       run:
