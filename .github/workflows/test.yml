@@ -115,35 +115,35 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.mg12_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }}
-        export SECURITY=${{ github.event.inputs.security }}
-        export COMMAND=${{ github.event.inputs.command }}
-        export COMPONENT=${{ github.event.inputs.component }}
+        export HOST_IP=${{ github.event.inputs.mg12_hostip }} &&
+        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }} &&
+        export SECURITY=${{ github.event.inputs.security }} &&
+        export COMMAND=${{ github.event.inputs.command }} &&
+        export COMPONENT=${{ github.event.inputs.component }} 
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
       run: 
-        pwd
+        pwd &&
         ls -la
     - name: Prepare Test directory
       run: 
-        chmod -R 777 ./Test
+        chmod -R 777 ./Test &&
         cd Test
     - name: Assign environment variables
       run: 
-        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
-        whoami
-        export HOST_IP=$HOST_IP
-        export COMPILER=GCC
-        export APP_TYPE=SecureApp
+        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin &&
+        whoami &&
+        export HOST_IP=$HOST_IP &&
+        export COMPILER=GCC &&
+        export APP_TYPE=SecureApp 
         
     - name: Testing
       run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
       run: 
-        python test_script/get_report.py
+        python test_script/get_report.py &&
         cd ../
     - name: Upload results and logs
       uses: actions/upload-artifact@v4.3.4
@@ -180,35 +180,35 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.mg24_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }}
-        export SECURITY=${{ github.event.inputs.security }}
-        export COMMAND=${{ github.event.inputs.command }}
-        export COMPONENT=${{ github.event.inputs.component }}
+        export HOST_IP=${{ github.event.inputs.mg24_hostip }} &&
+        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }} &&
+        export SECURITY=${{ github.event.inputs.security }} &&
+        export COMMAND=${{ github.event.inputs.command }} &&
+        export COMPONENT=${{ github.event.inputs.component }} 
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
       run: 
-        pwd
+        pwd &&
         ls -la
     - name: Prepare Test directory
       run: 
-        chmod -R 777 ./Test
+        chmod -R 777 ./Test &&
         cd Test
     - name: Assign environment variables
       run: 
-        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
-        whoami
-        export HOST_IP=$HOST_IP
-        export COMPILER=GCC
-        export APP_TYPE=SecureApp
+        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin &&
+        whoami &&
+        export HOST_IP=$HOST_IP &&
+        export COMPILER=GCC &&
+        export APP_TYPE=SecureApp 
 
     - name: Testing
       run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
       run: 
-        python test_script/get_report.py
+        python test_script/get_report.py &&
         cd ../
     - name: Upload results and logs
       uses: actions/upload-artifact@v4.3.4
@@ -245,34 +245,34 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.mg12_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }}
-        export SECURITY=${{ github.event.inputs.security }}
-        export COMMAND=${{ github.event.inputs.command }}
-        export COMPONENT=${{ github.event.inputs.component }}
+        export HOST_IP=${{ github.event.inputs.mg12_hostip }} &&
+        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }} &&
+        export SECURITY=${{ github.event.inputs.security }} &&
+        export COMMAND=${{ github.event.inputs.command }} &&
+        export COMPONENT=${{ github.event.inputs.component }} 
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
       run: 
-        pwd
+        pwd &&
         ls -la
     - name: Prepare Test directory
       run: 
-        chmod -R 777 ./Test
+        chmod -R 777 ./Test &&
         cd Test
     - name: Assign environment variables
       run: 
         whoami
-        export HOST_IP=$HOST_IP
-        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin
+        export HOST_IP=$HOST_IP &&
+        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin &&
         export APP_TYPE=SecureApp
 
     - name: Testing
       run: ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
-      run: 
-        python test_script/get_report.py
+      run:  
+        python test_script/get_report.py &&
         cd ../
     - name: Upload results and logs
       uses: actions/upload-artifact@v4.3.4
@@ -309,26 +309,26 @@ jobs:
       if: github.event_name	== 'pull_request'
     - name: Setup environment variables
       run:
-        export HOST_IP=${{ github.event.inputs.mg24_hostip }}
-        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }}
-        export SECURITY=${{ github.event.inputs.security }}
-        export COMMAND=${{ github.event.inputs.command }}
+        export HOST_IP=${{ github.event.inputs.mg24_hostip }} &&
+        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }} &&
+        export SECURITY=${{ github.event.inputs.security }} &&
+        export COMMAND=${{ github.event.inputs.command }} &&
         export COMPONENT=${{ github.event.inputs.component }}
         
       if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
       run: 
-        pwd
+        pwd &&
         ls -la
     - name: Prepare Test directory
       run: 
-        chmod -R 777 ./Test
+        chmod -R 777 ./Test &&
         cd Test
     - name: Assign environment variables
       run: 
-        whoami
-        export HOST_IP=$HOST_IP
-        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin
+        whoami &&
+        export HOST_IP=$HOST_IP &&
+        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin &&
         export APP_TYPE=SecureApp
 
     - name: Testing
@@ -336,7 +336,7 @@ jobs:
 
     - name: Generate test report
       run: 
-        python test_script/get_report.py
+        python test_script/get_report.py &&
         cd ../
     - name: Upload results and logs
       uses: actions/upload-artifact@v4.3.4
@@ -366,6 +366,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4.1.7
       if: github.event_name	== 'pull_request'
+    
   
   
           
