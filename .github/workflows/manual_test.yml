@@ -134,6 +134,7 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg12_result
         path: 
           result/
         warn: Output a warning but do not fail the action
@@ -141,6 +142,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg12_artifact
         path: 
           artifact/
         warn: Output a warning but do not fail the action
@@ -148,6 +150,7 @@ jobs:
     - name: Upload log
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg12_loglog
         path: 
           log/
         warn: Output a warning but do not fail the action
@@ -200,6 +203,7 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg24_result
         path: 
           result/
         warn: Output a warning but do not fail the action
@@ -207,6 +211,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg24_artifact
         path: 
           artifact/
         warn: Output a warning but do not fail the action
@@ -214,6 +219,7 @@ jobs:
     - name: Upload log
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg24_log
         path: 
           log/
         warn: Output a warning but do not fail the action
@@ -266,6 +272,7 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg12_result
         path: 
           result/
         warn: Output a warning but do not fail the action
@@ -273,6 +280,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg12_artifact
         path: 
           artifact/
         warn: Output a warning but do not fail the action
@@ -280,6 +288,7 @@ jobs:
     - name: Upload log
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg12_log
         path: 
           log/
         warn: Output a warning but do not fail the action
@@ -334,6 +343,7 @@ jobs:
     - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg24_result
         path: 
           result/
         warn: Output a warning but do not fail the action
@@ -341,6 +351,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg24_artifact
         path: 
           artifact/
         warn: Output a warning but do not fail the action
@@ -348,6 +359,7 @@ jobs:
     - name: Upload log
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg24_log
         path: 
           log/
         warn: Output a warning but do not fail the action
