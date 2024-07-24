@@ -111,6 +111,10 @@ jobs:
     env: 
       COMPILER: GCC
       PLATFORM: MG12
+      HOST_IP: github.event.inputs.mg12_hostip
+      SERIAL_NUM: github.event.inputs.mg12_serialnum
+      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+      APP_TYPE: SecureApp
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
