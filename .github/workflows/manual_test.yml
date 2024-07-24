@@ -122,7 +122,7 @@ jobs:
         export COMPONENT=${{ github.event.inputs.component }} &&
         cd Test/ &&
         ls -la &&
-        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY" 
+        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY" &&
         ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
