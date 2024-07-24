@@ -45,9 +45,9 @@ on:
       command:
         type: choice
         options:
+        - all
         - gen-only
         - run-only
-        - all
       component:
         type: choice
         options:
