@@ -83,7 +83,7 @@ jobs:
       contents: read
       pull-requests: write
     env:
-      SERIAL_NUM: 440124068
+      SERIAL_NUM: 440133193
       HOST_IP: 192.168.1.100
       COMPILER: GCC
       PLATFORM: MG24
@@ -209,7 +209,7 @@ jobs:
       contents: read
       pull-requests: write
     env: 
-      SERIAL_NUM: 440124068
+      SERIAL_NUM: 440133193
       HOST_IP: 192.168.1.100
       COMPILER: IAR
       PLATFORM: MG24
