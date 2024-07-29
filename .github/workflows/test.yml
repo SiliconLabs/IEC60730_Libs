@@ -5,6 +5,8 @@ on:
       branches:
         - main
         - iec_efr32
+      branches-ignore:
+        - update-workflows
 
 env:
   SECURITY: APP_SECURE=false
