@@ -1,4 +1,4 @@
-name: Regression Test
+name: Automation Trigger
 on: 
   pull_request:
       types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
