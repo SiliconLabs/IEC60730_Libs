@@ -1,137 +1,32 @@
-# This workflow will triage pull requests and apply a label based on the
-# paths that are modified in the pull request.
-#
-# To use this workflow, you will need to set up a .github/labeler.yml
-# file with configuration.  For more information, see:
-# https://github.com/actions/labeler
-
 name: Regression Test
 on: 
   pull_request:
       types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
-      
-  workflow_dispatch:
-    inputs:
-      branch: 
-        description: 'Branch to test'
-        type: string
-        default: 'iec_efr32'
+      branches:
+        - main
+        - iec_efr32
 
-      test_mg12:
-        description: 'Run test with MG12?'
-        type: boolean
-        default: 'true'
-      test_mg24:
-        description: 'Run test with MG24?'
-        type: boolean
-        default: 'true'
-      
-      mg12_serialnum:
-        description: 'Serial number of target board to test for GCC MG12'
-        type: string
-        default: '440111030'
-      mg12_hostip:
-        type: string
-        default: '192.168.1.69'
-      mg24_serialnum:
-        description: 'Serial number of target board to test for GCC MG12'
-        type: string
-        default: '440124068'
-      mg24_hostip:
-        type: string
-        default: '192.168.1.100'
-
-      security:
-        description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
-        type: string
-        default: 'APP_SECURE=false'
-      command:
-        type: choice
-        options:
-        - gen-only
-        - run-only
-        - all
-      component:
-        type: choice
-        options:
-        - all
-        - cpu_registers
-        - programme_counter
-        - invariable_memory
-        - system_clock
-        - variable_memory
-        - watchdog
-        - bist
-        - post
-        - irq
-        - integrated
-      
 env:
   SECURITY: APP_SECURE=false
   COMMAND: all
   COMPONENT: all
 jobs:
   job1:
-    name: Generate Documents
-    runs-on: [self-hosted, sqa-ds-hn-003]
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-      if: github.event_name	== 'workflow_dispatch'
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      if: github.event_name	== 'pull_request'
-    - name: Remove Libraries
-      run: rm -rf EFR32_ICE60730_Libraries
-    - name: Create directory for Libraries
-      run: mkdir EFR32_ICE60730_Libraries
-    - name: Generate Documents with Doxygen
-      run: doxygen qat.doxygen
-    - name: Upload Documents
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        path: 
-          Doc/html/EFR32_ICE60730_Libraries/
-        warn: Output a warning but do not fail the action
-        retention-days: 90
-
-  job2:
-    if: (success() || failure()) && github.event.inputs.test_mg12 == 'true'
-    needs: [job1]
     name: GCC-MG12 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
     env: 
+      SERIAL_NUM: 440189400
+      HOST_IP: 192.168.1.69
       COMPILER: GCC
       PLATFORM: MG12
-      HOST_IP: github.event.inputs.mg12_hostip
       TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
       APP_TYPE: SecureApp
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-      if: github.event_name	== 'workflow_dispatch'
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      if: github.event_name	== 'pull_request'
-    - name: Setup environment variables
-      run:
-        export HOST_IP=${{ github.event.inputs.mg12_hostip }} &&
-        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }} &&
-        export SECURITY=${{ github.event.inputs.security }} &&
-        export COMMAND=${{ github.event.inputs.command }} &&
-        export COMPONENT=${{ github.event.inputs.component }} 
-        
-      if: github.event_name	== 'workflow_dispatch'
     - name: Check working directory
       run: 
         pwd &&
@@ -139,72 +34,60 @@ jobs:
     - name: Prepare Test directory
       run: 
         chmod -R 777 ./Test 
-    - name: Assign environment variables
-      run: 
-        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin &&
-        whoami &&
-        export HOST_IP=$HOST_IP &&
-        export COMPILER=GCC &&
-        export APP_TYPE=SecureApp 
-    - name: Env set
-      uses: alsosee/envset@v1.1
-      with:
-        name: SERIAL_NUM
-        value: github.event.inputs.mg12_serialnum
-          
     - name: Testing
       run:
         cd Test/ &&
         ls -la &&
         ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
-
     - name: Generate test report
       run: 
         cd Test/ &&
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg12_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
   
-  job3:
-    if: (success() || failure()) && github.event.inputs.test_mg24 == 'true'
-    needs: [job1, job2]
+  job2:
+    if: (always())
+    needs: [job1]
     name: GCC-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
     env:
+      SERIAL_NUM: 440133193
+      HOST_IP: 192.168.1.100
       COMPILER: GCC
       PLATFORM: MG24
-      
+      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+      APP_TYPE: SecureApp
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-      if: github.event_name	== 'workflow_dispatch'
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      if: github.event_name	== 'pull_request'
-    - name: Setup environment variables
-      run:
-        export HOST_IP=${{ github.event.inputs.mg24_hostip }} &&
-        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }} &&
-        export SECURITY=${{ github.event.inputs.security }} &&
-        export COMMAND=${{ github.event.inputs.command }} &&
-        export COMPONENT=${{ github.event.inputs.component }} 
-        
-      if: github.event_name	== 'workflow_dispatch'
-    
     - name: Check working directory
       run: 
         pwd &&
@@ -212,20 +95,10 @@ jobs:
     - name: Prepare Test directory
       run: 
         chmod -R 777 ./Test 
-
-    - name: Assign environment variables
-      run: 
-        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin &&
-        whoami &&
-        export HOST_IP=$HOST_IP &&
-        export COMPILER=GCC &&
-        export APP_TYPE=SecureApp 
-        
     - name: Testing
       run:
         cd Test/ &&
         ls -la &&
-        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY"
         ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
@@ -234,47 +107,50 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg24_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
   
-  job4:
-    if: (success() || failure()) && github.event.inputs.test_mg12 == 'true'
-    needs: [job1, job2, job3]
+  job3:
+    if: (always())
+    needs: [job1, job2]
     name: IAR-MG12 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
     env: 
+      SERIAL_NUM: 440189400
+      HOST_IP: 192.168.1.69
       COMPILER: IAR
       PLATFORM: MG12
+      TOOL_DIRS: /home/sqa/EmbeddedWorkbench8.4/arm/bin
+      APP_TYPE: SecureApp
       
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-      if: github.event_name	== 'workflow_dispatch'
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      if: github.event_name	== 'pull_request'
-    - name: Setup environment variables
-      run:
-        export HOST_IP=${{ github.event.inputs.mg12_hostip }} &&
-        export SERIAL_NUM=${{ github.event.inputs.mg12_serialnum }} &&
-        export SECURITY=${{ github.event.inputs.security }} &&
-        export COMMAND=${{ github.event.inputs.command }} &&
-        export COMPONENT=${{ github.event.inputs.component }} 
-        
-      if: github.event_name	== 'workflow_dispatch'
-    
     - name: Check working directory
       run: 
         pwd &&
@@ -282,13 +158,6 @@ jobs:
     - name: Prepare Test directory
       run: 
         chmod -R 777 ./Test 
-
-    - name: Assign environment variables
-      run: 
-        whoami &&
-        export HOST_IP=$HOST_IP &&
-        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin &&
-        export APP_TYPE=SecureApp
 
     - name: Testing
       run:
@@ -302,47 +171,50 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg12_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
   
-  job5:
-    if: (success() || failure()) && github.event.inputs.test_mg24 == 'true'
-    needs: [job1, job2, job3, job4]    
+  job4:
+    if: (always())
+    needs: [job1, job2, job3]    
     name: IAR-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
       contents: read
       pull-requests: write
     env: 
+      SERIAL_NUM: 440133193
+      HOST_IP: 192.168.1.100
       COMPILER: IAR
       PLATFORM: MG24
+      TOOL_DIRS: /home/sqa/EmbeddedWorkbench8.4/arm/bin
+      APP_TYPE: SecureApp
       
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-      if: github.event_name	== 'workflow_dispatch'
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      if: github.event_name	== 'pull_request'
-    - name: Setup environment variables
-      run:
-        export HOST_IP=${{ github.event.inputs.mg24_hostip }} &&
-        export SERIAL_NUM=${{ github.event.inputs.mg24_serialnum }} &&
-        export SECURITY=${{ github.event.inputs.security }} &&
-        export COMMAND=${{ github.event.inputs.command }} &&
-        export COMPONENT=${{ github.event.inputs.component }}
-        
-      if: github.event_name	== 'workflow_dispatch'
-  
     - name: Check working directory
       run: 
         pwd &&
@@ -350,14 +222,6 @@ jobs:
     - name: Prepare Test directory
       run: 
         chmod -R 777 ./Test 
-
-    - name: Assign environment variables
-      run: 
-        whoami &&
-        export HOST_IP=$HOST_IP &&
-        export TOOL_DIRS=/home/sqa/EmbeddedWorkbench8.4/arm/bin &&
-        export APP_TYPE=SecureApp
-
     - name: Testing
       run:
         cd Test &&
@@ -370,12 +234,27 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg24_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90

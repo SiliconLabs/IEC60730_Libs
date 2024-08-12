@@ -1,10 +1,3 @@
-# This workflow will triage pull requests and apply a label based on the
-# paths that are modified in the pull request.
-#
-# To use this workflow, you will need to set up a .github/labeler.yml
-# file with configuration.  For more information, see:
-# https://github.com/actions/labeler
-
 name: Manual Regression Test
 on: 
   workflow_dispatch:
@@ -26,14 +19,14 @@ on:
       mg12_serialnum:
         description: 'Serial number of target board to test for GCC MG12'
         type: string
-        default: '440111030'
+        default: '440189400'
       mg12_hostip:
         type: string
         default: '192.168.1.69'
       mg24_serialnum:
         description: 'Serial number of target board to test for GCC MG12'
         type: string
-        default: '440124068'
+        default: '440133193'
       mg24_hostip:
         type: string
         default: '192.168.1.100'
@@ -42,12 +35,12 @@ on:
         description: 'NON_SECURE_EN= true "CRC_32=1%20NON_SECURE_EN=false%20N_CRC_DEBUG=1%20APP_SECURE=false"'
         type: string
         default: 'APP_SECURE=false'
-      task:
+      command:
         type: choice
         options:
+        - all
         - gen-only
         - run-only
-        - all
       component:
         type: choice
         options:
@@ -64,33 +57,7 @@ on:
         - integrated
 jobs:
   job1:
-    name: Generate Documents
-    runs-on: [self-hosted, sqa-ds-hn-003]
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
-    - name: Remove Libraries
-      run: rm -rf EFR32_ICE60730_Libraries
-    - name: Create directory for Libraries
-      run: mkdir EFR32_ICE60730_Libraries
-    - name: Generate Documents with Doxygen
-      run: doxygen qat.doxygen
-    - name: Upload Documents
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        path: 
-          Doc/html/EFR32_ICE60730_Libraries/
-        warn: Output a warning but do not fail the action
-        retention-days: 90
-
-  job2:
-    if: (success() || failure()) && github.event.inputs.test_mg12 == 'true'
-    needs: [job1]
+    if: github.event.inputs.test_mg12 == 'true'
     name: GCC-MG12 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
@@ -122,7 +89,7 @@ jobs:
         export COMPONENT=${{ github.event.inputs.component }} &&
         cd Test/ &&
         ls -la &&
-        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY" 
+        echo "./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY" &&
         ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
 
     - name: Generate test report
@@ -131,19 +98,34 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg12_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
   
-  job3:
-    if: (success() || failure()) && github.event.inputs.test_mg24 == 'true'
-    needs: [job1, job2]
+  job2:
+    if: (always()) && github.event.inputs.test_mg24 == 'true'
+    needs: [job1]
     name: GCC-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
@@ -185,19 +167,34 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: gcc_mg24_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
   
-  job4:
-    if: (success() || failure()) && github.event.inputs.test_mg12 == 'true'
-    needs: [job1, job2, job3]
+  job3:
+    if: (always()) && github.event.inputs.test_mg12 == 'true'
+    needs: [job1, job2]
     name: IAR-MG12 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
@@ -239,19 +236,34 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg12_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
   
-  job5:
-    if: (success() || failure()) && github.event.inputs.test_mg24 == 'true'
-    needs: [job1, job2, job3, job4]    
+  job4:
+    if: (always()) && github.event.inputs.test_mg24 == 'true'
+    needs: [job1, job2, job3]    
     name: IAR-MG24 regression test
     runs-on: [self-hosted, sqa-ds-hn-006]
     permissions:
@@ -295,12 +307,27 @@ jobs:
         ls -la &&
         python test_script/get_report.py 
 
-    - name: Upload results and logs
+    - name: Upload result
       uses: actions/upload-artifact@v4.3.4
       with:
+        name: iar_mg24_result
         path: 
           result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_artifact
+        path: 
           artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_log
+        path: 
           log/
         warn: Output a warning but do not fail the action
         retention-days: 90
