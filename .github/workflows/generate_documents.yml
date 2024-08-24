@@ -24,7 +24,7 @@ jobs:
       uses: AdarshRawat1/Install-Doxygen@v1.0
       with:
         # The Doxygen version to install
-        version: 1.11.0
+        version: 1.10.0
     - name: Write File
       uses: DamianReeves/write-file-action@v1.3
       with:
