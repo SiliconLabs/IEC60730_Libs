@@ -1,11 +1,9 @@
 name: Generate Documents
 on: 
-  workflow_dispatch:
   pull_request:
       types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
       branches:
         - main
-
 jobs:
   job1:
     name: GCC-MG12 regression test
@@ -2616,6 +2614,7 @@ jobs:
         write-mode: overwrite
     - name: generate-documents
       run: |
+        export DOT_PATH=
         rm -rf EFR32_ICE60730_Libraries
         mkdir EFR32_ICE60730_Libraries
         doxygen qat.doxygen
