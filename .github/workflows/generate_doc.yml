@@ -1,10 +1,10 @@
 name: Generate Documents
 on: 
+  workflow_dispatch:
   pull_request:
       types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
       branches:
         - main
-  workflow_dispatch:
 
 jobs:
   job1:
