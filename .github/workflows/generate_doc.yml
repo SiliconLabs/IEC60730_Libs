@@ -23,7 +23,8 @@ jobs:
       with:
         # The Doxygen version to install
         version: 1.10.0
-          
+    - name: Setup Graphviz
+      uses: ts-graphviz/setup-graphviz@v2.0.2
     - name: Write File
       uses: DamianReeves/write-file-action@v1.3
       with:
@@ -2614,7 +2615,6 @@ jobs:
         write-mode: overwrite
     - name: generate-documents
       run: |
-        export DOT_PATH=
         rm -rf EFR32_ICE60730_Libraries
         mkdir EFR32_ICE60730_Libraries
         doxygen qat.doxygen
