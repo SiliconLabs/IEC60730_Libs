@@ -6,7 +6,7 @@ on:
         - main
 jobs:
   job1:
-    name: GCC-MG12 regression test
+    name: Generate Docs
     runs-on: ubuntu-20.04
     permissions:
       contents: read
