@@ -1,0 +1,23 @@
+digraph "IEC60730 Test Specification"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node7 [label="System Clock Automated\l Verification Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__SYSTEM__CLOCK__VERIFICATION.html",tooltip="Python script for the IEC60730 system clock Verification tests."];
+  Node3 [label="CPU Register Check\l Automated Verification Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__CPU__REGISTERS__VERIFICATION.html",tooltip="Python script for the IEC60730 CPU Register Check Verification tests."];
+  Node6 [label="Programme Counter Verification\l Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__PROGRAMME__COUNTER__VERIFICATION.html",tooltip="Python script for the IEC60730 Programme Counter Verification tests."];
+  Node2 [label="EFR32 IEC60730 Library",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__efr32__iec60730.html",tooltip="EFR32 IEC60730 Library."];
+  Node5 [label="IRQ Automated Verification\l Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__IRQ__VERIFICATION.html",tooltip="Python script for the IEC60730 IRQ plausibility verification tests."];
+  Node1 [label="IEC60730 Test Specification",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Automated tests for validating correct firmware operation."];
+  Node8 [label="Variable Memory Automated\l Verification Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__VARIABLE__MEMORY__VERIFICATION.html",tooltip="Python script for the IEC60730 Variable Memory plausibility verification tests."];
+  Node4 [label="Invariable Memory Automated\l Verification Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__INVARIABLE__MEMORY__VERIFICATION.html",tooltip="Python script for the IEC60730 Invariable Memory plausibility verification tests."];
+  Node9 [label="Watchdog Automated\l Verification Tests",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__WATCHDOG__VERIFICATION.html",tooltip="Python script for the IEC60730 Watchdog timer Verification tests."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node8 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node9 [shape=plaintext, dir="back", style="solid"];
+}
