@@ -2612,7 +2612,7 @@ jobs:
       uses: AdarshRawat1/Install-Doxygen@v1.0
       with:
         # The Doxygen version to install
-        version: 1.8.17
+        version: 1.12.0
     - name: generate-documents
       run: |
         rm -rf EFR32_ICE60730_Libraries
