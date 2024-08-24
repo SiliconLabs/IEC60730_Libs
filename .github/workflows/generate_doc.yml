@@ -33,7 +33,7 @@ jobs:
         # archive path to extract
         pathSource: Doc/html/EFR32 ICE60730 Libraries.7z
         # path to place the extract
-        pathTarget: Doc/html/EFR32_ICE60730_Libraries
+        pathTarget: Doc/html/
           
     - name: Write File
       uses: DamianReeves/write-file-action@v1.3
