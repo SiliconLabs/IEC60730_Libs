@@ -2628,7 +2628,25 @@ jobs:
         rm -rf EFR32_ICE60730_Libraries
         mkdir EFR32_ICE60730_Libraries
         doxygen qat.doxygen
-          
+    - name: Zip Release
+      # You may pin to the exact commit or the version.
+      # uses: TheDoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554
+      uses: TheDoctor0/zip-release@0.7.6
+      with:
+        # Filename for archive
+        filename: EFR32_ICE60730_Libraries.7z
+        # Base path for archive files
+        path: Doc/html/EFR32_ICE60730_Libraries/
+        # Working directory before zipping
+        directory: .
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_artifact
+        path: 
+          Doc/html/EFR32_ICE60730_Libraries/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
           
 
     
