@@ -25,15 +25,6 @@ jobs:
       with:
         # The Doxygen version to install
         version: 1.10.0
-    - name: extract-7z-action
-      # You may pin to the exact commit or the version.
-      # uses: DuckSoft/extract-7z-action@6eaaa506b410f047eaa9b22498696aad1e19a834
-      uses: DuckSoft/extract-7z-action@v1.0
-      with:
-        # archive path to extract
-        pathSource: Doc/html/EFR32 ICE60730 Libraries.7z
-        # path to place the extract
-        pathTarget: Doc/html/
           
     - name: Write File
       uses: DamianReeves/write-file-action@v1.3
