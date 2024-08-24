@@ -20,6 +20,11 @@ jobs:
       run: |
         uname -r
         ifconfig
+    - name: install-doxygen
+      uses: AdarshRawat1/Install-Doxygen@v1.0
+      with:
+        # The Doxygen version to install
+        version: 1.11.0
     - name: Write File
       uses: DamianReeves/write-file-action@v1.3
       with:
@@ -2608,11 +2613,6 @@ jobs:
           DOT_CLEANUP            = YES
           # The mode of writing to use: `overwrite`, `append`, or `preserve`.
         write-mode: overwrite
-    - name: install-doxygen
-      uses: AdarshRawat1/Install-Doxygen@v1.0
-      with:
-        # The Doxygen version to install
-        version: 1.12.0
     - name: generate-documents
       run: |
         rm -rf EFR32_ICE60730_Libraries
