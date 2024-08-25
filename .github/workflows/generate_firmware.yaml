@@ -259,7 +259,7 @@ jobs:
         write-mode: overwrite
     - name: Generate Firmwares
       run: |
-        sudo chmod 777 .
+        sudo -R chmod 777 .
         ./generate.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
     - name: Zip Release
       # You may pin to the exact commit or the version.
