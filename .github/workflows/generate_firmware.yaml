@@ -30,10 +30,10 @@ jobs:
       run: |
         pwd &&
         ls -la
-        chmod -R 777 ./Test 
+        chmod -R 777 . 
         cd Test/ &&
         ls -la &&
-        ./execute_test.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
+        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
       # You may pin to the exact commit or the version.
@@ -74,10 +74,10 @@ jobs:
       run: |
         pwd &&
         ls -la
-        chmod -R 777 ./Test 
+        chmod -R 777 . 
         cd Test/ &&
         ls -la &&
-        ./execute_test.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
+        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
       # You may pin to the exact commit or the version.
@@ -119,10 +119,10 @@ jobs:
       run: |
         pwd &&
         ls -la
-        chmod -R 777 ./Test 
+        chmod -R 777 . 
         cd Test/ &&
         ls -la &&
-        ./execute_test.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
+        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
       # You may pin to the exact commit or the version.
@@ -164,10 +164,10 @@ jobs:
       run: |
         pwd &&
         ls -la
-        chmod -R 777 ./Test 
+        chmod -R 777 . 
         cd Test/ &&
         ls -la &&
-        ./execute_test.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
+        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
       # You may pin to the exact commit or the version.
