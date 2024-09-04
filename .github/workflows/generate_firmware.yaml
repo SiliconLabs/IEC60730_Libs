@@ -21,11 +21,28 @@ jobs:
       HOST_IP: 192.168.1.69
       COMPILER: GCC
       PLATFORM: MG12
-      TOOL_DIRS: docker/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+      TOOL_DIRS: docker/gcc-arm-none-eabi-10.3-2021.10/bin
       APP_TYPE: SecureApp
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
+    - name: Download File Action
+      # You may pin to the exact commit or the version.
+      # uses: Minionguyjpro/Download-File-Action@cb86d3ecd4ed8bc49f63cf4b33d957c50fcb5ba0
+      uses: Minionguyjpro/Download-File-Action@v1
+      with:
+        # URL to download file from
+        url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2?rev=b748c39178c043b4915b04645d7774d8&hash=9E173D105DC6E0D452EB3A813BF28AAB
+        # Path to store output file
+        path: docker/
+          
+    - name: Prepare environment
+      run: |
+        cd docker
+        tar xjf gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
+        git clone ssh://git@stash.silabs.com/toolchain_external/iar_bxarm_9204_linux_jenkins.git
+        ls -la
+        
     - name: Generate Firmware
       run: |
         pwd &&
@@ -53,140 +70,7 @@ jobs:
         path: .
         warn: Output a warning but do not fail the action
         retention-days: 90
-  
-  job2:
-    if: (always())
-    needs: [job1]
-    name: GCC-MG24 regression test
-    runs-on: ubuntu-20.04
-    permissions:
-      contents: read
-      pull-requests: write
-    env:
-      COMPILER: GCC
-      PLATFORM: MG24
-      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
-      APP_TYPE: SecureApp
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-    - name: Generate Firmware
-      run: |
-        pwd &&
-        ls -la
-        chmod -R 777 . 
-        cd Test/ &&
-        ls -la &&
-        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
-    - name: Zip Release
-      # You may pin to the exact commit or the version.
-      # uses: TheDoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554
-      uses: TheDoctor0/zip-release@0.7.6
-      with:
-        # Filename for archive
-        filename: firmware.7z
-        # Base path for archive files
-        path: artifact
-        # Working directory before zipping
-        directory: .
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: firmware
-        path: .
-        warn: Output a warning but do not fail the action
-        retention-days: 90
-  
-  job3:
-    if: (always())
-    needs: [job1, job2]
-    name: IAR-MG12 regression test
-    runs-on: ubuntu-20.04
-    permissions:
-      contents: read
-      pull-requests: write
-    env: 
-      COMPILER: IAR
-      PLATFORM: MG12
-      TOOL_DIRS: /home/sqa/EmbeddedWorkbench8.4/arm/bin
-      APP_TYPE: SecureApp
-      
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-    - name: Generate Firmware
-      run: |
-        pwd &&
-        ls -la
-        chmod -R 777 . 
-        cd Test/ &&
-        ls -la &&
-        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
-
-    - name: Zip Release
-      # You may pin to the exact commit or the version.
-      # uses: TheDoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554
-      uses: TheDoctor0/zip-release@0.7.6
-      with:
-        # Filename for archive
-        filename: firmware.7z
-        # Base path for archive files
-        path: artifact
-        # Working directory before zipping
-        directory: .
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: firmware
-        path: .
-        warn: Output a warning but do not fail the action
-        retention-days: 90
-  
-  job4:
-    if: (always())
-    needs: [job1, job2, job3]    
-    name: IAR-MG24 regression test
-    runs-on: ubuntu-20.04
-    permissions:
-      contents: read
-      pull-requests: write
-    env: 
-      COMPILER: IAR
-      PLATFORM: MG24
-      TOOL_DIRS: /home/sqa/EmbeddedWorkbench8.4/arm/bin
-      APP_TYPE: SecureApp
-      
-    steps:
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-    - name: Generate Firmware
-      run: |
-        pwd &&
-        ls -la
-        chmod -R 777 . 
-        cd Test/ &&
-        ls -la &&
-        ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
-
-    - name: Zip Release
-      # You may pin to the exact commit or the version.
-      # uses: TheDoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554
-      uses: TheDoctor0/zip-release@0.7.6
-      with:
-        # Filename for archive
-        filename: firmware.7z
-        # Base path for archive files
-        path: artifact
-        # Working directory before zipping
-        directory: .
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: firmware
-        path: .
-        warn: Output a warning but do not fail the action
-        retention-days: 90
     
   
   
