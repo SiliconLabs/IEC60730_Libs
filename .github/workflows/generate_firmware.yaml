@@ -30,7 +30,7 @@ jobs:
     - name: Prepare environment
       run: |
         cd docker
-        wget https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2?rev=b748c39178c043b4915b04645d7774d8&hash=9E173D105DC6E0D452EB3A813BF28AAB
+        curl -O -L "https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2?rev=b748c39178c043b4915b04645d7774d8&hash=9E173D105DC6E0D452EB3A813BF28AAB"
         tar xjf gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
         git clone ssh://git@stash.silabs.com/toolchain_external/iar_bxarm_9204_linux_jenkins.git
         ls -la
