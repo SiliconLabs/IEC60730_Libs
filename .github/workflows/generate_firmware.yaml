@@ -26,13 +26,20 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
+
+    - name: Download a file
+      # You may pin to the exact commit or the version.
+      # uses: valitydev/action-download-file@7fb017bf38a45a6d420e5456e95f0b1ef966a20c
+      uses: valitydev/action-download-file@v1.0.6
+      with:
+        # URL to file
+        url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2?rev=b748c39178c043b4915b04645d7774d8&hash=9E173D105DC6E0D452EB3A813BF28AAB
+        # Target path
+        target-path: docker/
           
     - name: Prepare environment
       run: |
         cd docker
-        curl -O -L "https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2?rev=b748c39178c043b4915b04645d7774d8&hash=9E173D105DC6E0D452EB3A813BF28AAB"
-        tar xjf gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
-        git clone ssh://git@stash.silabs.com/toolchain_external/iar_bxarm_9204_linux_jenkins.git
         ls -la
         
     - name: Generate Firmware
