@@ -33,13 +33,15 @@ jobs:
       uses: valitydev/action-download-file@v1.0.6
       with:
         # URL to file
-        url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2?rev=b748c39178c043b4915b04645d7774d8&hash=9E173D105DC6E0D452EB3A813BF28AAB
+        url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
         # Target path
         target-path: docker/
           
     - name: Prepare environment
       run: |
         cd docker
+        ls -la
+        tar xjf gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
         ls -la
         
     - name: Generate Firmware
