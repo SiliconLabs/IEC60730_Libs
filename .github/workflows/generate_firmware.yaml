@@ -21,7 +21,6 @@ jobs:
       HOST_IP: 192.168.1.69
       COMPILER: GCC
       PLATFORM: MG12
-      TOOL_DIRS: docker/gcc-arm-none-eabi-10.3-2021.10/bin
       APP_TYPE: SecureApp
     steps:
     - name: Checkout
@@ -54,6 +53,7 @@ jobs:
         cd Test/
         ls -la
         export TOOL_DIRS=${pwd}/docker/gcc-arm-none-eabi-10.3-2021.10/bin
+        echo $TOOL_DIRS
         ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
