@@ -52,7 +52,7 @@ jobs:
         chmod -R 777 . 
         cd Test/
         ls -la
-        export TOOL_DIRS=${pwd}/docker/gcc-arm-none-eabi-10.3-2021.10/bin
+        export TOOL_DIRS=/home/runner/work/IEC60730_Libs/IEC60730_Libs/docker/gcc-arm-none-eabi-10.3-2021.10/bin
         echo $TOOL_DIRS
         ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
