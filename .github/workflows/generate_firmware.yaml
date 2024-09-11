@@ -47,6 +47,11 @@ jobs:
     - name: Generate Firmware
       run: |
         pwd &&
+        cd docker
+        ls -la
+        cd gcc-arm-none-eabi-10.3-2021.10/bin
+        ls -la
+        cd ..
         ls -la
         chmod -R 777 . 
         cd Test/ &&
