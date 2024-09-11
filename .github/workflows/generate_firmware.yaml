@@ -43,15 +43,14 @@ jobs:
         ls -la
         tar xjf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
         ls -la
-        
-    - name: Generate Firmware
-      run: |
-        pwd
         cd docker
         ls -la
         cd gcc-arm-none-eabi-10.3-2021.10/bin
         ls -la
-        cd ../..
+        
+    - name: Generate Firmware
+      run: |
+        pwd
         ls -la
         chmod -R 777 . 
         cd Test/
