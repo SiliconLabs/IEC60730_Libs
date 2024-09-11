@@ -46,16 +46,17 @@ jobs:
         
     - name: Generate Firmware
       run: |
-        pwd &&
+        pwd
         cd docker
         ls -la
         cd gcc-arm-none-eabi-10.3-2021.10/bin
         ls -la
-        cd ..
+        cd ../..
         ls -la
         chmod -R 777 . 
-        cd Test/ &&
-        ls -la &&
+        cd Test/
+        ls -la
+        export TOOL_DIRS=docker/gcc-arm-none-eabi-10.3-2021.10/bin
         ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
