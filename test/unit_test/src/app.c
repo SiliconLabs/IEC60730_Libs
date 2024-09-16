@@ -15,12 +15,11 @@
  *
  ******************************************************************************/
 
-#include "test_common.h"
-#include "test_iec60730_module_demo.h"
+#include "app.h"
 
 void app_init(void)
 {
-  test_iec60730_module_demo();
+  unit_test_run_all_test_cases();
 }
 
 void app_process_action(void)

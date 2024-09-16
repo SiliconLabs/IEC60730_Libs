@@ -63,8 +63,8 @@
 #define SL_IEC60730_SAVE_STAGE_ENABLE           0
 
 // <q SL_IEC60730_RSTCAUSES_CLEAR_ENABLE> Reset cause flags in the RSTCASUES register
-// <i> Default: 0
-#define SL_IEC60730_RSTCAUSES_CLEAR_ENABLE      0
+// <i> Default: 1
+#define SL_IEC60730_RSTCAUSES_CLEAR_ENABLE      1
 
 // </h>
 
@@ -161,11 +161,30 @@
 // <i> Default: 64
 #define SL_IEC60730_FLASH_BLOCK                 64
 
-// <q SL_IEC60730_CRC_USE_SW_ENABLE> Enable CRC calculation using software instead of hardware
+// <e SL_IEC60730_CRC_USE_SW_ENABLE> Enable CRC calculation using software instead of hardware
 /// The library support both hardware and software CRC. Use this definition in
 /// case the user use software CRC. The default hardware is used.
 // <i> Default: 0
+#ifndef SL_IEC60730_CRC_USE_SW_ENABLE
 #define SL_IEC60730_CRC_USE_SW_ENABLE           0
+#endif // SL_IEC60730_CRC_USE_SW_ENABLE
+
+// <q SL_IEC60730_SW_CRC_TABLE_ENABLE> Enable pre-defined table for calculating CRC
+/// If using #SL_IEC60730_CRC_USE_SW_ENABLE definition then the #SL_IEC60730_SW_CRC_TABLE_ENABLE definition is used for
+/// using pre-defined table for calculating.
+// <i> Default: 0
+#ifndef SL_IEC60730_SW_CRC_TABLE_ENABLE
+#define SL_IEC60730_SW_CRC_TABLE_ENABLE         0
+#endif // SL_IEC60730_SW_CRC_TABLE_ENABLE
+// </e>
+
+// <q SL_IEC60730_USE_CRC_32_ENABLE> Enable CRC-32 for calculating the CRC value
+/// Use this definition in case the user use CRC-32 for calculating the CRC value.
+/// The default CRC-16 is used.
+// <i> Default: 0
+#ifndef SL_IEC60730_USE_CRC_32_ENABLE
+#define SL_IEC60730_USE_CRC_32_ENABLE           0
+#endif // SL_IEC60730_USE_CRC_32_ENABLE
 
 // </h>
 

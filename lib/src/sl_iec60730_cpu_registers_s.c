@@ -22,6 +22,9 @@
  * @addtogroup IEC60730_CPUREG_Test
  * @{
  *****************************************************************************/
+#ifdef UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
+extern sl_iec60730_test_result_t unit_test_iec60730_cpu_registers_bist_s_mock(void);
+#endif // UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
 
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
     && (__TZ_PRESENT == 1))                                                   \
@@ -92,6 +95,12 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist_s(void)
   if (IEC60730_TEST_FAILED == sl_iec60730_cpu_registers_faultmask_s()) {
     goto CPU_REGISTERS_BIST_S_DONE;
   }
+
+#ifdef UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
+  if (IEC60730_TEST_FAILED == unit_test_iec60730_cpu_registers_bist_s_mock()) {
+    goto CPU_REGISTERS_BIST_S_DONE;
+  }
+#endif // UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
 
   result = IEC60730_TEST_PASSED;
 

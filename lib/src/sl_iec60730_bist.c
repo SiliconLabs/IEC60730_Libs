@@ -37,6 +37,12 @@ __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
   }
 }
 
+void sl_iec60730_safety_check_reset_error(void)
+{
+  iec60730_safety_check.error = IEC60730_NO_FAILURE;
+  iec60730_safety_check.number_error = 0;
+}
+
 void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
 {
   iec60730_safety_check.error |= (1<<failure);
