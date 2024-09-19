@@ -1,0 +1,264 @@
+name: Automation Trigger
+on: 
+  pull_request:
+      types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
+      branches:
+        - main
+        - iec_efr32
+
+env:
+  SECURITY: APP_SECURE=false
+  COMMAND: all
+  COMPONENT: all
+jobs:
+  job1:
+    name: GCC-MG12 regression test
+    runs-on: [self-hosted, sqa-ds-hn-006]
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      SERIAL_NUM: 440189400
+      HOST_IP: 192.168.1.69
+      COMPILER: GCC
+      PLATFORM: MG12
+      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+      APP_TYPE: SecureApp
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Check working directory
+      run: 
+        pwd &&
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test 
+    - name: Testing
+      run:
+        cd Test/ &&
+        ls -la &&
+        ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+    - name: Generate test report
+      run: 
+        cd Test/ &&
+        ls -la &&
+        python test_script/get_report.py 
+
+    - name: Upload result
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_result
+        path: 
+          result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_artifact
+        path: 
+          artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg12_log
+        path: 
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job2:
+    if: (always())
+    needs: [job1]
+    name: GCC-MG24 regression test
+    runs-on: [self-hosted, sqa-ds-hn-006]
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      SERIAL_NUM: 440133193
+      HOST_IP: 192.168.1.100
+      COMPILER: GCC
+      PLATFORM: MG24
+      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
+      APP_TYPE: SecureApp
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Check working directory
+      run: 
+        pwd &&
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test 
+    - name: Testing
+      run:
+        cd Test/ &&
+        ls -la &&
+        ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run: 
+        cd Test/ &&
+        ls -la &&
+        python test_script/get_report.py 
+
+    - name: Upload result
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_result
+        path: 
+          result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_artifact
+        path: 
+          artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: gcc_mg24_log
+        path: 
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job3:
+    if: (always())
+    needs: [job1, job2]
+    name: IAR-MG12 regression test
+    runs-on: [self-hosted, sqa-ds-hn-006]
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      SERIAL_NUM: 440189400
+      HOST_IP: 192.168.1.69
+      COMPILER: IAR
+      PLATFORM: MG12
+      TOOL_DIRS: /home/sqa/EmbeddedWorkbench8.4/arm/bin
+      APP_TYPE: SecureApp
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Check working directory
+      run: 
+        pwd &&
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test 
+
+    - name: Testing
+      run:
+        cd Test &&
+        ls -la &&
+        ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run:  
+        cd Test/ &&
+        ls -la &&
+        python test_script/get_report.py 
+
+    - name: Upload result
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_result
+        path: 
+          result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_artifact
+        path: 
+          artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg12_log
+        path: 
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  job4:
+    if: (always())
+    needs: [job1, job2, job3]    
+    name: IAR-MG24 regression test
+    runs-on: [self-hosted, sqa-ds-hn-006]
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      SERIAL_NUM: 440133193
+      HOST_IP: 192.168.1.100
+      COMPILER: IAR
+      PLATFORM: MG24
+      TOOL_DIRS: /home/sqa/EmbeddedWorkbench8.4/arm/bin
+      APP_TYPE: SecureApp
+      
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Check working directory
+      run: 
+        pwd &&
+        ls -la
+    - name: Prepare Test directory
+      run: 
+        chmod -R 777 ./Test 
+    - name: Testing
+      run:
+        cd Test &&
+        ls -la &&
+        ./execute_test.sh $COMMAND $COMPONENT $SERIAL_NUM $PLATFORM $COMPILER $SECURITY
+
+    - name: Generate test report
+      run:  
+        cd Test/ &&
+        ls -la &&
+        python test_script/get_report.py 
+
+    - name: Upload result
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_result
+        path: 
+          result/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_artifact
+        path: 
+          artifact/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload log
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: iar_mg24_log
+        path: 
+          log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    
+  
+  
+          
