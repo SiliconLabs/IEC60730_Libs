@@ -25,7 +25,7 @@ jobs:
       run: |
         touch CodingConventionResult.log
         git fetch origin 
-        git diff --name-only origin/develop  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
+        git diff --name-only origin/iec-efr32  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files >> CodingConventionResult.log
     - name: Upload Result
       uses: actions/upload-artifact@v4.3.4
       with:
