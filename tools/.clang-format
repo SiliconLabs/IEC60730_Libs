@@ -1,0 +1,76 @@
+---
+BasedOnStyle: LLVM
+IndentWidth: 2
+TabWidth: 2
+UseTab: Never
+
+
+# General formatting
+AccessModifierOffset: -2
+MaxEmptyLinesToKeep: 1
+# BreakBeforeBraces: Allman
+
+# Line length
+ColumnLimit: 80
+
+# Bracing style
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterControlStatement: Never
+  AfterFunction: true
+  AfterStruct: false
+  AfterUnion: false
+  AfterExternBlock: false
+  BeforeCatch: false
+  BeforeElse: false
+  IndentBraces: false
+  SplitEmptyFunction: false
+
+# Use of spaces
+SpacesBeforeTrailingComments: 1
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeParens: ControlStatements
+SpaceInEmptyParentheses: false
+
+# Use of comments
+CommentPragmas: "^ IWYU pragma:"
+
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: true
+AlignConsecutiveMacros: true
+AlignEscapedNewlines: Right
+AlignOperands: true
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: false
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: Empty
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortLoopsOnASingleLine: false
+AllowShortEnumsOnASingleLine: false
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: No
+BinPackArguments: false
+BinPackParameters: false
+BreakBeforeBinaryOperators: NonAssignment
+BreakBeforeTernaryOperators: true
+BreakStringLiterals: true
+Cpp11BracedListStyle: true
+IncludeBlocks: Regroup
+IndentCaseLabels: true
+IndentGotoLabels: false
+IndentPPDirectives: None
+IndentWrappedFunctionNames: true
+KeepEmptyLinesAtTheStartOfBlocks: false
+PointerAlignment: Right
+ReflowComments: false
+SortIncludes: false
+SpaceAfterCStyleCast: true
+SpaceAfterLogicalNot: false
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceBeforeSquareBrackets: false
+SpaceInEmptyBlock: false
+SpacesInCStyleCastParentheses: false
+SpacesInConditionalStatement: false
+SpacesInContainerLiterals: false
