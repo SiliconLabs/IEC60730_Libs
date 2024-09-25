@@ -24,7 +24,12 @@ jobs:
         ls -la
         git clone $REPO_LINK
         ls -la
-        cp -r ./tools .
+        cp ./tools/.clang-format .
+        cp ./tools/.clang-tidy .
+        cp ./tools/.codespell/.codespellrc .
+        cp ./tools/.codespell/exclude-file.txt .
+        cp ./tools/.codespell/ignore-words.txt .
+        
         ls -la
         cd IEC60730_Libs
         ls -la
