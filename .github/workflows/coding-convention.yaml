@@ -1,0 +1,24 @@
+name: Coding Convention
+on: 
+  workflow_dispatch:
+env:
+  SECURITY: APP_SECURE=false
+  COMMAND: all
+  COMPONENT: all
+jobs:
+  job1:
+    name: Check coding convention
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Check working directory
+      run: |
+        pwd 
+        ls -la
+    - name: Set up environment
+      run: |
+        pip install pre-commit
+        sudo apt install uncrustify clang-tidy cppcheck
+    
+  
+  
+          
