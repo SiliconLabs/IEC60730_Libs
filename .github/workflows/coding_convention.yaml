@@ -27,7 +27,7 @@ jobs:
       run: |
         git config diff.renameLimit 999999
         git fetch origin 
-        git diff --name-only origin/iec_efr32  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionResult.log
+        git diff --name-only origin/main  origin/iec_efr32 | xargs pre-commit run --files > CodingConventionResult.log
     - name: Upload Result
       uses: actions/upload-artifact@v4.3.4
       with:
