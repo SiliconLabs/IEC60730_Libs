@@ -34,7 +34,8 @@ jobs:
       run: |
         git config diff.renameLimit 999999
         git fetch origin 
-        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.log
+        touch CodingConventionTool.log
+        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
           
     - name: Upload Result
       if: always()
