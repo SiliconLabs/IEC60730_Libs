@@ -23,7 +23,10 @@ jobs:
         cd IEC60730_Libs
         ls -la
         git clone $REPO_LINK
-        cp -r /home/runner/work/IEC60730_Libs/IEC60730_Libs/IEC60730_Libs/tools .
+        ls -la
+        cp -r /home/runner/work/IEC60730_Libs/IEC60730_Libs/tools .
+        ls -la
+        cd IEC60730_Libs
         ls -la
         
     - name: Check working directory
