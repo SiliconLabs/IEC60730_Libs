@@ -1,8 +1,11 @@
 name: Coding Convention
 on: 
   push:
+    branches:
+      - '**'
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+ REPO_LINK: ${{ github.repository }}
 jobs:
   job1:
     name: Check coding convention
@@ -12,6 +15,14 @@ jobs:
       uses: actions/checkout@v4.1.7
       with:
         ref: update-source-code-lib-iec60730
+    - name: Copy coding convention tool
+      run: |
+        git clone $REPO_LINK
+        cp -r /home/runner/work/IEC60730_Libs/IEC60730_Libs/IEC60730_Libs/tools .
+        cd ..
+        pwd
+        ls -la
+        
     - name: Check working directory
       run: |
         pwd 
