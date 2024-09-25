@@ -11,7 +11,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
-        ref: create-unit-test-functions-in-lib-iec60730
+        ref: update-source-code-lib-iec60730
     - name: Check working directory
       run: |
         pwd 
