@@ -24,7 +24,7 @@ jobs:
         ls -la
         git clone $REPO_LINK
         ls -la
-        cp -r /home/runner/work/IEC60730_Libs/IEC60730_Libs/IEC60730_Libs/tools .
+        cp -r ./tools .
         ls -la
         cd IEC60730_Libs
         ls -la
