@@ -34,21 +34,13 @@ jobs:
       run: |
         git config diff.renameLimit 999999
         git fetch origin 
-        touch CodingConventionResult.log
-        diff_files=$(git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730)
-        echo "Changed files:"
-        echp "$diff_files"
-        if [ -n "$diff_files" ]; then
-            echo "$diff_files" | xargs -n 1 pre-commit run --file | tee log.txt
-        else
-          echo "No files changed between branches"
-        fi
+        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.log
           
     - name: Upload Result
       if: always()
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: CodingConventionResult.txt
-        path: log.txt
+        name: CodingConventionTool.txt
+        path: CodingConventionTool.txt
         warn: Output a warning but do not fail the action
         retention-days: 90
