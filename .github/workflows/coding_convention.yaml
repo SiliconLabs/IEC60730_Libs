@@ -10,6 +10,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
+      with:
+        ref: create-unit-test-functions-in-lib-iec60730
     - name: Check working directory
       run: |
         pwd 
@@ -20,14 +22,7 @@ jobs:
         sudo apt install uncrustify clang-tidy cppcheck
     - name: Run test
       run: |
-        git diff --name-only main $BRANCH_NAME | pre-commit run --files > CodingConventionTool.log
-    - name: Upload Result
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: CodingConventionTool.log
-        path: .
-        warn: Output a warning but do not fail the action
-        retention-days: 90
+        pre-commit run --files 
           
     
   
