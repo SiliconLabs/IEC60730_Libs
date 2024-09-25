@@ -1,6 +1,6 @@
 name: Coding Convention
 on: 
-  workflow_dispatch:
+  push:
 env:
   SECURITY: APP_SECURE=false
   COMMAND: all
