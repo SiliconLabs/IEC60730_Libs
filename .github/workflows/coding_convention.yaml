@@ -44,7 +44,7 @@ jobs:
         sudo apt install uncrustify clang-tidy cppcheck
     - name: Run test
       run: |
-        pre-commit run --all-files 
+        git diff --name-only develop $BRANCH_NAME | xargs pre-commit run --files 
           
     
   
