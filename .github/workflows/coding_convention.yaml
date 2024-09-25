@@ -46,7 +46,7 @@ jobs:
       run: |
         git fetch origin 
 
-        git diff origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
+        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
           
     
   
