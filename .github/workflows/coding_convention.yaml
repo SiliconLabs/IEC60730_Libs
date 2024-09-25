@@ -44,7 +44,9 @@ jobs:
         sudo apt install uncrustify clang-tidy cppcheck
     - name: Run test
       run: |
-        git diff origin/gen-firmware-on-host-runner origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
+        git fetch origin 
+
+        git diff origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
           
     
   
