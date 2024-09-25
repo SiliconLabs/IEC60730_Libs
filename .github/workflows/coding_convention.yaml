@@ -18,6 +18,17 @@ jobs:
       run: |
         pip install pre-commit
         sudo apt install uncrustify clang-tidy cppcheck
+    - name: Run test
+      run: |
+        pre-commit run --files > CodingConventionTool.log
+    - name: Upload Result
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: CodingConventionTool.log
+        path: .
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+          
     
   
   
