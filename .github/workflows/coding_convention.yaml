@@ -5,7 +5,7 @@ on:
       - '**'
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
- REPO_LINK: ${{ github.repository }}
+ REPO_LINK: https://github.com/${{ github.repository }}.git
 jobs:
   job1:
     name: Check coding convention
@@ -17,10 +17,13 @@ jobs:
         ref: update-source-code-lib-iec60730
     - name: Copy coding convention tool
       run: |
-        git clone $REPO_LINK
-        cp -r /home/runner/work/IEC60730_Libs/IEC60730_Libs/IEC60730_Libs/tools .
         cd ..
         pwd
+        ls -la
+        cd IEC60730_Libs
+        ls -la
+        git clone $REPO_LINK
+        cp -r /home/runner/work/IEC60730_Libs/IEC60730_Libs/IEC60730_Libs/tools .
         ls -la
         
     - name: Check working directory
