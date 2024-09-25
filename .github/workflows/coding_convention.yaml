@@ -2,9 +2,7 @@ name: Coding Convention
 on: 
   push:
 env:
-  SECURITY: APP_SECURE=false
-  COMMAND: all
-  COMPONENT: all
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
 jobs:
   job1:
     name: Check coding convention
@@ -22,7 +20,7 @@ jobs:
         sudo apt install uncrustify clang-tidy cppcheck
     - name: Run test
       run: |
-        pre-commit run --files > CodingConventionTool.log
+        git diff --name-only main $BRANCH_NAME | pre-commit run --files > CodingConventionTool.log
     - name: Upload Result
       uses: actions/upload-artifact@v4.3.4
       with:
