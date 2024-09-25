@@ -13,27 +13,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: update-source-code-lib-iec60730
-    - name: Copy coding convention tool
-      run: |
-        cd ..
-        pwd
-        ls -la
-        cd IEC60730_Libs
-        ls -la
-        git clone $REPO_LINK
-        ls -la
-        cp ./tools/.clang-format .
-        cp ./tools/.clang-tidy .
-        cp ./tools/.codespell/.codespellrc .
-        cp ./tools/.codespell/exclude-file.txt .
-        cp ./tools/.codespell/ignore-words.txt .
-        
-        ls -la
-        cd IEC60730_Libs
-        ls -la
-        
     - name: Check working directory
       run: |
         pwd 
@@ -45,10 +24,11 @@ jobs:
     - name: Run test
       run: |
         git fetch origin 
-
-        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
-          
-    
-  
-  
-          
+        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionResult.log
+    - name: Upload Result
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: CodingConventionResult.log
+        path: .
+        warn: Output a warning but do not fail the action
+        retention-days: 90
