@@ -1,0 +1,45 @@
+name: Unit Tests Auto Trigger
+on: 
+  push:
+
+jobs:
+  job1:
+    name: Unit test
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Check working directory
+      run: |
+        pwd 
+        mkdir test_tool
+        ls -la
+    - name: Download a file
+      uses: valitydev/action-download-file@v1.0.6
+      with:
+        # URL to file
+        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4-linux-x86_64.sh
+        # Target path
+        target-path: test_tool/
+    - name: Download a file
+      uses: valitydev/action-download-file@v1.0.6
+      with:
+        # URL to file
+        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4-linux-x86_64.tar.gz
+        # Target path
+        target-path: test_tool/
+    - name: Prepare Test Environment
+      run: |
+        cd test_tool
+        chmod +x cmake-3.30.4-linux-x86_64.sh
+        ./cmake-3.30.4-linux-x86_64.sh
+    - name: Unit Testing
+      run: |
+        make prepare
+        cd build
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
+        cmake --build . --target unit_tests -j4
+        
