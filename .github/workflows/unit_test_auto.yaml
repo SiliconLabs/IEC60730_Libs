@@ -21,21 +21,15 @@ jobs:
       uses: valitydev/action-download-file@v1.0.6
       with:
         # URL to file
-        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4-linux-x86_64.sh
-        # Target path
-        target-path: test_tool/
-    - name: Download a file
-      uses: valitydev/action-download-file@v1.0.6
-      with:
-        # URL to file
-        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4-linux-x86_64.tar.gz
+        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4.tar.gz
         # Target path
         target-path: test_tool/
     - name: Prepare Test Environment
       run: |
         cd test_tool
-        chmod +x cmake-3.30.4-linux-x86_64.sh
-        ./cmake-3.30.4-linux-x86_64.sh
+        tar -xvf cmake-3.30.4.tar.gz
+        cd cmake-3.30.4
+        ./bootstrap && make && sudo make install
     - name: Unit Testing
       run: |
         make prepare
