@@ -19,6 +19,9 @@ jobs:
       COMPILER: GCC
       PLATFORM: MG12
       APP_TYPE: SecureApp
+      SECURITY: APP_SECURE=false
+      COMMAND: all
+      COMPONENT: all
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
@@ -30,23 +33,11 @@ jobs:
         cd Test/
         ls -la
         ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
-
-    - name: Zip Release
-      # You may pin to the exact commit or the version.
-      # uses: TheDoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554
-      uses: TheDoctor0/zip-release@0.7.6
-      with:
-        # Filename for archive
-        filename: firmware.7z
-        # Base path for archive files
-        path: artifact
-        # Working directory before zipping
-        directory: .
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: firmware.7z
-        path: firmware.7z
+        name: firmware
+        path: artifact
         warn: Output a warning but do not fail the action
         retention-days: 90
 
