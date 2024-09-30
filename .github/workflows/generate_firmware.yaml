@@ -32,8 +32,6 @@ jobs:
         export TOOL_CHAINS=GCC
         export START_ADDR_FLASH=0x8000000
         export PATH="/home/sqa/slc_cli/:$PATH"
-        slc trust --sdk $SDK_PATH
-        slc configuration -gcc=$TOOL_DIRS
         pwd
         ls -la
         chmod -R 777 . 
