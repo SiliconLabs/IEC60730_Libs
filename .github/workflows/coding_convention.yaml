@@ -9,7 +9,7 @@ env:
 jobs:
   job1:
     name: Check coding convention
-    runs-on: ubuntu-20.04
+    runs-on: [self-hosted, ds-sqa-hn-003]
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
@@ -19,23 +19,9 @@ jobs:
       run: |
         pwd 
         ls -la
-    - name: Set up environment
-      run: |
-        ls -la
-        cp ./tools/.clang-format .
-        cp ./tools/.clang-tidy .
-        cp ./tools/.codespell/.codespellrc .
-        cp ./tools/.codespell/exclude-file.txt .
-        cp ./tools/.codespell/ignore-words.txt .
-        ls -la
-        pip install pre-commit
-        sudo apt install uncrustify clang-tidy cppcheck
     - name: Run test
-      run: |
-        git config diff.renameLimit 999999
-        git fetch origin 
-        touch CodingConventionTool.log
-        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files 
+      run:
+        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.txt
           
     - name: Upload Result
       if: always()
