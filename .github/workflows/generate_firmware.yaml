@@ -1,18 +1,15 @@
 name: Generate Firmware
 on: 
-  pull_request:
-      types: [opened, edited, review_requested, synchronize, review_request_removed, reopened]
-      branches:
-        - main
-        - iec_efr32
+  push:
 
 env:
-  SECURITY: APP_SECURE=false
-  COMMAND: all
-  COMPONENT: all
+  TOOL_DIRS: ~/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+  SDK_PATH: ~/SimplicityStudio/SDKs/gecko_sdk
+  TOOL_CHAINS: GCC
+  START_ADDR_FLASH: 0x8000000
 jobs:
   job1:
-    name: GCC-MG12 regression test
+    name: Generate Firmware
     runs-on: ubuntu-20.04
     permissions:
       contents: read
@@ -25,26 +22,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-
-    - name: Download a file
-      # You may pin to the exact commit or the version.
-      # uses: valitydev/action-download-file@7fb017bf38a45a6d420e5456e95f0b1ef966a20c
-      uses: valitydev/action-download-file@v1.0.6
-      with:
-        # URL to file
-        url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-        # Target path
-        target-path: docker/
-          
-    - name: Prepare environment
-      run: |
-        cd docker
-        ls -la
-        tar xjf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-        ls -la
-        cd gcc-arm-none-eabi-10.3-2021.10/bin
-        ls -la
-        
     - name: Generate Firmware
       run: |
         pwd
@@ -52,8 +29,6 @@ jobs:
         chmod -R 777 . 
         cd Test/
         ls -la
-        export TOOL_DIRS=/home/runner/work/IEC60730_Libs/IEC60730_Libs/docker/gcc-arm-none-eabi-10.3-2021.10/bin
-        echo $TOOL_DIRS
         ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
 
     - name: Zip Release
@@ -70,8 +45,8 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
       with:
-        name: firmware
-        path: .
+        name: firmware.7z
+        path: firmware.7z
         warn: Output a warning but do not fail the action
         retention-days: 90
 
