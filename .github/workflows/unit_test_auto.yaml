@@ -12,30 +12,19 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
+    - name: Prepare Test Environment
+      run: |
+        sudo apt purge --auto-remove cmake
+        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
+        echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal-rc main' | sudo tee -a /etc/apt/sources.list.d/kitware.list >/dev/null    
+        sudo apt update
+        sudo apt install cmake
+        cmake --version
     - name: Check working directory
       run: |
         pwd 
-        mkdir test_tool
         ls -la
-    - name: Download a file
-      uses: valitydev/action-download-file@v1.0.6
-      with:
-        # URL to file
-        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4-linux-x86_64.sh
-        # Target path
-        target-path: test_tool/
-    - name: Download a file
-      uses: valitydev/action-download-file@v1.0.6
-      with:
-        # URL to file
-        url: https://github.com/Kitware/CMake/releases/download/v3.30.4/cmake-3.30.4-linux-x86_64.tar.gz
-        # Target path
-        target-path: test_tool/
-    - name: Prepare Test Environment
-      run: |
-        cd test_tool
-        chmod +x cmake-3.30.4-linux-x86_64.sh
-        ./cmake-3.30.4-linux-x86_64.sh y y
+
     - name: Unit Testing
       run: |
         make prepare
