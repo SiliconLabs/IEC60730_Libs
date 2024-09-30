@@ -5,46 +5,15 @@ on:
 jobs:
   job1:
     name: Unit test
-    runs-on: ubuntu-20.04
+    runs-on: [self-hosted, ds-sqa-hn-003]
     permissions:
       contents: read
       pull-requests: write
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-    - name: Download a file
-      # You may pin to the exact commit or the version.
-      # uses: valitydev/action-download-file@7fb017bf38a45a6d420e5456e95f0b1ef966a20c
-      uses: valitydev/action-download-file@v1.0.6
-      with:
-        # URL to file
-        url: https://developer.arm.com/-/media/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-        # Target path
-        target-path: docker/
-          
-    - name: Prepare Environment
-      run: |
-        cd docker
-        ls -la
-        tar xjf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-        ls -la
-        cd gcc-arm-none-eabi-10.3-2021.10/bin
-        ls -la
-        cd ..
-        sudo apt purge --auto-remove cmake
-        wget -O - https://apt.kitware.com/keys/kitware-archive-latest.asc 2>/dev/null | gpg --dearmor - | sudo tee /usr/share/keyrings/kitware-archive-keyring.gpg >/dev/null
-        echo 'deb [signed-by=/usr/share/keyrings/kitware-archive-keyring.gpg] https://apt.kitware.com/ubuntu/ focal-rc main' | sudo tee -a /etc/apt/sources.list.d/kitware.list >/dev/null    
-        sudo apt update
-        sudo apt install cmake
-        cmake --version
-    - name: Check working directory
-      run: |
-        pwd 
-        ls -la
-
     - name: Unit Testing
       run: |
-        export CMAKE_C_COMPILER=/home/runner/work/IEC60730_Libs/IEC60730_Libs/docker/gcc-arm-none-eabi-10.3-2021.10/bin
         make prepare
         cd build
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
