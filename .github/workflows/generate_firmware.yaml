@@ -27,10 +27,12 @@ jobs:
       uses: actions/checkout@v4.1.7
     - name: Generate Firmware
       run: |
-        export TOOL_DIRS=/home/sqa/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+        export TOOL_DIRS=/home/sqa/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
         export SDK_PATH=/home/sqa/SimplicityStudio/SDKs/gecko_sdk
         export TOOL_CHAINS=GCC
         export START_ADDR_FLASH=0x8000000
+        slc trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
         pwd
         ls -la
         chmod -R 777 . 
