@@ -3,7 +3,7 @@ on:
   push:
 
 env:
-  TOOL_DIRS: /home/sqa/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+  TOOL_DIRS: /home/sqa/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
   SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
   TOOL_CHAINS: GCC
   START_ADDR_FLASH: 0x8000000
