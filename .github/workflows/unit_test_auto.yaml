@@ -20,6 +20,6 @@ jobs:
         export START_ADDR_FLASH=0x8000000
         make prepare
         cd build
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4162A
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=MG12
         make unit_tests -j4
         
