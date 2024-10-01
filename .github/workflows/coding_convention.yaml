@@ -21,7 +21,7 @@ jobs:
         ls -la
     - name: Run test
       run:
-        git diff --name-only origin/gen-firmware-on-host-runner  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.txt
+        git diff --name-only origin/iec_efr32  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.txt
           
     - name: Upload Result
       if: always()
