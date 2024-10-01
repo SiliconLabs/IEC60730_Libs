@@ -36,7 +36,7 @@ jobs:
         pwd
         ls -la
         chmod -R 777 . 
-        cd test/
+        cd Test/
         ls -la
         ./generate_fw.sh $COMMAND $COMPONENT $PLATFORM $COMPILER $SECURITY
     - name: Upload artifact
