@@ -29,15 +29,11 @@ jobs:
         ref: create-unit-test-functions-in-lib-iec60730
     - name: Prepare environment
       run: |
-        curl -o slc_cli_linuz.zip -L https://www.silabs.com/documents/login/software/slc_cli_linux.zip
-        tar -xzf ./slc_cli_linux.zip
-        export PATH="$PWD/slc_cli_linux/slc_cli/:$PATH"
         wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
         export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
         export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
         export TOOL_CHAINS=GCC
         export START_ADDR_FLASH=0x8000000
-        slc configuration --sdk=$SDK_PATH --gcc-toolchain=/Applications/ARM
         cd make
         make clean_all
         make build COMPONENT=cpu_registers DERIVATIVE=efr32mg21a020f1024im32 NON_SECURE_EN=false APP_SECURE=true
