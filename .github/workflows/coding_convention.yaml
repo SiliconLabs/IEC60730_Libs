@@ -9,14 +9,16 @@ env:
 jobs:
   job1:
     name: Check coding convention
-    runs-on: [self-hosted, ds-sqa-hn-003]
+    runs-on: ubuntu-20.04
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
         ref: update-source-code-lib-iec60730
-    - name: Check working directory
+    - name: Prepare environment
       run: |
+        pip install pre-commit
+        sudo apt install clang-format clang-tidy cppcheck
         pwd 
         ls -la
     - name: Run test
