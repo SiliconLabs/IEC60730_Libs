@@ -21,7 +21,8 @@ jobs:
         ls -la
     - name: Run test
       run:
-        git diff --name-only main  origin/create-unit-test-functions-in-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.txt
+        pre-commit install
+        pre-commit run --all-files > CodingConventionTool.txt
           
     - name: Upload Result
       if: always()
