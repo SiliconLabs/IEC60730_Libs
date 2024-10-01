@@ -25,8 +25,7 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: create-unit-test-functions-in-lib-iec60730
+
     - name: Generate Firmware
       run: |
         export TOOL_DIRS=/home/sqa/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
