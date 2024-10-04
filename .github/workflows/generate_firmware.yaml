@@ -6,7 +6,7 @@ env:
   AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
   SLC_CLI_URL: https://www.silabs.com/documents/login/software/slc_cli_linux.zip
   COMMANDER_URL: https://www.silabs.com/documents/login/software/SimplicityCommander-Linux.zip
-  GCC_URL: https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz?rev=7bd049b7a3034e64885fa1a71c12f91d&hash=2C60D7D4E432953DB65C4AA2E7129304F9CD05BF
+  GCC_URL: https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
   SIM_REPO: https://github.com/SiliconLabs/simplicity_sdk.git
   GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
   SDK_VER: v4.4.2
@@ -72,7 +72,7 @@ jobs:
     - name: Install GCC
       if: always()
       run: |
-        wget $GCC_URL -O arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
+        wget $GCC_URL
         tar -xzf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
         ls -la
     
