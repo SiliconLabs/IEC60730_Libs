@@ -72,7 +72,7 @@ jobs:
     - name: Install GCC
       if: always()
       run: |
-        wget $GCC_URL
+        wget $GCC_URL -O arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
         tar -xzf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
         ls -la
     
