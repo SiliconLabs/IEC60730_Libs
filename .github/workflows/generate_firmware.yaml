@@ -70,8 +70,7 @@ jobs:
         unzip SimplicityCommander-Linux.zip
         cd SimplicityCommander-Linux
         ls -la
-        mkdir commander
-        tar -xf Commander_linux_x86_64_*.tar.bz -C $PWD/commander
+        tar -xf Commander_linux_x86_64_*.tar.bz 
         cd commander
         ls -la
     - name: Install GCC
