@@ -3,6 +3,13 @@ on:
   push:
 
 env:
+  AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
+  SLC_CLI_URL: https://www.silabs.com/documents/login/software/slc_cli_linux.zip
+  COMMANDER_URL: https://www.silabs.com/documents/login/software/SimplicityCommander-Linux.zip
+  GCC_URL: https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz?rev=7bd049b7a3034e64885fa1a71c12f91d&hash=2C60D7D4E432953DB65C4AA2E7129304F9CD05BF
+  SIM_REPO: https://github.com/SiliconLabs/simplicity_sdk.git
+  GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
+  SDK_VER: v4.4.2
   TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
   SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
   TOOL_CHAINS: GCC
@@ -27,28 +34,47 @@ jobs:
       uses: actions/checkout@v4.1.7
       with:
         ref: create-unit-test-functions-in-lib-iec60730
-    - name: Prepare environment
+    - name: Install Simplicity SDK
+      if: always()
       run: |
-        wget https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
-        export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
-        export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
-        export TOOL_CHAINS=GCC
-        export START_ADDR_FLASH=0x8000000
-        cd make
-        make clean_all
-        make build COMPONENT=cpu_registers DERIVATIVE=efr32mg21a020f1024im32 NON_SECURE_EN=false APP_SECURE=true
+        git clone $SIM_REPO
+        cd simplicity_sdk
         ls -la
         cd ..
         ls -la
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: firmware
-        path: artifact
-        warn: Output a warning but do not fail the action
-        retention-days: 90
-
+    - name: Install Gecko SDK
+      if: always()
+      run: |
+        git clone $GECKO_SDK_REPO
+        cd gecko_sdk
+        git checkout tags/$SDK_VER
+        ls -la
+        cd ..
+        ls -la
+    - name: Install Amazon Corretto 17
+      if: always()
+      run: |
+        wget $AM_CORRETTO_17
+        tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
+        ls -la
+    - name: Install SLC CLI
+      if: always()
+      run: |
+        wget $SLC_CLI_URL
+        unzip slc_cli_linux.zip
+        ls -la
+    - name: Install Simplicity Commander
+      if: always()
+      run: |
+        wget $COMMANDER_URL
+        unzip SimplicityCommander-Linux.zip
+        ls -la
+    - name: Install GCC
+      if: always()
+      run: |
+        wget $GCC_URL
+        tar -xzf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
+        ls -la
     
-  
-  
+    
           
