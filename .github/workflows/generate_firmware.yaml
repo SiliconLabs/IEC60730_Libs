@@ -45,8 +45,8 @@ jobs:
     - name: Install Gecko SDK
       if: always()
       run: |
-        git clone $GECKO_SDK_REPO
-        cd gecko_sdk
+        git clone $GECKO_SDK_REPO gecko_sdk_$SDK_VER
+        cd gecko_sdk_$SDK_VER
         git checkout tags/$SDK_VER
         ls -la
         cd ..
