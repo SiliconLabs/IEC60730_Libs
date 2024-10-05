@@ -10,7 +10,7 @@ env:
   SIM_REPO: https://github.com/SiliconLabs/simplicity_sdk.git
   GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
   SDK_VER: v4.4.2
-  JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_i386.deb
+  JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
   TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/bin
   SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
   TOOL_CHAINS: GCC
@@ -83,9 +83,17 @@ jobs:
     - name: Install JLink SEGGER
       if: always()
       run: |
+        mkdir SEGGER
+        cd SEGGER
         wget $JLINK_SEGGER_URL
-        sudo dpkg -i JLink_Linux_i386.deb
+        ls -la
+        tar xf JLink_Linux_x86_64.tgz
+        chmod a-w $PWD/JLink_Linux_x86_64
+        ls -la $PWD/JLink_Linux_x86_64
+        sudo cp $PWD/JLink_Linux*/99-jlink.rules /etc/udev/rules.d/99-jlink.rules
+        
     - name: Install python3.11
+      if: always()
       run: |
         python --version
     
