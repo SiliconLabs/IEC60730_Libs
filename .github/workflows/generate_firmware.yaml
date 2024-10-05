@@ -91,6 +91,7 @@ jobs:
         sudo apt install python3.11
         python3.11 --version
         alias python=python3.11
+        source ~/.bashrc
         python --version
         sudo apt install python3.11-full
         sudo apt install python3-pip
