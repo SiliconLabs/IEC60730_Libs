@@ -79,6 +79,9 @@ jobs:
         wget $GCC_URL
         tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
         ls -la
+    - name: Check environment
+      run: |
+        python --version
     
     
           
