@@ -84,7 +84,7 @@ jobs:
       if: always()
       run: |
         wget $JLINK_SEGGER_URL
-        sudo dpkg -i JLink_Linux_x86_64.deb
+        sudo dpkg -i JLink_Linux_i386.deb
     - name: Install python3.11
       run: |
         python --version
