@@ -90,7 +90,7 @@ jobs:
         sudo apt update
         sudo apt install python3.11
         python3.11 --version
-        alias python=python3.11 >> ~/.bashrc
+        echo alias python=python3.11 >> ~/.bashrc
         source ~/.bashrc
         python --version
         sudo apt install python3.11-full
