@@ -4,7 +4,7 @@ endif()
 
 set(EXE_SOURCES
     "src/main.c"
-    "src/Test_system.c"
+    "src/Test_System.c"
     "src/Test_integrated.c"
 )
 set(EXE_INCLUDES "./inc")
