@@ -20,7 +20,7 @@ jobs:
     - name: Unit Testing
       run: |
         export PATH=$PATH:/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
-        export PATH=$PATH=~/slc_cli
+        export PATH=$PATH:~/slc_cli
         export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
         export PATH=$PATH:/usr/bin/
