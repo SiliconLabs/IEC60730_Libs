@@ -15,6 +15,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
+      with:
+        ref: create-unit-test-functions-in-lib-iec60730
     - name: Unit Testing
       run: |
         export PATH=$PATH:/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
