@@ -144,7 +144,7 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
         cmake --build . --target integration_test_info -j4
         export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440133193
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
