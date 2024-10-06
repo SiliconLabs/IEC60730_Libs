@@ -34,7 +34,7 @@ jobs:
         slc configuration -gcc=$TOOL_DIRS
         make prepare
         cd build
-        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
+        slc signature trust -extpath /home/sqa/SimplicityStudio/SDKs/gecko_sdk/extension/devs_cooper_lighting_safty_lib
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
         make unit_test_info -j4
         bash execute_unit_test.sh brd4187c all all $ADAPTER_SN GCC
