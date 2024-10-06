@@ -27,7 +27,8 @@ jobs:
         export SDK_PATH=/home/sqa/SimplicityStudio/SDKs/gecko_sdk
         export PATH=$PATH:/home/sqa/amazon-corretto-17.0.12.7.1-linux-x64/bin
         export START_ADDR_FLASH=0x8000000
-        export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440133193
+        export CHIP=EFR32MG12
+        export ADAPTER_SN=440189400
         export LST_PATH=~/devs_cooper_lighting_safty_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
         export HOST_IP=192.168.1.69
         slc configuration --sdk=${SDK_PATH}
@@ -37,9 +38,9 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath /home/sqa/SimplicityStudio/SDKs/gecko_sdk/extension/devs_cooper_lighting_safty_lib
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4161a
         make unit_test_info -j4
         cd ../test
         ls -la
-        bash execute_unit_test.sh brd4187c all all $ADAPTER_SN GCC
+        bash execute_unit_test.sh brd4161a all all $ADAPTER_SN GCC
         
