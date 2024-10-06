@@ -42,6 +42,7 @@ jobs:
     - name: Install Simplicity SDK
       if: always()
       run: |
+        java --version
         git clone $SIM_REPO
         cd simplicity_sdk
         ls -la
