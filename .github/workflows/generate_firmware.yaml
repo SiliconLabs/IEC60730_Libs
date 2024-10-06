@@ -139,7 +139,7 @@ jobs:
         slc configuration -gcc=$TOOL_DIRS
         make prepare
         cd build
-        slc signature trust -extpath $PWD/gecko_sdk_$SDK_VER/extension/IEC60730_Libs
+        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c
         cmake --build . --target integration_test_info -j4
         export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440133193
