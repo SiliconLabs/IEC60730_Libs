@@ -1,11 +1,14 @@
 name: Unit Tests Auto Trigger
-on: 
+on:
   push:
-
+    branches:    
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
 jobs:
   job1:
     name: Unit test
-    runs-on: [self-hosted, ds-sqa-hn-003]
+    runs-on: [self-hosted, ds-sqa-hn-iec]
     permissions:
       contents: read
       pull-requests: write
@@ -18,8 +21,13 @@ jobs:
         export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
         export TOOL_CHAINS=GCC
         export START_ADDR_FLASH=0x8000000
+        export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440133193
+        export LST_PATH=~/devs_cooper_lighting_safty_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export HOST_IP=192.168.1.69
         make prepare
         cd build
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=MG12
-        make unit_tests -j4
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
+        make unit_test_info -j4
+        bash execute_unit_test.sh brd4187c all all $ADAPTER_SN GCC
         
