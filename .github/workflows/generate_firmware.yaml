@@ -91,7 +91,8 @@ jobs:
         sudo apt install python3.11
         python3.11 --version
         which python3.11
-        echo alias python=${which python3.11} >> ~/.bashrc
+        cat ~/.bashrc
+        echo alias python='/usr/bin/python3.11' >> ~/.bashrc
         cat ~/.bashrc
         source ~/.bashrc
         python --version
