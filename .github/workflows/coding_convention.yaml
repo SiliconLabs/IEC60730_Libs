@@ -37,7 +37,7 @@ jobs:
     - name: Run test
       run:
         pre-commit install
-        git diff --name-only origin/main  origin/update-source-code-lib-iec60730 | xargs pre-commit run --files > CodingConventionTool.txt
+        pre-commit run --all-files > CodingConventionTool.txt
           
     - name: Upload Result
       if: always()
