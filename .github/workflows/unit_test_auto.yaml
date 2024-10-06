@@ -39,6 +39,7 @@ jobs:
         slc signature trust -extpath /home/sqa/SimplicityStudio/SDKs/gecko_sdk/extension/devs_cooper_lighting_safty_lib
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
         make unit_test_info -j4
-        cd ..
+        cd ../test
+        ls -la
         bash execute_unit_test.sh brd4187c all all $ADAPTER_SN GCC
         
