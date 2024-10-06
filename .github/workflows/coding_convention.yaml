@@ -29,7 +29,7 @@ jobs:
         python3.11 --version
         which python3.11
         sudo apt install python3.11-full
-        sudo apt install python3-pip
+        curl -sS https://bootstrap.pypa.io/get-pip.py | sudo python3.11
     - name: Install Pre-commmit
       run: |
         python3.11 -m pip install pre-commit
