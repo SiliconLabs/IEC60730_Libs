@@ -54,6 +54,14 @@ jobs:
         cd gecko_sdk_$SDK_VER
         git checkout tags/$SDK_VER
         ls -la
+        mkdir extension
+        cd extension
+        git clone https://github.com/SiliconLabs/IEC60730_Libs.git
+        cd IEC60730_Libs
+        git checkout create-unit-test-functions-in-lib-iec60730
+        ls -la
+        cd ..
+        ls -la
         cd ..
         ls -la
     - name: Install Amazon Corretto 17
@@ -131,7 +139,7 @@ jobs:
         slc configuration -gcc=$TOOL_DIRS
         make prepare
         cd build
-        slc signature trust -extpath $PWD
+        slc signature trust -extpath $PWD/gecko_sdk_$SDK_VER/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c
         cmake --build . --target integration_test_info -j4
         export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440133193
