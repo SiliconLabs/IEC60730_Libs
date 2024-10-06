@@ -108,8 +108,8 @@ jobs:
         sudo apt install python3-pip
     - name: Generate image
       run: |
-        export PATH=$PATH:#PWD/commander
-        export PATH=$PATH=$PWD/slc_cli
+        export PATH=$PATH:$PWD/commander
+        export PATH=$PATH:$PWD/slc_cli
         export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export TOOL_DIRS=$PWD/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
         export PATH=$PATH:/usr/bin/
