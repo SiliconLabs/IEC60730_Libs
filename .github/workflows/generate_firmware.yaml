@@ -15,6 +15,8 @@ env:
   SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
   TOOL_CHAINS: GCC
   START_ADDR_FLASH: 0x8000000
+  BOARD_NAME: brd4187c
+  TASK: gen-only
 jobs:
   job1:
     name: Generate Firmware
@@ -30,6 +32,8 @@ jobs:
       SECURITY: APP_SECURE=false
       COMMAND: all
       COMPONENT: all
+      ADAPTER_SN: 440133193
+      OPTION_INTEGRATION_TEST: -DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW=ON -DTEST_SECURE_PERIPHERALS_ENABLE=ON -DINTEGRATION_TEST_WDOG1_ENABLE=ON - INTEGRATION_TEST_USE_MARCHX_DISABLE=ON
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
@@ -71,7 +75,9 @@ jobs:
         unzip SimplicityCommander-Linux.zip
         cd SimplicityCommander-Linux
         ls -la
-        tar -xf Commander_linux_x86_64_*.tar.bz 
+        cd ..
+        mkdir commander
+        tar -xf SimplicityCommander-Linux/Commander_linux_x86_64_*.tar.bz commander
         cd commander
         ls -la
     - name: Install GCC
@@ -79,6 +85,8 @@ jobs:
       run: |
         wget $GCC_URL
         tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
+        ls -la
+        cd arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
         ls -la
         
     - name: Install python3.11
@@ -98,6 +106,38 @@ jobs:
         python3 --version
         sudo apt install python3.11-full
         sudo apt install python3-pip
-    
+    - name: Generate image
+      run: |
+        export PATH=$PATH:#PWD/commander
+        export PATH=$PATH=$PWD/slc_cli
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export TOOL_DIRS=$PWD/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
+        export PATH=$PATH:/usr/bin/
+        export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
+        export PATH=$PATH:$PWD/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        echo $PATH
+        slc --version
+        slc configuration --sdk=${SDK_PATH}
+        ninja --version
+        slc signature trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
+        make prepare
+        cd build
+        slc signature trust -extpath $PWD
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c
+        cmake --build . --target integration_test_info -j4
+        export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440133193
+        export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export HOST_IP=192.168.1.69
+        bash execute_test.sh $BOARD_NAME $TASK $COMPONENT $ADAPTER_SN $GCC $OPTION_INTEGRATION_TEST
+    - name: Upload firmware
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: firmware
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/integration_test_iec60730_invariable_memory/NS/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+      
     
           
