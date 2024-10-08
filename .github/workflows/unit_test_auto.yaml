@@ -4,7 +4,13 @@ on:
     branches:    
       - '*'         # matches every branch that doesn't contain a '/'
       - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
+      - '**'        # matches every branc
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'main'
 jobs:
   job1:
     name: Unit test
