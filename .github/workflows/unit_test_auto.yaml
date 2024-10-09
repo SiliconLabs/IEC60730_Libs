@@ -1,0 +1,52 @@
+name: Unit Tests Auto Trigger
+on:
+  push:
+    branches:    
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branc
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'main'
+jobs:
+  job1:
+    name: Unit test
+    runs-on: [self-hosted, ds-sqa-hn-iec]
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: create-unit-test-functions-in-lib-iec60730
+    - name: Unit Testing
+      run: |
+        export PATH=$PATH:/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
+        export PATH=$PATH:~/slc_cli
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export TOOL_DIRS=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+        export PATH=$PATH:/usr/bin/
+        export SDK_PATH=/home/sqa/SimplicityStudio/SDKs/gecko_sdk
+        export PATH=$PATH:/home/sqa/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        export START_ADDR_FLASH=0x8000000
+        export CHIP=EFR32MG12
+        export ADAPTER_SN=440189400
+        export LST_PATH=~/devs_cooper_lighting_safty_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+        export HOST_IP=192.168.1.69
+        slc configuration --sdk=${SDK_PATH}
+        ninja --version
+        slc signature trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
+        make prepare
+        cd build
+        slc signature trust -extpath /home/sqa/SimplicityStudio/SDKs/gecko_sdk/extension/devs_cooper_lighting_safty_lib
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4161a
+        make unit_test_info -j4
+        cd ../test
+        ls -la
+        bash execute_unit_test.sh brd4161a all all $ADAPTER_SN GCC
+        
