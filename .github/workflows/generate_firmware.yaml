@@ -35,6 +35,8 @@ jobs:
     - name: Install Simplicity SDK
       if: always()
       run: |
+        mkdir simplicity_studio
+        cd simplicity_studio
         git clone $SIM_REPO
         cd simplicity_sdk
         ls -la
@@ -170,6 +172,8 @@ jobs:
     - name: Install Simplicity SDK
       if: always()
       run: |
+        mkdir simplicity_studio
+        cd simplicity_studio
         git clone $SIM_REPO
         cd simplicity_sdk
         ls -la
