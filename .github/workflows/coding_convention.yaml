@@ -30,6 +30,8 @@ jobs:
         sudo apt install uncrustify clang-tidy cppcheck
     - name: Run test
       run: |
+        pre-commit install
+
         pre-commit run --all-files > CodingConventionTool.txt
           
     - name: Upload Result
