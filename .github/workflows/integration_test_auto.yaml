@@ -40,6 +40,7 @@ jobs:
         cd $SDK_PATH
         cd extension
         ls -la
+        rm -rd $REPO_NAME || true
         git clone $REPO_URL
         ls -la
         cd $REPO_NAME
@@ -110,9 +111,10 @@ jobs:
         cd $SDK_PATH
         cd extension
         ls -la
+        rm -rd $REPO_NAME || true
         git clone $REPO_URL
         ls -la
-        cd $REPO_URL
+        cd $REPO_NAME
         git checkout $REPO_BRANCH
         ls -la
 

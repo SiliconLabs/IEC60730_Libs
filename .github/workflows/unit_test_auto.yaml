@@ -40,12 +40,12 @@ jobs:
         cd $SDK_PATH
         cd extension
         ls -la
+        rm -rd $REPO_NAME || true
         git clone $REPO_URL
         ls -la
         cd $REPO_NAME
         git checkout $REPO_BRANCH
         ls -la
-
     - name: Run test
       run: |
         export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
@@ -112,9 +112,10 @@ jobs:
         cd $SDK_PATH
         cd extension
         ls -la
+        rm -rd $REPO_NAME || true
         git clone $REPO_URL
         ls -la
-        cd $REPO_URL
+        cd $REPO_NAME
         git checkout $REPO_BRANCH
         ls -la
 
