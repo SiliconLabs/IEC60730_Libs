@@ -2,8 +2,6 @@
 name: Coding Convention
 on:
   push:
-      branches-ignore:
-        - update-workflows
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
  REPO_LINK: https://github.com/${{ github.repository }}.git
