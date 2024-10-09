@@ -85,6 +85,8 @@ jobs:
   job2:
     name: Unit test for mg12 with gcc
     runs-on: [self-hosted, ds-sqa-hn-iec]
+    if: ${{ always() }}
+    needs: [job1]
     permissions:
       contents: read
       pull-requests: write

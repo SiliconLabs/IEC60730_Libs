@@ -27,14 +27,10 @@ jobs:
       TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
       COMPILER: GCC
       TOOL_CHAINS: GCC
-      PLATFORM: MG12
-      APP_TYPE: SecureApp
-      SECURITY: APP_SECURE=false
-      COMMAND: all
+      TASK: gen-only
       COMPONENT: all
       ADAPTER_SN: 440133193
       CHIP: EFR32MG24BXXXF1536
-      OPTION_INTEGRATION_TEST: -DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW=ON -DTEST_SECURE_PERIPHERALS_ENABLE=ON -DINTEGRATION_TEST_WDOG1_ENABLE=ON - INTEGRATION_TEST_USE_MARCHX_DISABLE=ON
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
@@ -145,7 +141,7 @@ jobs:
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
         export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export HOST_IP=192.168.1.69
-        bash execute_test.sh $BOARD_NAME $TASK $COMPONENT $ADAPTER_SN $GCC $OPTION_INTEGRATION_TEST
+        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
     - name: Upload firmware
       uses: actions/upload-artifact@v4.3.4
       with:
@@ -166,13 +162,10 @@ jobs:
       COMPILER: GCC
       TOOL_CHAINS: GCC
       PLATFORM: MG12
-      APP_TYPE: SecureApp
-      SECURITY: APP_SECURE=false
-      COMMAND: all
+      TASK: gen-only
       COMPONENT: all
       ADAPTER_SN: 440189400
       CHIP: EFR32MG12
-      OPTION_INTEGRATION_TEST: -DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW=ON -DTEST_SECURE_PERIPHERALS_ENABLE=ON -DINTEGRATION_TEST_WDOG1_ENABLE=ON - INTEGRATION_TEST_USE_MARCHX_DISABLE=ON
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
@@ -283,7 +276,7 @@ jobs:
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
         export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export HOST_IP=192.168.1.69
-        bash execute_test.sh $BOARD_NAME $TASK $COMPONENT $ADAPTER_SN $GCC $OPTION_INTEGRATION_TEST
+        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
     - name: Upload firmware
       uses: actions/upload-artifact@v4.3.4
       with:
