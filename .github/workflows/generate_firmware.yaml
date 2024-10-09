@@ -1,6 +1,10 @@
 name: Generate Firmware
 on:
   push:
+    branches:
+      - '**'        
+      - 'test/**'       
+      - 'release/**'
 
 env:
   AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
