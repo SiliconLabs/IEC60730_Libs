@@ -1,10 +1,10 @@
 name: Unit Tests Auto Trigger
 on:
   push:
-    branches:    
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
+    branches:
+      - '**'        
+      - 'test/**'       
+      - 'release/**'
 env:
   REPO_URL: ${{ github.server_url }}/${{ github.repository }}
   REPO_BRANCH: ${{ github.event.inputs.branch }}
