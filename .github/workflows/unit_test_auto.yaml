@@ -42,7 +42,7 @@ jobs:
         ls -la
         git clone $REPO_URL
         ls -la
-        cd $REPO_URL
+        cd $REPO_NAME
         git checkout $REPO_BRANCH
         ls -la
 
