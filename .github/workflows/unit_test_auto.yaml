@@ -1,0 +1,153 @@
+name: Unit Tests Auto Trigger
+on:
+  push:
+    branches:    
+      - '*'         # matches every branch that doesn't contain a '/'
+      - '*/*'       # matches every branch containing a single '/'
+      - '**'        # matches every branch
+env:
+  REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+  REPO_BRANCH: ${{ github.event.inputs.branch }}
+  REPO_NAME: ${{ github.repository }}
+  JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
+  SDK_PATH: ~/SimplicityStudio/SDKs/gecko_sdk
+jobs:
+  job1:
+    name: Unit test for mg24 with gcc
+    runs-on: [self-hosted, ds-sqa-hn-iec]
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      BOARD_NAME: brd4187c
+      HOST_IP: 192.168.1.69
+      COMPILER: GCC
+      TOOL_CHAINS: GCC
+      TASK: all
+      COMPONENTS: all
+      ADAPTER_SN: 440111030 
+      CHIP: EFR32MG24BXXXF1536
+      TOOL_DIRS: ~/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+      START_ADDR_FLASH: 0x8000000
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+    - name: Add extension
+      run: |
+        cd $SDK_PATH
+        cd extension
+        ls -la
+        git clone $REPO_URL
+        ls -la
+        cd $REPO_URL
+        git checkout $REPO_BRANCH
+        ls -la
+
+    - name: Run test
+      run: |
+        export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
+        export PATH=$PATH:~/slc_cli
+        export PATH=$PATH:/usr/bin/
+        export PATH=$PATH:~/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        export LST_PATH=$PWD/build/test/integration_test/build/$BOARD_NAME/integration_test_iec60730_watchdog/S
+        slc configuration --sdk=${SDK_PATH}
+        ninja --version
+        slc signature trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
+        make prepare
+        cd build
+        slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
+        make unit_test_info -j4
+        cd ../test
+        mkdir log
+    
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER' > log/Test_integration_$BOARD_NAME_GCC_1.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: unit_test_log_mg24_gcc
+        path: test/log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  
+  
+  job2:
+    name: Unit test for mg12 with gcc
+    runs-on: [self-hosted, ds-sqa-hn-iec]
+    if: ${{ always() }}
+    needs: [job1]
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      BOARD_NAME: brd4161a
+      HOST_IP: 192.168.1.69
+      COMPILER: GCC
+      TOOL_CHAINS: GCC
+      TASK: all
+      COMPONENTS: all
+      ADAPTER_SN: 440189400 
+      CHIP: EFR32MG12
+      TOOL_DIRS: ~/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+      START_ADDR_FLASH: 0x0000000
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"
+    - name: Add extension
+      run: |
+        cd $SDK_PATH
+        cd extension
+        ls -la
+        git clone $REPO_URL
+        ls -la
+        cd $REPO_URL
+        git checkout $REPO_BRANCH
+        ls -la
+
+    - name: Prepare environment
+      run: |
+        export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
+        export PATH=$PATH:~/slc_cli
+        export PATH=$PATH:/usr/bin/
+        export PATH=$PATH:~/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        export LST_PATH=$PWD/build/test/integration_test/build/$BOARD_NAME/integration_test_iec60730_watchdog/S
+        slc configuration --sdk=${SDK_PATH}
+        ninja --version
+        slc signature trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
+        make prepare
+        cd build
+        slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
+        make unit_test_info -j4
+        cd ../test
+        mkdir log
+    
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER' > log/Test_integration_$BOARD_NAME_GCC_1.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: unit_test_log_mg12_gcc
+        path: test/log/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
