@@ -2,8 +2,8 @@ name: Hello World Workflow
 
 on:
   push:                     
-    branches:
-      - "*"
+      branches-ignore:
+        - update-workflows
   pull_request:            
   workflow_dispatch:       
 

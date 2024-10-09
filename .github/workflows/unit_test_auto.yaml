@@ -1,10 +1,8 @@
 name: Unit Tests Auto Trigger
 on:
   push:
-    branches:    
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branc
+      branches-ignore:
+        - update-workflows
   workflow_dispatch:
     inputs:
       branch: 

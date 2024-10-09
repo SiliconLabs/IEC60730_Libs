@@ -2,10 +2,8 @@
 name: Coding Convention
 on:
   push:
-    branches:    
-      - '*'         # matches every branch that doesn't contain a '/'
-      - '*/*'       # matches every branch containing a single '/'
-      - '**'        # matches every branch
+      branches-ignore:
+        - update-workflows
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
  REPO_LINK: https://github.com/${{ github.repository }}.git
@@ -16,8 +14,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: update-source-code-lib-iec60730
     - name: Install python3.11
       if: always()
       run: |
