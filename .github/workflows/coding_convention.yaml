@@ -1,12 +1,9 @@
 
-name: Coding Convention Manual
+name: Coding Convention
 on:
-  workflow_dispatch:
-    inputs:
-      branch: 
-        description: 'Branch to test'
-        type: string
-        default: 'iec_efr32'
+  push:
+      branches-ignore:
+        - update-workflows
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
  REPO_LINK: https://github.com/${{ github.repository }}.git
@@ -17,8 +14,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
     - name: Install python3.11
       if: always()
       run: |
