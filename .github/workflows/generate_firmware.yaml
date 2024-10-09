@@ -1,8 +1,6 @@
 name: Generate Firmware
 on:
   push:
-      branches-ignore:
-        - update-workflows
 
 env:
   AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
@@ -39,8 +37,6 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4.1.7
-      with:
-        ref: create-unit-test-functions-in-lib-iec60730
     - name: Install Simplicity SDK
       if: always()
       run: |
