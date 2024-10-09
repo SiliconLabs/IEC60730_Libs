@@ -10,7 +10,7 @@ env:
   REPO_BRANCH: ${{ github.event.inputs.branch }}
   REPO_NAME: ${{ github.repository }}
   JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
-  SDK_PATH: ~/SimplicityStudio/SDKs/gecko_sdk
+  SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
 jobs:
   job1:
     name: Integration test for mg24 with gcc
