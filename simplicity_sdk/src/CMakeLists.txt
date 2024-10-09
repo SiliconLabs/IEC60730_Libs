@@ -1,1 +1,0 @@
-add_subdirectory(lib_iec60730_cmake)
