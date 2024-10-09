@@ -28,10 +28,9 @@ jobs:
       run: |
         python3.11 -m pip install pre-commit
         sudo apt install uncrustify clang-tidy cppcheck
+        pre-commit install
     - name: Run test
       run: |
-        pre-commit install
-
         pre-commit run --all-files > CodingConventionTool.txt
           
     - name: Upload Result

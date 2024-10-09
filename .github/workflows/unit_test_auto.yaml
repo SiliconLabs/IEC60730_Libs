@@ -59,8 +59,7 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
-        make unit_test_info -j4
+
         cd ../test
         mkdir log
     
@@ -132,8 +131,7 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
-        make unit_test_info -j4
+
         cd ../test
         mkdir log
     
