@@ -1,0 +1,15 @@
+digraph "EFR32 IEC60730 Library Extra Files"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node3 [label="Silicon Labs Coding\l Standard",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__iec60730__coding__standard.html",tooltip="Silicon Labs Coding Standard."];
+  Node1 [label="EFR32 IEC60730 Library\l Extra Files",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Extra files for the EFR32 IEC Library."];
+  Node5 [label="Silicon Labs Software\l License Agreement",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__iec60730__license__agreement.html",tooltip="License Agreement for the IEC60730 Library."];
+  Node2 [label="EFR32 IEC60730 Library",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__efr32__sl_iec60730.html",tooltip="EFR32 IEC60730 Library."];
+  Node4 [label="Release Notes",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__iec60730__release__notes.html",tooltip="Release Notes for the IEC60730 Library."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+}
