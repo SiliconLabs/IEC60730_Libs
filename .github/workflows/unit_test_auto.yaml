@@ -62,12 +62,12 @@ jobs:
 
         cd ../test
     
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_2.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON" > Test_integration_${BOARD_NAME}_GCC_3.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON" > Test_integration_${BOARD_NAME}_GCC_4.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_2.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON" > Test_integration_${BOARD_NAME}_GCC_3.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON" > Test_integration_${BOARD_NAME}_GCC_4.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
 
 
     - name: Upload artifact
@@ -133,12 +133,12 @@ jobs:
 
         cd ../test
     
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_2.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON" > Test_integration_${BOARD_NAME}_GCC_3.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON" > Test_integration_${BOARD_NAME}_GCC_4.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
-        echo bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_2.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON" > Test_integration_${BOARD_NAME}_GCC_3.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON" > Test_integration_${BOARD_NAME}_GCC_4.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
+        bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_5.txt
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
