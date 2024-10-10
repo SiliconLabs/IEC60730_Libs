@@ -135,13 +135,14 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
         cmake --build . --target integration_test_info -j4
         export  ADAPTER_SN=440133193
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
         export HOST_IP=192.168.1.69
         cd test/
-        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
+        ls -la
+        bash execute_integration_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER
     - name: Upload firmware
       uses: actions/upload-artifact@v4.3.4
       with:
@@ -271,12 +272,13 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
         cmake --build . --target integration_test_info -j4
         export  ADAPTER_SN=440133193
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
         cd test/
-        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
+        ls -la
+        bash execute_integration_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER
     - name: Upload firmware
       uses: actions/upload-artifact@v4.3.4
       with:
