@@ -12,6 +12,7 @@ env:
   SDK_VER: v4.4.2
   JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
   TASK: gen-only
+  JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
 jobs:
   job1:
     name: Generate Firmware for MG24 with GCC
@@ -119,7 +120,6 @@ jobs:
       run: |
         export PATH=$PATH:$PWD/commander
         export PATH=$PATH:$PWD/slc_cli
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export TOOL_DIRS=$PWD/$TOOL_DIRS
         export PATH=$PATH:/usr/bin/
         export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
@@ -139,8 +139,8 @@ jobs:
         cmake --build . --target integration_test_info -j4
         export  ADAPTER_SN=440133193
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export HOST_IP=192.168.1.69
+        cd test/
         bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
     - name: Upload firmware
       uses: actions/upload-artifact@v4.3.4
@@ -255,8 +255,7 @@ jobs:
     - name: Generate image
       run: |
         export PATH=$PATH:$PWD/commander
-        export PATH=$PATH:$PWD/slc_cli
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export PATH=$PATH:$PWD/slc_cli        
         export TOOL_DIRS=$PWD/$TOOL_DIRS
         export PATH=$PATH:/usr/bin/
         export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
@@ -276,8 +275,7 @@ jobs:
         cmake --build . --target integration_test_info -j4
         export  ADAPTER_SN=440133193
         export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
-        export HOST_IP=192.168.1.69
+        cd test/
         bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
     - name: Upload firmware
       uses: actions/upload-artifact@v4.3.4
