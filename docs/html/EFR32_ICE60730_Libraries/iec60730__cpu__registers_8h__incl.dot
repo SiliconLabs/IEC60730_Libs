@@ -1,0 +1,37 @@
+digraph "Lib/inc/sl_iec60730_cpu_registers.h"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="Lib/inc/iec60730_cpu\l_registers.h",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="CPU Registers check."];
+  Node1 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 [label="sl_iec60730_internal.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__internal_8h.html",tooltip="Internal definitions."];
+  Node2 -> Node3 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node3 [label="stdbool.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node4 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node4 [label="stdint.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node5 [label="sl_iec60730.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730_8h.html",tooltip="Library definitions."];
+  Node5 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node6 [label="si_toolchain.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node5 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node7 [label="oem_iec60730.h",height=0.2,width=0.4,color="grey75", fillcolor="white", style="filled",tooltip=" "];
+  Node2 -> Node8 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node8 [label="sl_iec60730_watchdog.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__watchdog_8h.html",tooltip="Watchdog check."];
+  Node2 -> Node9 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node9 [label="iec60730_invariable\l_memory.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__invariable__memory_8h.html",tooltip="Invariable memory check."];
+  Node9 -> Node5 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node10 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node10 [label="sl_iec60730_variable_memory.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__variable__memory_8h.html",tooltip="Variable memory check."];
+  Node2 -> Node1 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node11 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node11 [label="sl_iec60730_system_clock.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__system__clock_8h.html",tooltip="Clock check."];
+  Node11 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node12 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node12 [label="iec60730_programme\l_counter.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__programme__counter_8h.html",tooltip="Program Counter check."];
+  Node12 -> Node2 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node13 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node13 [label="sl_iec60730_irq.h",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$iec60730__irq_8h.html",tooltip="Interrupt check."];
+  Node13 -> Node6 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+  Node2 -> Node7 [color="midnightblue",fontsize="10",style="solid",fontname="Helvetica"];
+}

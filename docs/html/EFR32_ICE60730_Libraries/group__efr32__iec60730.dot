@@ -1,0 +1,37 @@
+digraph "EFR32 IEC60730 Library"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node12 [label="CPU Register Check",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__CPUREG__Test.html",tooltip="Verifies CPU registers are working correctly."];
+  Node5 [label="Programme Counter Check",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__PROGRAMME__COUNTER.html",tooltip="Verifies all tests have completed on time."];
+  Node2 [label="EFR32 IEC60730 Library\l Extra Files",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__EXTRA.html",tooltip="Extra files for the EFR32 IEC Library."];
+  Node4 [label="BIST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__BIST.html",tooltip="Built In Self Test - Executed periodically."];
+  Node15 [label="Safe State",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__SAFE__STATE.html",tooltip="When incorrect behavior is detected, this state prevents further execution."];
+  Node9 [label="ADC Plausibility Test",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__ADC__PLAUSIBILTY__Test.html",tooltip="Verifies analog components work properly."];
+  Node1 [label="EFR32 IEC60730 Library",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="EFR32 IEC60730 Library."];
+  Node11 [label="Variable Memory Check",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__VARIABLE__MEMORY__Test.html",tooltip="Verifies RAM is working correctly."];
+  Node7 [label="IRQ Test",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__IRQ__Test.html",tooltip="Verifies interrupt frequency is within bounds."];
+  Node10 [label="Invariable Memory Check",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__INVARIABLE__MEMORY__Test.html",tooltip="Verifies contents of flash memory."];
+  Node14 [label="OEM External Communications\l Example using UART",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__OEM__COMM__Test.html",tooltip="Verifies communication channel is operating as expected."];
+  Node3 [label="POST",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__POST.html",tooltip="Power On Self Test - Executed once during power up."];
+  Node16 [label="IEC60730 Test Specification",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__VERIFICATION.html",tooltip="Automated tests for validating correct firmware operation."];
+  Node6 [label="Watchdog Test",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__WDOG__Test.html",tooltip="Monitors CPU execution."];
+  Node13 [label="System clock plausibility test",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__SYSTEM__CLOCK__Test.html",tooltip="Verifies that system clocks are within expected frequencies."];
+  Node8 [label="GPIO Plausibility Test",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__GPIO__PLAUSIBILTY__Test.html",tooltip="Verifies GPIOs work properly."];
+  Node1->Node2 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node3 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node4 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node5 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node6 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node7 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node8 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node9 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node10 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node11 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node12 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node13 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node14 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node15 [shape=plaintext, dir="back", style="solid"];
+  Node1->Node16 [shape=plaintext, dir="back", style="solid"];
+}
