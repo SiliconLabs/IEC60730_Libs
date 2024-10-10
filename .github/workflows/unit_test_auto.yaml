@@ -27,7 +27,7 @@ jobs:
       COMPONENTS: all
       ADAPTER_SN: 440111030 
       CHIP: EFR32MG24BXXXF1536
-      TOOL_DIRS: ~/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
       START_ADDR_FLASH: 0x8000000
 
     steps:
@@ -59,7 +59,8 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
-
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
+        make unit_test_info -j4
         cd ../test
     
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
@@ -96,7 +97,7 @@ jobs:
       COMPONENTS: all
       ADAPTER_SN: 440189400 
       CHIP: EFR32MG12
-      TOOL_DIRS: ~/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
       START_ADDR_FLASH: 0x0000000
 
     steps:
@@ -130,7 +131,8 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
-
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
+        make unit_test_info -j4
         cd ../test
     
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
