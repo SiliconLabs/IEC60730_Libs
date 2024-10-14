@@ -58,15 +58,15 @@ extern "C" {
 /** @} (end addtogroup efr32_iec60730) */
 
 // Enter ATOMIC section.
-#define SL_IEC60370_ENTER_ATOMIC() CORE_ENTER_ATOMIC()
+#define IEC60370_ENTER_ATOMIC() CORE_ENTER_ATOMIC()
 // Exit ATOMIC section.
-#define SL_IEC60370_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
+#define IEC60370_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
 // Allocate storage for PRIMASK or BASEPRI value
-#define SL_IEC60370_DECLARE_IRQ_STATE CORE_DECLARE_IRQ_STATE;
+#define IEC60370_DECLARE_IRQ_STATE CORE_DECLARE_IRQ_STATE;
 
 // OEM ICM
 // Enter ATOMIC section of IMC Bist
-#define SL_IEC60730_IMC_BIST_ENTER_ATOMIC()                                       \
+#define IEC60730_IMC_BIST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
   CORE_ENTER_ATOMIC()
 
@@ -91,20 +91,20 @@ typedef GPCRC_Init_TypeDef CRC_INIT_TypeDef;
 
 // OEM VCM
 // Enter ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_ENTER_ATOMIC()                                       \
+#define IEC60730_VMC_POST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
   CORE_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
+#define IEC60730_VMC_POST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
 
 // Enter ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_ENTER_ATOMIC()                                       \
+#define IEC60730_VMC_BIST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
   CORE_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
+#define IEC60730_VMC_BIST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
 
 #ifdef __cplusplus
 }

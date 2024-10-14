@@ -45,7 +45,7 @@ extern "C" {
  *
  * We support multiple calculation modes. These modes are selected by the user.
  * User adds definitions to use these modes. Please reference to definitions
- * #SL_IEC60730_CRC_DEBUG_ENABLE, #SL_IEC60730_CRC_USE_SW_ENABLE, and #SL_IEC60730_USE_CRC_32 for more detail.
+ * #SL_IEC60730_CRC_DEBUG_ENABLE, #SL_IEC60730_CRC_USE_SW_ENABLE, and #SL_IEC60730_USE_CRC_32_ENABLE for more detail.
  *
  * @section imc_failure_risks Failure Risks
  * As electrically eraseable memories, the primary risk with Flash is losing
@@ -72,7 +72,7 @@ extern "C" {
  * We support both CRC-16 and CRC-32 mode. With CRC-16, the CRC engine is
  * configured to use the CRC-16/XMODEM polynominal 0x1021. With CRC-32, the CRC
  * engine is configured to use the CRC-32 polynominal 0x04C11DB7. The default is
- * CRC-16 mode. In case using CRC-32, user SHOULD define the #SL_IEC60730_USE_CRC_32
+ * CRC-16 mode. In case using CRC-32, user SHOULD define the #SL_IEC60730_USE_CRC_32_ENABLE
  * definition.
  *
  * We also provide scripts named gcc_crc16.sh (for CRC-16 mode) and gcc_crc32.sh
@@ -203,17 +203,17 @@ extern "C" {
 
 /// Use this definition in case the user use CRC-32 for calculating the CRC value.
 /// The default CRC-16 is used.
-#define SL_IEC60730_USE_CRC_32
+#define SL_IEC60730_USE_CRC_32_ENABLE
 
 /// This macro is the initial value used for CRC calculations.
-///   * If the #SL_IEC60730_USE_CRC_32 definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
+///   * If the #SL_IEC60730_USE_CRC_32_ENABLE definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
 /// SHOULD be 0xFFFFFFFFuL.
 ///   * Otherwise, the definition SHOULD be 0x0000
 #define SL_IEC60730_IMC_INIT_VALUE
 
 /// This macro is the value that will XOR with calculated CRC value to get CRC
 /// output value.
-///   * If the #SL_IEC60730_USE_CRC_32 definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
+///   * If the #SL_IEC60730_USE_CRC_32_ENABLE definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
 /// SHOULD be 0xFFFFFFFFuL.
 ///   * Otherwise, the definition SHOULD be 0x0000
 #define SL_IEC60730_IMC_XOROUTPUT
@@ -225,7 +225,7 @@ extern "C" {
 
 #else
 
-#ifdef SL_IEC60730_USE_CRC_32
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 #define SL_IEC60730_IMC_INIT_VALUE (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_XOROUTPUT  (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_INIT_DEFAULT                                                       \
@@ -238,7 +238,7 @@ extern "C" {
       false,          /* Disable automatic initialization on data read. */     \
       true,           /* Enable GPCRC. */                                      \
   }
-#else /* !SL_IEC60730_USE_CRC_32 */
+#else /* !SL_IEC60730_USE_CRC_32_ENABLE */
 #define SL_IEC60730_IMC_INIT_VALUE (0x0000)
 #define SL_IEC60730_IMC_XOROUTPUT  (0x0000)
 #define SL_IEC60730_IMC_INIT_DEFAULT                                                       \
@@ -251,7 +251,7 @@ extern "C" {
       false,                                                                   \
       true,                                                                    \
   }
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE */
 #endif // DOXYGEN
 
 /**************************************************************************/ /**

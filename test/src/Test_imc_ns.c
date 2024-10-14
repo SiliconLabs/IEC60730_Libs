@@ -97,7 +97,7 @@ void test_main_ns(void)
 {
   Test_Init();
 
-  imcTest.gpcrc = SL_IEC60730_DEFAULT_GPRC;
+  imcTest.gpcrc = DEFAULT_GPRC;
 
   iec60730_Post();
 

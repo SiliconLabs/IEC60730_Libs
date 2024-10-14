@@ -71,7 +71,7 @@ void test_main_ns(void)
   iec60730_systemClockToTestClockFrequency = 10;
 
   // Config imcTest varirable
-  imcTest.gpcrc = SL_IEC60730_DEFAULT_GPRC;
+  imcTest.gpcrc = DEFAULT_GPRC;
 
   // Config imcTest varirable
   vmcTest.start = RAMTEST_START;
