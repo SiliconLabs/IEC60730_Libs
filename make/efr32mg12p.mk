@@ -1,0 +1,36 @@
+
+EFR32MG12P_LIST := \
+efr32mg12p132f1024gl125 \
+efr32mg12p132f1024gm48 \
+efr32mg12p132f512gm68 \
+efr32mg12p231f1024gm48 \
+efr32mg12p231f1024gm68 \
+efr32mg12p232f1024gl125 \
+efr32mg12p232f1024gm48 \
+efr32mg12p232f1024gm68 \
+efr32mg12p232f512gm68 \
+efr32mg12p332f1024gl125 \
+efr32mg12p332f1024gm48 \
+efr32mg12p332f1024im48 \
+efr32mg12p431f1024gm48 \
+efr32mg12p431f1024gm68 \
+efr32mg12p432f1024gl125 \
+efr32mg12p432f1024gm48 \
+efr32mg12p432f1024gm68 \
+efr32mg12p432f1024im48 \
+efr32mg12p433f1024gl125 \
+efr32mg12p433f1024gm48 \
+efr32mg12p433f1024gm68 \
+efr32mg12p433f1024il125 \
+efr32mg12p433f1024im48
+
+ifneq ($(strip $(DERIVATIVE)),)
+ifeq ($(findstring $(DERIVATIVE),$(EFR32MG12P_LIST)), $(DERIVATIVE))
+DEVICE := efr32mg12p
+CORE_TYPE := $(CORE_M4)
+ASM_CORE_TYPE := $(ASM_CORE_M4)
+FPU_TYPE := $(M4_FPU_HARD)
+ASM_FPU_TYPE := $(ASM_M4_FPU_HARD)
+FOUND := true
+endif
+endif
