@@ -115,7 +115,7 @@ jobs:
         git checkout $REPO_BRANCH
         ls -la
 
-    - name: Prepare environment
+    - name: Run test
       run: |
         export PATH=$PATH:$HOME/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
         export PATH=$PATH:$HOME/slc_cli
