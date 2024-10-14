@@ -2,6 +2,12 @@
 name: Coding Convention
 on:
   push:
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to check coding convention'
+        type: string
+        default: 'dev'
 env:
  BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
  REPO_LINK: https://github.com/${{ github.repository }}.git
