@@ -1,0 +1,13 @@
+package: iec60730
+description: iec60730 kit support files
+label: IEC60730 Kit Support
+quality: production
+id: iec60730_kit
+category: Kit Support
+provides:
+  - name: "iec60730_kit"
+include:
+  - path: ./Lib/kit/inc/
+    file_list:
+      - path: hal_config_board.h
+      - path: iec60730_board_systemview.h

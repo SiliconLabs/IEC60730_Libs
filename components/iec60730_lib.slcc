@@ -1,0 +1,60 @@
+package: iec60730
+description: source code libraries support iec60730
+label: IEC60730 Lib
+quality: production
+id: iec60730_lib
+category: Library
+provides:
+  - name: "iec60730_lib"
+requires:
+  - name: iec60730_vmc_march
+  - name: iec60730_custom_linker
+config_file:
+  - path: ./Lib/config/iec60730_config.h
+include:
+  - path: ./Lib/Device/Comm/inc/
+    file_list:
+      - path: si_toolchain.h
+  - path:  Lib/halconfig/inc/hal-config/
+    file_list:
+      - path: hal-config-types.h
+  - path: ./Lib/inc
+    file_list:
+      - path: coding_standard.h
+      - path: efr32_iec60730_releaseNotes.h
+      - path: iec60730_comm.h
+      - path: iec60730_cpu_registers.h
+      - path: iec60730_internal.h
+      - path: iec60730_invariable_memory.h
+      - path: iec60730_irq.h
+      - path: iec60730_library_documentation.h
+      - path: iec60730_program_counter.h
+      - path: iec60730_system_clock.h
+      - path: iec60730_variable_memory.h
+      - path: iec60730_watchdog.h
+      - path: iec60730.h
+      - path: Silabs_License_Agreement.h
+source:
+  - path: ./Lib/src/iec60730_bist.c
+  - path: ./Lib/src/iec60730_bist.c
+  - path: ./Lib/src/iec60730_cpu_registers.c
+  - path: ./Lib/src/iec60730_invariable_memory.c
+  - path: ./Lib/src/iec60730_irq.c
+  - path: ./Lib/src/iec60730_post.c
+  - path: ./Lib/src/iec60730_program_counter.c
+  - path: ./Lib/src/iec60730_system_clock.c
+  - path: ./Lib/src/iec60730_variable_memory.c
+  - path: ./Lib/src/iec60730_watchdog.c
+template_contribution:
+  - name: component_catalog
+    value: iec60730_library
+  - name: event_handler
+    value:
+      event: internal_app_init
+      include: iec60730_oem.h
+      handler: iec60730_app_init
+  - name: event_handler
+    value:
+      event: internal_app_process_action
+      include: iec60730_oem.h
+      handler: iec60730_app_process_action

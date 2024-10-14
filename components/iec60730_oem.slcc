@@ -1,0 +1,25 @@
+package: iec60730
+description: iec60730 file oem demo
+label: IEC60730 OEM Demo
+quality: production
+id: iec60730_oem
+category: OEM Demo
+provides:
+  - name: "iec60730_oem"
+requires:
+  - name: iec60730_kit
+include:
+  - path: ./Lib/oem/inc/
+    file_list:
+    - path: iec60730_board.h
+    - path: iec60730_oem_timer.h
+    - path: iec60730_oem.h
+    - path: iec60730_init_device.h
+    - path: iec60730_oem_comm.h
+source:
+  - path: ./Lib/oem/src/iec60730_init_device.c
+  - path: ./Lib/oem/src/iec60730_oem.c
+  - path: ./Lib/oem/src/iec60730_oem_comm.c
+  - path: ./Lib/oem/src/iec60730_oem_functions.c
+  - path: ./Lib/oem/src/iec60730_stub_functions.c
+  - path: ./Lib/oem/src/iec60730_oem_timer.c

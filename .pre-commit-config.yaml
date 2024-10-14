@@ -1,0 +1,19 @@
+exclude: ^(Doc/|Build/|artifact|Lib/asm|Lib/CMSIS|Lib/Device/efm32pg22|Lib/Device/efr32bg22|Lib/Device/efr32fg22|Lib/Device/efr32fg23|Lib/Device/efr32mg12p|Lib/Device/efr32mg21|Lib/Device/efr32mg22|Lib/Device/efr32mg24|Lib/Device/efr32zg23|Make|Test/test_script|Test/test_compile|Test/test_script|Test/artifact|Test/comm/emlib|Lib/inc/coding_standard.h|Releases)
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.0.1
+    hooks:
+    -   id: end-of-file-fixer
+    -   id: trailing-whitespace
+-   repo: https://github.com/codespell-project/codespell
+    rev: v2.2.4
+    hooks:
+    -   id: codespell
+        args: [-w,--config,./tools/.codespell/.codespellrc]
+-   repo: https://github.com/pocc/pre-commit-hooks
+    rev: v1.3.5
+    hooks:
+    -   id: clang-format
+        args: [-i,--style=file:./tools/.clang-format]
+    -   id: cppcheck
+        args: [--language=c,--std=c99,--check-config,-DIEC_BOARD_HEADER="iec60730_board.h",-DEFR32MG24_DEVICE,-D__CM33_REV,--suppress=missingInclude,--suppress=unmatchedSuppression]

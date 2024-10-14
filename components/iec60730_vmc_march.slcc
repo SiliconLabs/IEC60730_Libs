@@ -1,0 +1,21 @@
+package: iec60730
+description: March X algorithm using test variable memory
+label: IEC60730 VMC March X
+quality: production
+id: iec60730_vmc_march
+category: March X Algorithm
+provides:
+  - name: "iec60730_vmc_march"
+include:
+  - path: ./Lib/asm/
+    file_list:
+      - path: iec60730_vmc_marchC.s
+      - path: iec60730_vmc_marchXC.s
+    unless:
+      - toolchain_iar
+  - path: ./Lib/asm/
+    file_list:
+      - path: iec60730_vmc_marchCIAR.s
+      - path: iec60730_vmc_marchXCIAR.s
+    condition:
+      - toolchain_iar

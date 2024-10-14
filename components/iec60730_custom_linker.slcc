@@ -1,0 +1,18 @@
+package: iec60730
+description: Add custom linker file support lib IEC60730
+label: IEC60730 Custom Linker
+quality: production
+id: iec60730_custom_linker
+category: Linker File
+provides:
+  - name: "iec60730_custom_linker"
+template_contribution:
+  - name: iec60730_custom_linker_enable
+    value: 1
+template_file:
+  - path: ./Lib/toolchain/template/GCC/linkerfile_iec60730.ld.jinja
+    unless:
+      - toolchain_iar
+  - path: ./Lib/toolchain/template/IAR/linkerfile_iec60730.icf.jinja
+    condition:
+      - toolchain_iar
