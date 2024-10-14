@@ -139,11 +139,9 @@ void oem_adj_top_val_timer(void)
 
   // Calculate top_value of the timer to generate 10ms
 #if (_SILICON_LABS_32B_SERIES < 2)
-  uint32_t top_val = (freq * SYSTICK_10MS)
-                     / (SYSTICK_1000MS * (1 << oem_timer_10ms_config.prescale));
+  uint32_t top_val = (freq * SYSTICK_10MS) / (SYSTICK_1000MS * (1<<oem_timer_10ms_config.prescale));
 #else
-  uint32_t top_val = (freq * SYSTICK_10MS)
-                     / (SYSTICK_1000MS * (oem_timer_10ms_config.prescale + 1));
+  uint32_t top_val = (freq * SYSTICK_10MS) / (SYSTICK_1000MS * (oem_timer_10ms_config.prescale + 1));
 #endif //(_SILICON_LABS_32B_SERIES < 2)
   TIMER_TopSet(TIMER_10MS, top_val);
 

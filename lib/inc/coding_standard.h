@@ -1,4 +1,4 @@
-/******************************************************************************
+ /******************************************************************************
  * # License
  * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
@@ -12,7 +12,7 @@
  *
  ******************************************************************************/
 
-/**************************************************************************/ /**
+/**************************************************************************//**
 @addtogroup iec60730_coding_standard
 @{
 @verbatim
@@ -25,18 +25,7 @@ The purpose of this document is to describe the coding standard used by Silicon 
 1.2 Latest version of this document
 This document is version 1.0.
 
-The latest version of this document can always be found in Stash:
-
-https://stash.silabs.com/projects/WMN_DOCS/repos/docs_misc/browse/software/standards/coding-standard.md
-
-Note: The reason why this document is in git is so that we can use pull- requests for changes and make it easier for people to track changes to the standard.
-
 1.3 Changing this document
-Any change made to this document must comply with following procedure.
-
-Note: This includes adding yourself to this list!
-
-Additionally, please make sure that your commit has a good commit message.
 
 1.4 Structure and wording of this document
 This document contains three separate parts: Coding guidelines, coding style and documentation. The coding guidelines deal with the structure of your code. This part is split into a general and a C specific part. The coding style guide details how your code should look, e.g. brace style, comment style etc. Documentation deals with how you should document your code to make it easy for other people to use and modify the code.
@@ -61,8 +50,6 @@ Please note that a new software module does not need to be a new full stack. Thi
 
 1.5.2 Existing modules
 Existing components will continue to use the coding standard they are already using (there is still some differences between the various stacks).
-
-Planning for updating existing components to the new coding standard will be done independently for each stack/module. The timing for these updates should be strategically chosen for each module as to minimize effort and impact to the customers, but the goal is to be completely done for the 20Q4 release.
 
 When updating to the new coding standard, especially from a naming convention perspective, it will be required to provide a compatibility layer. Exceptions will only be made for stack/modules with a valid, documented justification as well as agreement from the various stakeholders. An exception could be made either to have a partial compatibility layer or none at all.
 
@@ -273,20 +260,19 @@ Example
 
 void sl_assert(const char *file, int line)
 {
-  (void) file; // Unused parameter
-  (void) line; // Unused parameter
+  (void)file;  // Unused parameter
+  (void)line;  // Unused parameter
   // Wait forever until the watchdog fires
-  while (1)
-    ;
+  while (1);
 }
 
 #if defined(NDEBUG)
 #define SL_ASSERT(expr)
 #else
 #if defined(USER_ASSERT)
-#define SL_ASSERT(expr) ((expr) ? ((void) 0) : USER_ASSERT(__FILE__, __LINE__))
+#define SL_ASSERT(expr)   ((expr) ? ((void)0) : USER_ASSERT(__FILE__, __LINE__))
 #else
-#define SL_ASSERT(expr) ((expr) ? ((void) 0) : sl_assert(__FILE__, __LINE__))
+#define SL_ASSERT(expr)   ((expr) ? ((void)0) : sl_assert(__FILE__, __LINE__))
 #endif
 #endif
 Comment: Below are the steps to overwrite Silicon Labs assert function with a user defined assert.
@@ -349,8 +335,7 @@ typedef struct {
 } sl_lib_config_t;
 
 extern void sl_lib_init(sl_lib_config_t *config);
-extern void sl_lib_set_options(sl_lib_option_t *option_list,
-                               uint32_t option_count);
+extern void sl_lib_set_options(sl_lib_option_t *option_list, uint32_t option_count);
 
 // sl_lib.c implementation:
 //
@@ -366,21 +351,20 @@ extern void sl_lib_set_options(sl_lib_option_t *option_list,
 
 #include "sl_lib.h"
 
-const sl_lib_config_t SL_LIB_CONFIG =
-    {
-        .default_option   = SL_LIB_OPTION_A,
-        .some_other_field = 10,
+const sl_lib_config_t SL_LIB_CONFIG = {
+  .default_option = SL_LIB_OPTION_A,
+  .some_other_field = 10,
 }
 
 void sl_lib_use_lib(void)
 {
-  sl_lib_option_t lib_options[] = {SL_LIB_OPTION_B, SL_LIB_OPTION_C};
+  sl_lib_option_t lib_options[] = { SL_LIB_OPTION_B, SL_LIB_OPTION_C };
 
   // sizeof(SL_LIB_CONFIG) == 8, offsetof(some_other_field) == 4
   sl_lib_init(&SL_LIB_CONFIG);
 
   // sizeof(lib_options) == 8, sizeof(*lib_options) == 4
-  sl_lib_set_options(lib_options, sizeof(lib_options) / sizeof(*lib_options));
+  sl_lib_set_options(lib_options, sizeof(lib_options)/sizeof(*lib_options));
 }
 3.5.2 Avoid bitfields in structures/unions (Required)
 This is also especially important for aggregate types shared between libraries and customer-compiled code. As with enums, the size and bit layout of bitfields is not standardized, but is compiler-defined or subject to compiler options. Libraries built with one compiler or options will not interface properly to non-library code built with a different compiler or options.
@@ -390,7 +374,7 @@ Example
 // sl_lib.h include file:
 
 typedef struct {
-  bool ena : 1;
+  bool    ena          : 1;
   uint8_t some_setting : 5;
 } sl_lib_struct_t;
 
@@ -402,7 +386,8 @@ typedef struct {
 //   7   6   5   4   3   2   1   0
 // [ena| x | x | x | x | x | x | x ]
 // [   some_setting    | x | x | x ]
-3.6 Variables 3.6.1 Using global variables(Recommended)
+3.6 Variables
+3.6.1 Using global variables (Recommended)
 Minimize use of global variables. It is hard for a compiler to optimize code using them. The compiler (usually) only sees one C file at the time and does not know if the global has been changed between accesses.
 
 A way around this might be to copy the global to a static/auto variable and use the copy in your code.
@@ -413,22 +398,16 @@ Global variables can also easily become a source for confusion and errors in the
 
 3.7 Functions
 3.7.1 Prototype functions (Required)
-Make sure either the full implementation
-    or a prototype precedes any call to a function.For external functions,
-    this should be done by with a #include of the appropriate header.
+Make sure either the full implementation or a prototype precedes any call to a function. For external functions, this should be done by with a #include of the appropriate header.
 
-    3.7.2 Functions return data
-    types(Required)
+3.7.2 Functions return data types (Required)
 All functions that can fail should return sl_status_t. The idea is to be as consistent and predictable throughout all of our code base to make it easier for customers to know what to expect from our functions.
 
-There will be functions that will not return sl_status_t. For example, functions returning void;
-simple "getter" functions that cannot fail
-    or that we don't need to differentiate between error cases; a function checking if a condition is true or false could return a bool; a function adding data to a string or buffer could return the number of bytes added to the string or buffer; or a callback function could return an indicator to let the stack know how to act. Other examples may exist but all of these exceptions should be used sparingly and with good reason. Please check with your team and/or manager before doing so.
+There will be functions that will not return sl_status_t. For example, functions returning void; simple "getter" functions that cannot fail or that we don't need to differentiate between error cases; a function checking if a condition is true or false could return a bool; a function adding data to a string or buffer could return the number of bytes added to the string or buffer; or a callback function could return an indicator to let the stack know how to act. Other examples may exist but all of these exceptions should be used sparingly and with good reason. Please check with your team and/or manager before doing so.
 
-    In any case,
-    the following requirements must be complied with:
+In any case, the following requirements must be complied with:
 
-if a function can fail, there must be a clear indication as to how to detect a failure. This is preferably done through returning sl_status, but having a special 'invalid' value returned in case of failure is also allowed. No matter how this is achieved, it must be documented in the doxygen function header.
+if a function can fail, there must be a clear indication as to how to detect a failure. This is preferrably done through returning sl_status, but having a special 'invalid' value returned in case of failure is also allowed. No matter how this is achieved, it must be documented in the doxygen function header.
 bool must not be returned to indicate success or failure. bool should only be used to indicate if a given condition is true or false. Even then, using an enum should be considered for future-proofing the function, should it need to return more than a true/false value in the future.
 Example
 
@@ -495,27 +474,21 @@ Macros that may have have side-effects should be function-like and named appropr
 
 Example
 
-#define sl_lock()                                                              \
-  do {                                                                         \
-    __acquire_mutex(&sl_top_level_mutex);                                      \
-  } while (0)
-#define sl_unlock()                                                            \
-  do {                                                                         \
-    __release_mutex(&sl_top_level_mutex);                                      \
-  } while (0)
+#define sl_lock()     do {__acquire_mutex(&sl_top_level_mutex);} while(0)
+#define sl_unlock()   do {__release_mutex(&sl_top_level_mutex);} while(0)
 3.8.2 Macros with statement(s) (Required)
 If a macro expands into one or more full statements, make sure it consumes a subsequent semicolon. Furthermore, multiple-statement macros must be wrapped in a block. These rules ensure that the expanded macro will have the same syntax as a non-compound statement. Otherwise, it may cause undesirable parsing if a customer uses it without braces in a selection (if (...) FOO();) or iteration (while (...) FOO();) statement.
 
 Example
 
-#define SLI_FOO(x, y)                                                          \
-  do {                                                                         \
-    ga = (x);                                                                  \
-    gb = (y);                                                                  \
-    gc = ga + gb;                                                              \
-  } while (0)
+#define SLI_FOO(x, y)         \
+          do {                \
+            ga = (x);         \
+            gb = (y);         \
+            gc = ga + gb;     \
+          } while (0)
 
-#define sli_do_nothing() (void) 0
+#define sli_do_nothing()   (void)0
 
 void sl_bar(int baz)
 {
@@ -549,7 +522,7 @@ void sli_usb_function(void)
   }
   // [...]
 release:
-// Release lock
+  // Release lock
 }
 
 // Workaround, whenever possible
@@ -562,18 +535,15 @@ void sli_usb_function(void)
   }
   // Release lock
 }
-3.9.2 gotos should only refer to a label declared after them(Required)
-A goto statement should only refer to a label declared after(below) them,
-    in the code.
+3.9.2 gotos should only refer to a label declared after them (Required)
+A goto statement should only refer to a label declared after (below) them, in the code.
 
-    No goto shall ever cause the code to go back "up",
-    it should always jump "down",
-    towards the end of the function.
+No goto shall ever cause the code to go back "up", it should always jump "down", towards the end of the function.
 
-    Example
+Example
 
-    // Don't do:
-    void sli_usb_function(void)
+// Don't do:
+void sli_usb_function(void)
 {
   // [...]
 loop_start:
@@ -595,24 +565,16 @@ void sli_usb_function(void)
 release:
   // Release lock
 }
-3.9.3 gotos should only refer to a static label located in the same
-    function(Required)
-No computed goto statement(as available in some GCC extensions) shall be used
-        .setjmp and longjmp should never be used
-        .The label referred to by a
-    goto statement needs to be in the same function as the
-    goto statement itself.
+3.9.3 gotos should only refer to a static label located in the same function (Required)
+No computed goto statement (as available in some GCC extensions) shall be used. setjmp and longjmp should never be used. The label referred to by a goto statement needs to be in the same function as the goto statement itself.
 
-    3.9.4 Any label referenced by a goto need to be declared in the same block
-    or a block enclosing the goto(Required) goto statements and labels should
-    not be used to jump between blocks,
-    as it can easily lead to unstructured code
-        .goto should not be used either to jump between cases of a switch.
+3.9.4 Any label referenced by a goto need to be declared in the same block or a block enclosing the goto (Required)
+goto statements and labels should not be used to jump between blocks, as it can easily lead to unstructured code. goto should not be used either to jump between cases of a switch.
 
-    Example
+Example
 
-    // Don't do:
-    void sli_usb_function(uint8_t bar)
+// Don't do:
+void sli_usb_function(uint8_t bar)
 {
   if (bar > 0) {
     goto label;
@@ -643,7 +605,7 @@ label:
 // Don't do:
 void sli_usb_function(uint8_t bar)
 {
-  switch (bar) {
+  switch(bar) {
     case 1:
       if (x == y) {
         goto label;
@@ -670,21 +632,14 @@ Exception: They can be used for generating debug information as long as they are
 For all open source or third party software that we include in our software releases, we need to have an acceptable license that allows us to do so. That means we need to send an email to our legal department (DL.Legal) and ask for permission before introducing new open source software into our distributions. Consult the Software Manager before including any third party software code intended to be released.
 
 3.10.3 Configuring libraries in source form (Required)
-The customer should never have to change the original source files to configure
-    the
-    library(this creates problems when upgrading the library to a newer version,
-            and also makes it impossible to have two projects with different
-                configuration settings using the same instance of the library)
-        .Instead,
-    it should be possible to set all configurations settings from the customer's application project. Normally this can be done with macros that allow a customer to configure library settings from within the application.
+The customer should never have to change the original source files to configure the library (this creates problems when upgrading the library to a newer version, and also makes it impossible to have two projects with different configuration settings using the same instance of the library). Instead, it should be possible to set all configurations settings from the customer's application project. Normally this can be done with macros that allow a customer to configure library settings from within the application.
 
-    Example
+Example
 
-#if !defined(EM_SETTING) // If EM_SETTING is not defined by user,
-#define EM_SETTING                                                             \
-  default_value_for_em // then we set our default value/function.
+#if !defined(EM_SETTING)                   // If EM_SETTING is not defined by user,
+#define EM_SETTING default_value_for_em    // then we set our default value/function.
 #endif
-    3.10.4 Configuring libraries in binary form(Recommended)
+3.10.4 Configuring libraries in binary form (Recommended)
 If a library is provided in binary form, then macros cannot be used for configuration settings.
 
 A good alternative is to use callback functions or static variables. Callbacks might not be appropriate for 8-bit code, so use your judgment.
@@ -703,16 +658,14 @@ int sl_custom_configuration_callback(void)
 {
   return OPT_SIZE | MAX_BUF_SIZE;
 }
-Comment
-    : sl_custom_configuration_callback is defined in user application
-          and returns different values depending on the user implementation.
+Comment: sl_custom_configuration_callback is defined in user application and returns different values depending on the user implementation.
 
-      Example
+Example
 
-      // We initialize configuration with a sensible default that is suitable
-      // for the largest number of applications
-      //
-      int configuration = SL_DEFAULT_CONFIGURATION;
+// We initialize configuration with a sensible default that is suitable
+// for the largest number of applications
+//
+int configuration = SL_DEFAULT_CONFIGURATION;
 
 // The user application can customize the behavior by calling
 // sl_set_configuration
@@ -721,7 +674,8 @@ void sl_set_configuration(int user_config)
 {
   configuration = user_config;
 }
-3.11 Misc 3.11.1 Avoid embedding assignments in expressions(Recommended)
+3.11 Misc
+3.11.1 Avoid embedding assignments in expressions (Recommended)
 Embedding assignments in expressions makes for all kinds of wacky bugs. When scanning some code it is easy to miss that a complicated expression contains an assignment deep inside.
 
 Example
@@ -731,52 +685,39 @@ Example
 Comment: The above is easy to understand, hard to get wrong and most compilers today will generate the same optimized code that that example as it will for the below code;
 
 *handle = ++ceiling;
-4 Coding style and formatting 4.1 General formatting 4.1.1 Use spaces,
-    not tabs(Required) For indenting files,
-    use spaces and never tabs.A mix of tabs and spaces is never acceptable.
+4 Coding style and formatting
+4.1 General formatting
+4.1.1 Use spaces, not tabs (Required)
+For indenting files, use spaces and never tabs. A mix of tabs and spaces is never acceptable.
 
-    4.1.2 Indents are 2 spaces per
-    level(Required)
+4.1.2 Indents are 2 spaces per level (Required)
 Indent each nested level with 2 spaces of indent.
 
-    4.1.2.1 Preprocessor
-    indentation(Recommended)
-Preprocessor directives historically have not been indented,
-    but they may be indented to make them less distracting to the module's code flow (though the technique described in the section 3.2.2 offers an even cleaner alternative where it makes sense). When indented, the # should remain attached to the directive and not remain in the first column -- no modern preprocessor still requires the # be in the first column. When an #if or #ifdef is indented, its #else, #elif, and #endif shall also be identically indented. The code between the preprocessor directives may also be indented.
+4.1.2.1 Preprocessor indentation (Recommended)
+Preprocessor directives historically have not been indented, but they may be indented to make them less distracting to the module's code flow (though the technique described in the section 3.2.2 offers an even cleaner alternative where it makes sense). When indented, the # should remain attached to the directive and not remain in the first column -- no modern preprocessor still requires the # be in the first column. When an #if or #ifdef is indented, its #else, #elif, and #endif shall also be identically indented. The code between the preprocessor directives may also be indented.
 
-    Example
+Example
 
-    void
-    sl_set_xyz_option(xyz_option_t xyz_option)
+void sl_set_xyz_option(xyz_option_t xyz_option)
 {
-#if defined(_XYZ_LFCCLKEN0_MASK) // XYZ supports LFC clock
-  if (xyz_option == xyz_clock_lfc) {
-    xyz_clock_set_lfc();
-    return;
-  }
-#endif
-#if defined(_XYZ_LFECLKSEL_MASK) // XYZ supports LFE clock
-  if (xyz_option == xyz_clock_lfe) {
-    xyz_clock_set_lfe();
-    return;
-  }
-#endif
+  #if defined( _XYZ_LFCCLKEN0_MASK ) // XYZ supports LFC clock
+    if (xyz_option == xyz_clock_lfc) {
+      xyz_clock_set_lfc();
+      return;
+    }
+  #endif
+  #if defined( _XYZ_LFECLKSEL_MASK ) // XYZ supports LFE clock
+    if (xyz_option == xyz_clock_lfe) {
+      xyz_clock_set_lfe();
+      return;
+    }
+  #endif
 }
-4.1.3 Lines should not be longer than 80 characters(Recommended) We
-        enforce an 80 characters limit per line of source code.This lets people
-            set up their editors such that they can have multiple editors side
-    - by - side.Although 80 characters are little by modern standards,
-    it mixes well with existing code.
+4.1.3 Lines should not be longer than 80 characters (Recommended)
+We enforce an 80 characters limit per line of source code. This lets people set up their editors such that they can have multiple editors side-by-side. Although 80 characters are little by modern standards, it mixes well with existing code.
 
-    4.1.4 Line
-    endings(Required)
-We use line ending normalization in our repositories
-    .This means that all text files are converted to '\n' line
-        endings when they are stored in git
-    .However most customers are using Windows
-        operating system which expects a CRLF line ending.Therefore,
-    with rare exception,
-    all source code delivered to customers should have CRLF(DOS) line endings. There are two ways to accomplish this. First, if you are using a Windows host operating system, set your git autocrlf setting as follows:
+4.1.4 Line endings (Required)
+We use line ending normalization in our repositories. This means that all text files are converted to '\n' line endings when they are stored in git. However most customers are using Windows operating system which expects a CRLF line ending. Therefore, with rare exception, all source code delivered to customers should have CRLF (DOS) line endings. There are two ways to accomplish this. First, if you are using a Windows host operating system, set your git autocrlf setting as follows:
 
 core.autocrlf true
 This will ensure all text files have DOS line endings when checked out from the repository.
@@ -821,33 +762,36 @@ int bitmask = (OPTION_1
                   ? OPTION_3
                   : OPTION_4));
 
-int bitmask = (OPTION_1 | OPTION_2 | (IS_THIS_SET ? OPTION_3 : OPTION_4));
+int bitmask = (OPTION_1
+               | OPTION_2
+               | (IS_THIS_SET ? OPTION_3 : OPTION_4));
 
-int bitmask = (OPTION_1 | OPTION_2 | (OPTION_3 & OPTION_4));
-Comment : All the above are examples of nicely formatted long expressions
-              .
+int bitmask = (OPTION_1
+               | OPTION_2
+               | (OPTION_3 & OPTION_4));
+Comment: All the above are examples of nicely formatted long expressions.
 
-          Below is an example how you
-              should not format long and complex expressions.
+Below is an example how you should not format long and complex expressions.
 
-          // Avoid this...
-          int no_good_formatting = (OPTION_1 | OPTION_2 | OPTION_3 & OPTION_4);
-4.1.10 goto labels should be on column 1(Required)
-    Labels referred to by gotos need to be located at column 1,
-    disregarding any indentation.
+// Avoid this...
+int no_good_formatting = (OPTION_1
+                         | OPTION_2
+                         | OPTION_3 & OPTION_4);
+4.1.10 goto labels should be on column 1 (Required)
+Labels referred to by gotos need to be located at column 1, disregarding any indentation.
 
-    Example
+Example
 
-    // Don't do:
-    void sli_usb_function(void)
+// Don't do:
+void sli_usb_function(void)
 {
   // Acquire lock
   // [...]
   if (!ok) {
     goto release;
   }
-// [...]
-release:
+  // [...]
+  release:
   // Release lock
 }
 
@@ -877,21 +821,21 @@ Example
 
 // Example for the exception
 // This type is needed because using // would swallow the line continuation marker.
-#define MY_CLI_COMMANDS                                                        \
-  /* This command takes 3 arguments: */                                        \
-  /*  Node ID - a 2-byte node ID destination */                                \
-  /*  Endpoint - a 1-byte node ID */                                           \
-  /*  Cluster  - a 2-byte cluster ID */                                        \
-  {"my_command", my_command_function, "vuv"},
+#define MY_CLI_COMMANDS \
+  /* This command takes 3 arguments: */           \
+  /*  Node ID - a 2-byte node ID destination */   \
+  /*  Endpoint - a 1-byte node ID */              \
+  /*  Cluster  - a 2-byte cluster ID */           \
+  { "my_command", my_command_function, "vuv" },
 
 // Example of how to comment constant values.
 // For the function declaration below
 void function(int seconds, boolean print_output);
 
 // we add comments after each parameter (OPTIONAL)
-function(0,      // seconds
-         FALSE); // print_output
-4.3 Bracing style(Required)
+function(0,        // seconds
+         FALSE);   // print_output
+4.3 Bracing style (Required)
 Use the so called "One True Brace Style" (see [https://en.wikipedia.org/wiki/Indent_style#Variant:_1TBS]) Indent increases one level after an opening brace, and decreases one level before a closing brace. Opening braces do not go on their own separate line, except for free standing blocks and function definitions. Closing braces are on their own separate line with nothing else on these lines.
 
 All if/else/while/for/do-while blocks must be enclosed by braces, even if there is only one statement in the block.
@@ -917,7 +861,8 @@ void sl_do_something(uint8_t bar)
     do_this();
   }
 
-  while (1) {}
+  while (1) {
+  }
 
   do {
     sli_do_work();
@@ -939,7 +884,7 @@ Example
 if (foo) {
   sl_bsp_set_leds(0xff00);
 
-testing:
+  testing:
 
   sl_bsp_set_leds(0x00ff);
 }
@@ -953,31 +898,23 @@ Example
 if (foo) {
   sl_bsp_set_leds(0xff00);
 
-testing:
-{
-  sl_bsp_set_leds(0x00ff);
-  sl_bsp_set_leds(0x0000);
-}
+  testing:
+  {
+    sl_bsp_set_leds(0x00ff);
+    sl_bsp_set_leds(0x0000);
+  }
 }
 4.4.3 Switch statements (Required)
-The cases in switch
-statements should be indented one level from the enclosing
-    braces.Separate case blocks with a blank line after each break;
-    .All switch statements should include a default block
-        unless there is a good reason not to
-    .The default block can collapse into one of the other cases but it should
-        clearly show what happens when there is no matching case.Finally,
-    if a case block does not end with an unconditional jump,
-    there should be a comment clearly stating that the code is intentionally
-        meant to fall through.
+The cases in switch statements should be indented one level from the enclosing braces. Separate case blocks with a blank line after each break;. All switch statements should include a default block unless there is a good reason not to. The default block can collapse into one of the other cases but it should clearly show what happens when there is no matching case. Finally, if a case block does not end with an unconditional jump, there should be a comment clearly stating that the code is intentionally meant to fall through.
 
-    Example
+Example
 
-    switch (baz){case 1:
-  sli_do_this();
-  break;
+switch(baz) {
+  case 1:
+    sli_do_this();
+    break;
 
-case 2:
+  case 2:
     sli_do_that();
     // This case is meant to fall through to the next
 
@@ -991,21 +928,17 @@ case 2:
     sli_do_what();
     break;
 }
-4.5 Functions,
-    operators and C keywords 4.5.1 Listing function parameters(Required)
-Whenever there is a list of function parameters,
-    they should all fit on a single line
-        or be listed one parameter per line.If listed on separate lines,
-    each parameter has the same indent level as the first parameter.
+4.5 Functions, operators and C keywords
+4.5.1 Listing function parameters (Required)
+Whenever there is a list of function parameters, they should all fit on a single line or be listed one parameter per line. If listed on separate lines, each parameter has the same indent level as the first parameter.
 
-    Example
+Example
 
-    void
-    sl_do_something(int a,
-                    int b,
-                    int c,
-                    const char *string1,
-                    const char *string2)
+void sl_do_something(int a,
+                     int b,
+                     int c,
+                     const char *string1,
+                     const char *string2)
 {
   // ...
 }
@@ -1014,32 +947,26 @@ void sl_do_something2(int a, int b, int c)
 {
   // ...
 }
-4.5.2 Using function parentheses(Required)
-For function declarations, definitions and calls,
-    there shall be no spaces before or after the opening parentheses,
-    or before the closing parentheses.
+4.5.2 Using function parentheses (Required)
+For function declarations, definitions and calls, there shall be no spaces before or after the opening parentheses, or before the closing parentheses.
 
-        Example
+Example
 
-        int
-        sl_foo(int days, int seconds);
+int sl_foo(int days, int seconds);
 // ...
 ret = sl_foo(days, seconds);
-4.5.3 Binary and ternary operators(Required)
-Use spaces around binary &ternary operators in expressions
-    .C expressions are hard enough to parse without running them altogether.
+4.5.3 Binary and ternary operators (Required)
+Use spaces around binary & ternary operators in expressions. C expressions are hard enough to parse without running them altogether.
 
-    Example
+Example
 
-    for (j = 0; j < parameter_sizes[i]; j++)
-{
+for (j = 0; j < parameter_sizes[i]; j++) {
 4.5.4 Use a single space after C keywords (Required)
 C keywords (ex. for, switch, while, if, do) – should have a single space after the keyword.
 
 Example
 
-while (counter < UART_MAX_IO_BUFFER)
-  {
+while (counter < UART_MAX_IO_BUFFER) {
 4.5.5 Additional space within expressions
 Use of additional whitespace within expressions to improve readability is permitted as long as it doesn't interfere with appropriate multi-line expression indentation. Such style should be consistent within the module.
 
@@ -1053,29 +980,26 @@ while (waiting_for_something);
 
 // Instead do:
 // Useful comment explaining why you are waiting
-while (waiting_for_something)
-  ;
-4.5.7 Pointer asterisk position(Required)
-    When declaring a pointer to a variable,
-    the pointer asterisk should be placed together with the variable name,
-    not together with the type.
+while (waiting_for_something);
+4.5.7 Pointer asterisk position (Required)
+When declaring a pointer to a variable, the pointer asterisk should be placed together with the variable name, not together with the type.
 
-        Example
+Example
 
-        // Don't do:
-        char *c = (char *) a;
-void sl_foo(uint32_t *bar);
+// Don't do:
+char* c = (char*)a;
+void sl_foo(uint32_t* bar);
 
 // Instead do:
-char *c = (char *) a;
+char *c = (char *)a;
 void sl_foo(uint32_t *bar);
-4.5.8 Don't mix pointer and value type declarations (Required) Don't mix declarations of pointer type variables and value type variables on the same line.
+4.5.8 Don't mix pointer and value type declarations (Required)
+Don't mix declarations of pointer type variables and value type variables on the same line.
 
-    Example
+Example
 
-    // Don't do:
-    uint32_t *a,
-    b;
+// Don't do:
+uint32_t *a, b;
 
 // Instead do:
 uint32_t *a;
@@ -1118,51 +1042,51 @@ Example
 
 static uint8_t next_transmit;
 
-      static urb_t transmit_buffer(uint8_t *buffer);
+static urb_t transmit_buffer(uint8_t *buffer);
 
-      typedef struct {
-        uint8_t urb_size; // Struct fields do not have any prefix.
-        uint8_t *urb_list_next;
-        uint16_t array[10];
-      } urb_t;
+typedef struct {
+    uint8_t  urb_size; // Struct fields do not have any prefix.
+    uint8_t  *urb_list_next;
+    uint16_t array[10];
+} urb_t;
 
 // Internal-only
-#define SLI_UNUSED_PARAMETER(param) (void) (param)
+#define SLI_UNUSED_PARAMETER(param)   (void)(param)
 
-      const unsigned int SLI_MAX_UART_CONNECTIONS = 3;
+const unsigned int SLI_MAX_UART_CONNECTIONS = 3;
 
-      sl_usbd_endpoint
-          sli_usbd_msc_endpoint; // Internal variable using public type.
+sl_usbd_endpoint sli_usbd_msc_endpoint; // Internal variable using public type.
 
-      typedef struct {
-        uint8_t time_ms;
-        uint8_t *longer_blah_ptr;
-      } sli_usbd_msc_cnt_t;
+typedef struct {
+  uint8_t time_ms;
+  uint8_t *longer_blah_ptr;
+} sli_usbd_msc_cnt_t;
 
-      void sli_usbd_msc_tx_endpoint(sli_usbd_msc_cnt_t * buffer, uint8_t count);
+void sli_usbd_msc_tx_endpoint(sli_usbd_msc_cnt_t *buffer,
+                              uint8_t            count);
 
-      void sli_usbd_msc_tx_endpoint(sli_usbd_msc_cnt_t * buffer, uint8_t count)
-      {
-        uint8_t flag; // Local variable does not have any prefix.
-        urb_t
-            urb; // Referring to static type from within public function is ok.
-      }
+void sli_usbd_msc_tx_endpoint(sli_usbd_msc_cnt_t *buffer,
+                              uint8_t            count)
+{
+  uint8_t flag; // Local variable does not have any prefix.
+  urb_t urb; // Referring to static type from within public function is ok.
+}
 
-      // Public
+// Public
 
 #define SL_CREATE_HANDLE(node, id) (node).flag = ((id) | 0xFF00)
 
-      const unsigned int SL_USBD_VERSION = 20200;
+const unsigned int SL_USBD_VERSION = 20200;
 
-      sl_uart_channel_t sl_uart_channels_list[10];
+sl_uart_channel_t sl_uart_channels_list[10];
 
-      sl_time_t sl_get_time(void);
+sl_time_t sl_get_time(void);
 
-      typedef struct {
-        uint32_t hour;
-        uint32_t minute;
-        uint32_t second;
-      } sl_time_t;
+typedef struct {
+    uint32_t hour;
+    uint32_t minute;
+    uint32_t second;
+} sl_time_t;
 4.6.3 Naming (Required)
 The following section (4.6.3.*) contains information on how to name anything. This acts as a default, if nothing more specific exists for a particular construct. In general, construct-specific standards should be avoided.
 
@@ -1226,31 +1150,31 @@ When a variable is used for time, it must include the units in the name. When a 
 
 Variables and function names may either use abbreviations or spell out the units. If abbreviations are used, the following shall be the abbreviations:
 
-      Full Name Abbreviation(if applicable)
-          Years Years Days Days Hours Hours Minutes Minutes Seconds Sec
-              Milliseconds Ms Microseconds Us Nanoseconds Ns Example
+Full Name	Abbreviation (if applicable)
+Years	Years
+Days	Days
+Hours	Hours
+Minutes	Minutes
+Seconds	Sec
+Milliseconds	Ms
+Microseconds	Us
+Nanoseconds	Ns
+Example
 
 #define SLI_JITTER_DELAY_MS 100
 
-          static void
-          restart_discovery_after_delay(uint8_t delay_ms);
+static void restart_discovery_after_delay(uint8_t delay_ms);
 
-      uint8_t sli_get_discovery_time_remaining_ms(void);
+uint8_t sli_get_discovery_time_remaining_ms(void);
 
-      4.6.4.5 Functions / stubs called on specific events
-          / callbacks should start 'on' in their name(Required)
-              Whenever a function is called to indicate an event occurred,
-          or is called in 'reaction' to an event happening,
-          this function should have on in its name,
-          directly after the<module> _ prefix.This also applies to callbacks
-              or function stubs shipped to the user.
+4.6.4.5 Functions/stubs called on specific events/callbacks should start 'on' in their name (Required)
+Whenever a function is called to indicate an event occurred, or is called in 'reaction' to an event happenning, this function should have on in its name, directly after the <module>_ prefix. This also applies to callbacks or function stubs shipped to the user.
 
-                 Example void
-                 sl_usb_on_device_connection(void);
+Example void sl_usb_on_device_connection(void);
 
-      void sl_kernel_on_task_deletion(void);
+void sl_kernel_on_task_deletion(void);
 
-      static void on_transmit_completed(void);
+static void on_transmit_completed(void);
 4.6.4.6 Interrupt handlers should be suffixed by 'IRQHandler' or 'irq_handler' (Required)
 If a function is an interrupt handler, it should either be suffixed by IRQHandler if it needs to follow CMSIS' format or by irq_handler if it doesn't (for example, if an interrupt source is shared and multiplexed) between several handlers.
 
@@ -1299,7 +1223,7 @@ Example
 #define sl_uart_init_default_uart(x) init_uart(UART0, (x))
 
 // This is a macro function that cannot be used as a function.
-#define SL_SOME_NUMBERS(x) {(x), ((x) + (x)), ((x) * (x))}
+#define SL_SOME_NUMBERS(x) {(x), ((x)+(x)), ((x)*(x))}
 4.6.7 Naming types
 4.6.7.1 Public typedefs (Required)
 Each typedef must end with a '_t' suffix and cannot start with 'int', 'uint' or 'unicode'.
@@ -1312,15 +1236,15 @@ Example
 // Don't do
 typedef struct
 {
-        uint32_t sl_nvm_page_header_offset;
-        uint32_t sl_nvm_page_header_size;
+  uint32_t sl_nvm_page_header_offset;
+  uint32_t sl_nvm_page_header_size;
 } sl_nvm_page_header_t;
 
 // Instead do:
 typedef struct
 {
-        uint32_t offset;
-        uint32_t size;
+  uint32_t offset;
+  uint32_t size;
 } sl_nvm_page_header_t;
 4.6.7.3 Type from typedef (Optional)
 If the type is a typedef, you can optionally add a type name if there is a reason the anonymous type does not work. In this case use the same name as the typedef name, without the '_t'.
@@ -1331,13 +1255,13 @@ Example
 // Use this style in most cases.
 typedef struct
 {
-        // ...
+  // ...
 } sl_nvm_page_header_t;
 
 // You can use this style if the struct needs a name.
 typedef struct sl_nvm_page_header
 {
-        // ...
+  // ...
 } sl_nvm_page_header_t;
 4.6.8 Files and directory structure
 4.6.8.1 Filenames and directories use lower case (Required)
@@ -1510,7 +1434,7 @@ Example
  *****************************************************************************/
  uint8_t sl_my_public_function(uint8_t my_param1, uint16_t my_param2)
  {
-        // ...
+   // ...
  }
 6.5 Variable documentation (Required)
 All public variables that are part of an API must be documented. It is also recommended to document all file-level global variables even if they are not public.
@@ -1543,9 +1467,9 @@ Example
 /// it is used or allowed values or constraints.
 typedef struct
 {
-        uint8_t r; ///< Brief comment about this field.
-        uint8_t g; ///< Green pixel value.
-        uint8_t b; ///< Blue pixel value.
+    uint8_t r;    ///< Brief comment about this field.
+    uint8_t g;    ///< Green pixel value.
+    uint8_t b;    ///< Blue pixel value.
 } sl_pixel_t;
 6.6 Header file vs. implementation file (Recommended)
 To keep a simple distinction between public documentation and internal documentation, all public documentation comments should be placed into the library or module header (.h) file. This allows us to just pull in header files when generating public-facing documentation and not need to worry about separation of public or private content.
@@ -1585,7 +1509,7 @@ static uint8_t my_private_variable;
  *****************************************************************************/
 void sli_do_something_secret(void)
 {
-        // ...
+  // ...
 }
 6.8 Do not release sections (Recommended)
 There may be instances where there are source files which contain sections that should not be released, for example references to an emulator or todo comments. In some build systems, you may use commented double square brackets (//[[...]] or //[[and//]]`) to hide such code. You must make sure that the build system used on said source runs the codestripper before relying on this functionality.
@@ -1618,8 +1542,6 @@ Content that is "multi-licensed" (offered to us under our choice of more than on
 
 
 @endverbatim
-
-@
-    }
-  ******************************************************************************
-      /
+ 
+@}
+ ******************************************************************************/

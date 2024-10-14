@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_TOOLCHAIN_H__
-#define __IEC60730_TOOLCHAIN_H__
+#ifndef SL_IEC60730_TOOLCHAIN_H
+#define SL_IEC60730_TOOLCHAIN_H
 
 /**************************************************************************/ /**
  *
@@ -62,36 +62,36 @@
 #define NOP() __NOP()
 
 // No init at startup
-#define IEC60730_VAR_NO_INIT __attribute__((section(".noinit")))
+#define IEC60730_VAR_NO_INIT              __attribute__((section(".noinit")))
 // No clear at startup
-#define IEC60730_DATA_NO_CLEAR __attribute__((section(".ram_no_clear")))
+#define IEC60730_DATA_NO_CLEAR            __attribute__((section(".ram_no_clear")))
 
 /// The #__STACK_BOTTOM macro is used to define
 /// (.stack_bottom) section.
 #ifndef __STACK_BOTTOM
-#define __STACK_BOTTOM __attribute__((section(".stack_bottom")))
+#define __STACK_BOTTOM                    __attribute__((section(".stack_bottom")))
 #endif /* __STACK_BOTTOM */
 
 /// The #__CLASSB_RAM macro is used to define
 /// (.classb_ram) section.
 #ifndef __CLASSB_RAM
-#define __CLASSB_RAM __attribute__((section(".classb_ram")))
+#define __CLASSB_RAM                      __attribute__((section(".classb_ram")))
 #endif /* __CLASSB_RAM */
 
 /// The #__RT_BUF macro is used to define
 /// (.rt_buf) section.
 #ifndef __RT_BUF
-#define __RT_BUF __attribute__((section(".rt_buf")))
+#define __RT_BUF                          __attribute__((section(".rt_buf")))
 #endif /* __RT_BUF */
 
 /// The #__OVERLAP macro is used to define
 /// (.overlap) section.
 #ifndef __OVERLAP
-#define __OVERLAP __attribute__((section(".overlap")))
+#define __OVERLAP                         __attribute__((section(".overlap")))
 #endif /* __OVERLAP */
 
-#define LB_ASM     __asm__
-#define LB_XSTR(x) XSTR(x:)
+#define LB_ASM        __asm__
+#define LB_XSTR(x)    XSTR(x:)
 
 // -------------------------------
 // IAR for ARM Cortex-M
@@ -101,39 +101,39 @@
 // __NOP should be declared in cmsis header core_cmInstr.h
 // extern void __NOP(void);
 /// Macro to insert a no-operation (NOP) instruction.
-#define NOP()                  __NOP()
+#define NOP() __NOP()
 
 // No init at startup
-#define IEC60730_VAR_NO_INIT   __attribute__((section(".noinit")))
+#define IEC60730_VAR_NO_INIT            __attribute__((section(".noinit")))
 // No clear at startup
-#define IEC60730_DATA_NO_CLEAR __attribute__((section(".ram_no_clear")))
+#define IEC60730_DATA_NO_CLEAR          __attribute__((section(".ram_no_clear")))
 
 /// The #__STACK_BOTTOM macro is used to define
 /// (.stack_bottom) section.
 #ifndef __STACK_BOTTOM
-#define __STACK_BOTTOM __attribute__((section(".stack_bottom")))
+#define __STACK_BOTTOM                  __attribute__((section(".stack_bottom")))
 #endif /* __STACK_BOTTOM */
 
 /// The #__CLASSB_RAM macro is used to define
 /// (.classb_ram) section.
 #ifndef __CLASSB_RAM
-#define __CLASSB_RAM __attribute__((section(".classb_ram")))
+#define __CLASSB_RAM                    __attribute__((section(".classb_ram")))
 #endif /* __CLASSB_RAM */
 
 /// The #__RT_BUF macro is used to define
 /// (.rt_buf) section.
 #ifndef __RT_BUF
-#define __RT_BUF __attribute__((section(".rt_buf")))
+#define __RT_BUF                        __attribute__((section(".rt_buf")))
 #endif /* __RT_BUF */
 
 /// The #__OVERLAP macro is used to define
 /// (.overlap) section.
 #ifndef __OVERLAP
-#define __OVERLAP __attribute__((section(".overlap")))
+#define __OVERLAP                       __attribute__((section(".overlap")))
 #endif /* __OVERLAP */
 
-#define LB_ASM     __asm
-#define LB_XSTR(x) XSTR(x::)
+#define LB_ASM        __asm
+#define LB_XSTR(x)    XSTR(x::)
 
 #else // unknown toolchain
 #error Unrecognized toolchain in sl_iec60730_toolchain.h
@@ -141,4 +141,4 @@
 
 /** @} */
 
-#endif /* __IEC60730_TOOLCHAIN_H__ */
+#endif /* SL_IEC60730_TOOLCHAIN_H */

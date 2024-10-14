@@ -38,19 +38,15 @@ uint8_t oem_err_log[30];
 void oem_print_error(void)
 {
   uint8_t number_of_failure;
-  sl_iec60730_safety_check_t *iec60730_safety_check_result;
+  sl_iec60730_safety_check_t* iec60730_safety_check_result;
 
   iec60730_safety_check_result = sl_iec60730_safety_check_get_error();
-  oem_current_failure          = iec60730_safety_check_result->error;
-  number_of_failure            = iec60730_safety_check_result->number_error;
-  sprintf((char *) oem_err_log,
-          "Fail-Test. Number error: %d\n",
-          number_of_failure);
+  oem_current_failure = iec60730_safety_check_result->error;
+  number_of_failure = iec60730_safety_check_result->number_error;
+  sprintf((char *) oem_err_log, "Fail-Test. Number error: %d\n", number_of_failure);
   oem_comm_log(oem_err_log);
   sl_udelay_wait(5000);
-  sprintf((char *) oem_err_log,
-          "Fail-Test. Error status: %ld\n",
-          oem_current_failure);
+  sprintf((char *) oem_err_log, "Fail-Test. Error status: %ld\n", oem_current_failure);
   oem_comm_log(oem_err_log);
   sl_udelay_wait(5000);
 }

@@ -24,7 +24,7 @@
  *****************************************************************************/
 
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 static sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp_s(void);
 static sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp_s(void);
@@ -121,42 +121,42 @@ CPU_REGISTERS_BIST_S_DONE:
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i               \n" /*Disable IRQ Interrupts*/
-      "   MRS R3, CONTROL       \n" /* Save Control value */
-      "   MRS R0, MSP           \n" /* Save stack value */
+      "   CPSID i               \n"   /*Disable IRQ Interrupts*/
+      "   MRS R3, CONTROL       \n"   /* Save Control value */
+      "   MRS R0, MSP           \n"   /* Save stack value */
       "   LDR R1, =0xAAAAAAA8   \n"
-      "   MSR MSP, R1           \n" /* load stack value */
-#ifndef IAR_TESTING                 /* GCC */
+      "   MSR MSP, R1           \n"   /* load stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_MSP_S_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_MSP_S_ASM_BKPT:: \n"
 #endif
-      "   MRS R2, MSP           \n" /* Get back stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MRS R2, MSP           \n"   /* Get back stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP_S   \n"
       "   LDR R1, =0x55555554   \n"
-      "   MSR MSP, R1           \n" /* load stack value */
-      "   MRS R2, MSP           \n" /* Get back stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MSR MSP, R1           \n"   /* load stack value */
+      "   MRS R2, MSP           \n"   /* Get back stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP_S   \n"
-      "   MSR MSP, R0           \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
+      "   MSR MSP, R0           \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_MSP_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_FAIL_ENDLESS_LOOP_MSP_S:  \n"
 #else
       "IEC60730_FAIL_ENDLESS_LOOP_MSP_S:: \n"
 #endif
-      "   MSR MSP, R0           \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
-      "   MOVS %0, #0x0         \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MSR MSP, R0           \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
+      "   MOVS %0, #0x0         \n"   /* result equal IEC60730_TEST_FAILED*/
       "   B IEC60730_CPU_REGS_MSP_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -164,15 +164,15 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp_s(void)
 #else
       "IEC60730_CPU_REGS_MSP_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"     /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"     /*Enable IRQ Interrupts*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_MSP_S_DONE:  \n"
 #else
       "IEC60730_CPU_REGS_MSP_S_DONE:: \n"
 #endif
-      : "=r"(result)::"memory"); /* set output variable result*/
+      : "=r"(result)::"memory");     /* set output variable result*/
 
   return result;
 }
@@ -193,42 +193,42 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
-      "   MRS R3, CONTROL     \n" /* Save Control value */
-      "   MRS R0, PSP         \n" /* Save process stack value */
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
+      "   MRS R3, CONTROL     \n"   /* Save Control value */
+      "   MRS R0, PSP         \n"   /* Save process stack value */
       "   LDR R1, =0xAAAAAAA8 \n"
-      "   MSR PSP, R1         \n" /* load process stack value */
-#ifndef IAR_TESTING               /* GCC */
+      "   MSR PSP, R1         \n"   /* load process stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PSP_S_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_PSP_S_ASM_BKPT:: \n"
 #endif
-      "   MRS R2, PSP         \n" /* Get back process stack value */
-      "   CMP R2, R1          \n" /* Verify value */
+      "   MRS R2, PSP         \n"   /* Get back process stack value */
+      "   CMP R2, R1          \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP_S   \n"
       "   LDR R1, =0x55555554 \n"
-      "   MSR PSP, R1         \n" /* load process stack value */
-      "   MRS R2, PSP         \n" /* Get back process stack value */
-      "   CMP R2, R1          \n" /* Verify value */
+      "   MSR PSP, R1         \n"   /* load process stack value */
+      "   MRS R2, PSP         \n"   /* Get back process stack value */
+      "   CMP R2, R1          \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP_S   \n"
-      "   MSR PSP, R0         \n" /* Restore process stack value */
-      "   MSR CONTROL, R3     \n" /* Restore Control value */
+      "   MSR PSP, R0         \n"   /* Restore process stack value */
+      "   MSR CONTROL, R3     \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_PSP_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_FAIL_ENDLESS_LOOP_PSP_S:  \n"
 #else
       "IEC60730_FAIL_ENDLESS_LOOP_PSP_S:: \n"
 #endif
-      "   MSR PSP, R0         \n" /* Restore stack value */
-      "   MSR CONTROL, R3     \n" /* Restore Control value */
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MSR PSP, R0         \n"   /* Restore stack value */
+      "   MSR CONTROL, R3     \n"   /* Restore Control value */
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
       "   B IEC60730_CPU_REGS_PSP_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -237,8 +237,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp_s(void)
       "IEC60730_CPU_REGS_PSP_S_PASS_ASM_BKPT::  \n"
 #endif
 
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"   /*Enable IRQ Interrupts*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PSP_S_DONE:  \n"
@@ -266,42 +266,42 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_msplim_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i               \n" /*Disable IRQ Interrupts*/
-      "   MRS R3, CONTROL       \n" /* Save Control value */
-      "   MRS R0, MSPLIM        \n" /* Save stack value */
+      "   CPSID i               \n"   /*Disable IRQ Interrupts*/
+      "   MRS R3, CONTROL       \n"   /* Save Control value */
+      "   MRS R0, MSPLIM        \n"   /* Save stack value */
       "   LDR R1, =0xAAAAAAA8   \n"
-      "   MSR MSPLIM, R1        \n" /* load stack value */
-#ifndef IAR_TESTING                 /* GCC */
+      "   MSR MSPLIM, R1        \n"   /* load stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_MSPLIM_S_ASM_BKPT:   \n"
 #else
       "IEC60730_CPU_REGS_MSPLIM_S_ASM_BKPT::  \n"
 #endif
-      "   MRS R2, MSPLIM        \n" /* Get back stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MRS R2, MSPLIM        \n"   /* Get back stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSPLIM_S     \n"
       "   LDR R1, =0x55555550   \n"
-      "   MSR MSPLIM, R1        \n" /* load stack value */
-      "   MRS R2, MSPLIM        \n" /* Get back stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MSR MSPLIM, R1        \n"   /* load stack value */
+      "   MRS R2, MSPLIM        \n"   /* Get back stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSPLIM_S     \n"
-      "   MSR MSPLIM, R0        \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
+      "   MSR MSPLIM, R0        \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_MSPLIM_S_PASS_ASM_BKPT  \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_FAIL_ENDLESS_LOOP_MSPLIM_S:   \n"
 #else
       "IEC60730_FAIL_ENDLESS_LOOP_MSPLIM_S::  \n"
 #endif
-      "   MSR MSPLIM, R0        \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
-      "   MOVS %0, #0x0         \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MSR MSPLIM, R0        \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
+      "   MOVS %0, #0x0         \n"   /* result equal IEC60730_TEST_FAILED*/
       "   B IEC60730_CPU_REGS_MSPLIM_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -309,8 +309,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msplim_s(void)
 #else
       "IEC60730_CPU_REGS_MSPLIM_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1         \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i               \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1         \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i               \n"   /*Enable IRQ Interrupts*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_MSPLIM_S_DONE:  \n"
@@ -338,42 +338,42 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msplim_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_psplim_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i               \n" /*Disable IRQ Interrupts*/
-      "   MRS R3, CONTROL       \n" /* Save Control value */
-      "   MRS R0, PSPLIM        \n" /* Save process stack value */
+      "   CPSID i               \n"   /*Disable IRQ Interrupts*/
+      "   MRS R3, CONTROL       \n"   /* Save Control value */
+      "   MRS R0, PSPLIM        \n"   /* Save process stack value */
       "   LDR R1, =0xAAAAAAA8   \n"
-      "   MSR PSPLIM, R1        \n" /* load process stack value */
-#ifndef IAR_TESTING                 /* GCC */
+      "   MSR PSPLIM, R1        \n"   /* load process stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PSPLIM_S_ASM_BKPT:   \n"
 #else
       "IEC60730_CPU_REGS_PSPLIM_S_ASM_BKPT::  \n"
 #endif
-      "   MRS R2, PSPLIM        \n" /* Get back process stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MRS R2, PSPLIM        \n"   /* Get back process stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSPLIM_S   \n"
       "   LDR R1, =0x55555550   \n"
-      "   MSR PSPLIM, R1        \n" /* load process stack value */
-      "   MRS R2, PSPLIM        \n" /* Get back process stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MSR PSPLIM, R1        \n"   /* load process stack value */
+      "   MRS R2, PSPLIM        \n"   /* Get back process stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSPLIM_S   \n"
-      "   MSR PSPLIM, R0        \n" /* Restore process stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
+      "   MSR PSPLIM, R0        \n"   /* Restore process stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_PSPLIM_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_FAIL_ENDLESS_LOOP_PSPLIM_S:   \n"
 #else
       "IEC60730_FAIL_ENDLESS_LOOP_PSPLIM_S::  \n"
 #endif
-      "   MSR PSPLIM, R0        \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
-      "   MOVS %0, #0x0         \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MSR PSPLIM, R0        \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
+      "   MOVS %0, #0x0         \n"   /* result equal IEC60730_TEST_FAILED*/
       "   B IEC60730_CPU_REGS_PSPLIM_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -381,8 +381,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_psplim_s(void)
 #else
       "IEC60730_CPU_REGS_PSPLIM_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1         \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i               \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1         \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i               \n"   /*Enable IRQ Interrupts*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PSPLIM_S_DONE:   \n"
@@ -408,14 +408,14 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_psplim_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_control_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i              \n" /*Disable IRQ Interrupts*/
+      "   CPSID i              \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, CONTROL     \n"
       "   MOVW R1, #0x000A    \n"
       "   MSR CONTROL, R1     \n"
@@ -444,8 +444,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_control_s(void)
 #else
       "IEC60730_CPU_REGS_CONTROL_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"   /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_CONTROL_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -459,7 +459,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_control_s(void)
       "IEC60730_CPU_REGS_CONTROL_S_FAIL_ASM_BKPT::  \n"
 #endif
       "   MSR CONTROL, R0     \n"
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_CONTROL_S_DONE:  \n"
@@ -485,14 +485,14 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_control_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, PRIMASK     \n"
       "   MOVW R1, #0x0001    \n"
       "   MSR PRIMASK, R1     \n"
@@ -515,8 +515,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask_s(void)
 #else
       "IEC60730_CPU_REGS_PRIMASK_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1      \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i            \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1      \n"    /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i            \n"    /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_PRIMASK_S_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PRIMASK_S_FAIL:  \n"
@@ -524,7 +524,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask_s(void)
       "IEC60730_CPU_REGS_PRIMASK_S_FAIL:: \n"
 #endif
       "   MSR PRIMASK, R0     \n"
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PRIMASK_S_DONE:  \n"
@@ -550,14 +550,14 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, BASEPRI     \n"
       "   MOV R1, #0xA0       \n"
       "   MSR BASEPRI, R1     \n"
@@ -582,8 +582,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri_s(void)
 #else
       "IEC60730_CPU_REGS_BASEPRI_S_PASS_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"   /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_BASEPRI_S_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_BASEPRI_S_FAIL:  \n"
@@ -591,7 +591,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri_s(void)
       "IEC60730_CPU_REGS_BASEPRI_S_FAIL:: \n"
 #endif
       "   MSR BASEPRI, R0     \n"
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_BASEPRI_S_DONE:  \n"
@@ -617,14 +617,14 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri_s(void)
  * secure state.
  *****************************************************************************/
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask_s(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i               \n" /*Disable IRQ Interrupts*/
+      "   CPSID i               \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, FAULTMASK     \n"
       "   MOV R1, #1            \n"
       "   MSR FAULTMASK, R1     \n"
@@ -647,8 +647,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask_s(void)
 #else
       "IEC60730_CPU_REGS_FAULTMASK_S_PASS_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x1         \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i               \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1         \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i               \n"   /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_FAULTMASK_S_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FAULTMASK_S_FAIL:  \n"
@@ -656,7 +656,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask_s(void)
       "IEC60730_CPU_REGS_FAULTMASK_S_FAIL:: \n"
 #endif
       "   MSR FAULTMASK, R0     \n"
-      "   MOVS %0, #0x0         \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0         \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FAULTMASK_S_DONE:  \n"

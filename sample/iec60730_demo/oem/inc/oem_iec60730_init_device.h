@@ -33,16 +33,16 @@
 
 #define WDOG_INIT_TEST                                                         \
   {                                                                            \
-      true,            /* Start watchdog when initialization is done. */       \
-      false,           /* WDOG is not counting during debug halt. */           \
-      false,           /* WDOG is not counting when in EM2. */                 \
-      false,           /* WDOG is not counting when in EM3. */                 \
-      false,           /* EM4 can be entered. */                               \
-      false,           /* Do not lock WDOG configuration. */                   \
-      wdogPeriod_256k, /* Set longest possible timeout period. */              \
-      wdogWarnDisable, /* Disable warning interrupt. */                        \
-      wdogIllegalWindowDisable, /* Disable illegal window interrupt. */        \
-      false                     /* Do not disable reset. */                    \
+    true,            /* Start watchdog when initialization is done. */       \
+    false,           /* WDOG is not counting during debug halt. */           \
+    false,           /* WDOG is not counting when in EM2. */                 \
+    false,           /* WDOG is not counting when in EM3. */                 \
+    false,           /* EM4 can be entered. */                               \
+    false,           /* Do not lock WDOG configuration. */                   \
+    wdogPeriod_256k, /* Set longest possible timeout period. */              \
+    wdogWarnDisable, /* Disable warning interrupt. */                        \
+    wdogIllegalWindowDisable, /* Disable illegal window interrupt. */        \
+    false                     /* Do not disable reset. */                    \
   }
 
 void oem_system_config(void);

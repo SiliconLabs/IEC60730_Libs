@@ -131,7 +131,7 @@ Test_integrated_ns.o: $(TEST_DIR)/src/Test_integrated_ns.c
 	$(CC) $(CFLAGS) $(CMSE_FLAG) $(DEPENDENCIES_FLAG) $(CUR_BUILDDIR)/Test_integrated_ns.d -o $(CUR_BUILDDIR)/$@ $^
 	@echo 'Finished building: $<'
 	@echo ' '
-
+  
 em_wdog.o: $(TEST_DIR)/comm/emlib/src/em_wdog.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: $(COMPILER) ARM C Compiler'

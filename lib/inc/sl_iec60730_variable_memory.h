@@ -15,14 +15,14 @@
  *
  ******************************************************************************/
 
-#ifndef IEC60730_VARIABLE_MEMORY_H_
-#define IEC60730_VARIABLE_MEMORY_H_
+#ifndef SL_IEC60730_VARIABLE_MEMORY_H
+#define SL_IEC60730_VARIABLE_MEMORY_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
-#include IEC_BOARD_HEADER
+#include SL_IEC60730_BOARD_HEADER
 
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
@@ -79,7 +79,7 @@ extern "C" {
  * sections SHOULD be placed in the correct order: (*.rt_buf*) -> (*.overlap*).
  * DO NOT change this order. Please refer to our example linker for more details.
  *
- * User need declare a variable of struct #sl_iec60730_vmc_params_t. In the initialization
+ * User need declare a variable of struct #sl_iec60730_vmc_test_region_t. In the initialization
  * step, We need to assign the start address and end address to this variable for
  * executing the VMC. We will call the starting address #RAMTEST_START and the
  * ending address #RAMTEST_END to make it easier to describe later.
@@ -87,7 +87,7 @@ extern "C" {
  * \anchor iec60730_bk_buf
  *   * Variable \ref iec60730_bk_buf is a buffer used to backup data during testing process
  * and is placed at (*.rt_buf*) section. The size of this variable is defined in
- * #IEC_BOARD_HEADER (i.e #RT_BLOCKSIZE definition). The #RT_BLOCKSIZE definition
+ * #SL_IEC60730_BOARD_HEADER (i.e #RT_BLOCKSIZE definition). The #RT_BLOCKSIZE definition
  * will be mentioned later.
  *
  * \anchor iec60730_ram_test_overlap
@@ -100,7 +100,7 @@ extern "C" {
  * process and is placed at (*.classb_ram*) section. In case \ref iec60730_rt_check is
  * less than #RAMTEST_END, every time function #sl_iec60730_vmc_bist is invoked and
  * test is done, then the value of \ref iec60730_rt_check increases by #BLOCKSIZE. The
- * #BLOCKSIZE definition is defined in #IEC_BOARD_HEADER and will be mentioned
+ * #BLOCKSIZE definition is defined in #SL_IEC60730_BOARD_HEADER and will be mentioned
  * later. Otherwise, we test the backup buffer (i.e the iec60730_bk_buf variable is
  * mentioned above).
  *
@@ -109,10 +109,10 @@ extern "C" {
  * callback function named #sl_iec60730_vmc_post_run_marchxc_step, and the user decides what
  * to do after the RAM test is over.
  *
- * As mentioned about #IEC_BOARD_HEADER in @ref IEC60730_INVARIABLE_MEMORY_Test
- * module, the definition #IEC_BOARD_HEADER also has the necessary information
+ * As mentioned about #SL_IEC60730_BOARD_HEADER in @ref IEC60730_INVARIABLE_MEMORY_Test
+ * module, the definition #SL_IEC60730_BOARD_HEADER also has the necessary information
  * for VMC module to run. The #RAMTEST_START and #RAMTEST_END definitions are used to
- * assigned to start, and end member of a variable of type #sl_iec60730_vmc_params_t. Two
+ * assigned to start, and end member of a variable of type #sl_iec60730_vmc_test_region_t. Two
  * definitions are optional because the user can directly assign values to the
  * start and end member of a variable as long as these values satisfy the
  * conditions describled of the #RAMTEST_START, and #RAMTEST_END definitions. The
@@ -183,7 +183,7 @@ extern "C" {
 /**************************************************************************/ /**
  * public IEC60730 Variable Memory Check (VMC) POST
  *
- * @param params input parameter of struct #sl_iec60730_vmc_params_t form
+ * @param params input parameter of struct #sl_iec60730_vmc_test_region_t form
  *
  * @returns #sl_iec60730_test_result_t.
  *          * If test fails, returns #IEC60730_TEST_FAILED
@@ -198,7 +198,7 @@ sl_iec60730_test_result_t sl_iec60730_vmc_post(void);
 /**************************************************************************/ /**
  * public IEC60730 Variable Memory Check (VMC) BIST
  *
- * @param params input parameter of struct #sl_iec60730_vmc_params_t form
+ * @param params input parameter of struct #sl_iec60730_vmc_test_region_t form
  *
  * @returns #sl_iec60730_test_result_t.
  *          * If test fails, return #IEC60730_TEST_FAILED;
@@ -214,24 +214,6 @@ sl_iec60730_test_result_t sl_iec60730_vmc_post(void);
  *****************************************************************************/
 sl_iec60730_test_result_t sl_iec60730_vmc_bist(void);
 
-/** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
-
-/**************************************************************************/ /**
- * @addtogroup IEC60730_VARIABLE_MEMORY_Test
- * @{
- *****************************************************************************/
-#ifdef DOXYGEN
-
-/// The #RAMTEST_START definition describles the start address of the RAM area
-/// under test. The RAMTEST_START definition SHOULD be multiple of 4.
-#define RAMTEST_START
-
-/// The #RAMTEST_END definition describle the end address of the RAM area under
-/// test. The #RAMTEST_END definition can get value as long as (#RAMTEST_END
-/// \- #RAMTEST_START + 1) is a multiple of 4. Value 4 to ensure the algorithm
-/// runs correctly, it is also the value defined in #BLOCKSIZE definition.
-#define RAMTEST_END
-
 /**************************************************************************/ /**
  * @brief This function is called before performing the RAM check. Depending on
  * the RAM region will be checked to give reasonable actions.
@@ -245,7 +227,7 @@ sl_iec60730_test_result_t sl_iec60730_vmc_bist(void);
  *          * false - not allow
  *
  *****************************************************************************/
-void sl_iec60730_vmc_pre_run_marchxc_step(uint32_t *addr, uint32_t size);
+bool sl_iec60730_vmc_pre_run_marchxc_step(uint32_t *addr, uint32_t size);
 
 /**************************************************************************/ /**
  * @brief After testing the RAM, you can restore the previous work.
@@ -258,11 +240,11 @@ void sl_iec60730_vmc_pre_run_marchxc_step(uint32_t *addr, uint32_t size);
  *****************************************************************************/
 void sl_iec60730_vmc_post_run_marchxc_step(uint32_t *addr, uint32_t size);
 
-#endif // DOXYGEN
+/** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* IEC60730_VARIABLE_MEMORY_H_ */
+#endif /* SL_IEC60730_VARIABLE_MEMORY_H */

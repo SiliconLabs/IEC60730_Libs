@@ -35,7 +35,7 @@ static sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask(void);
 #endif //(IEC60370_CPU == IEC60370_CM4)
 
 #if ((defined(__FPU_PRESENT) && (__FPU_PRESENT == 1U))                         \
-     && (defined(__FPU_USED) && (__FPU_USED == 1U)))
+    && (defined(__FPU_USED) && (__FPU_USED == 1U)))
 static sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void);
 static sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpsx(void);
 #endif // ((defined (__FPU_PRESENT) && (__FPU_USED == 1U))
@@ -154,45 +154,45 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_core(void)
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i                       \n" /*Disable IRQ Interrupts*/
+      "   CPSID i                       \n"   /*Disable IRQ Interrupts*/
       /* Safe critical registers. According calling convention. */
       "STMDB SP!, {R4, R5, R6, R7, R8, R9, R10, R11, R14}   \n"
 
       /* Register APSR */
-      "MOVS R0, #0x0000                 \n" /* Set Z(ero) Flag */
-#ifndef IAR_TESTING                         /* GCC */
+      "MOVS R0, #0x0000                 \n"   /* Set Z(ero) Flag */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_CORE_Z_FLAG_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_CORE_Z_FLAG_ASM_BKPT:: \n"
 #endif
-      "   BNE.W IEC60730_FAIL_ENDLESS_LOOP_CORE     \n" /* Fails if Z clear */
-      "   SUBS R0,#1                    \n" /* Set N(egative) Flag */
-#ifndef IAR_TESTING                         /* GCC */
+      "   BNE.W IEC60730_FAIL_ENDLESS_LOOP_CORE     \n"   /* Fails if Z clear */
+      "   SUBS R0,#1                    \n"   /* Set N(egative) Flag */
+#ifndef IAR_TESTING  /* GCC */
       "IEC60730_CPU_REGS_CORE_N_FLAG_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_CORE_N_FLAG_ASM_BKPT:: \n"
 #endif
-      "   BPL.W IEC60730_FAIL_ENDLESS_LOOP_CORE     \n" /* Fails if N clear */
-      "   ADDS R0,#2                    \n" /* Set C(array) Flag and do not set Z*/
-#ifndef IAR_TESTING                         /* GCC */
+      "   BPL.W IEC60730_FAIL_ENDLESS_LOOP_CORE     \n"   /* Fails if N clear */
+      "   ADDS R0,#2                    \n"   /* Set C(array) Flag and do not set Z*/
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_CORE_C_FLAG_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_CORE_C_FLAG_ASM_BKPT:: \n"
 #endif
-      "   BCC.W IEC60730_FAIL_ENDLESS_LOOP_CORE   \n" /* Fails if C clear */
-      "   LDR R0, =0x80000000           \n" /* Prepares Overflow test */
-      "   ADDS R0, R0, R0               \n" /* Set V(overflow) Flag */
-#ifndef IAR_TESTING                         /* GCC */
+      "   BCC.W IEC60730_FAIL_ENDLESS_LOOP_CORE   \n"   /* Fails if C clear */
+      "   LDR R0, =0x80000000           \n"             /* Prepares Overflow test */
+      "   ADDS R0, R0, R0               \n"             /* Set V(overflow) Flag */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_CORE_V_FLAG_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_CORE_V_FLAG_ASM_BKPT:: \n"
 #endif
-      "   BVC.W IEC60730_FAIL_ENDLESS_LOOP_CORE   \n" /* Fails if V clear */
-      "   LDR R0, =0xFFFFFFFF           \n" /* Prepares Saturation test */
-      "   USAT R1,#10,R0                \n" /* Set Q(saturation) Flag */
-      "   MRS R0, APSR                  \n" /* Get Status register */
-      "   CMP R0, #0x78000000           \n" /* Verifies that Z=C=V=Q=1 */
-      "   BNE.W IEC60730_FAIL_ENDLESS_LOOP_CORE   \n" /* Fails if Z=C=V=Q clear */
+      "   BVC.W IEC60730_FAIL_ENDLESS_LOOP_CORE   \n"   /* Fails if V clear */
+      "   LDR R0, =0xFFFFFFFF           \n"   /* Prepares Saturation test */
+      "   USAT R1,#10,R0                \n"   /* Set Q(saturation) Flag */
+      "   MRS R0, APSR                  \n"   /* Get Status register */
+      "   CMP R0, #0x78000000           \n"   /* Verifies that Z=C=V=Q=1 */
+      "   BNE.W IEC60730_FAIL_ENDLESS_LOOP_CORE   \n"   /* Fails if Z=C=V=Q clear */
       /* Register R0 (holds value returned by the function) */
       "   LDR R0, =0xAAAAAAAA           \n"
 #ifndef IAR_TESTING /* GCC */
@@ -371,12 +371,12 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_core(void)
       "IEC60730_CPU_REGS_CORE_LR_ASM_BKPT:: \n"
 #endif
       "   MOV R2, LR                    \n"
-      "   CMP R2, R1                    \n" /* Verify value */
+      "   CMP R2, R1                    \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_CORE   \n"
       "   LDR.W R1, =0x55555555         \n"
       "   MOV LR, R1                    \n"
       "   MOV R2, LR                    \n"
-      "   CMP R2, R1                    \n" /* Verify value */
+      "   CMP R2, R1                    \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_CORE     \n"
       "   B IEC60730_CPU_REGS_CORE_PASS_ASM_BKPT  \n"
 #ifndef IAR_TESTING /* GCC */
@@ -392,7 +392,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_core(void)
 #else
       "IEC60730_CPU_REGS_CORE_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1                   \n" /* result equal IEC60730_TEST_PASSED*/
+      "   MOVS %0, #0x1                   \n"   /* result equal IEC60730_TEST_PASSED*/
       "   B IEC60730_CPU_REGS_CORE_DONE   \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -400,7 +400,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_core(void)
 #else
       "IEC60730_CPU_REGS_CORE_FAIL::      \n"
 #endif
-      "   MOVS %0, #0x0                   \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0                   \n"   /* result equal IEC60730_TEST_FAILED*/
 
 /* Restore critical registers */
 #ifndef IAR_TESTING /* GCC */
@@ -409,7 +409,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_core(void)
       "IEC60730_CPU_REGS_CORE_DONE::  \n"
 #endif
       "   LDMIA SP!, {R4, R5, R6, R7, R8, R9, R10, R11,R14}   \n"
-      : "=r"(result)::"memory"); /* set output variable result*/
+      : "=r"(result)::"memory");    /* set output variable result*/
 
   return result;
 }
@@ -433,35 +433,35 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp(void)
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i               \n" /*Disable IRQ Interrupts*/
-      "   MRS R3, CONTROL       \n" /* Save Control value */
-      "   MRS R0, MSP           \n" /* Save stack value */
+      "   CPSID i               \n"   /*Disable IRQ Interrupts*/
+      "   MRS R3, CONTROL       \n"   /* Save Control value */
+      "   MRS R0, MSP           \n"   /* Save stack value */
       "   LDR R1, =0xAAAAAAA8   \n"
-      "   MSR MSP, R1           \n" /* load stack value */
-#ifndef IAR_TESTING                 /* GCC */
+      "   MSR MSP, R1           \n"   /* load stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_MSP_S_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_MSP_S_ASM_BKPT:: \n"
 #endif
-      "   MRS R2, MSP           \n" /* Get back stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MRS R2, MSP           \n"   /* Get back stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP   \n"
       "   LDR R1, =0x55555554   \n"
-      "   MSR MSP, R1           \n" /* load stack value */
-      "   MRS R2, MSP           \n" /* Get back stack value */
-      "   CMP R2, R1            \n" /* Verify value */
+      "   MSR MSP, R1           \n"   /* load stack value */
+      "   MRS R2, MSP           \n"   /* Get back stack value */
+      "   CMP R2, R1            \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP   \n"
-      "   MSR MSP, R0           \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
+      "   MSR MSP, R0           \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_MSP_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_FAIL_ENDLESS_LOOP_MSP:  \n"
 #else
       "IEC60730_FAIL_ENDLESS_LOOP_MSP:: \n"
 #endif
-      "   MSR MSP, R0           \n" /* Restore stack value */
-      "   MSR CONTROL, R3       \n" /* Restore Control value */
-      "   MOVS %0, #0x0         \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MSR MSP, R0           \n"   /* Restore stack value */
+      "   MSR CONTROL, R3       \n"   /* Restore Control value */
+      "   MOVS %0, #0x0         \n"   /* result equal IEC60730_TEST_FAILED*/
       "   B IEC60730_CPU_REGS_MSP_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -469,15 +469,15 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp(void)
 #else
       "IEC60730_CPU_REGS_MSP_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"     /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"     /*Enable IRQ Interrupts*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_MSP_S_DONE:  \n"
 #else
       "IEC60730_CPU_REGS_MSP_S_DONE:: \n"
 #endif
-      : "=r"(result)::"memory"); /* set output variable result*/
+      : "=r"(result)::"memory");     /* set output variable result*/
 
   return result;
 }
@@ -499,38 +499,38 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp(void)
 #if (IEC60370_CPU == IEC60370_CM4)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp(void)
 {
-  sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
+sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
-      "   MRS R3, CONTROL     \n" /* Save Control value */
-      "   MRS R0, PSP         \n" /* Save process stack value */
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
+      "   MRS R3, CONTROL     \n"   /* Save Control value */
+      "   MRS R0, PSP         \n"   /* Save process stack value */
       "   LDR R1, =0xAAAAAAA8 \n"
-      "   MSR PSP, R1         \n" /* load process stack value */
-#ifndef IAR_TESTING               /* GCC */
+      "   MSR PSP, R1         \n"   /* load process stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PSP_S_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_PSP_S_ASM_BKPT:: \n"
 #endif
-      "   MRS R2, PSP         \n" /* Get back process stack value */
-      "   CMP R2, R1          \n" /* Verify value */
+      "   MRS R2, PSP         \n"   /* Get back process stack value */
+      "   CMP R2, R1          \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP   \n"
       "   LDR R1, =0x55555554 \n"
-      "   MSR PSP, R1         \n" /* load process stack value */
-      "   MRS R2, PSP         \n" /* Get back process stack value */
-      "   CMP R2, R1          \n" /* Verify value */
+      "   MSR PSP, R1         \n"   /* load process stack value */
+      "   MRS R2, PSP         \n"   /* Get back process stack value */
+      "   CMP R2, R1          \n"   /* Verify value */
       "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP   \n"
-      "   MSR PSP, R0         \n" /* Restore process stack value */
-      "   MSR CONTROL, R3     \n" /* Restore Control value */
+      "   MSR PSP, R0         \n"   /* Restore process stack value */
+      "   MSR CONTROL, R3     \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_PSP_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_FAIL_ENDLESS_LOOP_PSP:  \n"
 #else
       "IEC60730_FAIL_ENDLESS_LOOP_PSP:: \n"
 #endif
-      "   MSR PSP, R0         \n" /* Restore stack value */
-      "   MSR CONTROL, R3     \n" /* Restore Control value */
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MSR PSP, R0         \n"   /* Restore stack value */
+      "   MSR CONTROL, R3     \n"   /* Restore Control value */
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
       "   B IEC60730_CPU_REGS_PSP_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -539,8 +539,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp(void)
       "IEC60730_CPU_REGS_PSP_S_PASS_ASM_BKPT::  \n"
 #endif
 
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"   /*Enable IRQ Interrupts*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PSP_S_DONE:  \n"
@@ -567,10 +567,10 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_psp(void)
 #if (IEC60370_CPU == IEC60370_CM4)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_control(void)
 {
-  sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
+ sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, CONTROL     \n"
       "   MOVW R1, #0x0002    \n"
       "   MSR CONTROL, R1     \n"
@@ -599,8 +599,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_control(void)
 #else
       "IEC60730_CPU_REGS_CONTROL_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"   /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_CONTROL_S_DONE    \n"
 
 #ifndef IAR_TESTING /* GCC */
@@ -614,7 +614,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_control(void)
       "IEC60730_CPU_REGS_CONTROL_S_FAIL_ASM_BKPT::  \n"
 #endif
       "   MSR CONTROL, R0     \n"
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_CONTROL_S_DONE:  \n"
@@ -644,7 +644,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask(void)
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, PRIMASK     \n"
       "   MOVW R1, #0x0001    \n"
       "   MSR PRIMASK, R1     \n"
@@ -667,8 +667,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask(void)
 #else
       "IEC60730_CPU_REGS_PRIMASK_S_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1      \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i            \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1      \n"    /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i            \n"    /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_PRIMASK_S_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PRIMASK_S_FAIL:  \n"
@@ -676,7 +676,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask(void)
       "IEC60730_CPU_REGS_PRIMASK_S_FAIL:: \n"
 #endif
       "   MSR PRIMASK, R0     \n"
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_PRIMASK_S_DONE:  \n"
@@ -703,10 +703,10 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_primask(void)
 #if (IEC60370_CPU == IEC60370_CM4)
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri(void)
 {
-  sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
+ sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i             \n" /*Disable IRQ Interrupts*/
+      "   CPSID i             \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, BASEPRI     \n"
       "   MOV R1, #0xA0       \n"
       "   MSR BASEPRI, R1     \n"
@@ -731,8 +731,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri(void)
 #else
       "IEC60730_CPU_REGS_BASEPRI_S_PASS_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x1       \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i             \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1       \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i             \n"   /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_BASEPRI_S_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_BASEPRI_S_FAIL:  \n"
@@ -740,7 +740,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_basepri(void)
       "IEC60730_CPU_REGS_BASEPRI_S_FAIL:: \n"
 #endif
       "   MSR BASEPRI, R0     \n"
-      "   MOVS %0, #0x0       \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0       \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_BASEPRI_S_DONE:  \n"
@@ -770,7 +770,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask(void)
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
   __asm volatile(
-      "   CPSID i               \n" /*Disable IRQ Interrupts*/
+      "   CPSID i               \n"   /*Disable IRQ Interrupts*/
       "   MRS R0, FAULTMASK     \n"
       "   MOV R1, #1            \n"
       "   MSR FAULTMASK, R1     \n"
@@ -793,8 +793,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask(void)
 #else
       "IEC60730_CPU_REGS_FAULTMASK_S_PASS_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x1         \n" /* result equal IEC60730_TEST_PASSED*/
-      "   CPSIE i               \n" /*Enable IRQ Interrupts*/
+      "   MOVS %0, #0x1         \n"   /* result equal IEC60730_TEST_PASSED*/
+      "   CPSIE i               \n"   /*Enable IRQ Interrupts*/
       "   B IEC60730_CPU_REGS_FAULTMASK_S_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FAULTMASK_S_FAIL:  \n"
@@ -802,7 +802,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_faultmask(void)
       "IEC60730_CPU_REGS_FAULTMASK_S_FAIL:: \n"
 #endif
       "   MSR FAULTMASK, R0     \n"
-      "   MOVS %0, #0x0         \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0         \n"   /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FAULTMASK_S_DONE:  \n"
@@ -834,32 +834,32 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void)
   sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 
 #if ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)                  \
-     && (__TZ_PRESENT == 1))                                                   \
+    && (__TZ_PRESENT == 1))                                                   \
     && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
   __asm volatile(
-      "   CPSID i                     \n" /*Disable IRQ Interrupts*/
+      "   CPSID i                     \n"   /*Disable IRQ Interrupts*/
       "   STMDB SP!, {R4, R5, R6}     \n"
       "   LDR R0, =0xE000ED88         \n"
-      "   LDR R5, [R0, #0]            \n" /* Save CPACR to R5 */
+      "   LDR R5, [R0, #0]            \n"   /* Save CPACR to R5 */
       "   LDR R0, =0xE000EF34         \n"
-      "   LDR R6, [R0, #0]            \n" /* Save FPCCR to R6 */
-      "   VMRS R4, FPSCR              \n" /* Save FPSCR register to R4 */
-      "   MOV R1, R6                  \n" /* Copy FPCCR to R1 */
-      "   ORR R1, R1, #0xC0000000     \n" /* Set ASPEN_MASK and LSPEN_MASK */
-      "   STR R1, [R0, #0]            \n" /* Write back to FPCCR */
-      "   MOV R1, R5                  \n" /* Load CPACR value from R5 */
-      "   ORR R1, R1, #0xF00000       \n" /* Enable FPU on CPACR */
+      "   LDR R6, [R0, #0]            \n"   /* Save FPCCR to R6 */
+      "   VMRS R4, FPSCR              \n"   /* Save FPSCR register to R4 */
+      "   MOV R1, R6                  \n"   /* Copy FPCCR to R1 */
+      "   ORR R1, R1, #0xC0000000     \n"   /* Set ASPEN_MASK and LSPEN_MASK */
+      "   STR R1, [R0, #0]            \n"   /* Write back to FPCCR */
+      "   MOV R1, R5                  \n"   /* Load CPACR value from R5 */
+      "   ORR R1, R1, #0xF00000       \n"   /* Enable FPU on CPACR */
       "   LDR R0, =0xE000ED88         \n"
-      "   STR R1, [R0, #0]            \n" /* Write back to CPACR */
+      "   STR R1, [R0, #0]            \n"   /* Write back to CPACR */
       "   LDR R1, =0x55400015         \n"
-      "   VMSR FPSCR, R1              \n" /* load process stack value */
-#ifndef IAR_TESTING                       /* GCC */
+      "   VMSR FPSCR, R1              \n"   /* load process stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_FPSCR_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_FPU_FPSCR_ASM_BKPT:: \n"
 #endif
-      "   VMRS R2, FPSCR              \n" /* Get back process stack value */
-      "   CMP R2, R1                  \n" /* Verify value */
+      "   VMRS R2, FPSCR              \n"   /* Get back process stack value */
+      "   CMP R2, R1                  \n"   /* Verify value */
       "   BNE IEC60730_CPU_REGS_FPU_FPSCR_FAIL   \n"
       "   LDR R1, =0xA280008A         \n"
       "   VMSR FPSCR, R1              \n"
@@ -872,7 +872,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void)
 #else
       "IEC60730_CPU_REGS_FPU_FPSCR_PASS_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x1               \n" /* result equal IEC60730_TEST_PASSED*/
+      "   MOVS %0, #0x1               \n"   /* result equal IEC60730_TEST_PASSED*/
       "   B IEC60730_CPU_REGS_FPU_FPSCR_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_FPSCR_FAIL:  \n"
@@ -884,7 +884,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void)
 #else
       "IEC60730_CPU_REGS_FPU_FPSCR_FAIL_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x0               \n" /* result equal IEC60730_TEST_FAILED*/
+      "   MOVS %0, #0x0               \n"    /* result equal IEC60730_TEST_FAILED*/
 
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_FPSCR_DONE:  \n"
@@ -892,42 +892,42 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void)
       "IEC60730_CPU_REGS_FPU_FPSCR_DONE:: \n"
 #endif
       "   LDR R1, =0xE000ED88         \n"
-      "   STR R5, [R1, #0]            \n" /* Restore CPACR */
+      "   STR R5, [R1, #0]            \n"   /* Restore CPACR */
       "   LDR R1, =0xE000EF34         \n"
-      "   STR R6, [R1, #0]            \n" /* Restore FPCCR */
-      "   VMSR FPSCR, R4              \n" /* Restore FPSCR */
+      "   STR R6, [R1, #0]            \n"   /* Restore FPCCR */
+      "   VMSR FPSCR, R4              \n"   /* Restore FPSCR */
       "   LDMIA SP!, {R4, R5, R6}     \n"
-      "   CPSIE i                     \n" /*Enable IRQ Interrupts*/
+      "   CPSIE i                     \n"   /*Enable IRQ Interrupts*/
       : "=r"(result)::"memory");
 #endif
 
 #if (IEC60370_CPU == IEC60370_CM4)
   __asm volatile(
-      "   CPSID i                     \n" /*Disable IRQ Interrupts*/
+      "   CPSID i                     \n"   /*Disable IRQ Interrupts*/
       "   STMDB SP!, {R4, R5, R6}     \n"
       "   MOVW R1, #0x0004            \n"
       "   MSR CONTROL, R1             \n"
       "   LDR.W R0, =0xE000ED88       \n"
-      "   LDR R5, [R0, #0]            \n" /* Save CPACR to R5 */
+      "   LDR R5, [R0, #0]            \n"   /* Save CPACR to R5 */
       "   LDR R0, =0xE000EF34         \n"
-      "   LDR R6, [R0, #0]            \n" /* Save FPCCR to R6 */
-      "   VMRS R4, FPSCR              \n" /* Save FPSCR register to R4 */
-      "   MOV R1, R6                  \n" /* Copy FPCCR to R1 */
-      "   ORR R1, R1, #0xC0000000     \n" /* Set ASPEN_MASK and LSPEN_MASK */
-      "   STR R1, [R0, #0]            \n" /* Write back to FPCCR */
-      "   MOV R1, R5                  \n" /* Load CPACR value from R5 */
-      "   ORR R1, R1, #0xF00000       \n" /* Enable FPU on CPACR */
+      "   LDR R6, [R0, #0]            \n"   /* Save FPCCR to R6 */
+      "   VMRS R4, FPSCR              \n"   /* Save FPSCR register to R4 */
+      "   MOV R1, R6                  \n"   /* Copy FPCCR to R1 */
+      "   ORR R1, R1, #0xC0000000     \n"   /* Set ASPEN_MASK and LSPEN_MASK */
+      "   STR R1, [R0, #0]            \n"   /* Write back to FPCCR */
+      "   MOV R1, R5                  \n"   /* Load CPACR value from R5 */
+      "   ORR R1, R1, #0xF00000       \n"   /* Enable FPU on CPACR */
       "   LDR R0, =0xE000ED88         \n"
-      "   STR R1, [R0, #0]            \n" /* Write back to CPACR */
+      "   STR R1, [R0, #0]            \n"   /* Write back to CPACR */
       "   LDR R1, =0x55400015         \n"
-      "   VMSR FPSCR, R1              \n" /* load process stack value */
-#ifndef IAR_TESTING                       /* GCC */
+      "   VMSR FPSCR, R1              \n"   /* load process stack value */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_FPSCR_ASM_BKPT:  \n"
 #else
       "IEC60730_CPU_REGS_FPU_FPSCR_ASM_BKPT:: \n"
 #endif
-      "   VMRS R2, FPSCR              \n" /* Get back process stack value */
-      "   CMP R2, R1                  \n" /* Verify value */
+      "   VMRS R2, FPSCR              \n"   /* Get back process stack value */
+      "   CMP R2, R1                  \n"   /* Verify value */
       "   BNE IEC60730_CPU_REGS_FPU_FPSCR_FAIL   \n"
       "   LDR R1, =0xA280008A         \n"
       "   VMSR FPSCR, R1              \n"
@@ -940,7 +940,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void)
 #else
       "IEC60730_CPU_REGS_FPU_FPSCR_PASS_ASM_BKPT::  \n"
 #endif
-      "   MOVS %0, #0x1               \n" /* result equal IEC60730_TEST_PASSED*/
+      "   MOVS %0, #0x1               \n"   /* result equal IEC60730_TEST_PASSED*/
       "   B IEC60730_CPU_REGS_FPU_FPSCR_DONE    \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_FPSCR_FAIL:  \n"
@@ -953,18 +953,18 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpscr(void)
       "IEC60730_CPU_REGS_FPU_FPSCR_FAIL_ASM_BKPT::  \n"
 #endif
       "   MOVS %0, #0x0                 \n" /* result equal IEC60730_TEST_FAILED*/
-#ifndef IAR_TESTING                         /* GCC */
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_FPSCR_DONE:  \n"
 #else
       "IEC60730_CPU_REGS_FPU_FPSCR_DONE:: \n"
 #endif
       "   LDR R1, =0xE000ED88           \n"
-      "   STR R5, [R1, #0]              \n" /* Restore CPACR */
+      "   STR R5, [R1, #0]              \n"   /* Restore CPACR */
       "   LDR R1, =0xE000EF34           \n"
-      "   STR R6, [R1, #0]              \n" /* Restore FPCCR */
-      "   VMSR FPSCR, R4                \n" /* Restore FPSCR */
+      "   STR R6, [R1, #0]              \n"   /* Restore FPCCR */
+      "   VMSR FPSCR, R4                \n"   /* Restore FPSCR */
       "   LDMIA SP!, {R4, R5, R6}       \n"
-      "   CPSIE i                       \n" /*Enable IRQ Interrupts*/
+      "   CPSIE i                       \n"   /*Enable IRQ Interrupts*/
       : "=r"(result)::"memory");
 #endif
 
@@ -989,22 +989,22 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpsx(void)
 #if (IEC60370_CPU == IEC60370_CM4)                                             \
     || ((IEC60370_CPU == IEC60370_CM33) && defined(__TZ_PRESENT)               \
         && (__TZ_PRESENT == 1))                                                \
-           && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
+        && defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
   __asm volatile(
-      "   CPSID i                       \n" /*Disable IRQ Interrupts*/
+      "   CPSID i                       \n"   /*Disable IRQ Interrupts*/
       "   STMDB SP!, {R4, R5, R6}       \n"
       "   LDR.W R0, =0xE000ED88         \n"
-      "   LDR R5, [R0, #0]              \n" /* Save CPACR to R5 */
+      "   LDR R5, [R0, #0]              \n"   /* Save CPACR to R5 */
       "   LDR.W R0, =0xE000EF34         \n"
-      "   LDR R6, [R0, #0]              \n" /* Save FPCCR to R6 */
-      "   VMRS R4, FPSCR                \n" /* Save FPSCR register to R4 */
-      "   MOV R1, R6                    \n" /* Copy FPCCR to R1 */
-      "   ORR R1, R1, #0xC0000000       \n" /* Set ASPEN_MASK and LSPEN_MASK */
-      "   STR R1, [R0, #0]              \n" /* Write back to FPCCR */
-      "   MOV R1, R5                    \n" /* Load CPACR value from R5 */
-      "   ORR R1, R1, #0xF00000         \n" /* Enable FPU on CPACR */
+      "   LDR R6, [R0, #0]              \n"   /* Save FPCCR to R6 */
+      "   VMRS R4, FPSCR                \n"   /* Save FPSCR register to R4 */
+      "   MOV R1, R6                    \n"   /* Copy FPCCR to R1 */
+      "   ORR R1, R1, #0xC0000000       \n"   /* Set ASPEN_MASK and LSPEN_MASK */
+      "   STR R1, [R0, #0]              \n"   /* Write back to FPCCR */
+      "   MOV R1, R5                    \n"   /* Load CPACR value from R5 */
+      "   ORR R1, R1, #0xF00000         \n"   /* Enable FPU on CPACR */
       "   LDR.W R0, =0xE000ED88         \n"
-      "   STR R1, [R0, #0]              \n" /* Write back to CPACR */
+      "   STR R1, [R0, #0]              \n"   /* Write back to CPACR */
       "   VMOV R0, S0                   \n" /*S0 */
       "   LDR.W R1, =0x55555555         \n"
       "   VMOV S0, R1                   \n"
@@ -1677,26 +1677,26 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpsx(void)
 #else
       "IEC60730_CPU_REGS_FPU_Sx_PASS_ASM_BKPT:: \n"
 #endif
-      "   MOVS %0, #0x1                   \n" /* result equal IEC60730_TEST_PASSED*/
+      "   MOVS %0, #0x1                   \n"   /* result equal IEC60730_TEST_PASSED*/
       "   B IEC60730_CPU_REGS_FPU_Sx_DONE   \n"
 #ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_Sx_FAIL:   \n"
 #else
       "IEC60730_CPU_REGS_FPU_Sx_FAIL::  \n"
 #endif
-      "   MOVS %0, #0x0                   \n" /* result equal IEC60730_TEST_FAILED*/
-#ifndef IAR_TESTING                           /* GCC */
+      "   MOVS %0, #0x0                   \n"   /* result equal IEC60730_TEST_FAILED*/
+#ifndef IAR_TESTING /* GCC */
       "IEC60730_CPU_REGS_FPU_Sx_DONE: \n"
 #else
       "IEC60730_CPU_REGS_FPU_Sx_DONE::\n"
 #endif
-      "   LDR R1, =0xE000ED88             \n"
-      "   STR R5, [R1, #0]                \n" /* Restore CPACR */
-      "   LDR R1, =0xE000EF34             \n"
-      "   STR R6, [R1, #0]                \n" /* Restore FPCCR */
-      "   VMSR FPSCR, R4                  \n" /* Restore FPSCR */
+      "   LDR.W R1, =0xE000ED88           \n"
+      "   STR R5, [R1, #0]                \n"   /* Restore CPACR */
+      "   LDR.W R1, =0xE000EF34           \n"
+      "   STR R6, [R1, #0]                \n"   /* Restore FPCCR */
+      "   VMSR FPSCR, R4                  \n"   /* Restore FPSCR */
       "   LDMIA SP!, {R4, R5, R6}         \n"
-      "   CPSIE i                         \n" /*Enable IRQ Interrupts*/
+      "   CPSIE i                         \n"   /*Enable IRQ Interrupts*/
       : "=r"(result)::"memory");
 #endif
   return result;

@@ -54,16 +54,19 @@ void test_iec60730_module_demo(void)
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));
   current_test_numth = 0;
-
+  
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/test_iec60730_module_demo.c");
   run_test(test_addition, "test_addition",23);
   run_test(test_addition_failure, "test_addition_failure", 28);
   UnityEnd();
-  __asm volatile("IEC60730_UNIT_TEST_END:");
-
+  __asm volatile("IEC60730_UNIT_TEST_END:");    
+  
   while(1){
     // Do nothing
   }
 }
+
+
+

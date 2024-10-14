@@ -84,7 +84,7 @@ endif
 	@echo ' '
 
 ifneq ($(strip $(NON_SECURE_ACT)),true)
-	@echo 'Generating dump information: iec60730_$(COMPONENT).lst'
+	@echo 'Generating dump infomation: iec60730_$(COMPONENT).lst'
 	$(CC_OBJDUMP) $(OBJDUMP_FLAG) "$(CUR_BUILDDIR)/$(OUT_DIR)/iec60730_$(COMPONENT).axf" >"$(CUR_BUILDDIR)/$(OUT_DIR)/iec60730_$(COMPONENT).lst"
 	@echo ' '
 endif
@@ -116,7 +116,7 @@ iec60730_$(COMPONENT)$(NS_SUBFIX).axf: $(NS_OBJS)
 	$(CC_CP) $(SREC_FLAG) "$(CUR_BUILDDIR)/$(OUT_DIR)/iec60730_$(COMPONENT)$(NS_SUBFIX).axf" "$(CUR_BUILDDIR)/$(OUT_DIR)/iec60730_$(COMPONENT)$(NS_SUBFIX).s37"
 	@echo ' '
 
-	@echo 'Generating dump information: iec60730_$(COMPONENT)$(NS_SUBFIX).lst'
+	@echo 'Generating dump infomation: iec60730_$(COMPONENT)$(NS_SUBFIX).lst'
 	$(CC_OBJDUMP) $(OBJDUMP_FLAG) "$(CUR_BUILDDIR)/$(OUT_DIR)/iec60730_$(COMPONENT)$(NS_SUBFIX).axf" >"$(CUR_BUILDDIR)/$(OUT_DIR)/iec60730_$(COMPONENT)$(NS_SUBFIX).lst"
 	@echo ' '
 

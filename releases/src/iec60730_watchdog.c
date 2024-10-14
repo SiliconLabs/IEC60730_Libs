@@ -15,7 +15,7 @@
  *
  ******************************************************************************/
 
-#include "sl_iec60730_internal.h"
+#include "iec60730_internal.h"
 
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
@@ -71,7 +71,7 @@ void iec60730_RestartWatchdog(WDOG_TypeDef *wdog)
 
 #else // Series 2 devices
 
-  SL_IEC60370_DECLARE_IRQ_STATE
+  IEC60370_DECLARE_IRQ_STATE
 
   // WDOG should not be fed while it is disabled.
   if ((wdog->EN & WDOG_EN_EN) == 0U) {
@@ -81,11 +81,11 @@ void iec60730_RestartWatchdog(WDOG_TypeDef *wdog)
   // We need an atomic section around the check for sync and the clear command
   // because sending a clear command while a previous command is being synchronized
   // will cause a BusFault.
-  SL_IEC60370_ENTER_ATOMIC();
+  IEC60370_ENTER_ATOMIC();
   if ((wdog->SYNCBUSY & WDOG_SYNCBUSY_CMD) == 0U) {
     wdog->CMD = WDOG_CMD_CLEAR;
   }
-  SL_IEC60370_EXIT_ATOMIC();
+  IEC60370_EXIT_ATOMIC();
 
 #endif
 }

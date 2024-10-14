@@ -1,6 +1,6 @@
 
 # Log file
-LOG_FILE :=
+LOG_FILE := 
 #&> ../Build/log.txt
 
 CMSE_FLAG :=
@@ -103,8 +103,8 @@ IHEX_FLAG := --ihex
 BINARY_FLAG := --bin
 SREC_FLAG := --srec
 OBJDUMP_FLAG := --all --source
-SIZE_FLAG :=
-SIZE_FLAG_1 :=
+SIZE_FLAG := 
+SIZE_FLAG_1 := 
 
 endif
 endif
@@ -119,7 +119,7 @@ ifeq ($(strip $(COMPILER)),IAR)
 LDFLAGS := $(CORE_TYPE) $(FPU_TYPE) --error_limit=3 --use_optimized_variants=auto $(LIBS) $(LOG_FILE)
 endif
 endif
-#-Xlinker -nostartfiles
+#-Xlinker -nostartfiles 
 
 # CRC
 SRECORD_PATH:=

@@ -23,23 +23,23 @@
 #include <stdint.h>
 
 // Header files needed for publics
-#include "sl_iec60730.h"
+#include "iec60730.h"
 
 // Header files needed for privates
-#include "sl_iec60730_watchdog.h"
-#include "sl_iec60730_invariable_memory.h"
-#include "sl_iec60730_variable_memory.h"
-#include "sl_iec60730_cpu_registers.h"
-#include "sl_iec60730_system_clock.h"
+#include "iec60730_watchdog.h"
+#include "iec60730_invariable_memory.h"
+#include "iec60730_variable_memory.h"
+#include "iec60730_cpu_registers.h"
+#include "iec60730_system_clock.h"
 #include "iec60730_programme_counter.h"
-#include "sl_iec60730_irq.h"
-#include "oem_iec60730.h"
+#include "iec60730_irq.h"
+#include "iec60730_oem.h"
 
-// These macros should be defined in oem_iec60730.h by OEM, otherwise default definition will be used.
-#if (!defined(SL_IEC60370_ENTER_ATOMIC) || !defined(SL_IEC60370_EXIT_ATOMIC))
-#define SL_IEC60370_ENTER_ATOMIC() __disable_irq()
-#define SL_IEC60370_EXIT_ATOMIC()  __enable_irq()
-#define SL_IEC60370_DECLARE_IRQ_STATE
+// These macros should be defined in iec60730_oem.h by OEM, otherwise default definition will be used.
+#if (!defined(IEC60370_ENTER_ATOMIC) || !defined(IEC60370_EXIT_ATOMIC))
+#define IEC60370_ENTER_ATOMIC() __disable_irq()
+#define IEC60370_EXIT_ATOMIC()  __enable_irq()
+#define IEC60370_DECLARE_IRQ_STATE
 #endif
 
 // Disable warnings on unused labels.  Labels are used to set breakpoints for

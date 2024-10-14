@@ -156,7 +156,7 @@ $ export CORE_TYPE=cortex-m4
   1. Create Source and CMakeLists.txt
   2. mkdir build
   3. cd build
-  4. cmake ..   -  Generating the Build Files / Configure the Project
+  4. cmake ..   -  Generting the Build Files / Configure the Project
   5. cmake --build .
 
 ### Run unit test
@@ -184,3 +184,4 @@ $ make unit_tests -j4
 #### Result demo unit test
 
 ![Example unit test](./pictures/example_unit_test.PNG)
+

@@ -24,8 +24,7 @@
  * @{
  *****************************************************************************/
 
-static sl_iec60730_safety_check_t iec60730_safety_check = {IEC60730_NO_FAILURE,
-                                                           0};
+static sl_iec60730_safety_check_t iec60730_safety_check = {IEC60730_NO_FAILURE,0};
 
 __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
 {
@@ -40,13 +39,13 @@ __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
 
 void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
 {
-  iec60730_safety_check.error |= (1 << failure);
+  iec60730_safety_check.error |= (1<<failure);
   iec60730_safety_check.number_error++;
 }
 
-sl_iec60730_safety_check_t *sl_iec60730_safety_check_get_error(void)
+sl_iec60730_safety_check_t* sl_iec60730_safety_check_get_error(void)
 {
-  sl_iec60730_safety_check_t *result = NULL;
+  sl_iec60730_safety_check_t* result = NULL;
 
   result = &iec60730_safety_check;
 

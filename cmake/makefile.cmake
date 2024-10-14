@@ -7,7 +7,7 @@ if(DEFINED ENV{COMPONENT})
   set(COMPONENT "$ENV{COMPONENT}")
 else()
   set(COMPONENT "cpu_registers")
-  message("-- Run cmake build . --target make_info for know components support. By default component is cpu_registers")
+  message("-- Run cmake build . --target make_info for know componnents support. By default component is cpu_registers")
 endif()
 
 if(DEFINED ENV{COMPILER})
@@ -41,3 +41,6 @@ add_custom_target(make_build
                   COMMAND make build COMPONENT=${COMPONENT} DERIVATIVE=${DERIVATIVE} NON_SECURE_EN=${NON_SECURE_EN} APP_SECURE=${APP_SECURE}
                   WORKING_DIRECTORY ${MAKEFILE_DIR}/
 )
+
+
+

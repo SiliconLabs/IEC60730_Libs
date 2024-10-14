@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_SYSTEM_CLOCK_H__
-#define __IEC60730_SYSTEM_CLOCK_H__
+#ifndef SL_IEC60730_SYSTEM_CLOCK_H
+#define SL_IEC60730_SYSTEM_CLOCK_H
 
 #include "sl_iec60730_toolchain.h"
 
@@ -97,7 +97,7 @@ extern "C" {
  * a constant and defined operating frequency throughout all OEM firmware.
  *
  * Finally, the OEM is responsible for setting sl_iec60730_timer_test_control to SL_IEC60730_TIMER_TEST_DISABLE
- * within safety-critical code by calling function sl_iec60730_sys_clock_test_disable. This value is only used in cases
+ * within safety-critical code by calling funtion sl_iec60730_sys_clock_test_disable. This value is only used in cases
  * where the system is executing non-safety-critical code, where the BIST routine is also not being called.
  * When returning to normal operation, clear all interrupt counters in
  * iec60730_IRQExecCount, reset the timer clock tick and system clock tick timers,
@@ -150,4 +150,4 @@ void sl_iec60730_sys_clock_test_disable(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __IEC60730_SYSTEM_CLOCK_H__ */
+#endif /* SL_IEC60730_SYSTEM_CLOCK_H */

@@ -31,7 +31,7 @@
 #include "oem_iec60730.h"
 
 // Wdg config
-const WDOG_Init_TypeDef oem_wdog0_init = WDOG_INIT_DEFAULT;
+const WDOG_Init_TypeDef oem_wdog0_init  = WDOG_INIT_DEFAULT;
 const WDOG_Init_TypeDef oem_wdog1_init = WDOG_INIT_DEFAULT;
 // HFXO config
 const CMU_HFXOInit_TypeDef oem_hfxo_init = CMU_HFXOINIT_DEFAULT;
@@ -55,7 +55,7 @@ void oem_system_config(void)
   WDOGn_Init(SL_IEC60730_WDOG_INST(0), &oem_wdog0_init);
 #endif
 #if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
-  WDOGn_Init(SL_IEC60730_WDOG_INST(1), &oem_wdog1_init);
+  WDOGn_Init( SL_IEC60730_WDOG_INST(1), &oem_wdog1_init);
 #endif
 
   CORE_ATOMIC_IRQ_ENABLE();

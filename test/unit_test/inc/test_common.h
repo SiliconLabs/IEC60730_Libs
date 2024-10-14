@@ -1,6 +1,6 @@
 /***************************************************************************//**
  * @file
- * @brief Top level application functions
+ * @brief common unit test api
  *******************************************************************************
  * # License
  * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
@@ -15,15 +15,20 @@
  *
  ******************************************************************************/
 
-#include "test_common.h"
-#include "test_iec60730_module_demo.h"
+#ifndef _TEST_COMMON_H
+#define _TEST_COMMON_H
 
-void app_init(void)
-{
-  test_iec60730_module_demo();
-}
+#include <stdint.h>
+#include <string.h>
+#include "unity.h"
 
-void app_process_action(void)
-{
+/*=======Result test case=====*/
+#define MAX_NUMBER_OF_TEST_CASE    20
 
-}
+extern uint8_t test_case_result[MAX_NUMBER_OF_TEST_CASE];
+extern uint8_t current_test_numth;
+
+/*=======Test Runner Used To Run Each Test=====*/
+extern void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE line_num);
+
+#endif  // _TEST_COMMON_H

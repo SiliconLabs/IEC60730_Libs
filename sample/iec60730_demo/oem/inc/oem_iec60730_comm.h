@@ -126,7 +126,7 @@ void oem_comm_log(const uint8_t *str);
 typedef struct messageBuffer {
   uint8_t device_address; ///< 8-bit address of transmitting device
   uint8_t message;        ///< Payload of buffer
-  sl_iec60730_crc_t crc;  ///< CRC covering all other bytes in packet
+  sl_iec60730_crc_t crc;              ///< CRC covering all other bytes in packet
 } oem_message_buffer_t;
 
 /** @} (end addtogroup IEC60730_OEM_COMM_Test) */

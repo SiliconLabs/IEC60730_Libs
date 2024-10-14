@@ -56,7 +56,7 @@ em_rmu.o: $(TEST_DIR)/comm/emlib/src/em_rmu.c
 Test_System.o: $(TEST_DIR)/src/Test_System.c
 	$(CC) $(CFLAGS) $(CMSE_FLAG) $(DEPENDENCIES_FLAG) $(CUR_BUILDDIR)/Test_System.d -o $(CUR_BUILDDIR)/$@ $^
 	@echo ' '
-
+  
 main.o: $(TEST_DIR)/src/main.c
 	$(CC) $(CFLAGS) $(CMSE_FLAG) $(DEPENDENCIES_FLAG) $(CUR_BUILDDIR)/main.d -o $(CUR_BUILDDIR)/$@ $^
 	@echo ' '

@@ -1,19 +1,19 @@
 
-S79_SRCS :=
-OBJ_SRCS :=
-S_SRCS :=
-ASM_SRCS :=
-C_SRCS :=
-S79_UPPER_SRCS :=
-S_UPPER_SRCS :=
-O_SRCS :=
-EXECUTABLES :=
-OBJS :=
-NS_OBJS :=
-NS_ADDED_OBJS :=
+S79_SRCS := 
+OBJ_SRCS := 
+S_SRCS := 
+ASM_SRCS := 
+C_SRCS := 
+S79_UPPER_SRCS := 
+S_UPPER_SRCS := 
+O_SRCS := 
+EXECUTABLES := 
+OBJS := 
+NS_OBJS := 
+NS_ADDED_OBJS := 
 SIZE_OBJS :=
-C_DEPS :=
-DEFS :=
+C_DEPS := 
+DEFS := 
 
 # Build dir
 BUILD_DIR := ../Build
@@ -23,11 +23,11 @@ TEST_DIR := ../Test
 DEVICE_DIRS := ../Lib/Device
 LIB_DIRS := $(DEVICE_DIRS)
 CMSIS_DIRS := ../Lib/CMSIS
-CUR_BUILDDIR :=
-TARGET :=
+CUR_BUILDDIR := 
+TARGET := 
 
 # Every subdirectory with source files must be described here
-SUBDIRS :=
+SUBDIRS := 
 
 ifeq ($(strip $(COMPILER)),)
 COMPILER := GCC

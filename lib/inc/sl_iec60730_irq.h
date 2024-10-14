@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_IRQ_H__
-#define __IEC60730_IRQ_H__
+#ifndef SL_IEC60730_IRQ_H
+#define SL_IEC60730_IRQ_H
 
 #include "sl_iec60730_toolchain.h"
 #include <stdint.h>
@@ -100,7 +100,7 @@ extern "C" {
  * service routine.  When the test timer interrupt occurs,
  * #sl_iec60730_irq_check() executes. Inside this function, firmware compares
  * the count values to the bound values, and sets #iec60730_safety_check
- * by called function #sl_iec60730_safety_check_error_occur to #IEC60730_INTERRUPT_FAIL
+ * by called funtion #sl_iec60730_safety_check_error_occur to #IEC60730_INTERRUPT_FAIL
  * if a count exceeds either the minimum or maximum bounds.
  * The next execution of the BIST routine will detect the #IEC60730_TEST_FAILED
  * state and enter safe state.  A flowchart of this functionality
@@ -132,7 +132,7 @@ void sl_iec60730_irq_reset_fail_result(void);
  * This function return  a pointer that point to iec60730_irq_fail_result
  * which capacity which contains index location iec60730_irq_count failed.
  *****************************************************************************/
-sl_iec60730_irq_fail_t *sl_iec60730_get_irq_index_failed(void);
+sl_iec60730_irq_fail_t* sl_iec60730_get_irq_index_failed(void);
 
 /**************************************************************************/ /**
  * public IEC60730 Interrupt Init
@@ -145,7 +145,7 @@ sl_iec60730_irq_fail_t *sl_iec60730_get_irq_index_failed(void);
  *
  * This function set #iec60730_IRQFreqBounds min and max and set iec60730_IRQExecCount
  *****************************************************************************/
-void sl_iec60730_irq_init(sl_iec60730_irq_cfg_t *irq_cfg_ptr);
+void sl_iec60730_irq_init(sl_iec60730_irq_cfg_t* irq_cfg_ptr);
 
 /**************************************************************************/ /**
  * public IEC60730 Interrupt Reset Counter
@@ -177,4 +177,4 @@ void sl_iec60730_irq_check(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __IEC60730_IRQ_H__ */
+#endif /* SL_IEC60730_IRQ_H */

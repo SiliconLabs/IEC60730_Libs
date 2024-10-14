@@ -48,7 +48,7 @@ Test_watchdog.o: $(TEST_DIR)/src/Test_watchdog.c
 Test_watchdog_ns.o: $(TEST_DIR)/src/Test_watchdog_ns.c
 	$(CC) $(CFLAGS) $(CMSE_FLAG) $(DEPENDENCIES_FLAG) $(CUR_BUILDDIR)/Test_watchdog_ns.d -o $(CUR_BUILDDIR)/$@ $^
 	@echo ' '
-
+  
 em_wdog.o: $(TEST_DIR)/comm/emlib/src/em_wdog.c
 	$(CC) $(CFLAGS) $(CMSE_FLAG) $(DEPENDENCIES_FLAG) $(CUR_BUILDDIR)/em_wdog.d -o $(CUR_BUILDDIR)/$@ $^
 	@echo ' '

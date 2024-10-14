@@ -69,7 +69,7 @@ FOUND :=
 NON_STD_COMPONENT := false
 
 # Definitions
-COMP_DEFS :=
+COMP_DEFS := 
 
 # Default config
 # ifeq ($(strip $(DEVICE)),)

@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_WATCHDOG_H__
-#define __IEC60730_WATCHDOG_H__
+#ifndef SL_IEC60730_WATCHDOG_H
+#define SL_IEC60730_WATCHDOG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -117,27 +117,27 @@ typedef struct {
 typedef enum {
   IEC60730_WATCHDOG_INVALID = 0, ///< Watchdog POST test not done
   IEC60730_WATCHDOG_TESTING = 1, ///< Watchdog POST testing in progress
-  IEC60730_WATCHDOG_VALID = 2, ///< Watchdog POST test complete, watchdog valid
+  IEC60730_WATCHDOG_VALID   = 2, ///< Watchdog POST test complete, watchdog valid
 } sl_iec60730_test_watchdog_t;
 
 // Default configuration number of enabled watchdog SL_IEC60730_WDOGINST_NUMB
 #if ((SL_IEC60730_WDOG0_ENABLE == 1) && (SL_IEC60730_WDOG1_ENABLE == 1))
-#define SL_IEC60730_WDOGINST_NUMB 2
+#define SL_IEC60730_WDOGINST_NUMB          2
 #elif ((SL_IEC60730_WDOG0_ENABLE == 0) && (SL_IEC60730_WDOG1_ENABLE == 0))
 #error "No watchdogs have been selected for testing!"
 #else
-#define SL_IEC60730_WDOGINST_NUMB 1
+#define SL_IEC60730_WDOGINST_NUMB          1
 #endif
 
 #ifndef SL_IEC60730_WDOG_WAIT_TIMEOUT
 #define SL_IEC60730_WDOG_WAIT_TIMEOUT (uint32_t) 0x0000FFFFUL
 #endif
 
-#ifndef SL_IEC60730_WDOG_INST
+#ifndef  SL_IEC60730_WDOG_INST
 #ifdef SL_IEC60730_NON_SECURE_EN
-#define SL_IEC60730_WDOG_INST(n) WDOG##n##_NS
+#define  SL_IEC60730_WDOG_INST(n) WDOG##n##_NS
 #else
-#define SL_IEC60730_WDOG_INST(n) WDOG##n
+#define  SL_IEC60730_WDOG_INST(n) WDOG##n
 #endif
 #endif
 
@@ -151,9 +151,9 @@ typedef enum {
 #define SL_IEC60730_RSTCAUSE_WDOG0 RMU_RSTCAUSE_WDOGRST
 #define SL_IEC60730_RSTCAUSE_WDOG1 RMU_RSTCAUSE_WDOGRST
 
-#define SL_IEC60730_RSTCAUSES_CLEAR()                                          \
+#define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
   do {                                                                         \
-    SL_IEC60730_RST->CMD |= RMU_CMD_RCCLR;                                     \
+    SL_IEC60730_RST->CMD |= RMU_CMD_RCCLR;                                        \
   } while (0)
 #else // Series 2 devices
 #ifndef SL_IEC60730_RST
@@ -170,14 +170,14 @@ typedef enum {
 #define SL_IEC60730_RSTCAUSE_WDOG1 EMU_RSTCAUSE_WDOG1
 
 #ifdef WDOG_HAS_SET_CLEAR
-#define SL_IEC60730_RSTCAUSES_CLEAR()                                          \
+#define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
   do {                                                                         \
-    SL_IEC60730_RST->CMD_SET = EMU_CMD_RSTCAUSECLR;                            \
+    SL_IEC60730_RST->CMD_SET = EMU_CMD_RSTCAUSECLR;                               \
   } while (0)
 #else
-#define SL_IEC60730_RSTCAUSES_CLEAR()                                          \
+#define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
   do {                                                                         \
-    SL_IEC60730_RST->CMD |= EMU_CMD_RSTCAUSECLR;                               \
+    SL_IEC60730_RST->CMD |= EMU_CMD_RSTCAUSECLR;                                  \
   } while (0)
 #endif
 #endif // (_SILICON_LABS_32B_SERIES < 2)
@@ -187,14 +187,12 @@ typedef enum {
 #define SL_IEC60730_RST_EM4  (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_EM4)
 
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
-#define SL_IEC60730_RST_WDOG0                                                  \
-  (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG0)
+#define SL_IEC60730_RST_WDOG0 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG0)
 #else
 #define SL_IEC60730_RST_WDOG0 0
 #endif
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
-#define SL_IEC60730_RST_WDOG1                                                  \
-  (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG1)
+#define SL_IEC60730_RST_WDOG1 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG1)
 #else
 #define SL_IEC60730_RST_WDOG1 0
 #endif
@@ -214,8 +212,7 @@ typedef enum {
 /// Global variable used to track watchdog testing state.
 ///
 /// @warning Must be placed in a memory area not cleared to 0x0 on start!
-extern volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state
-    IEC60730_DATA_NO_CLEAR;
+extern volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state IEC60730_DATA_NO_CLEAR;
 
 /**************************************************************************/ /**
  * public IEC60730 Watchdog Power On Self Test
@@ -243,4 +240,4 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __IEC60730_WATCHDOG_H__ */
+#endif /* SL_IEC60730_WATCHDOG_H */

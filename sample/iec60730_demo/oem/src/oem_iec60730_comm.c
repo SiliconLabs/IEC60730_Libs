@@ -111,7 +111,7 @@
 
 static oem_message_buffer_t oem_tx_buffer; /*!< Transmit Buffer */
 static oem_message_buffer_t oem_rx_buffer; /*!< Receive Buffer */
-static uint8_t oem_message_byte = 0;       /*!< Byte to send */
+static uint8_t oem_message_byte = 0;          /*!< Byte to send */
 static UARTDRV_HandleData_t oem_uart_handle;
 static UARTDRV_Handle_t oem_comm_handle = &oem_uart_handle;
 // Use 2 variables to sync TX-RX
@@ -128,8 +128,7 @@ enum {
 };
 
 oem_usart_error_code_t oem_error_code = E_UART_NOERROR;
-sl_iec60730_crc_t oem_calculated_crc =
-    (sl_iec60730_crc_t) SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE;
+sl_iec60730_crc_t oem_calculated_crc  = (sl_iec60730_crc_t) SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE;
 
 DEFINE_BUF_QUEUE(1, oem_comm_buffer_queue_rx_usart0);
 DEFINE_BUF_QUEUE(1, oem_comm_buffer_queue_tx_usart0);
@@ -137,9 +136,9 @@ DEFINE_BUF_QUEUE(1, oem_comm_buffer_queue_tx_usart0);
 static sl_iec60730_test_failure_t oem_iec60730_comm_check_status_message(void);
 
 static void oem_rx_callback(UARTDRV_Handle_t handle,
-                            Ecode_t transfer_status,
-                            uint8_t *data,
-                            UARTDRV_Count_t transfer_count)
+                       Ecode_t transfer_status,
+                       uint8_t *data,
+                       UARTDRV_Count_t transfer_count)
 {
   (void) data;
   (void) handle;
@@ -147,7 +146,7 @@ static void oem_rx_callback(UARTDRV_Handle_t handle,
 
   if (transfer_status == ECODE_EMDRV_UARTDRV_ABORTED) {
     sl_iec60730_safety_check_error_occur(IEC60730_USART0_FAIL);
-    oem_error_code = E_UART_ERROR_HARDWARE;
+    oem_error_code            = E_UART_ERROR_HARDWARE;
     return;
   }
 
@@ -156,13 +155,14 @@ static void oem_rx_callback(UARTDRV_Handle_t handle,
     oem_ready_to_check_rx_message = true;
     LABEL_DEF(IEC60730_COMM_BIST_FLAG_BKPT);
     sl_iec60730_program_counter_check |= IEC60730_COMMS_COMPLETE;
+
   }
 }
 
 static void oem_tx_callback(UARTDRV_Handle_t handle,
-                            Ecode_t transfer_status,
-                            uint8_t *data,
-                            UARTDRV_Count_t transfer_count)
+                       Ecode_t transfer_status,
+                       uint8_t *data,
+                       UARTDRV_Count_t transfer_count)
 {
   (void) data;
   (void) handle;
@@ -170,7 +170,7 @@ static void oem_tx_callback(UARTDRV_Handle_t handle,
 
   if (transfer_status == ECODE_EMDRV_UARTDRV_ABORTED) {
     sl_iec60730_safety_check_error_occur(IEC60730_USART0_FAIL);
-    oem_error_code = E_UART_ERROR_HARDWARE;
+    oem_error_code            = E_UART_ERROR_HARDWARE;
   }
 }
 
@@ -178,16 +178,11 @@ void oem_comm_init(void)
 {
   UARTDRV_InitUart_t init_com = USART0_INIT;
 
-  init_com.rxQueue =
-      (UARTDRV_Buffer_FifoQueue_t *) &oem_comm_buffer_queue_rx_usart0;
-  init_com.txQueue =
-      (UARTDRV_Buffer_FifoQueue_t *) &oem_comm_buffer_queue_tx_usart0;
+  init_com.rxQueue = (UARTDRV_Buffer_FifoQueue_t *) &oem_comm_buffer_queue_rx_usart0;
+  init_com.txQueue = (UARTDRV_Buffer_FifoQueue_t *) &oem_comm_buffer_queue_tx_usart0;
 
   UARTDRV_InitUart(oem_comm_handle, &init_com);
-  GPIO_PinModeSet(oem_comm_handle->rxPort,
-                  oem_comm_handle->rxPin,
-                  gpioModeInputPull,
-                  1);
+  GPIO_PinModeSet(oem_comm_handle->rxPort, oem_comm_handle->rxPin, gpioModeInputPull, 1);
 #ifdef HAL_VCOM_ENABLE
   GPIO_PinModeSet(BSP_VCOM_ENABLE_PORT,
                   BSP_VCOM_ENABLE_PIN,
@@ -225,18 +220,17 @@ void oem_comm_send_message(uint8_t oem_message_byte)
   // Payload in this example is one byte
   oem_tx_buffer.message = oem_message_byte;
 
-  sl_iec60730_crc_t crc_value =
-      (sl_iec60730_crc_t) SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE;
-  sl_iec60730_update_crc_params_t update =
-      SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT;
+  sl_iec60730_crc_t crc_value           = (sl_iec60730_crc_t) SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE;
+  sl_iec60730_update_crc_params_t update = SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT;
 
   // Calculate CRC using CRC generating function included in library
   if (IEC60730_TEST_FAILED
-      == sl_iec60730_update_crc_with_data_buffer(
-          &update,
-          &crc_value,
-          (uint8_t *) (&oem_tx_buffer),
-          sizeof(oem_message_buffer_t) - sizeof(sl_iec60730_crc_t))) {
+      == sl_iec60730_update_crc_with_data_buffer(&update,
+                                          &crc_value,
+                                          (uint8_t *) (&oem_tx_buffer),
+                                          sizeof(oem_message_buffer_t)
+                                              - sizeof(sl_iec60730_crc_t))) {
+    sl_iec60730_safety_check_error_occur(IEC60730_OEM_FAIL_1);
     sl_iec60730_safe_state(IEC60730_OEM_FAIL_1);
   }
 
@@ -272,18 +266,16 @@ sl_iec60730_test_failure_t oem_iec60730_comm_check_status_message(void)
     return IEC60730_USART0_FAIL;
   }
 
-  oem_calculated_crc =
-      (sl_iec60730_crc_t) SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE;
-  sl_iec60730_update_crc_params_t update =
-      SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT;
+  oem_calculated_crc            = (sl_iec60730_crc_t) SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE;
+  sl_iec60730_update_crc_params_t update = SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT;
 
   // Calculate CRC using CRC generating function included in library
   if (IEC60730_TEST_FAILED
-      == sl_iec60730_update_crc_with_data_buffer(
-          &update,
-          &oem_calculated_crc,
-          (uint8_t *) (&oem_rx_buffer),
-          sizeof(oem_message_buffer_t) - sizeof(sl_iec60730_crc_t))) {
+      == sl_iec60730_update_crc_with_data_buffer(&update,
+                                          &oem_calculated_crc,
+                                          (uint8_t *) (&oem_rx_buffer),
+                                          sizeof(oem_message_buffer_t)
+                                              - sizeof(sl_iec60730_crc_t))) {
     oem_error_code = E_UART_ERROR_FUNC_CRC;
     return IEC60730_USART0_FAIL;
   }

@@ -38,11 +38,50 @@
 #pragma diag_suppress = Pe111
 #endif // IAR
 
-#define IEC60730_IRQ_SIZE 8
-#define OEM_NUM_IRQ_CHECK 1
+#define IEC60730_IRQ_SIZE             8
+#define OEM_NUM_IRQ_CHECK             1
+#define OEM_NUM_RAM_REGIONS_CHECK     3
+#define OEM_NUM_FLASH_REGIONS_CHECK   3
 
-__no_init sl_iec60730_imc_params_t oem_imc_test __CLASSB_RAM;
-__no_init sl_iec60730_vmc_params_t oem_vmc_test;
+#if defined(__GNUC__)
+#define OEM_RAM_OFFSET                20
+#define OEM_FLASH_OFFSET              20
+#elif defined(__ICCARM__)
+#define OEM_RAM_OFFSET                80
+#define OEM_FLASH_OFFSET              80
+#else
+#endif
+
+__no_init sl_iec60730_imc_test_multiple_regions_t oem_imc_test __CLASSB_RAM;
+__no_init sl_iec60730_imc_params_t oem_imc_param __CLASSB_RAM;
+
+#if defined(__GNUC__)
+
+const sl_iec60730_vmc_test_region_t oem_vmc_region_test[OEM_NUM_RAM_REGIONS_CHECK] =
+        {{.start = RAMTEST_START, .end= RAMTEST_END},
+        {.start = RAM_START, .end = RAM_START + OEM_RAM_OFFSET},
+        {.start = RAM_START + 2*OEM_RAM_OFFSET, .end = RAM_START + 3*OEM_RAM_OFFSET}};
+__no_init sl_iec60730_vmc_test_multiple_regions_t oem_vmc_test;
+
+const sl_iec60730_imc_test_region_t oem_imc_region_test[OEM_NUM_FLASH_REGIONS_CHECK] =
+       {{.start = SL_IEC60730_ROM_START, .end= SL_IEC60730_ROM_START + OEM_FLASH_OFFSET},
+       {.start = SL_IEC60730_ROM_START + 2*OEM_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 3*OEM_FLASH_OFFSET},
+       {.start = SL_IEC60730_ROM_START + 4*OEM_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 5*OEM_FLASH_OFFSET}};
+
+#elif defined(__ICCARM__)
+
+const sl_iec60730_vmc_test_region_t oem_vmc_region_test[OEM_NUM_RAM_REGIONS_CHECK] =
+        {{.start = RAMTEST_START, .end= RAMTEST_END},
+        {.start = RAM_START, .end = (uint32_t *)((uint32_t)RAM_START + OEM_RAM_OFFSET)},
+        {.start = (uint32_t *)((uint32_t)RAM_START + 2*OEM_RAM_OFFSET), .end = (uint32_t *)((uint32_t)RAM_START + 3*OEM_RAM_OFFSET)}};
+__no_init sl_iec60730_vmc_test_multiple_regions_t oem_vmc_test;
+
+const sl_iec60730_imc_test_region_t oem_imc_region_test[OEM_NUM_FLASH_REGIONS_CHECK] =
+       {{.start = SL_IEC60730_ROM_START, .end= (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + OEM_FLASH_OFFSET)},
+       {.start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 2*OEM_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 3*OEM_FLASH_OFFSET)},
+       {.start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 4*OEM_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 5*OEM_FLASH_OFFSET)}};
+#else
+#endif
 
 uint32_t oem_tick_uart_counter;
 
@@ -54,17 +93,15 @@ volatile bool oem_usart_flag;
 volatile uint32_t oem_err_test = 0;
 
 // Global variables used for IRQ check
-volatile SL_IEC60730_IRQ_TYPE_VARIABLE oem_irq_exec_count[IEC60730_IRQ_SIZE] = {
-    0};
-const sl_iec60730_irq_execution_bounds_t
-    oem_irq_freq_bounds[IEC60730_IRQ_SIZE] = {{.min = 9, .max = 11},
-                                              {.min = 9, .max = 11},
-                                              {.min = 9, .max = 11},
-                                              {.min = 9, .max = 11},
-                                              {.min = 9, .max = 11},
-                                              {.min = 9, .max = 11},
-                                              {.min = 9, .max = 11},
-                                              {.min = 9, .max = 11}};
+volatile SL_IEC60730_IRQ_TYPE_VARIABLE oem_irq_exec_count[IEC60730_IRQ_SIZE] = {0};
+const sl_iec60730_irq_execution_bounds_t oem_irq_freq_bounds[IEC60730_IRQ_SIZE] = {{.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11},
+                                                                            {.min = 9, .max = 11}};
 
 sl_iec60730_irq_cfg_t oem_irq_config = {&oem_irq_exec_count[0],
                                         &oem_irq_freq_bounds[0],
@@ -144,10 +181,13 @@ void app_oem_process_action(void)
 void oem_iec60730_config(void)
 {
   /// Config parameter before running #sl_iec60730_post
-  oem_imc_test.gpcrc = SL_IEC60730_DEFAULT_GPRC;
-
-  oem_vmc_test.start = RAMTEST_START;
-  oem_vmc_test.end   = RAMTEST_END;
+  // IMC test config
+  oem_imc_param.gpcrc = SL_IEC60730_DEFAULT_GPRC;
+  oem_imc_test.region = oem_imc_region_test;
+  oem_imc_test.number_of_test_regions = OEM_NUM_FLASH_REGIONS_CHECK;
+  // VMC test config
+  oem_vmc_test.region = oem_vmc_region_test;
+  oem_vmc_test.number_of_test_regions = OEM_NUM_RAM_REGIONS_CHECK;
 }
 
 /**************************************************************************/ /**
@@ -159,13 +199,13 @@ void oem_iec60730_config(void)
  *****************************************************************************/
 void oem_iec60730_init(void)
 {
-  oem_bist_check_flag   = false;
-  oem_usart_flag        = false;
+  oem_bist_check_flag  = false;
+  oem_usart_flag      = false;
   oem_tick_uart_counter = 0x0U;
 
   sl_iec60730_vmc_init(&oem_vmc_test);
   sl_iec60730_irq_init(&oem_irq_config);
-  sl_iec60730_imc_init(&oem_imc_test);
+  sl_iec60730_imc_init(&oem_imc_param,&oem_imc_test);
   // Reset clock tick counter
   sl_iec60730_sys_clock_count_reset();
 }
