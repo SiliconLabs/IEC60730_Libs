@@ -167,7 +167,7 @@ jobs:
       COMPILER: GCC
       TOOL_CHAINS: GCC
       PLATFORM: MG12
-      TASK: all
+      TASK: gen-only
       COMPONENTS: all
       ADAPTER_SN: 440189400
       CHIP: EFR32MG12
