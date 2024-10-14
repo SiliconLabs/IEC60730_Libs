@@ -1,0 +1,298 @@
+name: 01-Generate Firmware
+on:
+  push:
+    branches-ignore:
+      - main
+      - "tests/**"
+  pull_request:
+    branches:
+      - 'main'       
+      - 'release/**'
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'dev'
+env:
+  AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
+  SLC_CLI_URL: https://www.silabs.com/documents/login/software/slc_cli_linux.zip
+  COMMANDER_URL: https://www.silabs.com/documents/login/software/SimplicityCommander-Linux.zip
+  GCC_URL: https://developer.arm.com/-/media/Files/downloads/gnu/12.2.rel1/binrel/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
+  SIM_REPO: https://github.com/SiliconLabs/simplicity_sdk.git
+  GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
+  SDK_VER: v4.4.2
+  JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
+  SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
+  START_ADDR_FLASH: 0x8000000
+  TASK: gen-only
+jobs:
+  job1:
+    name: Generate Firmware for MG24 with GCC
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      BOARD_NAME: brd4187c
+      HOST_IP: 192.168.1.69
+      TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
+      COMPILER: GCC
+      TOOL_CHAINS: GCC
+      TASK: gen-only
+      COMPONENT: all
+      ADAPTER_SN: 440133193
+      CHIP: EFR32MG24BXXXF1536
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Install Simplicity SDK
+      if: always()
+      run: |
+        git clone $SIM_REPO
+        cd simplicity_sdk
+        ls -la
+        cd ..
+        ls -la
+    - name: Install Gecko SDK
+      if: always()
+      run: |
+        git clone $GECKO_SDK_REPO gecko_sdk_$SDK_VER
+        cd gecko_sdk_$SDK_VER
+        git checkout tags/$SDK_VER
+        ls -la
+        mkdir extension
+        cd extension
+        git clone https://github.com/SiliconLabs/IEC60730_Libs.git
+        cd IEC60730_Libs
+        git checkout create-unit-test-functions-in-lib-iec60730
+        ls -la
+        cd ..
+        ls -la
+        cd ..
+        ls -la
+    - name: Install Amazon Corretto 17
+      if: always()
+      run: |
+        wget $AM_CORRETTO_17
+        tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
+        ls -la
+    - name: Install SLC CLI
+      if: always()
+      run: |
+        wget $SLC_CLI_URL
+        unzip slc_cli_linux.zip
+        ls -la
+    - name: Install Simplicity Commander
+      if: always()
+      run: |
+        wget $COMMANDER_URL
+        unzip SimplicityCommander-Linux.zip
+        cd SimplicityCommander-Linux
+        ls -la
+        cd ..
+        mkdir commander
+        tar -xf SimplicityCommander-Linux/Commander_linux_x86_64_*.tar.bz commander
+        cd commander
+        ls -la
+    - name: Install GCC
+      if: always()
+      run: |
+        wget $GCC_URL
+        tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
+        ls -la
+        cd arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
+        ls -la
+    - name: Install Ninja build
+      run: |
+        sudo apt update
+        sudo apt -y install ninja-build
+        ninja --version
+    - name: Install python3.11
+      if: always()
+      run: |
+        sudo apt update
+        sudo apt upgrade
+        sudo add-apt-repository ppa:deadsnakes/ppa -y
+        sudo apt update
+        sudo apt install python3.11
+        python3.11 --version
+        which python3.11
+        cat ~/.bashrc
+        echo "alias python3=python3.11" >> ~/.bashrc
+        echo "alias python3=python3.11" >> ~/.bash_profile
+        cat ~/.bashrc
+        source ~/.bash_profile
+        source ~/.bashrc
+        python3 --version
+        sudo apt install python3.11-full
+        sudo apt install python3-pip
+    - name: Generate image
+      run: |
+        export PATH=$PATH:$PWD/commander
+        export PATH=$PATH:$PWD/slc_cli
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export TOOL_DIRS=$PWD/$TOOL_DIRS
+        export PATH=$PATH:/usr/bin/
+        export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
+        export PATH=$PATH:$PWD/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        echo $PATH
+        echo 2 | sudo update-alternatives --config java
+        java --version
+        slc --version
+        slc configuration --sdk=${SDK_PATH}
+        ninja --version
+        slc signature trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
+        make prepare
+        cd build
+        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
+        cmake --build . --target integration_test_info -j4
+        export  ADAPTER_SN=440133193
+        export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export HOST_IP=192.168.1.69
+        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
+    - name: Upload firmware
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: firmware_mg24_gcc
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/integration_test_iec60730_invariable_memory/NS/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+  job2:
+    name: Generate Firmware for MG12 with GCC
+    runs-on: ubuntu-20.04
+    permissions:
+      contents: read
+      pull-requests: write
+    env: 
+      BOARD_NAME: brd4161a
+      HOST_IP: 192.168.1.69
+      TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
+      COMPILER: GCC
+      TOOL_CHAINS: GCC
+      PLATFORM: MG12
+      TASK: gen-only
+      COMPONENT: all
+      ADAPTER_SN: 440189400
+      CHIP: EFR32MG12
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4.1.7
+    - name: Install Simplicity SDK
+      if: always()
+      run: |
+        git clone $SIM_REPO
+        cd simplicity_sdk
+        ls -la
+        cd ..
+        ls -la
+    - name: Install Gecko SDK
+      if: always()
+      run: |
+        git clone $GECKO_SDK_REPO gecko_sdk_$SDK_VER
+        cd gecko_sdk_$SDK_VER
+        git checkout tags/$SDK_VER
+        ls -la
+        mkdir extension
+        cd extension
+        git clone https://github.com/SiliconLabs/IEC60730_Libs.git
+        cd IEC60730_Libs
+        git checkout create-unit-test-functions-in-lib-iec60730
+        ls -la
+        cd ..
+        ls -la
+        cd ..
+        ls -la
+    - name: Install Amazon Corretto 17
+      if: always()
+      run: |
+        wget $AM_CORRETTO_17
+        tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
+        ls -la
+    - name: Install SLC CLI
+      if: always()
+      run: |
+        wget $SLC_CLI_URL
+        unzip slc_cli_linux.zip
+        ls -la
+    - name: Install Simplicity Commander
+      if: always()
+      run: |
+        wget $COMMANDER_URL
+        unzip SimplicityCommander-Linux.zip
+        cd SimplicityCommander-Linux
+        ls -la
+        cd ..
+        mkdir commander
+        tar -xf SimplicityCommander-Linux/Commander_linux_x86_64_*.tar.bz commander
+        cd commander
+        ls -la
+    - name: Install GCC
+      if: always()
+      run: |
+        wget $GCC_URL
+        tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
+        ls -la
+        cd arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
+        ls -la
+    - name: Install Ninja build
+      run: |
+        sudo apt update
+        sudo apt -y install ninja-build
+        ninja --version
+    - name: Install python3.11
+      if: always()
+      run: |
+        sudo apt update
+        sudo apt upgrade
+        sudo add-apt-repository ppa:deadsnakes/ppa -y
+        sudo apt update
+        sudo apt install python3.11
+        python3.11 --version
+        which python3.11
+        cat ~/.bashrc
+        echo "alias python3=python3.11" >> ~/.bashrc
+        echo "alias python3=python3.11" >> ~/.bash_profile
+        cat ~/.bashrc
+        source ~/.bash_profile
+        source ~/.bashrc
+        python3 --version
+        sudo apt install python3.11-full
+        sudo apt install python3-pip
+    - name: Generate image
+      run: |
+        export PATH=$PATH:$PWD/commander
+        export PATH=$PATH:$PWD/slc_cli
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export TOOL_DIRS=$PWD/$TOOL_DIRS
+        export PATH=$PATH:/usr/bin/
+        export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
+        export PATH=$PATH:$PWD/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        echo $PATH
+        echo 2 | sudo update-alternatives --config java
+        java --version
+        slc --version
+        slc configuration --sdk=${SDK_PATH}
+        ninja --version
+        slc signature trust --sdk $SDK_PATH
+        slc configuration -gcc=$TOOL_DIRS
+        make prepare
+        cd build
+        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME
+        cmake --build . --target integration_test_info -j4
+        export  ADAPTER_SN=440133193
+        export LST_PATH=$PWD/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        export HOST_IP=192.168.1.69
+        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
+    - name: Upload firmware
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: firmware_mg12_gcc
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/integration_test_iec60730_invariable_memory/NS/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
