@@ -5,7 +5,12 @@ on:
       - '**'        
       - 'test/**'       
       - 'release/**'
-
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'dev'
 env:
   AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
   SLC_CLI_URL: https://www.silabs.com/documents/login/software/slc_cli_linux.zip
