@@ -1,7 +1,7 @@
 name: Generate Firmware
 on:
   push:
-    branches:    
+    branches:
     - '*'         # matches every branch that doesn't contain a '/'
     - '*/*'       # matches every branch containing a single '/'
     - '**'        # matches every branch
@@ -24,7 +24,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env: 
+    env:
       BOARD_NAME: brd4187c
       HOST_IP: 192.168.1.69
       TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
@@ -160,7 +160,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env: 
+    env:
       BOARD_NAME: brd4161a
       HOST_IP: 192.168.1.69
       TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
@@ -260,7 +260,7 @@ jobs:
     - name: Generate image
       run: |
         export PATH=$PATH:$PWD/commander
-        export PATH=$PATH:$PWD/slc_cli        
+        export PATH=$PATH:$PWD/slc_cli
         export TOOL_DIRS=$PWD/$TOOL_DIRS
         export PATH=$PATH:/usr/bin/
         export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
@@ -292,6 +292,3 @@ jobs:
         path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/integration_test_iec60730_invariable_memory/NS/
         warn: Output a warning but do not fail the action
         retention-days: 90
-      
-    
-          

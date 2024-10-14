@@ -149,6 +149,4 @@ function(generate_coding_convention relative_dir)
   # copy database to folder tools
   execute_process(COMMAND rm -rf ${CMAKE_SOURCE_DIR}/tools/compile_commands.json
   WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
-  execute_process(COMMAND cp ${CMAKE_SOURCE_DIR}/build/compile_commands.json ${CMAKE_SOURCE_DIR}/tools/
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endfunction(generate_coding_convention)

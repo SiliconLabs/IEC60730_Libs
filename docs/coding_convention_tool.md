@@ -63,7 +63,7 @@ $ make prepare
 $ cd build
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DCHECK_CODING_CONVETION_ENABLE=ON -DBOARD_NAME=brd4187c
 ```
-After running the above command, the file `compile_commands.json` data base will be created in the folder [tools](../tools/).
+After running the above command, the file `compile_commands.json` data base will be created in the folder [build](../build/).
 
 Run pre-commit install to install pre-commit into your git hooks. pre-commit will now run on every commit:
 

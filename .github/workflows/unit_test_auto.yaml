@@ -1,7 +1,7 @@
 name: Unit Tests Auto Trigger
 on:
   push:
-    branches:    
+    branches:
       - '*'         # matches every branch that doesn't contain a '/'
       - '*/*'       # matches every branch containing a single '/'
       - '**'        # matches every branch
@@ -18,14 +18,14 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env: 
+    env:
       BOARD_NAME: brd4187c
       HOST_IP: 192.168.1.69
       COMPILER: GCC
       TOOL_CHAINS: GCC
       TASK: all
       COMPONENTS: all
-      ADAPTER_SN: 440111030 
+      ADAPTER_SN: 440111030
       CHIP: EFR32MG24BXXXF1536
       TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
       START_ADDR_FLASH: 0x8000000
@@ -61,7 +61,7 @@ jobs:
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
 
         cd ../test
-    
+
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_2.txt
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON" > Test_integration_${BOARD_NAME}_GCC_3.txt
@@ -77,8 +77,8 @@ jobs:
         path: test/Test_integration_${{env.BOARD_NAME}}_*.txt
         warn: Output a warning but do not fail the action
         retention-days: 90
-  
-  
+
+
   job2:
     name: Unit test for mg12 with gcc
     runs-on: [self-hosted, ds-sqa-hn-iec]
@@ -87,14 +87,14 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-    env: 
+    env:
       BOARD_NAME: brd4161a
       HOST_IP: 192.168.1.69
       COMPILER: GCC
       TOOL_CHAINS: GCC
       TASK: all
       COMPONENTS: all
-      ADAPTER_SN: 440189400 
+      ADAPTER_SN: 440189400
       CHIP: EFR32MG12
       TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
       START_ADDR_FLASH: 0x0000000
@@ -132,7 +132,7 @@ jobs:
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
 
         cd ../test
-    
+
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER > Test_integration_${BOARD_NAME}_GCC_1.txt
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON" > Test_integration_${BOARD_NAME}_GCC_2.txt
         bash execute_unit_test.sh ${BOARD_NAME} $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON" > Test_integration_${BOARD_NAME}_GCC_3.txt

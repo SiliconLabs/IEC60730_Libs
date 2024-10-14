@@ -3,7 +3,7 @@ name: Coding Convention
 on:
   push:
 env:
- BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
+ BRANCH_NAME: ${{ github.head_ref || github.ref_name }}
  REPO_LINK: https://github.com/${{ github.repository }}.git
 jobs:
   job1:
@@ -32,7 +32,7 @@ jobs:
     - name: Run test
       run: |
         pre-commit run --all-files > CodingConventionTool.txt
-          
+
     - name: Upload Result
       if: always()
       uses: actions/upload-artifact@v4.3.4
