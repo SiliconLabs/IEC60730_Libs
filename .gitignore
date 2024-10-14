@@ -1,0 +1,9 @@
+*.json
+GNU ARM */
+Build
+Test/test_script/__pycache__
+Doc/html/EFR32_ICE60730_Libraries/latex
+*.temp-stream*
+gecko_sdk/src/*
+!gecko_sdk/src/CMakeLists.txt
+cmake_build
