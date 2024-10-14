@@ -151,7 +151,7 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/integration_test_iec60730_invariable_memory/NS/
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/${{ env.COMPILER }}/integration_test_iec60730_invariable_memory/NS/
         warn: Output a warning but do not fail the action
         retention-days: 90
   job2:
@@ -288,6 +288,6 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/integration_test_iec60730_invariable_memory/NS/
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/${{ env.COMPILER }}/integration_test_iec60730_invariable_memory/NS/
         warn: Output a warning but do not fail the action
         retention-days: 90
