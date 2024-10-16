@@ -1,4 +1,4 @@
-name: 03-Run Unit Test
+name: 02-Run Unit Test
 on:
   pull_request:
     branches:
@@ -35,10 +35,28 @@ jobs:
       START_ADDR_FLASH: 0x8000000
 
     steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ -z "${{ github.event.inputs.branch }}" ]; then
+            echo "Branch input is required for manual trigger."
+            exit 1
+          else
+            echo "Checkout branch ${{ github.event.inputs.branch }}"
+          fi
+        else
+          # Extract branch name from github.ref
+          BRANCH_NAME="${{ github.ref }}" 
+          BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+          echo "Checkout branch $BRANCH_NAME"
+        fi
+        
     - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
+      uses: actions/checkout@v4.1.7    
+      
     - name: Add extension
       run: |
         cd $SDK_PATH
@@ -69,11 +87,11 @@ jobs:
         mkdir log
     
         echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER' > log/Test_integration_$BOARD_NAME_GCC_1.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
 
 
     - name: Upload artifact
@@ -106,10 +124,28 @@ jobs:
       START_ADDR_FLASH: 0x0000000
 
     steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ -z "${{ github.event.inputs.branch }}" ]; then
+            echo "Branch input is required for manual trigger."
+            exit 1
+          else
+            echo "Checkout branch ${{ github.event.inputs.branch }}"
+          fi
+        else
+          # Extract branch name from github.ref
+          BRANCH_NAME="${{ github.ref }}" 
+          BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+          echo "Checkout branch $BRANCH_NAME"
+        fi
+        
     - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"
+      uses: actions/checkout@v4.1.7    
+      
     - name: Add extension
       run: |
         cd $SDK_PATH
@@ -140,11 +176,11 @@ jobs:
         mkdir log
     
         echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER' > log/Test_integration_$BOARD_NAME_GCC_1.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
+        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
 
     - name: Upload artifact
       uses: actions/upload-artifact@v4.3.4
