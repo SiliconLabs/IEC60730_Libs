@@ -37,26 +37,22 @@ jobs:
     steps:
     - name: Trigger
       run: echo "Triggered by ${{github.event_name}} event"
-      
     - name: Check Branch Input
       run: |
-        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-          if [ -z "${{ github.event.inputs.branch }}" ]; then
-            echo "Branch input is required for manual trigger."
-            exit 1
-          else
-            echo "Checkout branch ${{ github.event.inputs.branch }}"
-          fi
-        else
-          # Extract branch name from github.ref
-          BRANCH_NAME="${{ github.ref }}" 
-          BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
-          echo "Checkout branch $BRANCH_NAME"
-        fi
-        
+            if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+              if [ -z "${{ github.event.inputs.branch }}" ]; then
+                echo "Branch input is required for manual trigger."
+                exit 1
+              fi
+            fi              
     - name: Checkout
-      uses: actions/checkout@v4.1.7    
-      
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
+    - name: Log Current Branch and Commit
+      run: |
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse HEAD)" 
     - name: Add extension
       run: |
         cd $SDK_PATH
@@ -126,26 +122,22 @@ jobs:
     steps:
     - name: Trigger
       run: echo "Triggered by ${{github.event_name}} event"
-      
     - name: Check Branch Input
       run: |
-        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-          if [ -z "${{ github.event.inputs.branch }}" ]; then
-            echo "Branch input is required for manual trigger."
-            exit 1
-          else
-            echo "Checkout branch ${{ github.event.inputs.branch }}"
-          fi
-        else
-          # Extract branch name from github.ref
-          BRANCH_NAME="${{ github.ref }}" 
-          BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
-          echo "Checkout branch $BRANCH_NAME"
-        fi
-        
+            if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+              if [ -z "${{ github.event.inputs.branch }}" ]; then
+                echo "Branch input is required for manual trigger."
+                exit 1
+              fi
+            fi              
     - name: Checkout
-      uses: actions/checkout@v4.1.7    
-      
+      uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
+    - name: Log Current Branch and Commit
+      run: |
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse HEAD)" 
     - name: Add extension
       run: |
         cd $SDK_PATH
