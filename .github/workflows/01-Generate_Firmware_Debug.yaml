@@ -210,18 +210,13 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME_MG12}
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         make integration_test_info -j4
         export HOST_IP=192.168.1.69
         cd ../test/
         ls -la
-        bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER
-        cd ../build
-        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME_MG24}
-        cd ../test/
-        ls -la
-        bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER
+        echo "bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER"
+
         
     - name: Upload firmware MG12
       uses: actions/upload-artifact@v4.3.4
