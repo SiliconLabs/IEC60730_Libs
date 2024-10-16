@@ -24,10 +24,20 @@ jobs:
     steps:
     - name: Trigger
       run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ -z "${{ github.event.inputs.branch }}" ]; then
+          echo "Branch input is required."
+          exit 1
+        fi
+        echo "Checkout branch ${{ github.event.inputs.branch }}"
+        
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
-        ref: "${{ github.event.inputs.branch }}"
+        ref: "${{ github.event.inputs.branch }}"        
+      
     - name: Install python3.11
       if: always()
       run: |
