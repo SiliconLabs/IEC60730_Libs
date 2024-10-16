@@ -74,8 +74,8 @@ jobs:
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
     - name: Move to custom workspace
       run: |
-          mv "$GITHUB_WORKSPACE/${{ github.event.repository.name }}" "$GITHUB_WORKSPACE/"
-          rm -rf "$GITHUB_WORKSPACE/${{ github.event.repository.name }}"  # Delete the empty folder
+          mv "$GITHUB_WORKSPACE/*" $(dirname "$GITHUB_WORKSPACE")
+          rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
     - name: Verify directory
       run: |
           echo "Cloned to: $(pwd)"
