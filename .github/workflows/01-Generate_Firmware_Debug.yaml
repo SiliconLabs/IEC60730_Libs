@@ -32,9 +32,9 @@ env:
   GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
   SDK_VER: v4.4.2
   JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
-  SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
-  START_ADDR_FLASH: 0x8000000
-  TASK: gen-only
+  TASK: gen-only  
+  JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
+  REPO_BRANCH: ${{ github.head_ref || github.ref_name }}
   BOARD_NAME_MG12: brd4161a
   BOARD_NAME_MG24: brd4187c
   ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
@@ -48,7 +48,7 @@ env:
   CHIP_MG24: EFR32MG24BXXXF1536
 jobs:
   job1:
-    name: Generate Firmware for MG24 with GCC
+    name: Generate Firmware
     runs-on: ubuntu-20.04
     permissions:
       contents: read
@@ -72,12 +72,8 @@ jobs:
       uses: actions/checkout@v4.1.7
       with:
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
-    - name: Move to custom workspace
-      run: |
-          mv "$GITHUB_WORKSPACE"/* "$(dirname "$GITHUB_WORKSPACE")"
     - name: Verify directory
       run: |
-          cd ..
           echo "Cloned to: $(pwd)"
           ls -la /home/runner/work/${{ github.event.repository.name }}
     - name: Log Current Branch and Commit
@@ -87,9 +83,6 @@ jobs:
     - name: Install Simplicity SDK
       if: always()
       run: |
-        cd ..
-        echo "Repo root directory: $GITHUB_WORKSPACE"
-        echo "Current directory: $PWD"
         if [ -d "simplicity_sdk" ]; then
           echo "Removing existing simplicity_sdk folder..."
           rm -rf simplicity_sdk
@@ -102,8 +95,6 @@ jobs:
     - name: Install Gecko SDK
       if: always()
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         if [ -d "gecko_sdk_$SDK_VER" ]; then
           echo "Removing existing gecko_sdk_$SDK_VER folder..."
           rm -rf gecko_sdk_$SDK_VER
@@ -116,9 +107,8 @@ jobs:
         mkdir extension
         cd extension
         git clone https://github.com/SiliconLabs/IEC60730_Libs.git
-        ls -la
         cd IEC60730_Libs
-        git checkout create-unit-test-functions-in-lib-iec60730
+        git checkout $REPO_BRANCH
         ls -la
         cd ..
         ls -la
@@ -127,24 +117,18 @@ jobs:
     - name: Install Amazon Corretto 17
       if: always()
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         wget $AM_CORRETTO_17
         tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
         ls -la
     - name: Install SLC CLI
       if: always()
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         wget $SLC_CLI_URL
         unzip slc_cli_linux.zip
         ls -la
     - name: Install Simplicity Commander
       if: always()
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         wget $COMMANDER_URL
         unzip SimplicityCommander-Linux.zip
         cd SimplicityCommander-Linux
@@ -157,8 +141,6 @@ jobs:
     - name: Install GCC
       if: always()
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         wget $GCC_URL
         tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
         ls -la
@@ -166,16 +148,12 @@ jobs:
         ls -la
     - name: Install Ninja build
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         sudo apt update
         sudo apt -y install ninja-build
         ninja --version
     - name: Install python3.11
       if: always()
       run: |
-        cd ..
-        echo "Current directory: $PWD"
         sudo apt update
         sudo apt upgrade
         sudo add-apt-repository ppa:deadsnakes/ppa -y
@@ -201,7 +179,6 @@ jobs:
         ls -la "$(pwd)/simplicity_sdk"
         export PATH=$PATH:$PWD/commander
         export PATH=$PATH:$PWD/slc_cli
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export TOOL_DIRS=$PWD/$TOOL_DIRS
         export PATH=$PATH:/usr/bin/
         export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
@@ -219,11 +196,11 @@ jobs:
         echo "Generate image for MG12"
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 || exit 1
-        cmake --build . --target integration_test_info -j4 || exit 1
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+        make integration_test_info -j4 || exit 1
         export HOST_IP=$HOST_IP
+        cd ../test/
+        ls -la
         bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER || exit 1
-        
         echo "Generate image for MG24"
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24 || exit 1
         bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER || exit 1
