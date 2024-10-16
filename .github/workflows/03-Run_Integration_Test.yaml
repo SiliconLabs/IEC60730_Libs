@@ -1,4 +1,4 @@
-name: 04-Integration Test
+name: 03-Run Integration Test
 on:
   pull_request:
     branches:
@@ -35,10 +35,22 @@ jobs:
       START_ADDR_FLASH: 0x8000000
 
     steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ -z "${{ github.event.inputs.branch }}" ]; then
+          echo "Branch input is required."
+          exit 1
+        fi
+        echo "Checkout branch ${{ github.event.inputs.branch }}"
+        
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
-        ref: "${{ github.event.inputs.branch }}"
+        ref: "${{ github.event.inputs.branch }}"        
+        
     - name: Add extension
       run: |
         cd $SDK_PATH
@@ -104,10 +116,22 @@ jobs:
       START_ADDR_FLASH: 0x0000000
 
     steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ -z "${{ github.event.inputs.branch }}" ]; then
+          echo "Branch input is required."
+          exit 1
+        fi
+        echo "Checkout branch ${{ github.event.inputs.branch }}"
+        
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
-        ref: "${{ github.event.inputs.branch }}"
+        ref: "${{ github.event.inputs.branch }}"        
+        
     - name: Add extension
       run: |
         cd $SDK_PATH
