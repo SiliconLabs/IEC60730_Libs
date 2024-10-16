@@ -1,11 +1,28 @@
-name: Generate Firmware
+name: 01-Generate Firmware_Debug
 on:
   push:
+    branches-ignore:
+      - main
+      - "tests/**"
+  pull_request:
     branches:
-    - '*'         # matches every branch that doesn't contain a '/'
-    - '*/*'       # matches every branch containing a single '/'
-    - '**'        # matches every branch
-
+      - 'main'       
+      - 'release/**'
+  workflow_dispatch:
+    inputs:
+      branch: 
+        description: 'Branch to test'
+        type: string
+        default: 'dev'
+      ADAPTER_SN_MG12: 
+        description: 'Adapter serial number of MG12'
+        type: string
+        default: '440189400'
+      ADAPTER_SN_MG24: 
+        description: 'Adapter serial number of MG24'
+        type: string
+        default: '440133193'
+    
 env:
   AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
   SLC_CLI_URL: https://www.silabs.com/documents/login/software/slc_cli_linux.zip
@@ -15,29 +32,54 @@ env:
   GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
   SDK_VER: v4.4.2
   JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
-  TASK: gen-only
+  TASK: gen-only  
   JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
   REPO_BRANCH: ${{ github.head_ref || github.ref_name }}
+  BOARD_NAME_MG12: brd4161a
+  BOARD_NAME_MG24: brd4187c
+  ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
+  ADAPTER_SN_MG24: ${{ github.event.inputs.ADAPTER_SN_MG24 }} #440133193
+  HOST_IP: 192.168.1.69
+  TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
+  COMPILER: GCC
+  TOOL_CHAINS: GCC
+  COMPONENT: all
+  CHIP_MG12: EFR32MG12
+  CHIP_MG24: EFR32MG24BXXXF1536
 jobs:
   job1:
-    name: Generate Firmware for MG24 with GCC
+    name: Generate Firmware
     runs-on: ubuntu-20.04
     permissions:
       contents: read
       pull-requests: write
-    env:
-      BOARD_NAME: brd4187c
-      HOST_IP: 192.168.1.69
-      TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
-      COMPILER: GCC
-      TOOL_CHAINS: GCC
-      TASK: gen-only
-      COMPONENTS: all
-      ADAPTER_SN: 440133193
-      CHIP: EFR32MG24BXXXF1536
+      
     steps:
+    - name: Trigger
+      run: |
+        echo "Triggered by ${{github.event_name}} event"
+        echo "Repo root directory: $GITHUB_WORKSPACE"
+        echo "Current directory: $PWD"
+    - name: Check Branch Input
+      run: |
+            if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+              if [ -z "${{ github.event.inputs.branch }}" ]; then
+                echo "Branch input is required for manual trigger."
+                exit 1
+              fi
+            fi              
     - name: Checkout
       uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
+    - name: Verify directory
+      run: |
+          echo "Cloned to: $(pwd)"
+          ls -la /home/runner/work/${{ github.event.repository.name }}
+    - name: Log Current Branch and Commit
+      run: |
+          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
+          echo "Current commit: $(git rev-parse HEAD)" 
     - name: Install Simplicity SDK
       if: always()
       run: |
@@ -170,7 +212,6 @@ jobs:
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
         make integration_test_info -j4
-        #export LST_PATH=$PWD/test/integration_test/build/${BOARD_NAME}/integration_test_iec60730_watchdog/S
         export HOST_IP=192.168.1.69
         cd ../test/
         ls -la
