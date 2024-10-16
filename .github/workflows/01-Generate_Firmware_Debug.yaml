@@ -56,7 +56,10 @@ jobs:
       
     steps:
     - name: Trigger
-      run: echo "Triggered by ${{github.event_name}} event"
+      run: |
+        echo "Triggered by ${{github.event_name}} event"
+        echo "Repo root directory: $GITHUB_WORKSPACE"
+        echo "Current directory: $PWD"
     - name: Check Branch Input
       run: |
             if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -71,11 +74,14 @@ jobs:
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
     - name: Log Current Branch and Commit
       run: |
+          echo "Repo root directory: $GITHUB_WORKSPACE"
+          echo "Current directory: $PWD"
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)" 
     - name: Install Simplicity SDK
       if: always()
       run: |
+        echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
         if [ -d "simplicity_sdk" ]; then
           echo "Removing existing simplicity_sdk folder..."
