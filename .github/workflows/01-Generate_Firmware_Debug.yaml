@@ -79,7 +79,6 @@ jobs:
       run: |
           cd ..
           echo "Cloned to: $(pwd)"
-          tree "$(pwd)"
           ls -la /home/runner/work/${{ github.event.repository.name }}
     - name: Log Current Branch and Commit
       run: |
@@ -91,7 +90,6 @@ jobs:
         cd ..
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         if [ -d "simplicity_sdk" ]; then
           echo "Removing existing simplicity_sdk folder..."
           rm -rf simplicity_sdk
@@ -106,7 +104,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         if [ -d "gecko_sdk_$SDK_VER" ]; then
           echo "Removing existing gecko_sdk_$SDK_VER folder..."
           rm -rf gecko_sdk_$SDK_VER
@@ -132,7 +129,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         wget $AM_CORRETTO_17
         tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
         ls -la
@@ -141,7 +137,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         wget $SLC_CLI_URL
         unzip slc_cli_linux.zip
         ls -la
@@ -150,7 +145,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         wget $COMMANDER_URL
         unzip SimplicityCommander-Linux.zip
         cd SimplicityCommander-Linux
@@ -165,7 +159,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         wget $GCC_URL
         tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
         ls -la
@@ -175,7 +168,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         sudo apt update
         sudo apt -y install ninja-build
         ninja --version
@@ -184,7 +176,6 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
         sudo apt update
         sudo apt upgrade
         sudo add-apt-repository ppa:deadsnakes/ppa -y
@@ -205,7 +196,9 @@ jobs:
       run: |
         cd ..
         echo "Current directory: $PWD"
-        tree "$(pwd)"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
         export PATH=$PATH:$PWD/commander
         export PATH=$PATH:$PWD/slc_cli
         export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
