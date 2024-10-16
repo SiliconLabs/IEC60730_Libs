@@ -172,7 +172,6 @@ jobs:
         sudo apt install python3-pip
     - name: Generate image
       run: |
-        cd ..
         echo "Current directory: $PWD"
         ls -la
         echo "List file in simplicity_sdk folfer"
