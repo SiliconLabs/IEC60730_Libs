@@ -184,38 +184,28 @@ jobs:
         make prepare
         cd build || exit 1
         echo "Generate image for MG12"
-        export  ADAPTER_SN_MG12=${{ env.ADAPTER_SN_MG12}}
-        export  BOARD_NAME_MG12=${{ env.BOARD_NAME_MG12 }}
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 || exit 1
         cmake --build . --target integration_test_info -j4 || exit 1
-        export LST_PATH=$PWD/test/integration_test/build/$BOARD_NAME_MG12/integration_test_iec60730_watchdog/S
         export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export HOST_IP=$HOST_IP
         bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER || exit 1
         
         echo "Generate image for MG24"
-        export  ADAPTER_SN_MG24=${{ env.ADAPTER_SN_MG24}}
-        export  BOARD_NAME_MG24=${{ env.BOARD_NAME_MG24 }}
-        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24 || exit 1
-        cmake --build . --target integration_test_info -j4 || exit 1
-        export LST_PATH=$PWD/test/integration_test/build/$BOARD_NAME_MG24/integration_test_iec60730_watchdog/S
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
-        export HOST_IP=$HOST_IP
         bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER || exit 1
         
     - name: Upload firmware MG12
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/$BOARD_NAME_MG12/integration_test_iec60730_invariable_memory/NS/
+        path: ${{ github.workspace }}/build/test/integration_test/build/$BOARD_NAME_MG12/
         warn: Output a warning but do not fail the action
         retention-days: 90
     - name: Upload firmware MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/$BOARD_NAME_MG24/integration_test_iec60730_invariable_memory/NS/
+        path: ${{ github.workspace }}/build/test/integration_test/build/$BOARD_NAME_MG24/
         warn: Output a warning but do not fail the action
         retention-days: 90
