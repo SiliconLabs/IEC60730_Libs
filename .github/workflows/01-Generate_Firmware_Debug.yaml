@@ -208,6 +208,7 @@ jobs:
         slc signature trust --sdk $SDK_PATH
         slc configuration -gcc=$TOOL_DIRS
         make prepare
+        echo "Generate MG12 image"
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
@@ -215,9 +216,22 @@ jobs:
         export HOST_IP=192.168.1.69
         cd ../test/
         ls -la
-        echo "bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER"
+        if [ -z "${{ADAPTER_SN_MG12}}" ]; then
+            ADAPTER_SN_MG12=440189400
+        fi    
+        echo "bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER"
 
-        
+        echo "Generate MG24 image"
+        cd ../build
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
+        make integration_test_info -j4
+        cd ../test/
+        ls -la
+        if [ -z "${{ADAPTER_SN_MG24}}" ]; then
+            ADAPTER_SN_MG12=440133193
+        fi  
+        echo "bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENT $ADAPTER_SN_MG24 $COMPILER"
+
     - name: Upload firmware MG12
       uses: actions/upload-artifact@v4.3.4
       with:
