@@ -44,8 +44,22 @@ jobs:
       ADAPTER_SN: 440133193
       CHIP: EFR32MG24BXXXF1536
     steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ -z "${{ github.event.inputs.branch }}" ]; then
+          echo "Branch input is required."
+          exit 1
+        fi
+        echo "Checkout branch ${{ github.event.inputs.branch }}"
+        
     - name: Checkout
       uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"        
+        
     - name: Install Simplicity SDK
       if: always()
       run: |
@@ -179,8 +193,22 @@ jobs:
       ADAPTER_SN: 440189400
       CHIP: EFR32MG12
     steps:
+    - name: Trigger
+      run: echo "Triggered by ${{github.event_name}} event"
+      
+    - name: Check Branch Input
+      run: |
+        if [ -z "${{ github.event.inputs.branch }}" ]; then
+          echo "Branch input is required."
+          exit 1
+        fi
+        echo "Checkout branch ${{ github.event.inputs.branch }}"
+        
     - name: Checkout
       uses: actions/checkout@v4.1.7
+      with:
+        ref: "${{ github.event.inputs.branch }}"        
+        
     - name: Install Simplicity SDK
       if: always()
       run: |
