@@ -40,17 +40,23 @@ jobs:
       
     - name: Check Branch Input
       run: |
-        if [ -z "${{ github.event.inputs.branch }}" ]; then
-          echo "Branch input is required."
-          exit 1
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ -z "${{ github.event.inputs.branch }}" ]; then
+            echo "Branch input is required for manual trigger."
+            exit 1
+          else
+            echo "Checkout branch ${{ github.event.inputs.branch }}"
+          fi
+        else
+          # Extract branch name from github.ref
+          BRANCH_NAME="${{ github.ref }}" 
+          BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+          echo "Checkout branch $BRANCH_NAME"
         fi
-        echo "Checkout branch ${{ github.event.inputs.branch }}"
         
     - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"        
-        
+      uses: actions/checkout@v4.1.7    
+      
     - name: Add extension
       run: |
         cd $SDK_PATH
@@ -121,17 +127,23 @@ jobs:
       
     - name: Check Branch Input
       run: |
-        if [ -z "${{ github.event.inputs.branch }}" ]; then
-          echo "Branch input is required."
-          exit 1
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          if [ -z "${{ github.event.inputs.branch }}" ]; then
+            echo "Branch input is required for manual trigger."
+            exit 1
+          else
+            echo "Checkout branch ${{ github.event.inputs.branch }}"
+          fi
+        else
+          # Extract branch name from github.ref
+          BRANCH_NAME="${{ github.ref }}" 
+          BRANCH_NAME="${BRANCH_NAME##*/}"  # This removes everything before the last '/'
+          echo "Checkout branch $BRANCH_NAME"
         fi
-        echo "Checkout branch ${{ github.event.inputs.branch }}"
         
     - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event.inputs.branch }}"        
-        
+      uses: actions/checkout@v4.1.7    
+      
     - name: Add extension
       run: |
         cd $SDK_PATH
