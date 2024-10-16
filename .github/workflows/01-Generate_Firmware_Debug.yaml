@@ -74,21 +74,20 @@ jobs:
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
     - name: Move to custom workspace
       run: |
-          mv "$GITHUB_WORKSPACE/*" $(dirname "$GITHUB_WORKSPACE")
-          rm -rf "$GITHUB_WORKSPACE"  # Delete the empty folder
+          mv "$GITHUB_WORKSPACE"/* "$(dirname "$GITHUB_WORKSPACE")"
     - name: Verify directory
       run: |
+          cd ..
           echo "Cloned to: $(pwd)"
           ls -la /home/runner/work/${{ github.event.repository.name }}
     - name: Log Current Branch and Commit
       run: |
-          echo "Repo root directory: $GITHUB_WORKSPACE"
-          echo "Current directory: $PWD"
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)" 
     - name: Install Simplicity SDK
       if: always()
       run: |
+        cd ..
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
         if [ -d "simplicity_sdk" ]; then
@@ -103,6 +102,7 @@ jobs:
     - name: Install Gecko SDK
       if: always()
       run: |
+        cd ..
         echo "Current directory: $PWD"
         if [ -d "gecko_sdk_$SDK_VER" ]; then
           echo "Removing existing gecko_sdk_$SDK_VER folder..."
@@ -126,6 +126,7 @@ jobs:
     - name: Install Amazon Corretto 17
       if: always()
       run: |
+        cd ..
         echo "Current directory: $PWD"
         wget $AM_CORRETTO_17
         tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
@@ -133,6 +134,7 @@ jobs:
     - name: Install SLC CLI
       if: always()
       run: |
+        cd ..
         echo "Current directory: $PWD"
         wget $SLC_CLI_URL
         unzip slc_cli_linux.zip
@@ -140,6 +142,7 @@ jobs:
     - name: Install Simplicity Commander
       if: always()
       run: |
+        cd ..
         echo "Current directory: $PWD"
         wget $COMMANDER_URL
         unzip SimplicityCommander-Linux.zip
@@ -153,6 +156,7 @@ jobs:
     - name: Install GCC
       if: always()
       run: |
+        cd ..
         echo "Current directory: $PWD"
         wget $GCC_URL
         tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
@@ -161,6 +165,7 @@ jobs:
         ls -la
     - name: Install Ninja build
       run: |
+        cd ..
         echo "Current directory: $PWD"
         sudo apt update
         sudo apt -y install ninja-build
@@ -168,6 +173,7 @@ jobs:
     - name: Install python3.11
       if: always()
       run: |
+        cd ..
         echo "Current directory: $PWD"
         sudo apt update
         sudo apt upgrade
@@ -187,6 +193,7 @@ jobs:
         sudo apt install python3-pip
     - name: Generate image
       run: |
+        cd ..
         echo "Current directory: $PWD"
         export PATH=$PATH:$PWD/commander
         export PATH=$PATH:$PWD/slc_cli
