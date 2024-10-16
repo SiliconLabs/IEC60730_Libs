@@ -71,7 +71,12 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
-        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
+        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
+        path: /home/runner/work/${{ github.event.repository.name }}
+    - name: Verify directory
+      run: |
+          echo "Cloned to: $(pwd)"
+          ls -la /home/runner/work/${{ github.event.repository.name }}
     - name: Log Current Branch and Commit
       run: |
           echo "Repo root directory: $GITHUB_WORKSPACE"
