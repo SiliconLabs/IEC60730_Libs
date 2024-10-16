@@ -87,8 +87,8 @@ jobs:
           echo "Removing existing simplicity_sdk folder..."
           rm -rf simplicity_sdk
         fi
-	mkdir simplicity_studio
-	cd simplicity_studio
+        mkdir simplicity_sdk
+        cd simplicity_sdk
         git clone $SIM_REPO
         cd simplicity_sdk || exit
         ls -la
