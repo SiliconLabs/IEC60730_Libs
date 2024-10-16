@@ -210,16 +210,30 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME_MG12}
         make integration_test_info -j4
         export HOST_IP=192.168.1.69
         cd ../test/
         ls -la
-        bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER
-    - name: Upload firmware
+        bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER
+        cd ../build
+        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME_MG24}
+        cd ../test/
+        ls -la
+        bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER
+        
+    - name: Upload firmware MG12
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: firmware_mg12_gcc
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME_MG12 }}/${{ env.COMPILER }}/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload firmware MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME }}/${{ env.COMPILER }}/integration_test_iec60730_invariable_memory/NS/
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME_MG24 }}/${{ env.COMPILER }}/
         warn: Output a warning but do not fail the action
         retention-days: 90
