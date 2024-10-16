@@ -34,7 +34,7 @@ jobs:
       TOOL_DIRS: $HOME/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
       START_ADDR_FLASH: 0x8000000
 
-   steps:
+    steps:
     - name: Trigger
       run: echo "Triggered by ${{github.event_name}} event"
     - name: Check Branch Input
