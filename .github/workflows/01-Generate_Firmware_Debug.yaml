@@ -216,7 +216,7 @@ jobs:
         export HOST_IP=192.168.1.69
         cd ../test/
         ls -la
-        if [ -z "${{ADAPTER_SN_MG12}}" ]; then
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
             ADAPTER_SN_MG12=440189400
         fi    
         echo "bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER"
@@ -227,8 +227,8 @@ jobs:
         make integration_test_info -j4
         cd ../test/
         ls -la
-        if [ -z "${{ADAPTER_SN_MG24}}" ]; then
-            ADAPTER_SN_MG12=440133193
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG24 }}" ]; then
+            ADAPTER_SN_MG24=440133193
         fi  
         echo "bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENT $ADAPTER_SN_MG24 $COMPILER"
 
