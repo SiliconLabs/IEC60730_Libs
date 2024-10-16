@@ -48,6 +48,10 @@ jobs:
         ls -la
         cd ..
         ls -la
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
     - name: Install Gecko SDK
       if: always()
       run: |
@@ -65,18 +69,30 @@ jobs:
         ls -la
         cd ..
         ls -la
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
     - name: Install Amazon Corretto 17
       if: always()
       run: |
         wget $AM_CORRETTO_17
         tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
         ls -la
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
     - name: Install SLC CLI
       if: always()
       run: |
         wget $SLC_CLI_URL
         unzip slc_cli_linux.zip
         ls -la
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
     - name: Install Simplicity Commander
       if: always()
       run: |
@@ -89,6 +105,10 @@ jobs:
         tar -xf SimplicityCommander-Linux/Commander_linux_x86_64_*.tar.bz commander
         cd commander
         ls -la
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
     - name: Install GCC
       if: always()
       run: |
@@ -97,6 +117,10 @@ jobs:
         ls -la
         cd arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
         ls -la
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "$(pwd)/simplicity_sdk"
     - name: Install Ninja build
       run: |
         sudo apt update
@@ -146,7 +170,7 @@ jobs:
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
         make integration_test_info -j4
-        export LST_PATH=$PWD/test/integration_test/build/${BOARD_NAME}/integration_test_iec60730_watchdog/S
+        #export LST_PATH=$PWD/test/integration_test/build/${BOARD_NAME}/integration_test_iec60730_watchdog/S
         export HOST_IP=192.168.1.69
         cd ../test/
         ls -la
