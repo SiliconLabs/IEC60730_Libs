@@ -102,7 +102,7 @@ jobs:
             ADAPTER_SN_MG12=440189400
         fi
         mkdir log_MG12
-        bash execute_unit_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Test_integration_MG12.txt
+        bash execute_unit_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Unit_Test_MG12.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
@@ -122,18 +122,16 @@ jobs:
             ADAPTER_SN_MG12=440189400
         fi
         mkdir log_MG24
-        bash execute_unit_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER  2>&1 | tee log_MG24/Test_integration_MG24.txt
+        bash execute_unit_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER  2>&1 | tee log_MG24/Unit_Test_MG24.txt
     - name: Upload artifact MG12
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg12_gcc
         path: ${{ github.workspace }}/test/log_MG12/
-        warn: Output a warning but do not fail the action
         retention-days: 90
     - name: Upload artifact MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg24_gcc
         path: ${{ github.workspace }}/test/log_MG24/
-        warn: Output a warning but do not fail the action
         retention-days: 90
