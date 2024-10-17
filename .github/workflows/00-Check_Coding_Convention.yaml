@@ -67,5 +67,4 @@ jobs:
       with:
         name: CodingConventionResult
         path: CodingConventionTool.txt
-        warn: Output a warning but do not fail the action
         retention-days: 90
