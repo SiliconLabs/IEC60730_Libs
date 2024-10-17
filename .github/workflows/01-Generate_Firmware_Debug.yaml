@@ -72,10 +72,6 @@ jobs:
       uses: actions/checkout@v4.1.7
       with:
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
-    - name: Verify directory
-      run: |
-          echo "Cloned to: $(pwd)"
-          ls -la /home/runner/work/${{ github.event.repository.name }}
     - name: Log Current Branch and Commit
       run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
@@ -131,10 +127,6 @@ jobs:
         wget $SLC_CLI_URL
         unzip slc_cli_linux.zip
         # ls -la
-        echo "Current directory: $PWD"
-        ls -la
-        echo "List file in simplicity_sdk folfer"
-        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
     - name: Install Simplicity Commander
       if: always()
       run: |
@@ -147,10 +139,6 @@ jobs:
         tar -xf SimplicityCommander-Linux/Commander_linux_x86_64_*.tar.bz commander
         cd commander
         # ls -la
-        echo "Current directory: $PWD"
-        ls -la
-        echo "List file in simplicity_sdk folfer"
-        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
     - name: Install GCC
       if: always()
       run: |
@@ -159,10 +147,6 @@ jobs:
         # ls -la
         cd arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
         # ls -la
-        echo "Current directory: $PWD"
-        ls -la
-        echo "List file in simplicity_sdk folfer"
-        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
     - name: Install Ninja build
       run: |
         sudo apt update
@@ -223,8 +207,12 @@ jobs:
         echo "Run bash script"
         bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER
         echo "Generate MG24 image"
-        cd ../build
+        cd ..
         ls -la
+        rm -rf build
+        make prepare
+        cd build
+        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
         echo "Run Cmake"
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
         make integration_test_info -j4
@@ -233,7 +221,7 @@ jobs:
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG24 }}" ]; then
             ADAPTER_SN_MG24=440133193
         fi  
-        echo "Run bash script
+        echo "Run bash script"
         bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENT $ADAPTER_SN_MG24 $COMPILER
     - name: Upload firmware MG12
       uses: actions/upload-artifact@v4.3.4
