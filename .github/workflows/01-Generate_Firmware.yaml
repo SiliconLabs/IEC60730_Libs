@@ -67,7 +67,7 @@ jobs:
                 echo "Branch input is required for manual trigger."
                 exit 1
               else
-                REPO_BRANCH=${{ github.event.inputs.branch }}
+                echo "REPO_BRANCH=${{ github.event.inputs.branch }}">> $GITHUB_ENV
               fi
             fi              
     - name: Checkout
@@ -103,6 +103,7 @@ jobs:
         cd extension
         git clone https://github.com/SiliconLabs/IEC60730_Libs.git
         cd IEC60730_Libs
+        echo "Curent REPO_BRANCH is $REPO_BRANCH"
         git checkout $REPO_BRANCH
         # ls -la
         cd ..
