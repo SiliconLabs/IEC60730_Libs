@@ -50,6 +50,7 @@ jobs:
         echo "Triggered by ${{github.event_name}} event"
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
+        rm -rf ${{ github.workspace }}
     - name: Check Branch Input
       run: |
             if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -125,13 +126,13 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg12_gcc
-        path: /test/log_MG12/
+        path: ${{ github.workspace }}/test/log_MG12/
         warn: Output a warning but do not fail the action
         retention-days: 90
     - name: Upload artifact MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg24_gcc
-        path: /test/log_MG24/
+        path: ${{ github.workspace }}/test/log_MG24/
         warn: Output a warning but do not fail the action
         retention-days: 90
