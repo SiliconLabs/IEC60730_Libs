@@ -210,7 +210,8 @@ jobs:
         echo "Run bash script"
         bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER
         echo "Generate MG24 image"
-        cd ..
+        cd ${{ github.workspace }}
+        ls -la
         mv -v build build_MG12
         ls -la
         rm -rf build
@@ -231,7 +232,7 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build_MG12/${{ env.BOARD_NAME_MG12 }}/
+        path: ${{ github.workspace }}/build_MG12/test/integration_test/build/${{ env.BOARD_NAME_MG12 }}/
         warn: Output a warning but do not fail the action
         retention-days: 90
     - name: Upload firmware MG24
