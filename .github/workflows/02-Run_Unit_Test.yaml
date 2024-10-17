@@ -51,6 +51,7 @@ jobs:
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
         rm -rf ${{ github.workspace }}
+        mkdir ${{ github.workspace }}
     - name: Check Branch Input
       run: |
             if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
