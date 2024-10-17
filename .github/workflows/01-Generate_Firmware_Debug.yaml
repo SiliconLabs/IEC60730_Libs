@@ -211,6 +211,7 @@ jobs:
         echo "Generate MG12 image"
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
+        echo "Run Cmake"
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         make integration_test_info -j4
         export HOST_IP=192.168.1.69
@@ -218,8 +219,9 @@ jobs:
         ls -la
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
             ADAPTER_SN_MG12=440189400
-        fi    
-        echo "bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER"
+        fi
+        echo "Run bash script"
+        bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER
         echo "Generate MG24 image"
         cd ../build
         echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24"
