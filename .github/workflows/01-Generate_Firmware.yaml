@@ -34,7 +34,7 @@ env:
   JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
   TASK: gen-only  
   JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
-  REPO_BRANCH: ${{ github.head_ref || github.ref_name }}
+  REPO_BRANCH: ${{ github.head_ref || github.ref_name }}    
   BOARD_NAME_MG12: brd4161a
   BOARD_NAME_MG24: brd4187c
   ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
@@ -66,6 +66,8 @@ jobs:
               if [ -z "${{ github.event.inputs.branch }}" ]; then
                 echo "Branch input is required for manual trigger."
                 exit 1
+              else
+                REPO_BRANCH=${{ github.event.inputs.branch }}
               fi
             fi              
     - name: Checkout
