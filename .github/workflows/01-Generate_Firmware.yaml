@@ -32,32 +32,34 @@ env:
   GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
   SDK_VER: v4.4.2
   JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
-  SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
-  START_ADDR_FLASH: 0x8000000
-  TASK: gen-only
+  TASK: gen-only  
+  JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
+  REPO_BRANCH: ${{ github.head_ref || github.ref_name }}
+  BOARD_NAME_MG12: brd4161a
+  BOARD_NAME_MG24: brd4187c
+  ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
+  ADAPTER_SN_MG24: ${{ github.event.inputs.ADAPTER_SN_MG24 }} #440133193
+  HOST_IP: 192.168.1.69
+  TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
+  COMPILER: GCC
+  TOOL_CHAINS: GCC
+  COMPONENT: all
+  CHIP_MG12: EFR32MG12
+  CHIP_MG24: EFR32MG24BXXXF1536
 jobs:
   job1:
-    name: Generate Firmware for MG24 with GCC
+    name: Generate Firmware
     runs-on: ubuntu-20.04
     permissions:
       contents: read
       pull-requests: write
-    env: 
-      BOARD_NAME_MG12: brd4161a
-      BOARD_NAME_MG24: brd4187c
-      ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
-      ADAPTER_SN_MG24: ${{ github.event.inputs.ADAPTER_SN_MG24 }} #440133193
-      HOST_IP: 192.168.1.69
-      TOOL_DIRS: arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin
-      COMPILER: GCC
-      TOOL_CHAINS: GCC
-      TASK: gen-only
-      COMPONENT: all
-      CHIP_MG12: EFR32MG12
-      CHIP_MG24: EFR32MG24BXXXF1536
+      
     steps:
     - name: Trigger
-      run: echo "Triggered by ${{github.event_name}} event"
+      run: |
+        echo "Triggered by ${{github.event_name}} event"
+        echo "Repo root directory: $GITHUB_WORKSPACE"
+        echo "Current directory: $PWD"
     - name: Check Branch Input
       run: |
             if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
@@ -69,7 +71,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4.1.7
       with:
-        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
+        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}"
     - name: Log Current Branch and Commit
       run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
@@ -77,69 +79,74 @@ jobs:
     - name: Install Simplicity SDK
       if: always()
       run: |
-        if [ -d "simplicity_sdk" ]; then
-          echo "Removing existing simplicity_sdk folder..."
-          rm -rf simplicity_sdk
-        fi
+        mkdir simplicity_studio
+        cd simplicity_studio
         git clone $SIM_REPO
-        cd simplicity_sdk || exit
-        ls -la
+        cd simplicity_sdk
+        # ls -la
         cd ..
+        # ls -la
+        echo "Current directory: $PWD"
         ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
     - name: Install Gecko SDK
       if: always()
       run: |
-        if [ -d "gecko_sdk_$SDK_VER" ]; then
-          echo "Removing existing gecko_sdk_$SDK_VER folder..."
-          rm -rf gecko_sdk_$SDK_VER
-        fi
-        echo "Cloning the repository..."
         git clone $GECKO_SDK_REPO gecko_sdk_$SDK_VER
-        cd gecko_sdk_$SDK_VER || exit
+        cd gecko_sdk_$SDK_VER
         git checkout tags/$SDK_VER
-        ls -la
+        # ls -la
         mkdir extension
         cd extension
         git clone https://github.com/SiliconLabs/IEC60730_Libs.git
         cd IEC60730_Libs
-        git checkout create-unit-test-functions-in-lib-iec60730
-        ls -la
+        git checkout $REPO_BRANCH
+        # ls -la
         cd ..
-        ls -la
+        # ls -la
         cd ..
+        # ls -la
+        echo "Current directory: $PWD"
         ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
     - name: Install Amazon Corretto 17
       if: always()
       run: |
         wget $AM_CORRETTO_17
         tar -xzf amazon-corretto-17-x64-linux-jdk.tar.gz
+        # ls -la
+        echo "Current directory: $PWD"
         ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
     - name: Install SLC CLI
       if: always()
       run: |
         wget $SLC_CLI_URL
         unzip slc_cli_linux.zip
-        ls -la
+        # ls -la
     - name: Install Simplicity Commander
       if: always()
       run: |
         wget $COMMANDER_URL
         unzip SimplicityCommander-Linux.zip
         cd SimplicityCommander-Linux
-        ls -la
+        # ls -la
         cd ..
         mkdir commander
         tar -xf SimplicityCommander-Linux/Commander_linux_x86_64_*.tar.bz commander
         cd commander
-        ls -la
+        # ls -la
     - name: Install GCC
       if: always()
       run: |
         wget $GCC_URL
         tar -xf arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi.tar.xz
-        ls -la
+        # ls -la
         cd arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi
-        ls -la
+        # ls -la
     - name: Install Ninja build
       run: |
         sudo apt update
@@ -166,15 +173,18 @@ jobs:
         sudo apt install python3-pip
     - name: Generate image
       run: |
+        echo "Current directory: $PWD"
+        ls -la
+        echo "List file in simplicity_sdk folfer"
+        ls -la "/home/runner/work/IEC60730_Libs/IEC60730_Libs/simplicity_sdk"
         export PATH=$PATH:$PWD/commander
         export PATH=$PATH:$PWD/slc_cli
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
         export TOOL_DIRS=$PWD/$TOOL_DIRS
         export PATH=$PATH:/usr/bin/
         export SDK_PATH=$PWD/gecko_sdk_$SDK_VER
         export PATH=$PATH:$PWD/amazon-corretto-17.0.12.7.1-linux-x64/bin
         echo $PATH
-        echo 2 | sudo update-alternatives --config java || exit 1
+        echo 2 | sudo update-alternatives --config java
         java --version
         slc --version
         slc configuration --sdk=${SDK_PATH}
@@ -182,30 +192,49 @@ jobs:
         slc signature trust --sdk $SDK_PATH
         slc configuration -gcc=$TOOL_DIRS
         make prepare
-        cd build || exit 1
-        echo "Generate image for MG12"
+        echo "Generate MG12 image"
+        cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 || exit 1
-        cmake --build . --target integration_test_info -j4 || exit 1
-        export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
-        export HOST_IP=$HOST_IP
-        bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER || exit 1
-        
-        echo "Generate image for MG24"
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24 || exit 1
-        bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER || exit 1
-        
+        echo "Run Cmake"
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
+        make integration_test_info -j4
+        export HOST_IP=192.168.1.69
+        cd ../test/
+        ls -la
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
+            ADAPTER_SN_MG12=440189400
+        fi
+        echo "Run bash script"
+        bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER
+        echo "Generate MG24 image"
+        cd ..
+        mv -v build build_MG12
+        ls -la
+        rm -rf build
+        make prepare
+        cd build
+        slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
+        echo "Run Cmake"
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
+        make integration_test_info -j4
+        cd ../test/
+        ls -la
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG24 }}" ]; then
+            ADAPTER_SN_MG24=440133193
+        fi  
+        echo "Run bash script"
+        bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENT $ADAPTER_SN_MG24 $COMPILER
     - name: Upload firmware MG12
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/$BOARD_NAME_MG12/
+        path: ${{ github.workspace }}/build/test/integration_test/build_MG12/${{ env.BOARD_NAME_MG12 }}/
         warn: Output a warning but do not fail the action
         retention-days: 90
     - name: Upload firmware MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/$BOARD_NAME_MG24/
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME_MG24 }}/
         warn: Output a warning but do not fail the action
         retention-days: 90
