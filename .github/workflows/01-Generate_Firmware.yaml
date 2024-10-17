@@ -1,4 +1,4 @@
-name: 01-Generate Firmware_Debug
+name: 01-Generate Firmware
 on:
   push:
     branches-ignore:
