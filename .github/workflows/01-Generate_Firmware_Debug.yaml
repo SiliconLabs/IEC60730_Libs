@@ -169,7 +169,7 @@ jobs:
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/IEC60730_Libs
-        echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}"
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=${BOARD_NAME}
         make integration_test_info -j4
         #export LST_PATH=$PWD/test/integration_test/build/${BOARD_NAME}/integration_test_iec60730_watchdog/S
         export HOST_IP=192.168.1.69
