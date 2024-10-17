@@ -9,6 +9,14 @@ on:
         description: 'Branch to test'
         type: string
         default: 'dev'
+      ADAPTER_SN_MG12: 
+        description: 'Adapter serial number of MG12'
+        type: string
+        default: '440189400'
+      ADAPTER_SN_MG24: 
+        description: 'Adapter serial number of MG24'
+        type: string
+        default: '440133193'
 env:
   REPO_URL: ${{ github.server_url }}/${{ github.repository }}
   REPO_BRANCH: ${{ github.head_ref || github.ref_name }}
@@ -17,32 +25,39 @@ env:
   SDK_PATH: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
 jobs:
   job1:
-    name: Unit test for mg24 with gcc
+    name: Unit test
     runs-on: [self-hosted, ds-sqa-hn-iec]
     permissions:
       contents: read
       pull-requests: write
     env: 
-      BOARD_NAME: brd4187c
+      BOARD_NAME_MG12: brd4161a
+      BOARD_NAME_MG24: brd4187c
       HOST_IP: 192.168.1.69
       COMPILER: GCC
       TOOL_CHAINS: GCC
       TASK: all
       COMPONENTS: all
-      ADAPTER_SN: 440111030 
+      ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
+      ADAPTER_SN_MG24: ${{ github.event.inputs.ADAPTER_SN_MG24 }} #440133193 
       CHIP: EFR32MG24BXXXF1536
       TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
       START_ADDR_FLASH: 0x8000000
 
     steps:
     - name: Trigger
-      run: echo "Triggered by ${{github.event_name}} event"
+      run: |
+        echo "Triggered by ${{github.event_name}} event"
+        echo "Repo root directory: $GITHUB_WORKSPACE"
+        echo "Current directory: $PWD"
     - name: Check Branch Input
       run: |
             if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
               if [ -z "${{ github.event.inputs.branch }}" ]; then
                 echo "Branch input is required for manual trigger."
                 exit 1
+              else
+                echo "REPO_BRANCH=${{ github.event.inputs.branch }}">> $GITHUB_ENV
               fi
             fi              
     - name: Checkout
@@ -62,6 +77,7 @@ jobs:
         git clone $REPO_URL
         ls -la
         cd $REPO_NAME
+        echo "Curent REPO_BRANCH is $REPO_BRANCH"
         git checkout $REPO_BRANCH
         ls -la
     - name: Run test
@@ -76,104 +92,44 @@ jobs:
         slc signature trust --sdk $SDK_PATH
         slc configuration -gcc=$TOOL_DIRS
         make prepare
+        echo "Run unit test for MG12"
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
         cd ../test
-    
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER' > log/Test_integration_$BOARD_NAME_GCC_1.txt
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
+            ADAPTER_SN_MG12=440189400
+        fi
+        echo 'bash execute_unit_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER' > log_MG12/Test_integration_$BOARD_NAME_GCC_1.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
 
-
-    - name: Upload artifact
-      uses: actions/upload-artifact@v4.3.4
-      with:
-        name: unit_test_log_mg24_gcc
-        path: test/log/
-        warn: Output a warning but do not fail the action
-        retention-days: 90
-  
-  
-  job2:
-    name: Unit test for mg12 with gcc
-    runs-on: [self-hosted, ds-sqa-hn-iec]
-    if: ${{ always() }}
-    needs: [job1]
-    permissions:
-      contents: read
-      pull-requests: write
-    env: 
-      BOARD_NAME: brd4161a
-      HOST_IP: 192.168.1.69
-      COMPILER: GCC
-      TOOL_CHAINS: GCC
-      TASK: all
-      COMPONENTS: all
-      ADAPTER_SN: 440189400 
-      CHIP: EFR32MG12
-      TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
-      START_ADDR_FLASH: 0x0000000
-
-    steps:
-    - name: Trigger
-      run: echo "Triggered by ${{github.event_name}} event"
-    - name: Check Branch Input
-      run: |
-            if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-              if [ -z "${{ github.event.inputs.branch }}" ]; then
-                echo "Branch input is required for manual trigger."
-                exit 1
-              fi
-            fi              
-    - name: Checkout
-      uses: actions/checkout@v4.1.7
-      with:
-        ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.branch || github.ref }}" 
-    - name: Log Current Branch and Commit
-      run: |
-          echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
-          echo "Current commit: $(git rev-parse HEAD)" 
-    - name: Add extension
-      run: |
-        cd $SDK_PATH
-        cd extension
+        echo "Run unit test for MG24"
         ls -la
-        rm -rd $REPO_NAME || true
-        git clone $REPO_URL
+        cd ${{ github.workspace }}
         ls -la
-        cd $REPO_NAME
-        git checkout $REPO_BRANCH
-        ls -la
-    - name: Run test
-      run: |
-        export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
-        export PATH=$PATH:~/slc_cli
-        export PATH=$PATH:/usr/bin/
-        export PATH=$PATH:~/amazon-corretto-17.0.12.7.1-linux-x64/bin
-        export LST_PATH=$PWD/build/test/integration_test/build/${BOARD_NAME}/integration_test_iec60730_watchdog/S
-        slc configuration --sdk=${SDK_PATH}
-        ninja --version
-        slc signature trust --sdk $SDK_PATH
-        slc configuration -gcc=$TOOL_DIRS
+        rm -rf build
         make prepare
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
         cd ../test
-    
-        echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER' > log/Test_integration_$BOARD_NAME_GCC_1.txt
-        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
-        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
-        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
-        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
-        #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
-
-    - name: Upload artifact
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
+            ADAPTER_SN_MG12=440189400
+        fi
+        echo 'bash execute_unit_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER' > log_MG24/Test_integration_$BOARD_NAME_GCC_1.txt
+    - name: Upload artifact MG12
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg12_gcc
-        path: test/log/
+        path: /test/log_MG12/
+        warn: Output a warning but do not fail the action
+        retention-days: 90
+    - name: Upload artifact MG24
+      uses: actions/upload-artifact@v4.3.4
+      with:
+        name: unit_test_log_mg24_gcc
+        path: /test/log_MG24/
         warn: Output a warning but do not fail the action
         retention-days: 90
