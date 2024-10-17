@@ -232,13 +232,11 @@ jobs:
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
-        path: ${{ github.workspace }}/build_MG12/test/integration_test/build/${{ env.BOARD_NAME_MG12 }}/
-        warn: Output a warning but do not fail the action
+        path: ${{ github.workspace }}/build_MG12/test/integration_test/build/${{ env.BOARD_NAME_MG12 }}
         retention-days: 90
     - name: Upload firmware MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME_MG24 }}/
-        warn: Output a warning but do not fail the action
+        path: ${{ github.workspace }}/build/test/integration_test/build/${{ env.BOARD_NAME_MG24 }}
         retention-days: 90
