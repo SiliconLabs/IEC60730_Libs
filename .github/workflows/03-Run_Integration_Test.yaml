@@ -13,10 +13,18 @@ on:
         description: 'Adapter serial number of MG12'
         type: string
         default: '440189400'
+      HOST_TP_MG12: 
+        description: 'Host IP of MG12'
+        type: string
+        default: '192.168.1.118'
       ADAPTER_SN_MG24: 
         description: 'Adapter serial number of MG24'
         type: string
-        default: '440133193'
+        default: '440111030'
+      HOST_TP_MG24: 
+        description: 'Host IP of MG24'
+        type: string
+        default: '192.168.1.69'
 env:
   REPO_URL: ${{ github.server_url }}/${{ github.repository }}
   REPO_BRANCH: ${{ github.head_ref || github.ref_name }}
@@ -38,11 +46,15 @@ jobs:
       TOOL_CHAINS: GCC
       TASK: all
       COMPONENTS: all
-      ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }} #440189400
-      ADAPTER_SN_MG24: ${{ github.event.inputs.ADAPTER_SN_MG24 }} #440133193 
+      ADAPTER_SN_MG12: ${{ github.event.inputs.ADAPTER_SN_MG12 }}
+      HOST_IP_MG12: ${{ github.event.inputs.HOST_IP_MG12 }}
+      ADAPTER_SN_MG24: ${{ github.event.inputs.ADAPTER_SN_MG24 }}
+      HOST_IP_MG24: ${{ github.event.inputs.HOST_IP_MG12 }}
       CHIP: EFR32MG24BXXXF1536
       TOOL_DIRS: /home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
-      START_ADDR_FLASH: 0x8000000
+      START_ADDR_FLASH_M12: 0x0000000
+      START_ADDR_FLASH_M24: 0x8000000
+
 
     steps:
     - name: Trigger
@@ -101,6 +113,11 @@ jobs:
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
             ADAPTER_SN_MG12=440189400
         fi
+        if [ -z "${{ github.event.inputs.HOST_IP_MG12 }}" ]; then
+            HOST_IP_MG12=192.168.1.118
+        fi
+        export HOST_IP=$HOST_IP_MG12
+        export FLASH_REGIONS_TEST=$START_ADDR_FLASH_M12
         mkdir log_MG12
         bash execute_integration_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Integration_Test_MG12.txt
         #echo 'bash execute_integration_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
@@ -118,9 +135,14 @@ jobs:
         cd build
         slc signature trust -extpath $SDK_PATH/extension/$REPO_NAME
         cd ../test
-        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
-            ADAPTER_SN_MG12=440189400
+        if [ -z "${{ github.event.inputs.ADAPTER_SN_MG24 }}" ]; then
+            ADAPTER_SN_MG24=440111030
         fi
+        if [ -z "${{ github.event.inputs.HOST_IP_MG24 }}" ]; then
+            HOST_IP_MG24=192.168.1.69
+        fi
+        export HOST_IP=$HOST_IP_MG24
+        export FLASH_REGIONS_TEST=$START_ADDR_FLASH_M24
         mkdir log_MG24
         bash execute_integration_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER  2>&1 | tee log_MG24/Integration_Test_MG24.txt
     - name: Upload artifact MG12
