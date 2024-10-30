@@ -66,7 +66,7 @@ def get_report_unit_test(result,file_test_case,log_report):
   list_test_case = get_test_case(file_test_case,logger,unity_begin_row,unity_end_row)
 
   if len(list_test_case) != len(result):
-    raise ValueError("The list of test cases " + str(len(list_test_case)) + " in the file" 
+    raise ValueError("The list of test cases " + str(len(list_test_case)) + " in the file"
                     + file_test + " is not equal " + str(len(result)) + " test cases"
                     " results received from device")
   
@@ -84,4 +84,3 @@ def get_report_unit_test(result,file_test_case,log_report):
     logger.info("FAIL")
   else:
     logger.info("PASS")
-

@@ -55,9 +55,6 @@ if(ENABLE_UNIT_TESTING)
 # Run generate_lib_iec60730
 include(generate_lib_iec60730)
 
-<<<<<<< HEAD
-generate_lib_iec60730(gecko_sdk)
-=======
 generate_lib_iec60730(${SDK_CMAKE_RELATIVE_DIR})
 get_target_property(MAIN_CFLAGS_LIB_IEC60730 slc_lib_iec60730 COMPILE_OPTIONS)
 string(REPLACE "$<$<COMPILE_LANGUAGE:C>:SHELL:-imacros sl_gcc_preinclude.h>;" "" MAIN_CFLAGS_LIB_IEC60730 "${MAIN_CFLAGS_LIB_IEC60730}")
@@ -65,8 +62,4 @@ string(REPLACE "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-imacros sl_gcc_preinclude.h>;" 
 string(REPLACE "$<$<COMPILE_LANGUAGE:ASM>:SHELL:-imacros sl_gcc_preinclude.h>;" "" MAIN_CFLAGS_LIB_IEC60730 "${MAIN_CFLAGS_LIB_IEC60730}")
 target_compile_options(unity PUBLIC
                       ${MAIN_CFLAGS_LIB_IEC60730})
->>>>>>> bc931c0277996d2249b12498620c427bb84a0dae
-
 endif()
-
-

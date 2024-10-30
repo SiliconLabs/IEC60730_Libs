@@ -113,17 +113,10 @@ var searchData=
   ['iec60730_5fwatchdogtesting_149',['iec60730_WatchdogTesting',['../group__IEC60730__WDOG__Test.html#ggaece8bdb434f4c8bafba3590467815044a5d9a9cd963dc0a0bbccd807d674bffe9',1,'sl_iec60730_watchdog.h']]],
   ['iec60730_5fwatchdogvalid_150',['iec60730_WatchdogValid',['../group__IEC60730__WDOG__Test.html#ggaece8bdb434f4c8bafba3590467815044a7f643e2fc022bee4149c82ec9c42f3ef',1,'sl_iec60730_watchdog.h']]],
   ['iec60730testbase_151',['iec60730TestBase',['../classiec60730__test__base_1_1iec60730TestBase.html',1,'iec60730_test_base']]],
-<<<<<<< HEAD:docs/html/EFR32_ICE60730_Libraries/search/all_9.js
   ['imc_5fcrcbuffer_5fsampletest_152',['SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_TEST',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#ga558de50fe1c89a1afb8292d2ee4346da',1,'sl_iec60730.h']]],
   ['imc_5fdata_5fread_153',['SL_IEC60730_IMC_DATA_READ',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba81e9d30c093158a799c13cf1d42df28a',1,'sl_iec60730.h']]],
   ['imc_5fdata_5fread_5fbit_5freversed_154',['SL_IEC60730_IMC_DATA_READ_BIT_REVERSED',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba14b98b0e584e8059ab9e3990ffe8e149',1,'sl_iec60730.h']]],
   ['imc_5fdata_5fread_5fbyte_5freversed_155',['SL_IEC60730_IMC_DATA_READ_BYTE_REVERSED',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba641228c714e8ef6fb667f3ee76761f22',1,'sl_iec60730.h']]],
-=======
-  ['imc_5fcrcbuffer_5fsampletest_152',['IMC_CRCBUFFER_SAMPLETEST',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#ga558de50fe1c89a1afb8292d2ee4346da',1,'iec60730.h']]],
-  ['imc_5fdata_5fread_153',['IMC_DATA_READ',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba81e9d30c093158a799c13cf1d42df28a',1,'iec60730.h']]],
-  ['imc_5fdata_5fread_5fbit_5freversed_154',['IMC_DATA_READ_BIT_REVERSED',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba14b98b0e584e8059ab9e3990ffe8e149',1,'iec60730.h']]],
-  ['imc_5fdata_5fread_5fbyte_5freversed_155',['IMC_DATA_READ_BYTE_REVERSED',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba641228c714e8ef6fb667f3ee76761f22',1,'iec60730.h']]],
->>>>>>> develop:Doc/html/EFR32_ICE60730_Libraries/search/all_9.js
   ['imcparams_5ft_156',['imcParams_t',['../structimcParams__t.html',1,'']]],
   ['init_157',['init',['../structupdateCrcParams__t.html#abcc7407def14860e8e7937ca993327cb',1,'updateCrcParams_t']]],
   ['inv_5fclassb_5fpvar_158',['INV_CLASSB_PVAR',['../group__IEC60730__POST.html#ga5e516d9dd091357c8ecb7ba3c10c7f9b',1,'sl_iec60730.h']]],
