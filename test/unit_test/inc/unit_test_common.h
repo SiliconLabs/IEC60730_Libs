@@ -1,6 +1,6 @@
 /***************************************************************************//**
  * @file
- * @brief Top level application functions
+ * @brief common unit test api
  *******************************************************************************
  * # License
  * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
@@ -15,31 +15,28 @@
  *
  ******************************************************************************/
 
-#include "unit_test_common.h"
+#ifndef _TEST_COMMON_H
+#define _TEST_COMMON_H
 
-#ifdef UNIT_TEST_IEC60730_POST_ENABLE
-#include "unit_test_iec60730_post.h"
-#endif
+#include <stdint.h>
+#include <string.h>
+#include "unity.h"
 
-#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
-#include "unit_test_iec60730_bist.h"
-#endif
+/*=======Result test case=====*/
+#define MAX_NUMBER_OF_TEST_CASE    20
+
+extern uint8_t test_case_result[MAX_NUMBER_OF_TEST_CASE];
+extern uint8_t current_test_numth;
+
+/*=======Test Runner Used To Run Each Test=====*/
+extern void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE line_num);
+/*=======Test Reset Options=====*/
+extern void setUp(void);
+extern void tearDown(void);
+extern void resetTest(void);
+/*=======Mock Management=====*/
+extern void cmock_set_value(int value);
+extern int cmock_return_value(void);
 
 
-void app_init(void)
-{
-
-#ifdef UNIT_TEST_IEC60730_POST_ENABLE
-  unit_test_iec60730_post();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
-  unit_test_iec60730_bist();
-#endif
-
-}
-
-void app_process_action(void)
-{
-
-}
+#endif  // _TEST_COMMON_H

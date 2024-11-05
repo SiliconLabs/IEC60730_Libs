@@ -1,9 +1,9 @@
 project_name: lib_iec60730
 package: iec60730
 quality: test
-label: Souce code lib IEC60730 for unit test
+label: Source code lib IEC60730 for unit test
 description: >
-  Souce code lib IEC60730 for unit test.
+  Source code lib IEC60730 for unit test.
 category: Example|iec60730
 
 sdk: {id: gecko_sdk, version: 4.4.2}

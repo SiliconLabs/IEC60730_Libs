@@ -1,13 +1,13 @@
 1 #Before run
-export CHIP=EFR32MG21AXXXF1024 ADAPTER_SN=440043402 
-export LST_PATH=~/devs_efx32_iec60730/Build/cpu_registers/efr32mg21/efr32mg21a020f1024im32/Out 
+export CHIP=EFR32MG21AXXXF1024 ADAPTER_SN=440043402
+export LST_PATH=~/devs_efx32_iec60730/Build/cpu_registers/efr32mg21/efr32mg21a020f1024im32/Out
 export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
 
 #Run
 python3 iec60730_programme_counter.py
 
 
-2. #Or 
+2. #Or
 
 CHIP=EFR32MG21AXXXF1024 ADAPTER_SN=440043402 LST_PATH=/home/admin-wfh/Downloads/devs_efx32_iec60730/Build/cpu_registers/efr32mg21/efr32mg21a020f1024im32/Out JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so python3 iec60730_programme_counter.py
 

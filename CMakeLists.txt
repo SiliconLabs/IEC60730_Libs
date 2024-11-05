@@ -62,7 +62,4 @@ string(REPLACE "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-imacros sl_gcc_preinclude.h>;" 
 string(REPLACE "$<$<COMPILE_LANGUAGE:ASM>:SHELL:-imacros sl_gcc_preinclude.h>;" "" MAIN_CFLAGS_LIB_IEC60730 "${MAIN_CFLAGS_LIB_IEC60730}")
 target_compile_options(unity PUBLIC
                       ${MAIN_CFLAGS_LIB_IEC60730})
-
 endif()
-
-

@@ -66,9 +66,9 @@ def get_report_unit_test(result,file_test_case,log_report):
   list_test_case = get_test_case(file_test_case,logger,unity_begin_row,unity_end_row)
 
   if len(list_test_case) != len(result):
-    raise ValueError("The list of test cases " + str(len(list_test_case)) + " in the file" 
-                    + file_test + "is not equal " + str(len(result)) + " test cases"
-                    "results received from device")
+    raise ValueError("The list of test cases " + str(len(list_test_case)) + " in the file"
+                    + file_test + " is not equal " + str(len(result)) + " test cases"
+                    " results received from device")
   
   for test_case in list_test_case:
     index = list_test_case.index(test_case)
@@ -77,11 +77,10 @@ def get_report_unit_test(result,file_test_case,log_report):
       logger.info(file_test + ":" + test_case[2] + ":" + test_case[0] + ":PASS")
     else:
       test_fail +=1
-      logger.info(file_test + ":" + test_case[2] + ":" + test_case[0] + ":FAIL") 
-  logger.info("\n----------------------------------------------------------------------\n") 
-  logger.info(str(len(list_test_case)) + " Tests " + str(test_fail) + " Failures ") 
+      logger.info(file_test + ":" + test_case[2] + ":" + test_case[0] + ":FAIL")
+  logger.info("\n----------------------------------------------------------------------")
+  logger.info(str(len(list_test_case)) + " Tests " + str(test_fail) + " Failures")
   if test_fail != 0:
-    logger.info("FAIL") 
-  else: 
-    logger.info("PASS") 
-
+    logger.info("FAIL")
+  else:
+    logger.info("PASS")
