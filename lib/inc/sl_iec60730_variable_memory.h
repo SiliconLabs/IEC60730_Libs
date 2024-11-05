@@ -22,12 +22,13 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#include "sl_iec60730.h"
 #include SL_IEC60730_BOARD_HEADER
 
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
- * @addtogroup IEC60730_VARIABLE_MEMORY_Test
+ * @addtogroup IEC60730_VARIABLE_MEMORY_TEST
  * @{
  * @details
  * @section vmc_hardware_architecture Hardware Architecture
@@ -80,14 +81,14 @@ extern "C" {
  * DO NOT change this order. Please refer to our example linker for more details.
  *
  * User need declare a variable of struct #sl_iec60730_vmc_test_region_t. In the initialization
- * step, We need to assign the start address and end address to this variable for
- * executing the VMC. We will call the starting address #RAMTEST_START and the
+ * step, we need to assign the start address and end address to this variable for
+ * executing the VMC. For example, we will call the starting address #RAMTEST_START and the
  * ending address #RAMTEST_END to make it easier to describe later.
  *
  * \anchor iec60730_bk_buf
  *   * Variable \ref iec60730_bk_buf is a buffer used to backup data during testing process
- * and is placed at (*.rt_buf*) section. The size of this variable is defined in
- * #SL_IEC60730_BOARD_HEADER (i.e #RT_BLOCKSIZE definition). The #RT_BLOCKSIZE definition
+ * and is placed at (*.rt_buf*) section. The size of this variable is defined in file
+ * sl_iec60730.h (i.e #RT_BLOCKSIZE definition). The #RT_BLOCKSIZE definition
  * will be mentioned later.
  *
  * \anchor iec60730_ram_test_overlap
@@ -109,7 +110,7 @@ extern "C" {
  * callback function named #sl_iec60730_vmc_post_run_marchxc_step, and the user decides what
  * to do after the RAM test is over.
  *
- * As mentioned about #SL_IEC60730_BOARD_HEADER in @ref IEC60730_INVARIABLE_MEMORY_Test
+ * As mentioned about #SL_IEC60730_BOARD_HEADER in @ref IEC60730_INVARIABLE_MEMORY_TEST
  * module, the definition #SL_IEC60730_BOARD_HEADER also has the necessary information
  * for VMC module to run. The #RAMTEST_START and #RAMTEST_END definitions are used to
  * assigned to start, and end member of a variable of type #sl_iec60730_vmc_test_region_t. Two
@@ -125,7 +126,7 @@ extern "C" {
  * values of this array are initialized when calling the function
  * #sl_iec60730_vmc_init. Every time when executing #sl_iec60730_vmc_bist will check the
  * value of this array and based on the check results will return
- * #IEC60730_TEST_FAILED nor not.
+ * #SL_IEC60730_TEST_FAILED nor not.
  *
  * \anchor iec60730_stack_test_over_flow
  *   * Variable \ref iec60730_stack_test_over_flow is buffer that store values defined by
@@ -165,7 +166,7 @@ extern "C" {
  * then return to test the <b>Ram Backup</b>.
  *
  * The image on the right is slightly different when, the tested area (from
- * #RAMTEST_START to #RAMTEST_END) contains <b>RamBackup</b> and <b>Overlap</b>.
+ * #RAMTEST_START to #RAMTEST_END) contains <b>Ram Backup</b> and <b>Overlap</b>.
  * In order to ensure the algorithm works properly, in the case like the figure
  * on the right at the starting position (#RAMTEST_START) it is necessary to
  * create an overlap area. As mentioned above this overlap is also tested so user
@@ -175,7 +176,7 @@ extern "C" {
  * WILL be tested after the test of the last block (BLOCK (N)).
  *
  * In case the tested area has the address of #RAMTEST_START smaller than the
- * address of <b>RamBackup</b>, the test process is similar to the figure on the
+ * address of <b>Ram Backup</b>, the test process is similar to the figure on the
  * right.
  *
  *****************************************************************************/
@@ -186,11 +187,11 @@ extern "C" {
  * @param params input parameter of struct #sl_iec60730_vmc_test_region_t form
  *
  * @returns #sl_iec60730_test_result_t.
- *          * If test fails, returns #IEC60730_TEST_FAILED
- *          * Otherwise, returns #IEC60730_TEST_PASSED.
+ *          * If test fails, returns #SL_IEC60730_TEST_FAILED
+ *          * Otherwise, returns #SL_IEC60730_TEST_PASSED.
  *
  * Performs a variable memory check in defined area. For details how
- * #sl_iec60730_vmc_bist work, please refer to @ref vmc_software_architecture
+ * #sl_iec60730_vmc_post work, please refer to @ref vmc_software_architecture
  *
  *****************************************************************************/
 sl_iec60730_test_result_t sl_iec60730_vmc_post(void);
@@ -201,9 +202,9 @@ sl_iec60730_test_result_t sl_iec60730_vmc_post(void);
  * @param params input parameter of struct #sl_iec60730_vmc_test_region_t form
  *
  * @returns #sl_iec60730_test_result_t.
- *          * If test fails, return #IEC60730_TEST_FAILED;
- *          * If not complete, returns #IEC60730_TEST_IN_PROGRESS
- *          * Otherwise, returns #IEC60730_TEST_PASSED.
+ *          * If test fails, return #SL_IEC60730_TEST_FAILED;
+ *          * If not complete, returns #SL_IEC60730_TEST_IN_PROGRESS
+ *          * Otherwise, returns #SL_IEC60730_TEST_PASSED.
  *
  * Performs a variable memory check in defined area.
  * For details how #sl_iec60730_vmc_bist work, please refer to
@@ -240,7 +241,7 @@ bool sl_iec60730_vmc_pre_run_marchxc_step(uint32_t *addr, uint32_t size);
  *****************************************************************************/
 void sl_iec60730_vmc_post_run_marchxc_step(uint32_t *addr, uint32_t size);
 
-/** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
+/** @} (end addtogroup IEC60730_VARIABLE_MEMORY_TEST) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus

@@ -1,5 +1,5 @@
 /***************************************************************************/ /**
- * @file    iec60730_programme_counter.c
+ * @file    sl_iec60730_program_counter.c
  * @brief Program Counter check
  *******************************************************************************
  * # License
@@ -34,11 +34,12 @@ void sl_iec60730_program_counter_test(void)
     // Disable interrupts since we need to enter SafeState as quickly as possible
     __disable_irq();
 
-    sl_iec60730_safety_check_error_occur(IEC60730_PROGRAM_COUNTER_FAIL);
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_PROGRAM_COUNTER_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_PROGRAM_COUNTER_FAIL);
   }
   // Reset flags to make sure that bist is continuously executing
   sl_iec60730_program_counter_check = 0;
 }
 
-/** @} (end addtogroup IEC60730_PROGRAMME_COUNTER) */
+/** @} (end addtogroup IEC60730_PROGRAM_COUNTER) */
 /** @} (end addtogroup efr32_iec60730) */

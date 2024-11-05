@@ -25,10 +25,10 @@ extern "C" {
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
- * @addtogroup IEC60730_OEM_COMM_Test
+ * @addtogroup IEC60730_OEM_COMM_TEST
  * @{
  * @section communications_hardware_architecture Hardware Architecture
- * For communications interfaces to be IEC compliant, they must meet
+ * For communications interfaces to be IEC60730 compliant, they must meet
  * the following conditions:
  *   1. Provide address redundancy, transmitting the sender's unique address
  *   2. CRC coverage of transmission bytes
@@ -57,25 +57,20 @@ extern "C" {
  *
  * @section communications_failure_risks Failure Risks
  *
- * A disruption of the serial interface signals/clocks could cause a bit error
- * or a timing-related issue.  This will result in a CRC mismatch when
- * the receiver of the message processes the packet, and safe state entrance.
+ * A disruption of the serial interface signals/clocks could cause a bit of error or a timing-related issue.
+ * This will result in a CRC mismatch when the receiver of the message processes the packet and safe state entrance.
  *
- * If the device sending status packets to a host gets somehow stuck in such
- * a state where it is unable to transmit status packets, the receiver
- * expecting periodic packets will enter safe state after a bounded amount
- * of time, likely governed by a bist frequency check that determines no
- * status packets have been received within a frequency check interval.
- * Based on suggested configuration of the bist frequency check period, the
- * upper limit for time between reception of a status packet would be
- * 1 second.  Based on suggested configuration of the test timer, typically
- * the status packet will be transmitted once every 100 ms.
+ * If the device sending status packets to a host gets somehow stuck in such a state where it is unable to transmit status packets,
+ * the receiver expecting periodic packets will enter a safe state after a bounded amount of time,
+ * likely governed by a bist frequency check that determines no status packets have been received within a frequency check interval.
+ * Based on the suggested configuration of the bist frequency check period, the upper limit for the time between
+ * the reception of a status packet would be 1 second. Based on the suggested configuration of the test timer,
+ * typically the status packet will be transmitted once every 100 ms.
  *
- * All serial interfaces require some amount of port configuration to ensure
- * that correct pins are digital inputs and outputs, open drain or push-pull.  Without
- * these requirements being met, the device will be unable to transmit and receive
- * data packets properly, which will result in a safe state entrance by one or
- * both of the devices communicating across a serial interface.
+ * All serial interfaces require some amount of port configuration to ensure that the correct pins are digital
+ * inputs and outputs, open drain, or push-pull. Without these requirements being met, the device will be unable to
+ * transmit and receive data packets properly, which will result in a safe state entrance by one or both of
+ * the devices communicating across a serial interface.
  *
  * @section communications_software_architecture Software Architecture
  *
@@ -101,9 +96,9 @@ extern "C" {
  * adds required address and CRC information.  Additionally, the test timer interrupt
  * service routine initiates a periodic transmission of a status packet.
  *
- * \image html comm_plausibility_check.png "Figure 1 comm plausibility check flowchart" \anchor comm_plausibility_check
+ * \image html comm_plausibility_check.png "Figure 1 Comm plausibility check flowchart" \anchor comm_plausibility_check
  *****************************************************************************/
-/** @} (end addtogroup IEC60730_OEM_COMM_Test) */
+/** @} (end addtogroup IEC60730_OEM_COMM_TEST) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus

@@ -1,4 +1,6 @@
 prepare:
 	- @rm -rf build
-	rm -rf cmake_build
-	mkdir cmake_build
+	rm -rf build
+	rm -rf log
+	mkdir build
+	mkdir log

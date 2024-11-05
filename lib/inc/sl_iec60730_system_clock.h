@@ -18,6 +18,7 @@
 #ifndef SL_IEC60730_SYSTEM_CLOCK_H
 #define SL_IEC60730_SYSTEM_CLOCK_H
 
+#include <stdint.h>
 #include "sl_iec60730_toolchain.h"
 
 #ifdef __cplusplus
@@ -27,10 +28,10 @@ extern "C" {
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
- * @addtogroup IEC60730_SYSTEM_CLOCK_Test
+ * @addtogroup IEC60730_SYSTEM_CLOCK_TEST
  * @{
  * @details
- * For IEC 60730, a plausibility check must be performed to check that the
+ * For IEC60730, a plausibility check must be performed to check that the
  * system clock is running at a frequency with an expected bounds.  This
  * check requires that the system clock frequency be compared against a second,
  * independent clock's frequency (test clock).
@@ -53,17 +54,17 @@ extern "C" {
  * ticks captured during the low frequency oscillator's logic low phase expresses
  * the relationship between the two clocks.
  *
- * The define SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ holds the ratio value between system clock timer interrupt period and
+ * The define #SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ holds the ratio value between system clock timer interrupt period and
  * test clock timer interrupt period, this value is used to compare with the system clock counter. The ratio value is divided by slow
  * timer period (test clock timer interrupt period) and fast timer period (system clock timer interrupt period).
  *
- * The tolerance of test (OEM set value of the define, example: SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE) is typical (+/-) 10%-49% of the SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ.
+ * The tolerance of test (OEM set value of the define, config: #SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE) is typical (+/-) 10%-49% of the #SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ.
  *
  * @section system_clock_suggested_OEM_configuration Suggested OEM Configuration
  *  Not every EFR32 device offers the same types of timers and clock sources.  For this
  * reason, the optimal resource usage on each device family varies.  The following
  * chart offers a suggested configuration for each EFR32 family.
- * Firmware examples configure system and test timers as in \link system_clock_test_suggested_oem_configuration_chart Table 1\endlink
+ * Firmware examples configure system and test timers as in \link system_clock_test_suggested_oem_configuration_chart Table 1 \endlink
  *
  * <center><b>Table 1 Suggested system and test timer configuration on EFR32 device families</b></center> \anchor system_clock_test_suggested_oem_configuration_chart
  * <table>
@@ -96,12 +97,12 @@ extern "C" {
  * Additionally, the OEM is responsible for leaving the system clock at
  * a constant and defined operating frequency throughout all OEM firmware.
  *
- * Finally, the OEM is responsible for setting sl_iec60730_timer_test_control to SL_IEC60730_TIMER_TEST_DISABLE
- * within safety-critical code by calling funtion sl_iec60730_sys_clock_test_disable. This value is only used in cases
+ * Finally, the OEM is responsible for setting **sl_iec60730_timer_test_control** to #SL_IEC60730_TIMER_TEST_DISABLE
+ * within safety-critical code by calling function **sl_iec60730_sys_clock_test_disable()**. This value is only used in cases
  * where the system is executing non-safety-critical code, where the BIST routine is also not being called.
  * When returning to normal operation, clear all interrupt counters in
- * iec60730_IRQExecCount, reset the timer clock tick and system clock tick timers,
- * and set sl_iec60730_timer_test_control to SL_IEC60730_TIMER_TEST_ENABLE.
+ * iec60730 IRQ execution count, reset the timer clock tick and system clock tick timers,
+ * and set **sl_iec60730_timer_test_control** to #SL_IEC60730_TIMER_TEST_ENABLE.
  *
  * @section system_clock_software_architecture Software Architecture
  *
@@ -112,7 +113,7 @@ extern "C" {
  * executes in the test timer interrupt, which runs as foreground calls to OEM functions and
  * the foreground BIST test continuously execute.
  *
- * \image html BIST_system_clock_frequency.png "Figure 1 System clock frequency check flowchart" \anchor BIST_system_clock_frequency
+ * \image html bist_system_clock_frequency.png "Figure 1 System clock frequency check flowchart" \anchor BIST_system_clock_frequency
  *
  *****************************************************************************/
 
@@ -143,7 +144,7 @@ void sl_iec60730_sys_clock_test_enable(void);
  *****************************************************************************/
 void sl_iec60730_sys_clock_test_disable(void);
 
-/** @} (end addtogroup IEC60730_SYSTEM_CLOCK_Test) */
+/** @} (end addtogroup IEC60730_SYSTEM_CLOCK_TEST) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus

@@ -20,7 +20,9 @@
 
 #include <stdint.h>
 #include <string.h>
+#include <stdbool.h>
 #include "unity.h"
+#include "sl_iec60730_internal.h"
 
 /*=======Result test case=====*/
 #define MAX_NUMBER_OF_TEST_CASE    20
@@ -35,8 +37,29 @@ extern void setUp(void);
 extern void tearDown(void);
 extern void resetTest(void);
 /*=======Mock Management=====*/
-extern void cmock_set_value(int value);
-extern int cmock_return_value(void);
 
+/**************************************************************************/ /**
+ * Public   Function set value simulate value function mock return.
+ *
+ * @returns None.
+ *
+ *****************************************************************************/
+extern void cmock_set_value(sl_iec60730_test_result_t sl_iec60730_test_result_t);
 
-#endif  // _TEST_COMMON_H
+/**************************************************************************/ /**
+ * Public   Function get value simulate value function mock return.
+ *
+ * @returns None.
+ *
+ *****************************************************************************/
+extern sl_iec60730_test_result_t cmock_return_value(void);
+
+/**************************************************************************/ /**
+ * Public   Function runs all unit test cases.
+ *
+ * @returns None.
+ *
+ *****************************************************************************/
+extern void unit_test_run_all_test_cases(void);
+
+#endif // _TEST_COMMON_H

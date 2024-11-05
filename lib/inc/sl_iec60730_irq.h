@@ -29,16 +29,16 @@ extern "C" {
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
- * @addtogroup IEC60730_IRQ_Test
+ * @addtogroup IEC60730_IRQ_TEST
  * @{
  * @details The interrupt plausibility test checks that enabled interrupts
  * are executing at a frequency that is within expected minimum and maximum
  * bounds every test timer period.
  *
  * OEM firmware is responsible for setting expected minimum and maximum
- * bounds for each enabled interrupt in the #iec60730_IRQFreqBounds
+ * bounds for each enabled interrupt in the **oem_irq_freq_bounds**
  * structure. The OEM is also responsible for incrementing the element
- * in the #iec60730_IRQExecCount array inside each enabled interrupt.
+ * in the **oem_irq_exec_count** array inside each enabled interrupt.
  * In #sl_iec60730_irq_check(), which executes as part of the test timer-driven
  * tests of the BIST, this counter array is compared with the defined
  * bounds to determine whether each interrupt is operating within safe parameters.
@@ -73,7 +73,7 @@ extern "C" {
  * the lower bounds for the interrupt should be set to 0.
  *
  * It is also the OEM's responsibility to increment values in
- * #iec60730_IRQExecCount once and only once per interrupt execution.
+ * **oem_irq_exec_count** once and only once per interrupt execution.
  * Failure to include this incrementing command will result in an
  * interrupt that appears to be executing below minimum defined
  * bounds, which will force safe state entry.
@@ -81,35 +81,30 @@ extern "C" {
  * The OEM should also be mindful of all hardware-related constraints of
  * each interrupt.  Failure to clear an interrupt flag inside an interrupt
  * service routine will cause the routine to execute repeatedly,
- * which will increment an #iec60730_IRQExecCount entry beyond upper bounds
+ * which will increment an **oem_irq_exec_count** entry beyond upper bounds
  * and cause a safe state entry.
  *
  * The OEM must also perform a bounds check on the element in
- * #iec60730_IRQExecCount being incremented to ensure that the counter
+ * **oem_irq_exec_count** being incremented to ensure that the counter
  * does not exceed the upper bounds defined by its data type and overflow
  * back to 0. Failure to perform this bounds check could have the effect
  * of creating a passing IRQ plausibility test when the interrupt is
  * actually running outside of defined limits.
  *
  * @section irq_software_architecture Software Architecture
- * The interrupt plausibility test function relies on an array of counters
- * called #iec60730_IRQExecCount, stored in volatile memory and an array
- * of struct #sl_iec60730_irq_execution_bounds_t found in non-volatile memory
- * and called #iec60730_IRQFreqBounds. OEM firmware increments bytes in
- * #iec60730_IRQExecCount during execution of each enabled interrupt
- * service routine.  When the test timer interrupt occurs,
- * #sl_iec60730_irq_check() executes. Inside this function, firmware compares
- * the count values to the bound values, and sets #iec60730_safety_check
- * by called funtion #sl_iec60730_safety_check_error_occur to #IEC60730_INTERRUPT_FAIL
- * if a count exceeds either the minimum or maximum bounds.
- * The next execution of the BIST routine will detect the #IEC60730_TEST_FAILED
- * state and enter safe state.  A flowchart of this functionality
- * is shown in \link irq_plausibility_test_flowchart Figure 1\endlink.
+ * The interrupt plausibility test function relies on an array of counters called **oem_irq_exec_count**,
+ * stored in volatile memory and an array of struct sl_iec60730_irq_execution_bounds_t found in non-volatile memory
+ * and called oem_irq_freq_bounds. OEM firmware increments bytes in **oem_irq_exec_count** during execution of
+ * each enabled interrupt service routine. When the test timer interrupt occurs, sl_iec60730_irq_check()
+ * executes. Inside this function, firmware compares the count values to the bound values, and sets **iec60730_safety_check** by called
+ * function sl_iec60730_safety_check_error_occur to SL_IEC60730_INTERRUPT_FAIL if a count exceeds either the minimum or maximum bounds.
+ * The next execution of the BIST routine will detect the SL_IEC60730_TEST_FAILED state and enter safe state.
+ * A flowchart of this functionality is shown in \link irq_plausibility_test_flowchart Figure 1 \endlink.
  *
  * For more information on configuration of the test timer, please see
- * @ref IEC60730_SYSTEM_CLOCK_Test.
+ * @ref IEC60730_SYSTEM_CLOCK_TEST.
  *
- * \anchor irq_plausibility_test_flowchart\
+ * \anchor irq_plausibility_test_flowchart
  * \image html irq_plausibility_test_flowchart.png "Figure 1 Flow chart of interrupt plausibility check"
  *
  *****************************************************************************/
@@ -119,7 +114,7 @@ extern "C" {
  *
  * @returns None.
  *
- * This function reset irq failed results
+ * This function reset local counter irq fail **iec60730_irq_fail_result** to 0
  *****************************************************************************/
 void sl_iec60730_irq_reset_fail_result(void);
 
@@ -129,8 +124,8 @@ void sl_iec60730_irq_reset_fail_result(void);
  * @returns pointer type sl_iec60730_irq_fail_t point to variable containing
  * the errors that occurred and the number of errors
  *
- * This function return  a pointer that point to iec60730_irq_fail_result
- * which capacity which contains index location iec60730_irq_count failed.
+ * This function return  a **iec60730_irq_fail_result**. That
+ * variable contains the number of failed irq checks and stores the failed interrupt value in bits.
  *****************************************************************************/
 sl_iec60730_irq_fail_t* sl_iec60730_get_irq_index_failed(void);
 
@@ -139,11 +134,10 @@ sl_iec60730_irq_fail_t* sl_iec60730_get_irq_index_failed(void);
  *
  * @param irq_cfg_ptr input pointer point to value config by user
  *
- * @param  irq_cfg_ptr input pointer point to value config irq
- *
  * @returns None.
  *
- * This function set #iec60730_IRQFreqBounds min and max and set iec60730_IRQExecCount
+ * This function set a pointer point to address **oem_irq_freq_bounds** min and max and
+ * **oem_irq_exec_count**. To initialize test values ​​for the sl_iec60730_irq_check() function.
  *****************************************************************************/
 void sl_iec60730_irq_init(sl_iec60730_irq_cfg_t* irq_cfg_ptr);
 
@@ -152,7 +146,7 @@ void sl_iec60730_irq_init(sl_iec60730_irq_cfg_t* irq_cfg_ptr);
  *
  * @returns None.
  *
- * This function reset counter #iec60730_IRQExecCount to 0
+ * This function reset counter **oem_irq_exec_count** to 0
  *****************************************************************************/
 void sl_iec60730_irq_reset_counter(void);
 
@@ -161,16 +155,16 @@ void sl_iec60730_irq_reset_counter(void);
  *
  * @returns None.
  *
- * This function compares each entry in #iec60730_IRQExecCount
- * with its corresponding bounds defined in #iec60730_IRQFreqBounds.  If the
- * entry is found to exceed the defined bounds, #iec60730_safety_check is
- * set to #IEC60730_INTERRUPT_FAIL.
+ * This function compares each entry in **oem_irq_exec_count**
+ * with its corresponding bounds defined in **oem_irq_freq_bounds**.  If the
+ * entry is found to exceed the defined bounds, **iec60730_safety_check** is
+ * set to #SL_IEC60730_INTERRUPT_FAIL.
  * Otherwise no action is taken.  The function ends by setting
- * #IEC60730_INTERRUPT_COMPLETE in #sl_iec60730_program_counter_check.
+ * #IEC60730_INTERRUPT_COMPLETE.
  *****************************************************************************/
 void sl_iec60730_irq_check(void);
 
-/** @} (end addtogroup IEC60730_IRQ_Test) */
+/** @} (end addtogroup IEC60730_IRQ_TEST) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus

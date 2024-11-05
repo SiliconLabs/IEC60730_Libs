@@ -1,9 +1,10 @@
 *.json
 GNU ARM */
-Build
-Test/test_script/__pycache__
-Doc/html/EFR32_ICE60730_Libraries/latex
+build
+test/test_script/__pycache__
 *.temp-stream*
-gecko_sdk/src/*
-!gecko_sdk/src/CMakeLists.txt
+simplicity_sdk/src/*
+!simplicity_sdk/src/CMakeLists.txt
 cmake_build
+log/
+site

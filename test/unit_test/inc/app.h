@@ -18,6 +18,18 @@
 #ifndef APP_H
 #define APP_H
 
+#include "unit_test_common.h"
+#include "unit_test_iec60730_post.h"
+#include "unit_test_iec60730_bist.h"
+#include "unit_test_iec60730_program_counter.h"
+#include "unit_test_iec60730_safety_check.h"
+#include "unit_test_iec60730_irq.h"
+#include "unit_test_iec60730_system_clock.h"
+#include "unit_test_iec60730_watchdog.h"
+#include "unit_test_iec60730_cpu_registers.h"
+#include "unit_test_iec60730_variable_memory.h"
+#include "unit_test_iec60730_invariable_memory.h"
+
 /***************************************************************************//**
  * Initialize application.
  ******************************************************************************/
@@ -28,4 +40,4 @@ void app_init(void);
  ******************************************************************************/
 void app_process_action(void);
 
-#endif  // APP_H
+#endif // APP_H

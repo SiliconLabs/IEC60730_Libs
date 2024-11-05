@@ -42,7 +42,7 @@ def is_integer(val):
 
 
 def is_natural(val):
-    """Returns whether the given value is a natrual number.
+    """Returns whether the given value is a natural number.
     Args:
       val (object): value to check
     Returns:
@@ -73,8 +73,8 @@ def noop(*args, **kwargs):
 def unsecure_hook_dialog(title, msg, flags):
     """No-op that ignores the dialog.
     Args:
-      title (str): title of the unsecure dialog
-      msg (str): text of the unsecure dialog
+      title (str): title of the insecure dialog
+      msg (str): text of the insecure dialog
       flags (int): flags specifying which values can be returned
     Returns:
       ``enums.JLinkFlags.DLG_BUTTON_NO``
@@ -261,9 +261,9 @@ class PyTestSuites(object):
     """
     " Structure of _testElements:1
     "
-    " [ 
-    "   { 'test_case':xxx, 'failure_info':xxx, 'file':xxx }, 
-    "   { 'test_case':xxx, 'failure_info':xxx, 'file':xxx } 
+    " [
+    "   { 'test_case':xxx, 'failure_info':xxx, 'file':xxx },
+    "   { 'test_case':xxx, 'failure_info':xxx, 'file':xxx }
     " ]
     """
 
@@ -286,7 +286,7 @@ class PyTestSuites(object):
         raise AbortTestSuite
 
     # @brief
-    #   A test case may contain multiple assumption. Once an assumption failes,
+    #   A test case may contain multiple assumption. Once an assumption fails,
     #   the user needs to decide whether to complete the test case or to abort
     #   the whole test suite.
     def assume(self, statement, level=1):

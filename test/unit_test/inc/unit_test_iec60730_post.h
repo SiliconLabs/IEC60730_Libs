@@ -1,6 +1,6 @@
 /***************************************************************************/ /**
- * @file  test_post.h
- * @brief Unit test function iec60730_Post().
+ * @file  unit_test_iec60730_post.h
+ * @brief Unit test function sl_iec60730_post().
  *******************************************************************************
  * # License
  * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
@@ -16,12 +16,19 @@
  ******************************************************************************/
 
 /**************************************************************************/ /**
- * @addtogroup IEC60730_VERIFICATION
+ * @addtogroup IEC60730_UNIT_TEST
  * @{
- * @defgroup IEC60730_POST_VERIFICATION_UNIT_TEST Post Verification Unit Tests
+ * @defgroup IEC60730_UNIT_TEST_POST Post Verification Unit Tests
  * @{
- * Header file list of test cases for the Verification operate function sl_iec60730_post().
+ * Header file list of test cases for the verification operate function sl_iec60730_post().
  *
+ * IEC60730 Post Unit Tests
+ *
+ * @details These test cases run unit tests to check the operation of the function sl_iec60730_post()
+ *
+ * Hardware setup:
+ *
+ *   - Connect DUT to PC. No additional hardware setup required.
  ******************************************************************************/
 
 #ifndef UNIT_TEST_IEC60730_POST_H
@@ -30,19 +37,11 @@
 /*======= External Functions =====*/
 
 /**************************************************************************/ /**
- *  IEC60730 POST Unit Tests
- *
- * @details These test cases run unit tests to check the operation of the function sl_iec60730_post()
- *
- * Hardware setup:
- *   Connect DUT to PC. No additional hardware setup required.
- ******************************************************************************/
-
-/**************************************************************************/ /**
  * Public   Check sl_iec60730_post() operate
  *
  * @returns None.
- * If bool is_function_called variable equal false. It means test result rountine of sl_iec60730_post
+ *
+ * If bool local **is_function_called**  variable equal false. It means test result routine of sl_iec60730_post()
  * is a pass, function sl_iec60730_safe_state() is not called. So timer support test is enabled.
  *
  *****************************************************************************/
@@ -52,22 +51,14 @@ void test_sl_iec60730_post_pass_all_check_condition(void);
  * Public   Check sl_iec60730_post() operate
  *
  * @returns None.
- * If bool is_function_called variable true. It means test result rountine of sl_iec60730_post
+ *
+ * If bool local **is_function_called**  variable true. It means test result routine of sl_iec60730_post()
  * is a failure, function sl_iec60730_safe_state() is called.
  *
  *****************************************************************************/
 void test_sl_iec60730_post_failed_check_condition(void);
 
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_post()
- *****************************************************************************/
-extern void unit_test_iec60730_post(void);
-
-#endif  // UNIT_TEST_IEC60730_POST_H
+#endif // UNIT_TEST_IEC60730_POST_H
 
 /** @} (end defgroup IEC60730_POST_VERIFICATION_UNIT_TEST) */
-/** @} (end addtogroup IEC60730_VERIFICATION) */
+/** @} (end addtogroup IEC60730_UNIT_TEST) */

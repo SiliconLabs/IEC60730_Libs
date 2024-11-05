@@ -1,5 +1,5 @@
 package: iec60730
-description: This components support run unit test function lib IEC60730
+description: This component supports running unit test function lib IEC60730
 label: IEC60730 Unit Test
 quality: test
 id: iec60730_unit_test
@@ -28,7 +28,7 @@ include:
       - path: sl_iec60730.h
       - path: silabs_license_agreement.h
 define:
-  - name: IEC_BOARD_HEADER
+  - name: SL_IEC60730_BOARD_HEADER
     value: "\"sl_iec60730_board.h\""
 ui_hints:
   visibility: never

@@ -232,7 +232,7 @@ SECTIONS
     .crc :
   {
     . = ALIGN(64);
-    PROVIDE (__checksum = . );
+    PROVIDE (check_sum = . );
     LONG(0xAA55A55A)
   } > FLASH
 {%- endif %}
@@ -421,23 +421,10 @@ SECTIONS
 
 {%- endif %}
 
-/*
-{%- if trustzone_secure %}
-  /* ARMv8-M stack sealing:
-     to use ARMv8-M stack sealing uncomment '.stackseal' section
-   */
-  .stackseal (COPY):
-  {
-    __StackSeal = .;
-    . = . + 8;
-    . = ALIGN(8);
-  } > RAM
-{%- endif %}
-*/
-
   .stack_check (NOLOAD):
   {
     . = ALIGN(8);
+    PROVIDE (stack_check = . );
     *(.stack_bottom)
     *(.stack_bottom*)
     . = ALIGN(8);
@@ -464,11 +451,11 @@ SECTIONS
     KEEP(*(.overlap*));
 
     . = ALIGN(4);
-    PROVIDE (__classb_start = . );
+    PROVIDE (classb_start = . );
     *(.classb_ram)
     *(.classb_ram*)
     . = ALIGN(4);
-    PROVIDE (__classb_end = . );
+    PROVIDE (classb_end = . );
   } > CLASSBRAM
 
 /* Set stack top to end of RAM, and stack limit move down by
@@ -481,9 +468,9 @@ SECTIONS
 /* Check if data + heap + stack exceeds RAM limit */
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 
-  PROVIDE(__FlashStart = ORIGIN(FLASH));
-  PROVIDE(__RamStart = ORIGIN(RAM));
-  PROVIDE(__ClassBLimit = ORIGIN(CLASSBRAM) + LENGTH(CLASSBRAM));
+  PROVIDE(flash_start = ORIGIN(FLASH));
+  PROVIDE(ram_start = ORIGIN(RAM));
+  PROVIDE(class_b_limit = ORIGIN(CLASSBRAM) + LENGTH(CLASSBRAM));
 
   /* Check if FLASH usage exceeds FLASH size */
   /*ASSERT( LENGTH(FLASH) >= (__etext + SIZEOF(.data)), "FLASH memory overflowed !")*/
