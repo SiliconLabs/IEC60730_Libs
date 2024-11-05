@@ -7,4 +7,3 @@ simplicity_sdk/src/*
 !simplicity_sdk/src/CMakeLists.txt
 cmake_build
 log/
-site
