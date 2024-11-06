@@ -148,7 +148,7 @@ void test_sl_iec60730_imc_bist_fail_check_integrity(void);
  *
  * @returns None.
  *
- * If #iec60730_run_crc init greater than rom end address before #iec60730_cur_crc is calculated.
+ * If **iec60730_run_crc** init greater than rom end address before **iec60730_cur_crc** is calculated.
  * Then the function sl_iec60730_imc_bist() returns #SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/

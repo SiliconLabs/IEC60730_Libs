@@ -532,7 +532,7 @@ typedef enum {
  *
  * @returns None.
  *
- * This function increments a system clock counter #sl_iec60730_sys_clock_count,
+ * This function increments a system clock counter **sl_iec60730_sys_clock_count**,
  * which is compared to a test clock counter as part of the system clock frequency check.
  * It should be called in the timer interrupt service routine designated as the system
  * clock timer in oem_iec60730_timer.c.
@@ -556,7 +556,7 @@ void sl_iec60730_test_clock_tick(void);
  *
  * @returns None.
  *
- * This function should be called within the #sl_iec60730_test_clock_tick
+ * This function should be called within the sl_iec60730_test_clock_tick()
  * callback.  During the initialization of the test clock timers, this
  * function resets the internal test clock and system clock tick variables
  * to known reset states.

@@ -316,9 +316,9 @@
  * \link IEC60730_OEM_COMM_TEST 6.1 External Communications - Data \endlink | 16 bit CRC | CRC check provided by library
  * \link IEC60730_OEM_COMM_TEST 6.2 External Communications - Addressing \endlink | 16 bit CRC including the address | OEM must include in protocol proper address verification - see UART example in library
  * \link IEC60730_OEM_COMM_TEST 6.3 External Communications - Timing (UART example)\endlink | Scheduled transmission |  OEM must include in protocol proper timing measures - see UART example in library
- * \link IEC60730_GPIO_PLAUSIBILTY_TEST 7 Input/output periphery / 7.1 Digital I/O\endlink | Plausibility check | Provided by OEM
- * \link IEC60730_ADC_PLAUSIBILTY_TEST 7.2 Analog I/O / 7.2.1 A/D and D/A converter\endlink | Plausibility check | Provided by OEM
- * \link IEC60730_ADC_PLAUSIBILTY_TEST 7.2.2 Analog multiplexer\endlink| Plausibility check | Provided by OEM
+ * 7 Input/output periphery / 7.1 Digital I/O | Plausibility check | Provided by OEM
+ * 7.2 Analog I/O / 7.2.1 A/D and D/A converter | Plausibility check | Provided by OEM
+ * IEC60730_ADC_PLAUSIBILTY_TEST 7.2.2 Analog multiplexer  | Plausibility check | Provided by OEM
  * 8 Monitoring device and comparators | None | Not needed for class B
  * 9 Custom chips | None | Not Applicable
  *
