@@ -6,7 +6,7 @@ The IEC60730 library for EFR32 provides a basic implementation required to suppo
 
 ## License
 
-Please refer [License](LICENSE.md)
+Please refer [License](../LICENSE.md)
 
 ## Release Notes
 
@@ -54,7 +54,7 @@ The project has a CMake template that supports running tests. Follow the steps b
 
 ### Add the IEC60730 Library extension to the SDK
 
-- Refer to the [IEC60730 safety library integration to SDK](./iec60730_safety_library_integration_to_sdk.md) in the [docs](./docs) folder for more details.
+- Refer to the [IEC60730 safety library integration to SDK](./iec60730_safety_library_integration_to_sdk.md) in the [docs]() folder for more details.
 
 ### Install Dependencies
 

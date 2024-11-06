@@ -1,0 +1,9 @@
+digraph "sl_iec60730_vmc_test_multiple_regions_t"
+{
+ // LATEX_PDF_SIZE
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=record];
+  Node1 [label="sl_iec60730_vmc_test\l_multiple_regions_t",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="This structure is used as multiple test regions for VMC testing."];
+  Node2 -> Node1 [dir="back",color="darkorchid3",fontsize="10",style="dashed",label=" region" ,fontname="Helvetica"];
+  Node2 [label="sl_iec60730_vmc_test\l_region_t",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$structsl__iec60730__vmc__test__region__t.html",tooltip="This structure is used as configuration for VMC testing."];
+}

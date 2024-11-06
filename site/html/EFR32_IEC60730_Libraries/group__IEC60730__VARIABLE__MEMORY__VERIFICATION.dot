@@ -1,0 +1,9 @@
+digraph "Variable Memory Automated Verification Tests"
+{
+  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
+  node [fontname="Helvetica",fontsize="10",shape=box];
+  rankdir=LR;
+  Node2 [label="Integration Test Modules\l In Library IEC60730",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__INTEGRATION__TEST.html",tooltip=" "];
+  Node1 [label="Variable Memory Automated\l Verification Tests",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Python script for the IEC60730 Variable Memory plausibility verification tests."];
+  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
+}

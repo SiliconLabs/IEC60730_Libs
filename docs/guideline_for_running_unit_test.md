@@ -51,7 +51,7 @@ $ cd ..
 $ make prepare
 ```
 
-or you can run bash script `pre_build_iar.sh` in path [./../simplicity_sdk/pre_build_iar.sh](../simplicity_sdk/) with:
+or you can run bash script `pre_build_iar.sh` in path [./../simplicity_sdk/pre_build_iar.sh]() with:
 
 - $1: BOARD_NAME: brd4187c or EFR32MG24B220F1536IM48
 - $2: OPTION_UNIT_TEST: -DENABLE_UNIT_TESTING=ON, etc...

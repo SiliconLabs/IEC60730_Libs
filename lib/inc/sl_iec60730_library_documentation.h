@@ -156,6 +156,8 @@
  * python3 -m mkdocs build --no-directory-urls
  * ```
  *
+ * @note To support running **Github Pages**, you need to run the command above.
+ *
  * @section pre-commit Coding convention tool
  *
  * @subsection features Features
