@@ -318,7 +318,7 @@
  * \link IEC60730_OEM_COMM_TEST 6.3 External Communications - Timing (UART example)\endlink | Scheduled transmission |  OEM must include in protocol proper timing measures - see UART example in library
  * 7 Input/output periphery / 7.1 Digital I/O | Plausibility check | Provided by OEM
  * 7.2 Analog I/O / 7.2.1 A/D and D/A converter | Plausibility check | Provided by OEM
- * IEC60730_ADC_PLAUSIBILTY_TEST 7.2.2 Analog multiplexer  | Plausibility check | Provided by OEM
+ * 7.2.2 Analog multiplexer  | Plausibility check | Provided by OEM
  * 8 Monitoring device and comparators | None | Not needed for class B
  * 9 Custom chips | None | Not Applicable
  *
