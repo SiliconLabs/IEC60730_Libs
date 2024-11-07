@@ -3,8 +3,7 @@ GNU ARM */
 Build
 Test/test_script/__pycache__
 Doc/html/EFR32_ICE60730_Libraries/latex
-docs/html/*
 *.temp-stream*
-iostream_usart/src/*
-!iostream_usart/src/CMakeLists.txt
+gecko_sdk/src/*
+!gecko_sdk/src/CMakeLists.txt
 cmake_build

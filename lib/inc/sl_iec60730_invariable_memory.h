@@ -15,15 +15,15 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_INVARIABLE_MEMORY_H
-#define SL_IEC60730_INVARIABLE_MEMORY_H
+#ifndef IEC60730_INVARIABLE_MEMORY_H_
+#define IEC60730_INVARIABLE_MEMORY_H_
 
 #ifdef __cplusplus
 extern "C" {
 #endif /* __cplusplus */
 
 #include "sl_iec60730.h"
-#include SL_IEC60730_BOARD_HEADER
+#include IEC_BOARD_HEADER
 
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
@@ -45,7 +45,7 @@ extern "C" {
  *
  * We support multiple calculation modes. These modes are selected by the user.
  * User adds definitions to use these modes. Please reference to definitions
- * #SL_IEC60730_CRC_DEBUG_ENABLE, #SL_IEC60730_CRC_USE_SW_ENABLE, and #SL_IEC60730_USE_CRC_32_ENABLE for more detail.
+ * #SL_IEC60730_CRC_DEBUG_ENABLE, #SL_IEC60730_CRC_USE_SW, and #SL_IEC60730_USE_CRC_32 for more detail.
  *
  * @section imc_failure_risks Failure Risks
  * As electrically eraseable memories, the primary risk with Flash is losing
@@ -62,7 +62,7 @@ extern "C" {
  * their contents.
  *
  * We support calculation CRC by using hardware and software. The default CRC is
- * hardware calculation. User CAN use the #SL_IEC60730_CRC_USE_SW_ENABLE definition in case using
+ * hardware calculation. User CAN use the #SL_IEC60730_CRC_USE_SW definition in case using
  * CRC software.
  *
  * With case CRC software is chosen, the default is calculate CRC-table in
@@ -72,7 +72,7 @@ extern "C" {
  * We support both CRC-16 and CRC-32 mode. With CRC-16, the CRC engine is
  * configured to use the CRC-16/XMODEM polynominal 0x1021. With CRC-32, the CRC
  * engine is configured to use the CRC-32 polynominal 0x04C11DB7. The default is
- * CRC-16 mode. In case using CRC-32, user SHOULD define the #SL_IEC60730_USE_CRC_32_ENABLE
+ * CRC-16 mode. In case using CRC-32, user SHOULD define the #SL_IEC60730_USE_CRC_32
  * definition.
  *
  * We also provide scripts named gcc_crc16.sh (for CRC-16 mode) and gcc_crc32.sh
@@ -100,7 +100,7 @@ extern "C" {
  * \param #$6: True for non-secure. False otherwise.
  *
  * The struct #sl_iec60730_imc_params_t is used to manage hardware configuration of CRC.
- * In case using CRC software (define #SL_IEC60730_CRC_USE_SW_ENABLE), you can pass NULL pointer
+ * In case using CRC software (define #SL_IEC60730_CRC_USE_SW), you can pass NULL pointer
  * to function use this struct.
  *
  * We use a pair of variables to check intergrity. Using the following macros
@@ -138,7 +138,7 @@ extern "C" {
  * calculating \ref iec60730_cur_crc and compare it with value of \ref iec60730_ref_crc or value
  * stored in #SL_IEC60730_REF_CRC.
  *
- * To provide complete definitions of IMC modules, in #SL_IEC60730_BOARD_HEADER file,
+ * To provide complete definitions of IMC modules, in #IEC_BOARD_HEADER file,
  * user SHOULD pay attention to the #SL_IEC60730_ROM_START definition. The #STEPS_NUMBER,
  * #SL_IEC60730_ROM_SIZE_INWORDS, and #SL_IEC60730_FLASH_BLOCK_WORDS definitions SHOULD use our default
  * definitions. The #SL_IEC60730_FLASH_BLOCK, #SL_IEC60730_ROM_END, and #SL_IEC60730_REF_CRC definitions can be
@@ -197,23 +197,27 @@ extern "C" {
 
 #ifdef DOXYGEN
 
-/// If using #SL_IEC60730_CRC_USE_SW_ENABLE definition then the #SL_IEC60730_SW_CRC_TABLE definition is used for
+/// The library support both hardware and software CRC. Use this definition in
+/// case the user use software CRC. The default hardware is used.
+#define SL_IEC60730_CRC_USE_SW
+
+/// If using #SL_IEC60730_CRC_USE_SW definition then the #SL_IEC60730_SW_CRC_TABLE definition is used for
 /// using pre-defined table for calculating.
 #define SL_IEC60730_SW_CRC_TABLE
 
 /// Use this definition in case the user use CRC-32 for calculating the CRC value.
 /// The default CRC-16 is used.
-#define SL_IEC60730_USE_CRC_32_ENABLE
+#define SL_IEC60730_USE_CRC_32
 
 /// This macro is the initial value used for CRC calculations.
-///   * If the #SL_IEC60730_USE_CRC_32_ENABLE definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
+///   * If the #SL_IEC60730_USE_CRC_32 definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
 /// SHOULD be 0xFFFFFFFFuL.
 ///   * Otherwise, the definition SHOULD be 0x0000
 #define SL_IEC60730_IMC_INIT_VALUE
 
 /// This macro is the value that will XOR with calculated CRC value to get CRC
 /// output value.
-///   * If the #SL_IEC60730_USE_CRC_32_ENABLE definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
+///   * If the #SL_IEC60730_USE_CRC_32 definition is used then #SL_IEC60730_IMC_INIT_VALUE definition
 /// SHOULD be 0xFFFFFFFFuL.
 ///   * Otherwise, the definition SHOULD be 0x0000
 #define SL_IEC60730_IMC_XOROUTPUT
@@ -225,7 +229,7 @@ extern "C" {
 
 #else
 
-#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
+#ifdef SL_IEC60730_USE_CRC_32
 #define SL_IEC60730_IMC_INIT_VALUE (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_XOROUTPUT  (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_INIT_DEFAULT                                                       \
@@ -238,7 +242,7 @@ extern "C" {
       false,          /* Disable automatic initialization on data read. */     \
       true,           /* Enable GPCRC. */                                      \
   }
-#else /* !SL_IEC60730_USE_CRC_32_ENABLE */
+#else /* !SL_IEC60730_USE_CRC_32 */
 #define SL_IEC60730_IMC_INIT_VALUE (0x0000)
 #define SL_IEC60730_IMC_XOROUTPUT  (0x0000)
 #define SL_IEC60730_IMC_INIT_DEFAULT                                                       \
@@ -251,7 +255,7 @@ extern "C" {
       false,                                                                   \
       true,                                                                    \
   }
-#endif /* SL_IEC60730_USE_CRC_32_ENABLE */
+#endif /* SL_IEC60730_USE_CRC_32 */
 #endif // DOXYGEN
 
 /**************************************************************************/ /**
@@ -286,4 +290,4 @@ sl_iec60730_test_result_t sl_iec60730_imc_bist(void);
 }
 #endif /* __cplusplus */
 
-#endif /* SL_IEC60730_INVARIABLE_MEMORY_H */
+#endif /* IEC60730_INVARIABLE_MEMORY_H_ */

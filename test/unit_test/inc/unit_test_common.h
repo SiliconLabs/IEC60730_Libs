@@ -1,4 +1,4 @@
-/***************************************************************************/ /**
+/***************************************************************************//**
  * @file
  * @brief common unit test api
  *******************************************************************************
@@ -23,15 +23,13 @@
 #include "unity.h"
 
 /*=======Result test case=====*/
-#define MAX_NUMBER_OF_TEST_CASE 20
+#define MAX_NUMBER_OF_TEST_CASE    20
 
 extern uint8_t test_case_result[MAX_NUMBER_OF_TEST_CASE];
 extern uint8_t current_test_numth;
 
 /*=======Test Runner Used To Run Each Test=====*/
-extern void run_test(UnityTestFunction func,
-                     const char *name,
-                     UNITY_LINE_TYPE line_num);
+extern void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE line_num);
 /*=======Test Reset Options=====*/
 extern void setUp(void);
 extern void tearDown(void);
@@ -40,4 +38,5 @@ extern void resetTest(void);
 extern void cmock_set_value(int value);
 extern int cmock_return_value(void);
 
-#endif // _TEST_COMMON_H
+
+#endif  // _TEST_COMMON_H

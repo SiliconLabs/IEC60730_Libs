@@ -18,7 +18,7 @@
 #include <stddef.h>
 #include <string.h>
 
-#include "iec60730_internal.h"
+#include "sl_iec60730_internal.h"
 
 /* RAM location for temporary storage for run-time test */
 static uint32_t bkBuf[RT_BLOCKSIZE + 2] __RT_BUF;
@@ -68,7 +68,7 @@ iec60730_TestResult_t iec60730_VmcPost(vmcParams_t *params)
 
   iec60730_TestResult_t result = iec60730_TestFailed;
 
-  IEC60730_VMC_POST_ENTER_ATOMIC();
+  SL_IEC60730_VMC_POST_ENTER_ATOMIC();
 
   iec60730_VmcInit(params);
 
@@ -105,7 +105,7 @@ iec60730_TestResult_t iec60730_VmcPost(vmcParams_t *params)
   }
 
 CHECK_DONE:
-  IEC60730_VMC_POST_EXIT_ATOMIC();
+  SL_IEC60730_VMC_POST_EXIT_ATOMIC();
 
   return result;
 }
@@ -119,7 +119,7 @@ iec60730_TestResult_t iec60730_VmcBist(vmcParams_t *params)
 
   iec60730_TestResult_t result = iec60730_TestInProgress;
 
-  IEC60730_VMC_BIST_ENTER_ATOMIC();
+  SL_IEC60730_VMC_BIST_ENTER_ATOMIC();
 
   for (uint16_t i = 0; i < VAR_BLOCKS_PER_BIST; i++) {
     if (!CHECK_INTEGRITY(uint32_t, rtCheck)) {
@@ -175,7 +175,7 @@ iec60730_TestResult_t iec60730_VmcBist(vmcParams_t *params)
   }
 
 VMC_BIST_DONE:
-  IEC60730_VMC_BIST_EXIT_ATOMIC();
+  SL_IEC60730_VMC_BIST_EXIT_ATOMIC();
 
   if ((result == iec60730_TestInProgress) || (result == iec60730_TestPassed)) {
     LABEL_DEF(IEC60730_VMC_BIST_STACK_TEST_BKPT);

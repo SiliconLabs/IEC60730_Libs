@@ -107,7 +107,7 @@ void test_main(void)
   iec60730_clockTestTolerance              = 1;
   iec60730_systemClockToTestClockFrequency = 10;
 
-  imcTest.gpcrc = DEFAULT_GPRC;
+  imcTest.gpcrc = SL_IEC60730_DEFAULT_GPRC;
 
   iec60730_Post();
 

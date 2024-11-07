@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_INTERNAL_H
-#define SL_IEC60730_INTERNAL_H
+#ifndef __IEC60730_INTERNAL_H__
+#define __IEC60730_INTERNAL_H__
 
 // Standard libraries
 #include <stdbool.h>
@@ -40,4 +40,4 @@
 #pragma GCC diagnostic ignored "-Wunused-label"
 #endif
 
-#endif /* SL_IEC60730_INTERNAL_H */
+#endif /* __IEC60730_INTERNAL_H__ */

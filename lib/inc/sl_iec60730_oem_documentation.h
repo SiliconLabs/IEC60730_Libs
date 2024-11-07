@@ -76,4 +76,21 @@
 *****************************************************************************/
 
 /** @} (end addtogroup IEC60730_ADC_PLAUSIBILTY_Test) */
+
+/**************************************************************************/ /**
+ * @addtogroup IEC60730_SYSTEM_CLOCK_Test
+ * @{
+ *****************************************************************************/
+#ifdef DOXYGEN
+#define TESTCLK                             ///< Test clock frequency
+#define SYSCLK                              ///< System clock frequency
+#define IEC_TEST_TIMER_OVERFLOW_FREQUENCY   ///< Test timer overflow frequency
+#define IEC_SYSTEM_TIMER_OVERFLOW_FREQUENCY ///< System timer overflow frequency
+#define IEC_TEST_TIMER_OVERFLOW             ///< Test timer overflow count
+#define IEC_SYSTEM_TIMER_OVERFLOW           ///< System timer overflow count
+#else
+// Actual definitions for macros are in device-specific demo files.
+#endif
+
+/** @} (end addtogroup IEC60730_SYSTEM_CLOCK_Test) */
 /** @} (end addtogroup efr32_iec60730) */

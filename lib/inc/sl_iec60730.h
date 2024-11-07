@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_H
-#define SL_IEC60730_H
+#ifndef __IEC60730_H__
+#define __IEC60730_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -27,18 +27,18 @@ extern "C" {
 #include "em_device.h"
 #include "em_core.h"
 #include "em_gpcrc.h"
-#include SL_IEC60730_BOARD_HEADER
+#include IEC_BOARD_HEADER
 
 #define IE60730_LIBRARY_VERSION {1,2,0}
 
 #ifdef DOXYGEN
-/// User SHOULD define #SL_IEC60730_BOARD_HEADER definition for using IMC and VMC modules.
+/// User SHOULD define #IEC_BOARD_HEADER definition for using IMC and VMC modules.
 /// This definition SHOULD be a header file. In this header file SHOULD be
 /// definitions listed in IMC and VMC modules. In our example we defined
-/// the #SL_IEC60730_BOARD_HEADER definition is sl_iec60730_board.h. Our definitions
-/// in #SL_IEC60730_BOARD_HEADER is an example that you can reference. Of course, user CAN
-/// redefine the #SL_IEC60730_BOARD_HEADER definition to any header file.
-#define SL_IEC60730_BOARD_HEADER
+/// the #IEC_BOARD_HEADER definition is sl_iec60730_board.h. Our definitions
+/// in #IEC_BOARD_HEADER is an example that you can reference. Of course, user CAN
+/// redefine the #IEC_BOARD_HEADER definition to any header file.
+#define IEC_BOARD_HEADER
 
 #else
 #define IEC60370_CM4  0
@@ -180,7 +180,7 @@ typedef enum {
 
 #ifdef DOXYGEN
 /// Support for cleaner code.
-///   * If user use the #SL_IEC60730_USE_CRC_32_ENABLE == 1, #sl_iec60730_crc_t is uint32_t.
+///   * If user use the #SL_IEC60730_USE_CRC_32 definition, #sl_iec60730_crc_t is uint32_t.
 ///   * Otherwise, #sl_iec60730_crc_t is uint16_t.
 #define sl_iec60730_crc_t
 
@@ -191,11 +191,11 @@ typedef enum {
 
 #else // !DOXYGEN
 
-#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
+#ifdef SL_IEC60730_USE_CRC_32
 typedef uint32_t sl_iec60730_crc_t;
-#else  /* !SL_IEC60730_USE_CRC_32_ENABLE */
+#else  /* !SL_IEC60730_USE_CRC_32 */
 typedef uint16_t sl_iec60730_crc_t;
-#endif /* SL_IEC60730_USE_CRC_32_ENABLE */
+#endif /* SL_IEC60730_USE_CRC_32 */
 
 #endif // DOXYGEN
 
@@ -219,26 +219,6 @@ extern sl_iec60730_crc_t __checksum;
 /// The #SL_IEC60730_FLASH_BLOCK_WORDS definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_INWORDS
 /// and #STEPS_NUMBER  definitions. User SHOULD not change it.
 #define SL_IEC60730_FLASH_BLOCK_WORDS ((uint32_t) (SL_IEC60730_ROM_SIZE_INWORDS / STEPS_NUMBER))
-
-/// The #SL_IEC60730_ROM_SIZE_TEST definition describes the size of region Flash calculated CRC value.
-/// This calculation based on #end address, and #start address region is transmitted.
-/// definitions.
-#define SL_IEC60730_ROM_SIZE_TEST(start,end)    \
-        ((uint32_t) end - (uint32_t) start)
-
-/// The #STEPS_NUMBER_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST and
-/// #SL_IEC60730_FLASH_BLOCK definition. User SHOULD not change it.
-#define STEPS_NUMBER_TEST(start,end)            \
-        ((uint32_t) SL_IEC60730_ROM_SIZE_TEST(start,end) / SL_IEC60730_FLASH_BLOCK)
-
-/// The #SL_IEC60730_ROM_SIZE_INWORDS_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST definition.
-/// User SHOULD not change it.
-#define SL_IEC60730_ROM_SIZE_INWORDS_TEST(start,end)  ((uint32_t) SL_IEC60730_ROM_SIZE_TEST(start,end) / 4U)
-
-/// The #SL_IEC60730_FLASH_BLOCK_WORDS_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST
-/// and #STEPS_NUMBER  definitions. User SHOULD not change it.
-#define SL_IEC60730_FLASH_BLOCK_WORDS_TEST(start,end) ((uint32_t) (SL_IEC60730_ROM_SIZE_INWORDS_TEST(start,end) / STEPS_NUMBER_TEST(start,end)))
-
 
 /// The #SL_IEC60730_REF_CRC definition describes variable that address of this variable
 /// store CRC value that is calculated by \ref gcc_crcXY in Post Build. We use
@@ -630,14 +610,6 @@ typedef struct{
 // Allocate storage for PRIMASK or BASEPRI value
 #define SL_IEC60370_DECLARE_IRQ_STATE CORE_DECLARE_IRQ_STATE;
 
-// Enter ATOMIC section of IMC Post
-#define SL_IEC60730_IMC_POST_ENTER_ATOMIC()                                       \
-  CORE_DECLARE_IRQ_STATE;                                                      \
-  CORE_ENTER_ATOMIC()
-
-// Exit ATOMIC section of VMC Post
-#define SL_IEC60730_IMC_POST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
-
 // Enter ATOMIC section of IMC Bist
 #define SL_IEC60730_IMC_BIST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
@@ -658,7 +630,7 @@ typedef struct{
 
 // CRC
 typedef GPCRC_TypeDef  sl_iec60730_crc_typedef;
-typedef GPCRC_Init_TypeDef sl_iec60730_crc_init_typedef;
+typedef GPCRC_Init_TypeDef sl_iec60730_crc__init_typedef;
 
 /// The way to read CRC value when using function #sl_iec60730_update_crc_with_data_buffer
 typedef uint8_t sl_iec60730_read_type_t;
@@ -679,25 +651,13 @@ typedef struct {
 /// It used when using function #sl_iec60730_update_crc_with_data_buffer
 /// @note: struct #CRC_INIT_TypeDef defined in header file oem_iec60730.h
 typedef struct {
-#if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
+#ifndef SL_IEC60730_CRC_USE_SW
   sl_iec60730_imc_params_t hal;       ///< struct #sl_iec60730_imc_params_t that contain GPCRC Register
-  sl_iec60730_crc_init_typedef init; ///< CRC initialization structure.
+  sl_iec60730_crc__init_typedef init; ///< CRC initialization structure.
   sl_iec60730_read_type_t readType;   ///< The way to read calculated CRC value
-#endif                   /* SL_IEC60730_CRC_USE_SW_ENABLE */
+#endif                   /* SL_IEC60730_CRC_USE_SW */
   sl_iec60730_crc_t xorOut;          ///< XOR with calculated CRC value
 } sl_iec60730_update_crc_params_t;
-
-/// This structure is used as configuration for IMC testing
-typedef struct {
-  uint32_t *start; ///< Start address of RAM to check
-  uint32_t *end;   ///< End address of RAM to check
-} sl_iec60730_imc_test_region_t;
-
-/// This structure is used as multiple test regions for IMC testing
-typedef struct {
-  const sl_iec60730_imc_test_region_t *region;
-  uint8_t number_of_test_regions; ///< Number of test regions
-} sl_iec60730_imc_test_multiple_regions_t;
 
 #ifdef DOXYGEN
 /// This macro is the default of GPCRC Register.
@@ -743,21 +703,21 @@ typedef struct {
 
 #else
 
-#if (SL_IEC60730_CRC_USE_SW_ENABLE == 1)
-#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
+#ifdef SL_IEC60730_CRC_USE_SW
+#ifdef SL_IEC60730_USE_CRC_32
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0xCBF43926)
 #define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
+#else /* !SL_IEC60730_USE_CRC_32 */
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0x0000)
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0x0000)
-#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x31C3)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x29B1)
 #define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
-#else  /* !SL_IEC60730_CRC_USE_SW_ENABLE */
-#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
+#endif /* SL_IEC60730_USE_CRC_32 */
+#else  /* !SL_IEC60730_CRC_USE_SW */
+#ifdef SL_IEC60730_USE_CRC_32
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0xCBF43926)
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
@@ -776,10 +736,10 @@ typedef struct {
   SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
   SL_IEC60730_IMC_DATA_READ,                                                              \
   SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
+#else /* !SL_IEC60730_USE_CRC_32 */
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0xFFFF)
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0x0000)
-#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x31C3)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x29B1)
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
   {                                                                            \
       0x1021UL,                                                                \
@@ -795,8 +755,8 @@ typedef struct {
   SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
   SL_IEC60730_IMC_DATA_READ_BIT_REVERSED,                                                 \
   SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
-#endif /* SL_IEC60730_CRC_USE_SW_ENABLE */
+#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_CRC_USE_SW */
 
 #endif // DOXYGEN
 
@@ -810,7 +770,7 @@ typedef struct {
  * Performs a initialization of global variables and hardware configuration in
  * case hardware support.
  *****************************************************************************/
-void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params, sl_iec60730_imc_test_multiple_regions_t *test_config);
+void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params);
 
 /**************************************************************************/ /**
  * public IEC60730 Update CRC git pull with Data Buffer
@@ -843,44 +803,36 @@ sl_iec60730_test_result_t
  *****************************************************************************/
 
 // Enter ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_ENTER_CRITICAL()                                     \
-  CORE_DECLARE_IRQ_STATE;                                                       \
-  CORE_ENTER_CRITICAL()
+#define SL_IEC60730_VMC_POST_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
+#define SL_IEC60730_VMC_POST_EXIT_ATOMIC()
 
 // Enter ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_ENTER_CRITICAL()                                    \
+#define SL_IEC60730_VMC_BIST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
-  CORE_ENTER_CRITICAL()
+  CORE_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
+#define SL_IEC60730_VMC_BIST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
 
 /// This structure is used as configuration for VMC testing
 typedef struct {
   uint32_t *start; ///< Start address of RAM to check
   uint32_t *end;   ///< End address of RAM to check
-} sl_iec60730_vmc_test_region_t;
-
-/// This structure is used as multiple test regions for VMC testing
-typedef struct {
-  const sl_iec60730_vmc_test_region_t *region;
-  uint8_t number_of_test_regions; ///< Number of test regions
-} sl_iec60730_vmc_test_multiple_regions_t;
+} sl_iec60730_vmc_params_t;
 
 /**************************************************************************/ /**
  * public IEC60730 Variable Memory Check (VMC) Initialize
  *
- * @param params input parameter of struct #sl_iec60730_vmc_test_multiple_regions_t form
+ * @param params input parameter of struct #sl_iec60730_vmc_params_t form
  *
  * @return void
  *
  * Performs a initialization of global variables. This function SHOULD call
  * before calling #sl_iec60730_vmc_bist
  *****************************************************************************/
-void sl_iec60730_vmc_init(sl_iec60730_vmc_test_multiple_regions_t *test_config);
+void sl_iec60730_vmc_init(sl_iec60730_vmc_params_t *params);
 
 /** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
 
@@ -906,4 +858,4 @@ void sl_iec60730_vmc_init(sl_iec60730_vmc_test_multiple_regions_t *test_config);
 }
 #endif /* __cplusplus */
 
-#endif /* SL_IEC60730_H */
+#endif /* __IEC60730_H__ */

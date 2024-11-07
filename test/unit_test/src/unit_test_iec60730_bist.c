@@ -1,4 +1,4 @@
-/***************************************************************************/ /**
+/***************************************************************************//**
  * @file  unit_test_iec60730_bist.c
  * @brief Unit test function sl_iec60730_bist().
  *******************************************************************************
@@ -24,9 +24,8 @@ __no_init sl_iec60730_imc_params_t imc_unit_test __CLASSB_RAM;
 __no_init sl_iec60730_vmc_params_t vmc_unit_test __CLASSB_RAM;
 static bool is_function_called = false;
 
-__WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
-{
-  (void) failure;
+__WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){
+  (void)failure;
   is_function_called = true;
 }
 
@@ -47,7 +46,9 @@ __WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
   return cmock_return_value();
 }
 
-__WEAK void sl_iec60730_restart_watchdogs(void) {}
+__WEAK void sl_iec60730_restart_watchdogs(void) {
+
+}
 
 /*=======Test Case=====*/
 void test_sl_iec60730_bist_pass_all_check_condition(void)
@@ -86,25 +87,19 @@ void test_iec60730_safety_check_error_occur(void)
 void unit_test_iec60730_bist(void)
 {
   // Initialize
-  memset((void *) test_case_result, 0xff, sizeof(test_case_result));
+  memset((void *)test_case_result, 0xff, sizeof(test_case_result));
   current_test_numth = 0;
 
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_bist.c");
-  run_test(test_sl_iec60730_bist_pass_all_check_condition,
-           "test_sl_iec60730_bist_pass_all_check_condition",
-           54);
-  run_test(test_sl_iec60730_bist_failed_check_condition,
-           "test_sl_iec60730_bist_failed_check_condition",
-           64);
-  run_test(test_iec60730_safety_check_error_occur,
-           "test_iec60730_safety_check_error_occur",
-           74);
+  run_test(test_sl_iec60730_bist_pass_all_check_condition, "test_sl_iec60730_bist_pass_all_check_condition", 54);
+  run_test(test_sl_iec60730_bist_failed_check_condition, "test_sl_iec60730_bist_failed_check_condition", 64);
+  run_test(test_iec60730_safety_check_error_occur, "test_iec60730_safety_check_error_occur", 74);
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 
-  while (1) {
+  while(1){
     // Do nothing
   }
 }

@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_PROGRAMME_COUNTER_H
-#define SL_IEC60730_PROGRAMME_COUNTER_H
+#ifndef __IEC60730_PROGRAMME_COUNTER_H__
+#define __IEC60730_PROGRAMME_COUNTER_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,4 +86,4 @@ void sl_iec60730_program_counter_test(void);
 }
 #endif /* __cplusplus */
 
-#endif /* SL_IEC60730_PROGRAMME_COUNTER_H */
+#endif /* __IEC60730_PROGRAMME_COUNTER_H__ */

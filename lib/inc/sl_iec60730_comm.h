@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_COMM_H
-#define SL_IEC60730_COMM_H
+#ifndef __IEC60730_COMM_H__
+#define __IEC60730_COMM_H__
 
 #ifdef __cplusplus
 extern "C" {
@@ -110,4 +110,4 @@ extern "C" {
 }
 #endif /* __cplusplus */
 
-#endif /* SL_IEC60730_COMM_H */
+#endif /* __IEC60730_COMM_H__ */

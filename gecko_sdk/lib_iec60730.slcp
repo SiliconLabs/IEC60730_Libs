@@ -29,7 +29,7 @@ component:
     from: iec60730
 configuration:
   - name: SL_BOARD_ENABLE_VCOM
-    value: 0
+    value: 1
   - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
     value: 1
   - name: SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE
@@ -37,13 +37,7 @@ configuration:
   - name: SL_DEVICE_INIT_HFRCO_BAND
     value: cmuHFRCOFreq_19M0Hz
     condition:
-      - device_series_1
-  - name: SL_IEC60730_IRQ_STATUS_ENABLE
-    value: 1
-  - name: SL_IEC60730_WDOG1_ENABLE
-    value: 1
-  - name: SL_IEC60730_CRC_DEBUG_ENABLE
-    value: 0
+     - device_series_1
 toolchain_settings:
   - option: linkerfile
     value: autogen/linkerfile_iec60730.ld

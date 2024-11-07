@@ -8,25 +8,9 @@ START_ADDR=0
 SUFFIX=_crc16
 NON_SECURE=0
 
-START_ADDR=${5//"%20"/" "}
-NUMBER_ELEMENT=0
-
-
-#printf "$START_ADDR\n"
-
-START_ARR_ADDR=()
-END_ARR_ADDR=()
-for END_ARR_ADDR in ${START_ADDR[@]}; do
-  #echo $END_ARR_ADDR ;
-  if [ "$NUMBER_ELEMENT" -eq 0 ];then
-    START_ARR_ADDR=$END_ARR_ADDR;
-  fi
-  NUMBER_ELEMENT=$((NUMBER_ELEMENT+1));
-done
-
-#printf "ARR_ADDR: $ARR_ADDR\n"
-#printf "START_ARR_ADDR: $START_ARR_ADDR\n"
-#printf "NUMBER_ELEMENT: $NUMBER_ELEMENT\n"
+if [ ! -z $5 ]; then
+  START_ADDR=$5
+fi
 
 SUFFIX_NON_SECURE=""
 if [ ! -z $6 ]; then
@@ -57,7 +41,7 @@ if [ -z ${BUILD_DIR} ]; then
   OUTPUT_SRECFILE=${PROJ_NAME}${SUFFIX_NON_SECURE}${SUFFIX}.s37
   TEMP_FILE=tmpfile.txt
 else
-  MAPFILE=${BUILD_DIR}/${PROJ_NAME}${SUFFIX_NON_SECURE}.map
+  MAPFILE=${BUILD_DIR}/../${PROJ_NAME}${SUFFIX_NON_SECURE}.map
   INPUT_HEXFILE=${BUILD_DIR}/${PROJ_NAME}${SUFFIX_NON_SECURE}.hex
   OUTPUT_HEXFILE=${BUILD_DIR}/${PROJ_NAME}${SUFFIX_NON_SECURE}${SUFFIX}.hex
   OUTPUT_BINFILE=${BUILD_DIR}/${PROJ_NAME}${SUFFIX_NON_SECURE}${SUFFIX}.bin
@@ -110,30 +94,10 @@ fi
 echo Start address: ${START_ADDR}
 echo CRC16 address: ${CRC_ADDR} at LineNo: ${LINE_NO} of ${MAPFILE}
 
-if [ "$(( $NUMBER_ELEMENT % 2 ))" -eq 0 ]; then
-
-#printf "=== Calculate multiple regions: $START_ADDR and $END_ARR_ADDR to ${CRC_ADDR}\n"
-
 ${SREC_CAT} \
   ${INPUT_HEXFILE} -intel \
-  -crop ${START_ADDR} \
-  -crc16-l-e ${CRC_ADDR} -xmodem \
-  -o ${TEMP_FILE} -intel >/dev/null 2>&1
-
-${SREC_CAT} \
-  ${INPUT_HEXFILE} -intel \
-  -exclude -within ${TEMP_FILE} -intel \
-  ${TEMP_FILE} -intel \
-  -o ${OUTPUT_HEXFILE} -intel
-
-else
-
-#printf "=== Calculate from ${START_ADDR} to ${CRC_ADDR}\n"
-
-${SREC_CAT} \
-  ${INPUT_HEXFILE} -intel \
-  -crop ${START_ADDR} ${CRC_ADDR}\
-  -fill 0xFF ${START_ADDR} ${CRC_ADDR}\
+  -crop ${START_ADDR} ${CRC_ADDR} \
+  -fill 0xFF ${START_ADDR} ${CRC_ADDR} \
   -crc16-l-e ${CRC_ADDR} -xmodem \
   -o ${TEMP_FILE} -intel
 
@@ -143,8 +107,6 @@ ${SREC_CAT} \
   ${TEMP_FILE} -intel \
   -o ${OUTPUT_HEXFILE} -intel
 
-fi
-
 rm -rf ${TEMP_FILE}
 
 echo Comparing ...
@@ -153,7 +115,7 @@ ${SREC_CMP} \
 
 ${SREC_CAT} \
   ${OUTPUT_HEXFILE} -intel \
-  -offset -${START_ARR_ADDR} \
+  -offset -${START_ADDR} \
   -o ${OUTPUT_BINFILE} -binary
 
 ${SREC_CAT} \

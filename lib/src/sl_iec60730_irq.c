@@ -31,7 +31,6 @@ static sl_iec60730_irq_cfg_t* iec60730_irq_cfg = NULL;
 static sl_iec60730_irq_fail_t iec60730_irq_fail_result = {0,0};
 #endif //(SL_IEC60730_IRQ_STATUS_EN == 1)
 
-
 #if (SL_IEC60730_IRQ_STATUS_EN == 1)
 
 sl_iec60730_irq_fail_t* sl_iec60730_get_irq_index_failed(void)

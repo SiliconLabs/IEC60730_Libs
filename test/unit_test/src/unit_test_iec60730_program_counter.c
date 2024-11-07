@@ -1,4 +1,4 @@
-/***************************************************************************/ /**
+/***************************************************************************//**
  * @file  unit_test_iec60730_program_counter.c
  * @brief Unit test function sl_iec60730_program_counter_test().
  *******************************************************************************
@@ -26,10 +26,8 @@ static bool is_function_called = false;
 
 // Dump functions
 
-__WEAK void
-    sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
-{
-  (void) failure;
+__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure) {
+  (void)failure;
   is_function_called = true;
 }
 
@@ -37,7 +35,7 @@ __WEAK void
 void test_sl_iec60730_program_counter_complete_all_bit_check(void)
 {
   /*Setup*/
-  is_function_called                = false;
+  is_function_called = false;
   sl_iec60730_program_counter_check = IEC60730_ALL_COMPLETE_BITS;
   /*Execute test*/
   sl_iec60730_program_counter_test();
@@ -48,8 +46,7 @@ void test_sl_iec60730_program_counter_fail_some_bit_check(void)
 {
   /*Setup*/
   is_function_called = false;
-  sl_iec60730_program_counter_check =
-      (IEC60730_ALL_COMPLETE_BITS && (~(IEC60730_INTERRUPT_COMPLETE)));
+  sl_iec60730_program_counter_check = (IEC60730_ALL_COMPLETE_BITS && (~(IEC60730_INTERRUPT_COMPLETE)));
   /*Execute test*/
   sl_iec60730_program_counter_test();
   TEST_ASSERT_EQUAL(true, is_function_called);
@@ -60,22 +57,18 @@ void test_sl_iec60730_program_counter_fail_some_bit_check(void)
 void unit_test_iec60730_program_counter(void)
 {
   // Initialize
-  memset((void *) test_case_result, 0xff, sizeof(test_case_result));
+  memset((void *)test_case_result, 0xff, sizeof(test_case_result));
   current_test_numth = 0;
 
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_program_counter.c");
-  run_test(test_sl_iec60730_program_counter_complete_all_bit_check,
-           "test_sl_iec60730_program_counter_complete_all_bit_check",
-           35);
-  run_test(test_sl_iec60730_program_counter_fail_some_bit_check,
-           "test_sl_iec60730_program_counter_fail_some_bit_check",
-           45);
+  run_test(test_sl_iec60730_program_counter_complete_all_bit_check, "test_sl_iec60730_program_counter_complete_all_bit_check", 35);
+  run_test(test_sl_iec60730_program_counter_fail_some_bit_check, "test_sl_iec60730_program_counter_fail_some_bit_check", 45);
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 
-  while (1) {
+  while(1){
     // Do nothing
   }
 }

@@ -15,12 +15,36 @@
  *
  ******************************************************************************/
 
-#include "test_common.h"
-#include "test_iec60730_module_demo.h"
+#include "unit_test_common.h"
+
+#ifdef UNIT_TEST_IEC60730_POST_ENABLE
+#include "unit_test_iec60730_post.h"
+#endif
+
+#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
+#include "unit_test_iec60730_bist.h"
+#endif
+
+#ifdef UNIT_TEST_IEC60730_PROGRAM_COUNTER_ENABLE
+#include "unit_test_iec60730_program_counter.h"
+#endif
+
 
 void app_init(void)
 {
-  test_iec60730_module_demo();
+
+#ifdef UNIT_TEST_IEC60730_POST_ENABLE
+  unit_test_iec60730_post();
+#endif
+
+#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
+  unit_test_iec60730_bist();
+#endif
+
+#ifdef UNIT_TEST_IEC60730_PROGRAM_COUNTER_ENABLE
+  unit_test_iec60730_program_counter();
+#endif
+
 }
 
 void app_process_action(void)

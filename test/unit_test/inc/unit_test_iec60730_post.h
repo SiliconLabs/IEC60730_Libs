@@ -42,7 +42,7 @@
  * Public   Check sl_iec60730_post() operate
  *
  * @returns None.
- * If bool is_function_called variable equal false. It means test result routine of sl_iec60730_post
+ * If bool is_function_called variable equal false. It means test result rountine of sl_iec60730_post
  * is a pass, function sl_iec60730_safe_state() is not called. So timer support test is enabled.
  *
  *****************************************************************************/
@@ -52,22 +52,22 @@ void test_sl_iec60730_post_pass_all_check_condition(void);
  * Public   Check sl_iec60730_post() operate
  *
  * @returns None.
- * If bool is_function_called variable true. It means test result routine of sl_iec60730_post
+ * If bool is_function_called variable true. It means test result rountine of sl_iec60730_post
  * is a failure, function sl_iec60730_safe_state() is called.
  *
  *****************************************************************************/
 void test_sl_iec60730_post_failed_check_condition(void);
 
 /**************************************************************************/ /**
- * Public   Function run all test cases above
+ * Public   Funtion run all test cases above
  *
  * @returns None.
  *
- * Function runs all unit test cases of the function sl_iec60730_post()
+ * Funtion runs all unit test cases of the function sl_iec60730_post()
  *****************************************************************************/
 extern void unit_test_iec60730_post(void);
 
-#endif // UNIT_TEST_IEC60730_POST_H
+#endif  // UNIT_TEST_IEC60730_POST_H
 
 /** @} (end defgroup IEC60730_POST_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

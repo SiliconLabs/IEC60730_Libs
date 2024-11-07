@@ -1690,9 +1690,9 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpsx(void)
 #else
       "IEC60730_CPU_REGS_FPU_Sx_DONE::\n"
 #endif
-      "   LDR.W R1, =0xE000ED88           \n"
+      "   LDR R1, =0xE000ED88             \n"
       "   STR R5, [R1, #0]                \n"   /* Restore CPACR */
-      "   LDR.W R1, =0xE000EF34           \n"
+      "   LDR R1, =0xE000EF34             \n"
       "   STR R6, [R1, #0]                \n"   /* Restore FPCCR */
       "   VMSR FPSCR, R4                  \n"   /* Restore FPSCR */
       "   LDMIA SP!, {R4, R5, R6}         \n"

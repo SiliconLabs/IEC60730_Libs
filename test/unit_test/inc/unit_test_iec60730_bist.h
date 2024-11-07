@@ -43,7 +43,7 @@
  *
  * @returns None.
  * If bool is_function_called variable equal false.
- * It means test result routine of sl_iec60730_bist is a pass, function sl_iec60730_safe_state() is not called.
+ * It means test result rountine of sl_iec60730_bist is a pass, function sl_iec60730_safe_state() is not called.
  *
  *****************************************************************************/
 void test_sl_iec60730_bist_pass_all_check_condition(void);
@@ -52,7 +52,7 @@ void test_sl_iec60730_bist_pass_all_check_condition(void);
  * Public   Check sl_iec60730_bist() operate
  *
  * @returns None.
- * If bool is_function_called variable true. It means test result routine
+ * If bool is_function_called variable true. It means test result rountine
  * of sl_iec60730_bist is a failure, function sl_iec60730_safe_state() is called.
  *
  *****************************************************************************/
@@ -63,17 +63,17 @@ void test_sl_iec60730_bist_failed_check_condition(void);
  *
  * @returns None.
  * If bool is_function_called variable true, and iec60730_safety_check is not equal IEC60730_NO_FAILURE.
- * It means test result routine of sl_iec60730_bist is a failure, function sl_iec60730_safe_state() is called.
+ * It means test result rountine of sl_iec60730_bist is a failure, function sl_iec60730_safe_state() is called.
  *
  *****************************************************************************/
 void test_iec60730_safety_check_error_occur(void);
 
 /**************************************************************************/ /**
- * Public   Function run all test cases above
+ * Public   Funtion run all test cases above
  *
  * @returns None.
  *
- * Function runs all unit test cases of the function sl_iec60730_bist()
+ * Funtion runs all unit test cases of the function sl_iec60730_bist()
  *****************************************************************************/
 extern void unit_test_iec60730_bist(void);
 

@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_BOARD_H
-#define SL_IEC60730_BOARD_H
+#ifndef IEC60730_BOARD_H_
+#define IEC60730_BOARD_H_
 
 #ifdef __cplusplus
 extern "C" {
@@ -97,4 +97,4 @@ extern uint32_t __ClassBLimit;
 }
 #endif /* __cplusplus */
 
-#endif /* SL_IEC60730_BOARD_H */
+#endif /* IEC60730_BOARD_H_ */

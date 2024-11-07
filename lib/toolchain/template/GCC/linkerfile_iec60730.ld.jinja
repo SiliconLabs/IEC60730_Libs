@@ -482,7 +482,7 @@ SECTIONS
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 
   PROVIDE(__FlashStart = ORIGIN(FLASH));
-  PROVIDE(__RamStart = ORIGIN(RAM));
+  PROVIDE(__RamStart = ORIGIN(CLASSBRAM));
   PROVIDE(__ClassBLimit = ORIGIN(CLASSBRAM) + LENGTH(CLASSBRAM));
 
   /* Check if FLASH usage exceeds FLASH size */

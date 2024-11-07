@@ -5,24 +5,14 @@ description: >
   1) Go to C/C++ Build > Settings > Tool Settings > Memory Layout and browse to edit the linker file. The default linker file name is linkerfile_iec60730.ld.
 
   2) In the default configuration, SL_IEC60730_CRC_DEBUG_ENABLE can support debugging the CRC test module invariable memory calculations. If you want to disable this configuration, you should copy either sl_iec60730_cal_crc32.sh or sl_iec60730_cal_crc16.sh in the path: "lib/crc/" which helps a CRC-calculated image file for testing.
-  You must flash the image which have the corresponding image file suffix _crc16 and _crc32.
 
   To support CRC image calculation, follow these steps: Go to C/C++ Build > Settings > Build Steps > Post-build steps > Command and use the appropriate command for the toolchain, for instance:
 
-  If you want to calculate from start address to end address of flash:
+  - With GCC: arm-none-eabi-objdump -t -h -d -S '${BuildArtifactFileBaseName}.axf' >'${BuildArtifactFileBaseName}.lst' && sh '${ProjDirPath}/iec60730_10.0/lib/crc/sl_iec60730_cal_crc16.sh' '${BuildArtifactFileBaseName}' '' 'C:\srecord\bin' 'GCC' '0x00000000'.
 
-    - With GCC: arm-none-eabi-objdump -t -h -d -S '${BuildArtifactFileBaseName}.axf' >'${BuildArtifactFileBaseName}.lst' && bash ${ProjDirPath}/iec60730_1.0.0/lib/crc/sl_iec60730_cal_crc16.sh ${BuildArtifactFileBaseName} "" "C:\srecord\bin" GCC "0x8000000"
+  - With IAR: ielfdumparm --all --source ${BuildArtifactFileBaseName}.out > ${BuildArtifactFileBaseName}.lst && sh '${ProjDirPath}/iec60730_10.0/lib/crc/sl_iec60730_cal_crc16.sh'  '${BuildArtifactFileBaseName}' '' 'C:\srecord\bin ' 'IAR' '0x00000000'.
 
-    - With IAR: ielfdumparm --all --source ${BuildArtifactFileBaseName}.out > ${BuildArtifactFileBaseName}.lst && bash ${ProjDirPath}/iec60730_1.0.0/lib/crc/sl_iec60730_cal_crc16.sh ${BuildArtifactFileBaseName} "" "C:\srecord\bin" IAR "0x8000000"
-
-  or if you want to calculate multiple regions:
-
-    - With GCC: arm-none-eabi-objdump -t -h -d -S '${BuildArtifactFileBaseName}.axf' >'${BuildArtifactFileBaseName}.lst' && bash ${ProjDirPath}/iec60730_1.0.0/lib/crc/sl_iec60730_cal_crc16.sh ${BuildArtifactFileBaseName} "" "C:\srecord\bin" GCC "0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
-
-    - With IAR: ielfdumparm --all --source ${BuildArtifactFileBaseName}.out > ${BuildArtifactFileBaseName}.lst && bash ${ProjDirPath}/iec60730_1.0.0/lib/crc/sl_iec60730_cal_crc16.sh ${BuildArtifactFileBaseName} "" "C:\srecord\bin" IAR "0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
-
-  For the IAR toolchain, it is necessary to add the linker option in C/C++ Build > Settings > Tool Settings > IAR Linker for ARM > Extra Options: "--keep __checksum --place_holder __checksum,2,.checksum,64"
-
+  For the IAR toolchain, it is necessary to add the linker option: "--keep __checksum --place_holder __checksum,2,.checksum,64"
 label: IEC60730 Lib
 quality: production
 id: iec60730_lib
@@ -72,7 +62,7 @@ source:
   - path: ./lib/crc/sl_iec60730_cal_crc16.sh
   - path: ./lib/crc/sl_iec60730_cal_crc32.sh
 define:
-  - name: SL_IEC60730_BOARD_HEADER
+  - name: IEC_BOARD_HEADER
     value: "\"sl_iec60730_board.h\""
 toolchain_settings:
   - option: linkerfile

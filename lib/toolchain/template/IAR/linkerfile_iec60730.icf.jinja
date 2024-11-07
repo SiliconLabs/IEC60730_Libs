@@ -113,7 +113,7 @@ if ( !isdefinedsymbol( __ICFEDIT_size_heap__ ) )
 { define symbol __ICFEDIT_size_heap__     = 0x800; }
 define exported symbol __FlashStart = __ICFEDIT_region_SL_IEC60730_ROM_START__;
 define exported symbol __StackTop = __ICFEDIT_region_RAM_end__;
-define exported symbol __RamStart = __ICFEDIT_region_RAM_start__;
+define exported symbol __RamStart = __ICFEDIT_region_CLASSBRAM_start__;
 define exported symbol __ClassBLimit = __ICFEDIT_region_CLASSBRAM_end__ + 1;
 {%- endif %}
 

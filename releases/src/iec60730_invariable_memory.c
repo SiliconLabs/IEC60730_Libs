@@ -16,7 +16,7 @@
  ******************************************************************************/
 
 #include <stddef.h>
-#include "iec60730_internal.h"
+#include "sl_iec60730_internal.h"
 
 #ifdef CRC_USE_SW
 STATIC_DEC_CLASSB_VARS(crc_t, curCrc);
@@ -346,7 +346,7 @@ iec60730_TestResult_t iec60730_ImcBist(imcParams_t *params)
       || ((uint32_t) ROM_START >= (uint32_t) ROM_END))
     return result;
 
-  IEC60730_IMC_BIST_ENTER_ATOMIC();
+  SL_IEC60730_IMC_BIST_ENTER_ATOMIC();
 
   LABEL_DEF(IEC60730_IMC_BIST_START_BKPT);
 
@@ -428,11 +428,11 @@ iec60730_TestResult_t
     CRC_INPUTU8(params->hal.gpcrc, buffer[i]);
   }
 
-  if (IMC_DATA_READ == params->readType) {
+  if (SL_IEC60730_IMC_DATA_READ == params->readType) {
     *crc = (crc_t) CRC_DATAREAD(params->hal.gpcrc);
-  } else if (IMC_DATA_READ_BIT_REVERSED == params->readType) {
+  } else if (SL_IEC60730_IMC_DATA_READ_BIT_REVERSED == params->readType) {
     *crc = (crc_t) CRC_DATAREADBITREVERSED(params->hal.gpcrc);
-  } else if (IMC_DATA_READ_BYTE_REVERSED == params->readType) {
+  } else if (SL_IEC60730_IMC_DATA_READ_BYTE_REVERSED == params->readType) {
     *crc = (crc_t) CRC_DATAREADBYTEREVERSED(params->hal.gpcrc);
   } else {
     // MISRA requires ..else if.. to have terminating else.

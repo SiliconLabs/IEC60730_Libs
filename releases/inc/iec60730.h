@@ -23,14 +23,14 @@ extern "C" {
 #endif /* __cplusplus */
 
 #include "si_toolchain.h"
-#include "iec60730_oem.h"
+#include "oem_iec60730.h"
 #include IEC_BOARD_HEADER
 
 #ifdef DOXYGEN
 /// User SHOULD define #IEC_BOARD_HEADER definition for using IMC and VMC modules.
 /// This definition SHOULD be a header file. In this header file SHOULD be
 /// definitions listed in IMC and VMC modules. In our example we defined
-/// the #IEC_BOARD_HEADER definition is iec60730_board.h. Our definitions
+/// the #IEC_BOARD_HEADER definition is sl_iec60730_board.h. Our definitions
 /// in #IEC_BOARD_HEADER is an example that you can reference. Of course, user CAN
 /// redefine the #IEC_BOARD_HEADER definition to any header file.
 #define IEC_BOARD_HEADER
@@ -403,7 +403,7 @@ typedef enum {
 
 /// The #INVAR_BLOCKS_PER_BIST desribles maximum number of loops that perform
 /// the CRC calculation each time the #iec60730_ImcBist is invoked. We provide
-/// default value for this definition in iec60730.h file.
+/// default value for this definition in sl_iec60730.h file.
 #define INVAR_BLOCKS_PER_BIST
 
 /// The #ROM_START definition describes the start address of Flash for CRC
@@ -411,7 +411,7 @@ typedef enum {
 /// changed by user so that the value DOES NOT exceed the end address of Flash
 /// (the #ROM_END definition). Otherwise, #iec60730_ImcPost and #iec60730_ImcBist
 /// return #iec60730_TestFailed. The default value of the #ROM_START can be found in
-/// iec60730.h file.
+/// sl_iec60730.h file.
 ///
 /// In case you change value of this definition then you SHOULD change the 5th
 /// parameter of the script \ref gcc_crcXY when running the Post Build.
@@ -758,7 +758,7 @@ extern SI_SEGMENT_VARIABLE(iec60730_systemClockToTestClockFrequency,
  * This function increments a system clock counter, which is compared to a
  * test clock counter as part of the system clock frequency check.  It should
  * be called in the timer interrupt service routine designated as the system
- * clock timer in iec60730_oem_timer.c.
+ * clock timer in oem_iec60730_timer.c.
  *****************************************************************************/
 void iec60730_SystemClockTick(void);
 
@@ -770,7 +770,7 @@ void iec60730_SystemClockTick(void);
  * This function increments a test clock counter.  The function executes
  * all interrupt service routine-based IEC60730 tests, including the system
  * clock frequency check.  It should be called in the timer interrupt
- * service routine designated as the test clock timer in iec60730_oem_timer.c.
+ * service routine designated as the test clock timer in oem_iec60730_timer.c.
  *****************************************************************************/
 void iec60730_TestClockTick(void);
 
@@ -852,10 +852,10 @@ extern SI_SEGMENT_CONST(iec60730_IRQFreqBoundsSize, uint8_t, SI_SEG_CODE);
 /// The way to read CRC value when using function #iec60730_updateCRCWithDataBuffer
 typedef uint8_t readType_t;
 enum {
-  IMC_DATA_READ = 0, ///< use function GPCRC_DataRead to read CRC
-  IMC_DATA_READ_BIT_REVERSED =
+  SL_IEC60730_IMC_DATA_READ = 0, ///< use function GPCRC_DataRead to read CRC
+  SL_IEC60730_IMC_DATA_READ_BIT_REVERSED =
       1, ///< use function GPCRC_DataReadBitReversed to read CRC
-  IMC_DATA_READ_BYTE_REVERSED =
+  SL_IEC60730_IMC_DATA_READ_BYTE_REVERSED =
       2, ///< use function GPCRC_DataReadByteReversed to read CRC
 };
 
@@ -866,7 +866,7 @@ typedef struct {
 
 /// This structure is used as configuration for CRC Buffer calculation.
 /// It used when using function #iec60730_updateCRCWithDataBuffer
-/// @note: struct #CRC_INIT_TypeDef defined in header file iec60730_oem.h
+/// @note: struct #CRC_INIT_TypeDef defined in header file oem_iec60730.h
 typedef struct {
 #ifndef CRC_USE_SW
   imcParams_t hal;       ///< struct #imcParams_t that contain GPCRC Register
@@ -878,69 +878,69 @@ typedef struct {
 
 #ifdef DOXYGEN
 /// This macro is the default of GPCRC Register.
-///   * Default #DEFAULT_GPRC is GPCRC (also GPCRC_S).
-///   * If the #IEC60730_NON_SECURE_EN is enable, #DEFAULT_GPRC is GPCRC_NS.
-#define DEFAULT_GPRC
+///   * Default #SL_IEC60730_DEFAULT_GPRC is GPCRC (also GPCRC_S).
+///   * If the #IEC60730_NON_SECURE_EN is enable, #SL_IEC60730_DEFAULT_GPRC is GPCRC_NS.
+#define SL_IEC60730_DEFAULT_GPRC
 #else
-#ifndef DEFAULT_GPRC
+#ifndef SL_IEC60730_DEFAULT_GPRC
 #ifndef IEC60730_NON_SECURE_EN
-#define DEFAULT_GPRC GPCRC
+#define SL_IEC60730_DEFAULT_GPRC GPCRC
 #else
-#define DEFAULT_GPRC GPCRC_NS
+#define SL_IEC60730_DEFAULT_GPRC GPCRC_NS
 #endif
-#endif // DEFAULT_GPRC
+#endif // SL_IEC60730_DEFAULT_GPRC
 #endif // DOXYGEN
 
 /// This macro is the sample test buffer used for testing CRC algorithm. This
 /// value is used in development phase. User DOES NOT take care this definition.
-#define IMC_CRCBUFFER_SAMPLETEST "123456789"
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_TEST "123456789"
 
 #ifdef DOXYGEN
 /// This macro is the initial value used for CRC calculations.
 /// User DOES NOT change this value
 ///   * <b>CRC-16</b>: 0x0000 (SW) <b>CRC-32</b>: 0xFFFFFFFFuL (SW)
 ///   * <b>CRC-16</b>: 0xFFFF (HW) <b>CRC-32</b>: 0xFFFFFFFFuL (HW)
-#define IMC_CRCBUFFER_INIT_VALUE
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE
 
 /// This macro is the value that will XOR with calculated CRC value to get CRC
 /// output value. User DOES NOT change this value
 ///   * <b>CRC-16</b>: 0x0000 (SW) <b>CRC-32</b>: 0xFFFFFFFFuL (SW)
 ///   * <b>CRC-16</b>: 0x0000 (HW) <b>CRC-32</b>: 0xFFFFFFFFuL (HW)
-#define IMC_CRCBUFFER_XOROUTPUT
+#define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT
 
 /// This macro is the expected CRC value with input buffer that equal to
 /// "123456789". These value are only used in development phase. User DOES NOT
 /// take care this definition.
 ///   * <b>CRC-16</b>: 0x29B1 <b>CRC-32</b>: 0xCBF43926
-#define IMC_CRCBUFFER_SAMPLERESULT
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT
 
 /// This macro is the default value of struct #updateCrcParams_t. User DOES NOT
 /// change this value
-#define IMC_CRCBUFFER_UPDATE_DEFAULT
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT
 
 #else
 
 #ifdef CRC_USE_SW
 #ifdef USE_CRC_32
-#define IMC_CRCBUFFER_INIT_VALUE     (0xFFFFFFFFuL)
-#define IMC_CRCBUFFER_XOROUTPUT      (0xFFFFFFFFuL)
-#define IMC_CRCBUFFER_SAMPLERESULT   (0xCBF43926)
-#define IMC_CRCBUFFER_UPDATE_DEFAULT {IMC_CRCBUFFER_XOROUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE     (0xFFFFFFFFuL)
+#define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT      (0xFFFFFFFFuL)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT   (0xCBF43926)
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
 #else /* !USE_CRC_32 */
-#define IMC_CRCBUFFER_INIT_VALUE     (0x0000)
-#define IMC_CRCBUFFER_XOROUTPUT      (0x0000)
-#define IMC_CRCBUFFER_SAMPLERESULT   (0x29B1)
-#define IMC_CRCBUFFER_UPDATE_DEFAULT {IMC_CRCBUFFER_XOROUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE     (0x0000)
+#define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT      (0x0000)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT   (0x29B1)
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
 #endif /* USE_CRC_32 */
 #else  /* !CRC_USE_SW */
 #ifdef USE_CRC_32
-#define IMC_CRCBUFFER_INIT_VALUE   (0xFFFFFFFFuL)
-#define IMC_CRCBUFFER_XOROUTPUT    (0xFFFFFFFFuL)
-#define IMC_CRCBUFFER_SAMPLERESULT (0xCBF43926)
-#define IMC_CRCBUFFER_INIT_DEFAULT                                             \
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE   (0xFFFFFFFFuL)
+#define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT    (0xFFFFFFFFuL)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT (0xCBF43926)
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
   {                                                                            \
       0x04C11DB7UL,                                                            \
-      IMC_CRCBUFFER_INIT_VALUE,                                                \
+      SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE,                                                \
       false,                                                                   \
       false,                                                                   \
       false,                                                                   \
@@ -948,30 +948,30 @@ typedef struct {
       true,                                                                    \
   }
 
-#define IMC_CRCBUFFER_UPDATE_DEFAULT                                           \
-  {{DEFAULT_GPRC},                                                             \
-   IMC_CRCBUFFER_INIT_DEFAULT,                                                 \
-   IMC_DATA_READ,                                                              \
-   IMC_CRCBUFFER_XOROUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT                                           \
+  {{SL_IEC60730_DEFAULT_GPRC},                                                             \
+   SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
+   SL_IEC60730_IMC_DATA_READ,                                                              \
+   SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
 #else /* !USE_CRC_32 */
-#define IMC_CRCBUFFER_INIT_VALUE   (0xFFFF)
-#define IMC_CRCBUFFER_XOROUTPUT    (0x0000)
-#define IMC_CRCBUFFER_SAMPLERESULT (0x29B1)
-#define IMC_CRCBUFFER_INIT_DEFAULT                                             \
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE   (0xFFFF)
+#define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT    (0x0000)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT (0x29B1)
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
   {                                                                            \
       0x1021UL,                                                                \
-      IMC_CRCBUFFER_INIT_VALUE,                                                \
+      SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE,                                                \
       false,                                                                   \
       true,                                                                    \
       false,                                                                   \
       false,                                                                   \
       true,                                                                    \
   }
-#define IMC_CRCBUFFER_UPDATE_DEFAULT                                           \
-  {{DEFAULT_GPRC},                                                             \
-   IMC_CRCBUFFER_INIT_DEFAULT,                                                 \
-   IMC_DATA_READ_BIT_REVERSED,                                                 \
-   IMC_CRCBUFFER_XOROUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT                                           \
+  {{SL_IEC60730_DEFAULT_GPRC},                                                             \
+   SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
+   SL_IEC60730_IMC_DATA_READ_BIT_REVERSED,                                                 \
+   SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
 #endif /* USE_CRC_32 */
 #endif /* CRC_USE_SW */
 
