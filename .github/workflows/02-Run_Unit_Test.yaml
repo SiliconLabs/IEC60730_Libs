@@ -257,6 +257,7 @@ jobs:
   job2:
     name: Run unit test
     runs-on: [self-hosted, ds-sqa-hn-iec]
+    needs: job1
     permissions:
       contents: read
       pull-requests: write
