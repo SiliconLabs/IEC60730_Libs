@@ -382,8 +382,8 @@ jobs:
         export HOST_IP=$HOST_IP_MG12
         export FLASH_REGIONS_TEST=$START_ADDR_FLASH_M12
         mkdir log_MG12
-        echo "bash execute_unit_test.sh $BOARD_NAME_MG12 run-only $COMPONENTS $ADAPTER_SN_MG12 $COMPILER"
-        bash execute_unit_test.sh $BOARD_NAME_MG12 $TASK $COMPONENTS $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Unit_Test_MG12.txt
+        echo "bash execute_unit_test.sh $BOARD_NAME_MG12 run-only all $ADAPTER_SN_MG12 $COMPILER"
+        bash execute_unit_test.sh $BOARD_NAME_MG12 run-only all $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Unit_Test_MG12.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_2.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON"' > log/Test_integration_$BOARD_NAME_GCC_3.txt
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON -DENABLE_SW_CRC_TABLE=ON"' > log/Test_integration_$BOARD_NAME_GCC_4.txt
@@ -408,8 +408,8 @@ jobs:
         export HOST_IP=$HOST_IP_MG24
         export FLASH_REGIONS_TEST=$START_ADDR_FLASH_M24
         mkdir log_MG24
-        echo "bash execute_unit_test.sh $BOARD_NAME_MG24 run-only $COMPONENTS $ADAPTER_SN_MG24 $COMPILER"
-        bash execute_unit_test.sh $BOARD_NAME_MG24 $TASK $COMPONENTS $ADAPTER_SN_MG24 $COMPILER  2>&1 | tee log_MG24/Unit_Test_MG24.txt
+        echo "bash execute_unit_test.sh $BOARD_NAME_MG24 run-only all $ADAPTER_SN_MG24 $COMPILER"
+        bash execute_unit_test.sh $BOARD_NAME_MG24 run-only all $ADAPTER_SN_MG24 $COMPILER  2>&1 | tee log_MG24/Unit_Test_MG24.txt
     - name: Upload artifact MG12
       uses: actions/upload-artifact@v4.3.4
       with:
