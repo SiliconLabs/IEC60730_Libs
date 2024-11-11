@@ -221,7 +221,7 @@ jobs:
             ADAPTER_SN_MG12=440189400
         fi
         echo "Run bash script"
-        bash execute_integration_test.sh $BOARD_NAME_MG12 gen-only $COMPONENT $ADAPTER_SN_MG12 $COMPILER
+        bash execute_unit_test.sh $BOARD_NAME_MG12 gen-only $COMPONENT $ADAPTER_SN_MG12 $COMPILER
         echo "Generate MG24 image"
         cd ${{ github.workspace }}
         ls -la
@@ -240,18 +240,18 @@ jobs:
             ADAPTER_SN_MG24=440133193
         fi  
         echo "Run bash script"
-        bash execute_integration_test.sh $BOARD_NAME_MG24 gen-only $COMPONENT $ADAPTER_SN_MG24 $COMPILER
+        bash execute_unit_test.sh $BOARD_NAME_MG24 gen-only $COMPONENT $ADAPTER_SN_MG24 $COMPILER
     - name: Upload firmware MG12
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
-        path: ${{ github.workspace }}/build_MG12/test/integration_test/build/
+        path: ${{ github.workspace }}/build_MG12/test/unit_test/build/
         retention-days: 90
     - name: Upload firmware MG24
       uses: actions/upload-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
-        path: ${{ github.workspace }}/build/test/integration_test/build/
+        path: ${{ github.workspace }}/build/test/unit_test/build/
         retention-days: 90
   job2:
     name: Run unit test
