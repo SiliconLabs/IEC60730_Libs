@@ -304,8 +304,8 @@ jobs:
         mkdir -p build/test/unit_test/build
     - name: Install jq (if needed)
       run: |
-        sudo apt-get update
-        sudo apt-get install jq -y
+        jq -V
+        #sudo apt-get install jq -y
     - name: Download firmware artifact from GitHub
       run: |
           export PAT="${{ secrets.SILABS_THIEUVU_PAT}}  
