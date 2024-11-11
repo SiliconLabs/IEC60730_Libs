@@ -43,8 +43,7 @@ env:
   GECKO_SDK_REPO: https://github.com/SiliconLabs/gecko_sdk.git
   SDK_VER: v4.4.2
   JLINK_SEGGER_URL: https://www.segger.com/downloads/jlink/JLink_Linux_x86_64.tgz
-  TASK: gen-only  
-  JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
+  TASK: gen-only
   REPO_BRANCH_RUN: main    
   BOARD_NAME_MG12: brd4161a
   BOARD_NAME_MG24: brd4187c
@@ -302,16 +301,17 @@ jobs:
         ls -la
     - name: Create build folder
       run: |
-        mkdir build/test/unit_test/build
-        cd build/test/unit_test/build
+        mkdir -p build/test/unit_test/build
     - name: Download output for MG12 from Job 1
       uses: actions/download-artifact@v4.3.4
       with:
         name: firmware_mg12_gcc
+        path: ./build/test/unit_test/build
     - name: Download output for MG24 from Job 1
       uses: actions/download-artifact@v4.3.4
       with:
         name: firmware_mg24_gcc
+        path: ./build/test/unit_test/build
     - name: Run test
       run: |
         export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
