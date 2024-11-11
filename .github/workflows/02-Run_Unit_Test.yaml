@@ -306,7 +306,7 @@ jobs:
       run: |
         jq -V
         #sudo apt-get install jq -y
-    - name: Download firmware artifact from GitHub
+    - name: Download output for MG12 from Job 1
       run: |
           export PAT="${{ secrets.SILABS_THIEUVU_PAT}}"  
           export REPO_OWNER="SiliconLabs"
@@ -348,7 +348,7 @@ jobs:
             exit 1
           fi
           curl -L -o firmware_mg24_gcc.zip -H "Authorization: token $PAT" "$ARTIFACT_URL"
-          if [ $? -eq 0 ] && [ -f "firmware_mg12_gcc.zip" ]; then
+          if [ $? -eq 0 ] && [ -f "firmware_mg24_gcc.zip" ]; then
             echo "Download successful"
             mv firmware_mg24_gcc.zip ./build/test/unit_test/build
             unzip ./build/test/unit_test/build/firmware_mg24_gcc.zip -d ./build/test/unit_test/build
