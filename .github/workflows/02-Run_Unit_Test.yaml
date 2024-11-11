@@ -305,13 +305,13 @@ jobs:
         mkdir build/test/unit_test/build
         cd build/test/unit_test/build
     - name: Download output for MG12 from Job 1
-        uses: actions/download-artifact@v4.3.4
-        with:
-          name: firmware_mg12_gcc
+      uses: actions/download-artifact@v4.3.4
+      with:
+        name: firmware_mg12_gcc
     - name: Download output for MG24 from Job 1
-        uses: actions/download-artifact@v4.3.4
-        with:
-          name: firmware_mg24_gcc
+      uses: actions/download-artifact@v4.3.4
+      with:
+        name: firmware_mg24_gcc
     - name: Run test
       run: |
         export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
