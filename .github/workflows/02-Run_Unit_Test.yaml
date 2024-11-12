@@ -368,9 +368,9 @@ jobs:
         slc configuration -gcc=$TOOL_DIRS_RUN
         # make prepare
         echo "Run unit test for MG12"
+        cd build
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         make unit_test_info -j4
-        cd build
         slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         cd ../test
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
@@ -391,9 +391,6 @@ jobs:
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
 
         echo "Run unit test for MG24"
-        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
-        make unit_test_info -j4
-        ls -la
         cd ${{ github.workspace }}
         ls -la
         # rm -rf build
@@ -402,6 +399,8 @@ jobs:
         unzip ./build/firmware_mg24_gcc.zip -d ./build/
         ls -R
         cd build
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
+        make unit_test_info -j4
         slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         cd ../test
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
