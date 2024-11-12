@@ -41,8 +41,8 @@
 #define IEC60730_IRQ_SIZE    8
 #define OEM_NUM_IRQ_CHECK    1
 
-__no_init sl_iec60730_imc_params_t oem_imc_test __CLASSB_RAM;
-__no_init sl_iec60730_vmc_params_t oem_vmc_test;
+__no_init sl_iec60730_imc_params_t oem_imc_test;
+__no_init sl_iec60730_vmc_params_t oem_vmc_test __CLASSB_RAM;
 
 uint32_t oem_tick_uart_counter;
 

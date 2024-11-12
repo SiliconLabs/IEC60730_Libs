@@ -52,7 +52,7 @@ void test_sl_iec60730_safety_check_reset_error(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_safety_check(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));
@@ -61,8 +61,8 @@ void unit_test_iec60730_safety_check(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_safety_check.c");
-  run_test(test_sl_iec60730_safety_check_error_occur, "test_sl_iec60730_safety_check_error_occur",29);
-  run_test(test_sl_iec60730_safety_check_reset_error, "test_sl_iec60730_safety_check_reset_error",42);
+  run_test(test_sl_iec60730_safety_check_error_occur,"test_sl_iec60730_safety_check_error_occur",29);
+  run_test(test_sl_iec60730_safety_check_reset_error,"test_sl_iec60730_safety_check_reset_error",42);
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 

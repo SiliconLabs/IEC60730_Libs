@@ -62,7 +62,7 @@ source:
   - path: ./lib/crc/sl_iec60730_cal_crc16.sh
   - path: ./lib/crc/sl_iec60730_cal_crc32.sh
 define:
-  - name: IEC_BOARD_HEADER
+  - name: SL_IEC60730_BOARD_HEADER
     value: "\"sl_iec60730_board.h\""
 toolchain_settings:
   - option: linkerfile

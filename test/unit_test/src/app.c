@@ -15,51 +15,11 @@
  *
  ******************************************************************************/
 
-#include "unit_test_common.h"
-
-#ifdef UNIT_TEST_IEC60730_POST_ENABLE
-#include "unit_test_iec60730_post.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
-#include "unit_test_iec60730_bist.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_PROGRAM_COUNTER_ENABLE
-#include "unit_test_iec60730_program_counter.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_SAFETY_CHECK_ENABLE
-#include "unit_test_iec60730_safety_check.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_IRQ_ENABLE
-#include "unit_test_iec60730_irq.h"
-#endif
+#include "app.h"
 
 void app_init(void)
 {
-
-#ifdef UNIT_TEST_IEC60730_POST_ENABLE
-  unit_test_iec60730_post();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
-  unit_test_iec60730_bist();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_PROGRAM_COUNTER_ENABLE
-  unit_test_iec60730_program_counter();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_SAFETY_CHECK_ENABLE
-  unit_test_iec60730_safety_check();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_IRQ_ENABLE
-  unit_test_iec60730_irq();
-#endif
-
+  unit_test_run_all_test_cases();
 }
 
 void app_process_action(void)

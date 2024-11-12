@@ -59,15 +59,6 @@ void test_sl_iec60730_safety_check_error_occur(void);
  *****************************************************************************/
 void test_sl_iec60730_safety_check_reset_error(void);
 
-/**************************************************************************/ /**
- * Public   funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_safety_check_reset_error() and sl_iec60730_safety_check_error_occur()
- *****************************************************************************/
-extern void unit_test_iec60730_safety_check(void);
-
 #endif  // UNIT_TEST_IEC60730_SAFETY_CHECK_H
 
 /** @} (end defgroup IEC60730_SAFETY_CHECK_VERIFICATION_UNIT_TEST) */

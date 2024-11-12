@@ -17,6 +17,10 @@
 
 #include "sl_iec60730_internal.h"
 
+#ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+#include "unit_test_iec60730_watchdog.h"
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
@@ -73,6 +77,8 @@ static void sli_iec60730_set_watchdog_timout_min(const sl_iec60730_watchdog_t* i
 
 void sli_iec60730_set_watchdog_timout_min(const sl_iec60730_watchdog_t* iec60730_wachdog)
 {
+
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 // Min value for PERSEL is zero
 #if (_SILICON_LABS_32B_SERIES < 2)
   do {
@@ -108,6 +114,10 @@ void sli_iec60730_set_watchdog_timout_min(const sl_iec60730_watchdog_t* iec60730
   } while (0);
 #endif // WDOG_HAS_SET_CLEAR
 #endif // (_SILICON_LABS_32B_SERIES < 2)
+#else
+  (void) iec60730_wachdog;
+  unit_test_iec60730_watchdog_mock_set_watchdog_timout_min();
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 }
 
 void sli_iec60730_restart_watchdog(WDOG_TypeDef *wdog)
@@ -165,6 +175,16 @@ void sl_iec60730_restart_watchdogs(void)
 #endif
 }
 
+#ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+void sl_iec60730_watchdog_count_reset(void) {
+  iec60730_watchdog_count = 0;
+}
+
+void sl_iec60730_watchdog_count_set(uint8_t count) {
+  iec60730_watchdog_count = count;
+}
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+
 sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
@@ -178,7 +198,7 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
     iec60730_watchdog_state = IEC60730_WATCHDOG_TESTING;
   } else { // It's not power on reset context
     LABEL_DEF(IEC60730_WATCHDOG_POST_WORKING_BKPT);
-#if defined(SL_IEC60730_SAVE_STAGE_ENABLE) && (_SILICON_LABS_32B_SERIES == 2)
+#if (SL_IEC60730_SAVE_STAGE_ENABLE == 1) && (_SILICON_LABS_32B_SERIES == 2)
     if (SL_IEC60730_RST_EM4) {
       iec60730_watchdog_state =
           (sl_iec60730_test_watchdog_t) SL_IEC60730_BURAM_READ(SL_IEC60730_BURAM,
@@ -201,7 +221,7 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
         if (iec60730_watchdog_count >= SL_IEC60730_WDOGINST_NUMB) {
           iec60730_watchdog_state = IEC60730_WATCHDOG_VALID;
 
-#if defined(SL_IEC60730_SAVE_STAGE_ENABLE) && (_SILICON_LABS_32B_SERIES == 2)
+#if (SL_IEC60730_SAVE_STAGE_ENABLE == 1) && (_SILICON_LABS_32B_SERIES == 2)
           // Write to backup ram
           SL_IEC60730_BURAM_WRITE(SL_IEC60730_BURAM,
                               SL_IEC60730_BURAM_IDX,
@@ -209,7 +229,7 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
 #endif
           result = IEC60730_TEST_PASSED;
 // Clear reset flags of the reset causes register
-#ifdef SL_SL_IEC60730_RSTCAUSES_CLEAR_ENABLE
+#if  (SL_IEC60730_RSTCAUSES_CLEAR_ENABLE == 1)
           SL_IEC60730_RSTCAUSES_CLEAR();
 #endif
         }
