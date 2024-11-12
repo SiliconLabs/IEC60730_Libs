@@ -351,9 +351,6 @@ jobs:
           curl -L -o firmware_mg24_gcc.zip -H "Authorization: token $PAT" "$ARTIFACT_URL"
           if [ $? -eq 0 ] && [ -f "firmware_mg24_gcc.zip" ]; then
             echo "Download successful"
-            mv firmware_mg24_gcc.zip ./build/
-            unzip ./build/firmware_mg24_gcc.zip -d ./build/
-            ls -R
           else
             echo "Download failed"
             exit 1
@@ -400,7 +397,10 @@ jobs:
         cd ${{ github.workspace }}
         ls -la
         # rm -rf build
-        # make prepare
+        make prepare
+        mv firmware_mg24_gcc.zip ./build/
+        unzip ./build/firmware_mg24_gcc.zip -d ./build/
+        ls -R
         cd build
         slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         cd ../test
