@@ -16,15 +16,18 @@
  ******************************************************************************/
 
 #include <stddef.h>
+#ifdef UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
+#include "unit_test_iec60730_invariable_memory.h"
+#endif
 #include "sl_iec60730_internal.h"
 
-#ifdef SL_IEC60730_CRC_USE_SW_ENABLE
+#if (SL_IEC60730_CRC_USE_SW_ENABLE == 1)
 STATIC_DEC_CLASSB_VARS(sl_iec60730_crc_t, iec60730_cur_crc);
 STATIC_DEC_CLASSB_VARS(sl_iec60730_crc_t, iec60730_ref_crc);
 STATIC_DEC_CLASSB_VARS(uint8_t *, iec60730_run_crc);
 
-#ifdef SL_IEC60730_SW_CRC_TABLE
-#ifdef SL_IEC60730_USE_CRC_32
+#if (SL_IEC60730_SW_CRC_TABLE_ENABLE == 1)
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 static const sl_iec60730_crc_t iec60730_crc_table[256] = {
     0x00000000, 0x77073096, 0xEE0E612C, 0x990951BA, 0x076DC419, 0x706AF48F,
     0xE963A535, 0x9E6495A3, 0x0EDB8832, 0x79DCB8A4, 0xE0D5E91E, 0x97D2D988,
@@ -70,7 +73,7 @@ static const sl_iec60730_crc_t iec60730_crc_table[256] = {
     0x54DE5729, 0x23D967BF, 0xB3667A2E, 0xC4614AB8, 0x5D681B02, 0x2A6F2B94,
     0xB40BBE37, 0xC30C8EA1, 0x5A05DF1B, 0x2D02EF8D,
 };
-#else  /* !SL_IEC60730_USE_CRC_32  */
+#else  /* !SL_IEC60730_USE_CRC_32_ENABLE   */
 static const sl_iec60730_crc_t iec60730_crc_table[256] = {
     0x0000, 0x1021, 0x2042, 0x3063, 0x4084, 0x50A5, 0x60C6, 0x70E7, 0x8108,
     0x9129, 0xA14A, 0xB16B, 0xC18C, 0xD1AD, 0xE1CE, 0xF1EF, 0x1231, 0x0210,
@@ -102,8 +105,8 @@ static const sl_iec60730_crc_t iec60730_crc_table[256] = {
     0xDF7C, 0xAF9B, 0xBFBA, 0x8FD9, 0x9FF8, 0x6E17, 0x7E36, 0x4E55, 0x5E74,
     0x2E93, 0x3EB2, 0x0ED1, 0x1EF0,
 };
-#endif /* SL_IEC60730_USE_CRC_32  */
-#endif /* SL_IEC60730_SW_CRC_TABLE */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE   */
+#endif /* SL_IEC60730_SW_CRC_TABLE_ENABLE */
 
 static sl_iec60730_crc_t sli_iec_60730_cal_crc(sl_iec60730_crc_t crc, uint8_t *buf, uint32_t len);
 
@@ -112,7 +115,11 @@ void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params)
   UNUSED_VAR(params);
 
   // Don't use macro in this case
+  #ifndef UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
   iec60730_run_crc    = (uint8_t *) SL_IEC60730_ROM_START;
+  #else
+  iec60730_run_crc = (uint8_t *) unit_test_iec60730_imc_mock_init_run_crc();
+  #endif // UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
   iec60730_run_crc_inv = ((uint8_t *) ~((uint32_t) iec60730_run_crc));
 
   iec60730_cur_crc = SL_IEC60730_IMC_INIT_VALUE;
@@ -165,7 +172,7 @@ sl_iec60730_test_result_t sl_iec60730_imc_bist(void)
 
   for (uint16_t i = 0; i < SL_IEC60730_INVAR_BLOCKS_PER_BIST; i++) {
     if (CHECK_INTEGRITY(uint32_t, iec60730_run_crc)) {
-      if (CHECK_INTEGRITY(sl_iec60730_crc_t, iec60730_cur_crc)) {
+      if (iec60730_run_crc < (uint8_t *) SL_IEC60730_ROM_END) {
         iec60730_cur_crc = sli_iec_60730_cal_crc(iec60730_cur_crc, iec60730_run_crc, SL_IEC60730_FLASH_BLOCK);
         INV_CLASSB_VAR(sl_iec60730_crc_t, iec60730_cur_crc);
 
@@ -191,10 +198,12 @@ sl_iec60730_test_result_t sl_iec60730_imc_bist(void)
             if (iec60730_cur_crc == *((sl_iec60730_crc_t *) &SL_IEC60730_REF_CRC)) {
 #endif /* !SL_IEC60730_CRC_DEBUG_ENABLE */
               sl_iec60730_program_counter_check |= (IEC60730_IMC_COMPLETE);
-              result = IEC60730_TEST_PASSED;
             } else {
               result = IEC60730_TEST_FAILED;
+              goto IMC_BIST_DONE;
             }
+            result = IEC60730_TEST_PASSED;
+            // Reset init imc to check again
             sl_iec60730_imc_init(NULL);
             goto IMC_BIST_DONE;
           } else {
@@ -241,8 +250,15 @@ sl_iec60730_test_result_t
  *****************************************************************************/
 sl_iec60730_crc_t sli_iec_60730_cal_crc(sl_iec60730_crc_t crc, uint8_t *buf, uint32_t len)
 {
-#ifndef SL_IEC60730_SW_CRC_TABLE
-#ifdef SL_IEC60730_USE_CRC_32
+
+#ifdef UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
+  if(!unit_test_iec60730_imc_mock_sw_enable_cal_crc()) {
+    return SL_IEC60730_IMC_XOROUTPUT;
+  }
+#endif // UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
+
+#if (SL_IEC60730_SW_CRC_TABLE_ENABLE == 0)
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 #define POLYNOMIAL 0xEDB88320 // 0x04C11DB7 reversed
 
   for (uint32_t i = 0; i < len; i++) {
@@ -251,7 +267,7 @@ sl_iec60730_crc_t sli_iec_60730_cal_crc(sl_iec60730_crc_t crc, uint8_t *buf, uin
       crc = ((crc & 1) != 0) ? (uint32_t) ((crc >> 1) ^ POLYNOMIAL) : crc >> 1;
     }
   }
-#else /* !SL_IEC60730_USE_CRC_32 */
+#else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
 #define POLYNOMIAL 0x1021
 
   for (uint32_t i = 0; i < len; i++) {
@@ -261,16 +277,16 @@ sl_iec60730_crc_t sli_iec_60730_cal_crc(sl_iec60730_crc_t crc, uint8_t *buf, uin
                                   : crc << 1;
     }
   }
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 #else
-#ifdef SL_IEC60730_USE_CRC_32
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
   while (len--)
     crc = (sl_iec60730_crc_t) (iec60730_crc_table[(crc ^ *buf++) & 0xFF] ^ (crc >> 8));
-#else  /* !SL_IEC60730_USE_CRC_32 */
+#else  /* !SL_IEC60730_USE_CRC_32_ENABLE  */
   while (len--)
     crc = (uint16_t) (iec60730_crc_table[((crc >> 8) ^ *buf++) & 0xFF] ^ (crc << 8));
-#endif /* SL_IEC60730_USE_CRC_32 */
-#endif
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
+#endif // (SL_IEC60730_SW_CRC_TABLE_ENABLE == 0)
 
   return crc;
 }
@@ -297,8 +313,11 @@ void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params)
 {
   if ((NULL == params) || (NULL == params->gpcrc))
     return;
-
-  iec60730_run_crc = (uint32_t *) SL_IEC60730_ROM_START;
+  #ifndef UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
+  iec60730_run_crc = (uint32_t*) SL_IEC60730_ROM_START;
+  #else
+  iec60730_run_crc = (uint32_t*) unit_test_iec60730_imc_mock_init_run_crc();
+  #endif // UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
   INV_CLASSB_PVAR(uint32_t, iec60730_run_crc);
 
   // Store the GPCRC that used
@@ -308,7 +327,8 @@ void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params)
   iec60730_cur_crc = (sl_iec60730_crc_t) SL_IEC60730_IMC_INIT_VALUE;
 
   // Init CRC
-  sli_iec60730_init_gpcrc(params, SL_IEC60730_IMC_INIT_VALUE);
+  sli_iec60730_init_gpcrc(&iec60730_gpcrc, SL_IEC60730_IMC_INIT_VALUE);
+  // Enable the allowance run testing
   iec60730_imc_init_flag = true;
 }
 
@@ -332,11 +352,11 @@ sl_iec60730_test_result_t sl_iec60730_imc_post(void)
       SL_IEC60730_CRC_INPUTU32(iec60730_gpcrc.gpcrc, *((uint32_t *) SL_IEC60730_ROM_START + i));
   }
 
-#ifdef SL_IEC60730_USE_CRC_32
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
   iec60730_ref_crc = SL_IEC60730_CRC_DATA_READ(iec60730_gpcrc.gpcrc) ^ SL_IEC60730_IMC_XOROUTPUT;
-#else  /* SL_IEC60730_USE_CRC_32 */
+#else  /* SL_IEC60730_USE_CRC_32_ENABLE  */
   iec60730_ref_crc = (sl_iec60730_crc_t) SL_IEC60730_CRC_DATA_READ_BIT_REVERSED(iec60730_gpcrc.gpcrc) ^ SL_IEC60730_IMC_XOROUTPUT;
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 
   INV_CLASSB_VAR(sl_iec60730_crc_t, iec60730_ref_crc);
 
@@ -385,12 +405,12 @@ sl_iec60730_test_result_t sl_iec60730_imc_bist(void)
         result = IEC60730_TEST_IN_PROGRESS;
       } else {
         if (CHECK_INTEGRITY(sl_iec60730_crc_t, iec60730_ref_crc)) {
-#ifdef SL_IEC60730_USE_CRC_32
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
           iec60730_cur_crc = SL_IEC60730_CRC_DATA_READ(iec60730_gpcrc.gpcrc) ^ SL_IEC60730_IMC_XOROUTPUT;
-#else  /* !SL_IEC60730_USE_CRC_32 */
+#else  /* !SL_IEC60730_USE_CRC_32_ENABLE  */
           iec60730_cur_crc =
               (sl_iec60730_crc_t) SL_IEC60730_CRC_DATA_READ_BIT_REVERSED(iec60730_gpcrc.gpcrc) ^ SL_IEC60730_IMC_XOROUTPUT;
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 
           LABEL_DEF(IEC60730_IMC_BIST_CALCRC_BKPT);
 
@@ -400,11 +420,12 @@ sl_iec60730_test_result_t sl_iec60730_imc_bist(void)
           if (iec60730_cur_crc == *((sl_iec60730_crc_t *) &SL_IEC60730_REF_CRC)) {
 #endif /* !SL_IEC60730_CRC_DEBUG_ENABLE */
             sl_iec60730_program_counter_check |= (IEC60730_IMC_COMPLETE);
-            result = IEC60730_TEST_PASSED;
           } else {
             result = IEC60730_TEST_FAILED;
+            goto IMC_BIST_DONE;
           }
 
+          result = IEC60730_TEST_PASSED;
           // Reset init imc to check again
           sl_iec60730_imc_init(&iec60730_gpcrc);
           goto IMC_BIST_DONE;
@@ -435,7 +456,7 @@ sl_iec60730_test_result_t
     return IEC60730_TEST_FAILED;
 
   // Init GPCRC
-  sli_iec60730_init_gpcrc(&params->hal, SL_IEC60730_IMC_INIT_VALUE);
+  sli_iec60730_init_gpcrc(&params->hal, params->init.initValue);
 
   for (uint32_t i = 0; i < size; i++) {
       SL_IEC60730_CRC_INPUTU8(params->hal.gpcrc, buffer[i]);
@@ -470,9 +491,14 @@ void sli_iec60730_init_gpcrc(sl_iec60730_imc_params_t *params, uint32_t iec60730
   SL_IEC60730_CRC_RESET(params->gpcrc);
 
   // Declare init structs
-  sl_iec60730_crc__init_typedef init = SL_IEC60730_IMC_INIT_DEFAULT;
+  sl_iec60730_crc_init_typedef init = SL_IEC60730_IMC_INIT_DEFAULT;
 
   init.initValue = iec60730_init_value;
+
+  #ifdef UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
+  init.enable = unit_test_iec60730_imc_mock_enable_gpcrc();
+  #endif // UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE
+
 
   // Initialize GPCRC
   SL_IEC60730_CRC_INIT(params->gpcrc, &init);

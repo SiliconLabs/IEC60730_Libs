@@ -166,14 +166,14 @@ typedef enum {
 #define INV_CLASSB_PVAR(vartype, name)                                         \
   CONCAT(name, _inv) = (vartype *) (~(vartype) name)
 
-#ifndef UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE
+#if ((defined UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE) || defined (UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE))
+#define CHECK_INTEGRITY(vartype, x)  unit_test_mock_check_integrity()
+#else
 /// The #CHECK_INTEGRITY definition used for checking integrity of pair of
 /// variables stored in *.classb_ram* section.
 #define CHECK_INTEGRITY(vartype, x)                                            \
   ((vartype) - 1 == ((vartype) x ^ (vartype) CONCAT(x, _inv)))
-#else
-#define CHECK_INTEGRITY(vartype, x)  unit_test_mock_check_integrity()
-#endif // UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE
+#endif // (UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE || UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE)
 
 /** @} (end addtogroup sl_iec60730_post) */
 
@@ -184,7 +184,7 @@ typedef enum {
 
 #ifdef DOXYGEN
 /// Support for cleaner code.
-///   * If user use the #SL_IEC60730_USE_CRC_32 definition, #sl_iec60730_crc_t is uint32_t.
+///   * If user use the #SL_IEC60730_USE_CRC_32_ENABLE  definition, #sl_iec60730_crc_t is uint32_t.
 ///   * Otherwise, #sl_iec60730_crc_t is uint16_t.
 #define sl_iec60730_crc_t
 
@@ -195,11 +195,11 @@ typedef enum {
 
 #else // !DOXYGEN
 
-#ifdef SL_IEC60730_USE_CRC_32
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 typedef uint32_t sl_iec60730_crc_t;
-#else  /* !SL_IEC60730_USE_CRC_32 */
+#else  /* !SL_IEC60730_USE_CRC_32_ENABLE  */
 typedef uint16_t sl_iec60730_crc_t;
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 
 #endif // DOXYGEN
 
@@ -634,7 +634,7 @@ typedef struct{
 
 // CRC
 typedef GPCRC_TypeDef  sl_iec60730_crc_typedef;
-typedef GPCRC_Init_TypeDef sl_iec60730_crc__init_typedef;
+typedef GPCRC_Init_TypeDef sl_iec60730_crc_init_typedef;
 
 /// The way to read CRC value when using function #sl_iec60730_update_crc_with_data_buffer
 typedef uint8_t sl_iec60730_read_type_t;
@@ -655,9 +655,9 @@ typedef struct {
 /// It used when using function #sl_iec60730_update_crc_with_data_buffer
 /// @note: struct #CRC_INIT_TypeDef defined in header file oem_iec60730.h
 typedef struct {
-#ifndef SL_IEC60730_CRC_USE_SW_ENABLE
+#if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
   sl_iec60730_imc_params_t hal;       ///< struct #sl_iec60730_imc_params_t that contain GPCRC Register
-  sl_iec60730_crc__init_typedef init; ///< CRC initialization structure.
+  sl_iec60730_crc_init_typedef init; ///< CRC initialization structure.
   sl_iec60730_read_type_t readType;   ///< The way to read calculated CRC value
 #endif                   /* SL_IEC60730_CRC_USE_SW_ENABLE */
   sl_iec60730_crc_t xorOut;          ///< XOR with calculated CRC value
@@ -707,21 +707,21 @@ typedef struct {
 
 #else
 
-#ifdef SL_IEC60730_CRC_USE_SW_ENABLE
-#ifdef SL_IEC60730_USE_CRC_32
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0xFFFFFFFFuL)
+#if (SL_IEC60730_CRC_USE_SW_ENABLE == 1)
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0xCBF43926)
 #define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#else /* !SL_IEC60730_USE_CRC_32 */
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0x0000)
+#else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0x0000)
-#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x29B1)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x31C3)
 #define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 #else  /* !SL_IEC60730_CRC_USE_SW_ENABLE */
-#ifdef SL_IEC60730_USE_CRC_32
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0xFFFFFFFFuL)
+#if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0xCBF43926)
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
@@ -740,10 +740,10 @@ typedef struct {
   SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
   SL_IEC60730_IMC_DATA_READ,                                                              \
   SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#else /* !SL_IEC60730_USE_CRC_32 */
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       (0xFFFF)
+#else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0x0000)
-#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x29B1)
+#define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x31C3)
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
   {                                                                            \
       0x1021UL,                                                                \
@@ -759,7 +759,7 @@ typedef struct {
   SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
   SL_IEC60730_IMC_DATA_READ_BIT_REVERSED,                                                 \
   SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
-#endif /* SL_IEC60730_USE_CRC_32 */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 #endif /* SL_IEC60730_CRC_USE_SW_ENABLE */
 
 #endif // DOXYGEN

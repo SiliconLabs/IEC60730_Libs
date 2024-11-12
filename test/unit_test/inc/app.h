@@ -19,42 +19,16 @@
 #define APP_H
 
 #include "unit_test_common.h"
-
-#ifdef UNIT_TEST_IEC60730_POST_ENABLE
 #include "unit_test_iec60730_post.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
 #include "unit_test_iec60730_bist.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_PROGRAM_COUNTER_ENABLE
 #include "unit_test_iec60730_program_counter.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_SAFETY_CHECK_ENABLE
 #include "unit_test_iec60730_safety_check.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_IRQ_ENABLE
 #include "unit_test_iec60730_irq.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_SYSTEM_CLOCK_ENABLE
 #include "unit_test_iec60730_system_clock.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #include "unit_test_iec60730_watchdog.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
 #include "unit_test_iec60730_cpu_registers.h"
-#endif
-
-#ifdef UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE
 #include "unit_test_iec60730_variable_memory.h"
-#endif
+#include "unit_test_iec60730_invariable_memory.h"
 
 /***************************************************************************//**
  * Initialize application.

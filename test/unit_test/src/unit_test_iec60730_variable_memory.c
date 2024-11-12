@@ -233,7 +233,7 @@ void test_sl_iec60730_vmc_bist_fail_stack_test_over_flow(void) {
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_variable_memory(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));

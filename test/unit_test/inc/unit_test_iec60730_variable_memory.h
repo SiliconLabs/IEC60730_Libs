@@ -41,7 +41,7 @@
 /**************************************************************************/ /**
  * Public   Check sl_iec60730_vmc_init() operate
  *
- * @returns None.
+ * @returns boolean.
  * Function simulates the result of iec60730_rt_check variable value integrity check.
  *
  *****************************************************************************/
@@ -193,15 +193,6 @@ void test_sl_iec60730_vmc_bist_checking_allow_run_test(void);
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_fail_stack_test_over_flow(void);
-
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the functions in variable memory module.
- *****************************************************************************/
-extern void unit_test_iec60730_variable_memory(void);
 
 #endif  // UNIT_TEST_IEC60730_VARIABLE_MEMORY_H
 

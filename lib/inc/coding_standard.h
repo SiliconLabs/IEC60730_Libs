@@ -13,7 +13,7 @@
  ******************************************************************************/
 
 /**************************************************************************//**
-@addtogroup iec60730_coding_standard 
+@addtogroup iec60730_coding_standard
 @{
 @verbatim
 Silicon Labs IoT Firmware Coding Standard
@@ -25,18 +25,7 @@ The purpose of this document is to describe the coding standard used by Silicon 
 1.2 Latest version of this document
 This document is version 1.0.
 
-The latest version of this document can always be found in Stash:
-
-https://stash.silabs.com/projects/WMN_DOCS/repos/docs_misc/browse/software/standards/coding-standard.md
-
-Note: The reason why this document is in git is so that we can use pull- requests for changes and make it easier for people to track changes to the standard.
-
 1.3 Changing this document
-Any change made to this document must comply with following procedure.
-
-Note: This includes adding yourself to this list!
-
-Additionally, please make sure that your commit has a good commit message.
 
 1.4 Structure and wording of this document
 This document contains three separate parts: Coding guidelines, coding style and documentation. The coding guidelines deal with the structure of your code. This part is split into a general and a C specific part. The coding style guide details how your code should look, e.g. brace style, comment style etc. Documentation deals with how you should document your code to make it easy for other people to use and modify the code.
@@ -61,8 +50,6 @@ Please note that a new software module does not need to be a new full stack. Thi
 
 1.5.2 Existing modules
 Existing components will continue to use the coding standard they are already using (there is still some differences between the various stacks).
-
-Planning for updating existing components to the new coding standard will be done independently for each stack/module. The timing for these updates should be strategically chosen for each module as to minimize effort and impact to the customers, but the goal is to be completely done for the 20Q4 release.
 
 When updating to the new coding standard, especially from a naming convention perspective, it will be required to provide a compatibility layer. Exceptions will only be made for stack/modules with a valid, documented justification as well as agreement from the various stakeholders. An exception could be made either to have a partial compatibility layer or none at all.
 

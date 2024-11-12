@@ -14,6 +14,17 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(LIBRARY_NAME iec60730)
 set(CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake/")
+set(LIB_IEC60730_MAP "lib_iec60730.map")
+set(SDK_CMAKE_RELATIVE_DIR "gecko_sdk")
+set(SDK_LIB_CMAKE_RELATIVE_DIR  "${SDK_CMAKE_RELATIVE_DIR}/src/lib_iec60730_cmake")
+
+# choose toolchain
+if(DEFINED ENV{TOOL_CHAINS})
+  set(TOOL_CHAINS "$ENV{TOOL_CHAINS}")
+else()
+set(TOOL_CHAINS "GCC")
+endif()
+message("-- Toolchains build: ${TOOL_CHAINS}")
 
 # enable unit test
 option(ENABLE_UNIT_TESTING "Enable a Unit Testing Build" OFF)
@@ -44,7 +55,7 @@ if(ENABLE_UNIT_TESTING)
 # Run generate_lib_iec60730
 include(generate_lib_iec60730)
 
-generate_lib_iec60730(gecko_sdk)
+generate_lib_iec60730(${SDK_CMAKE_RELATIVE_DIR})
 get_target_property(MAIN_CFLAGS_LIB_IEC60730 slc_lib_iec60730 COMPILE_OPTIONS)
 string(REPLACE "$<$<COMPILE_LANGUAGE:C>:SHELL:-imacros sl_gcc_preinclude.h>;" "" MAIN_CFLAGS_LIB_IEC60730 "${MAIN_CFLAGS_LIB_IEC60730}")
 string(REPLACE "$<$<COMPILE_LANGUAGE:CXX>:SHELL:-imacros sl_gcc_preinclude.h>;" "" MAIN_CFLAGS_LIB_IEC60730 "${MAIN_CFLAGS_LIB_IEC60730}")

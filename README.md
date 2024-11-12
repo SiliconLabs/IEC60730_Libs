@@ -140,12 +140,16 @@ $ slc generate $GSDK/app/common/example/blink_baremetal -np -d blinky -name=blin
 
 ### Export Variable
 
-Export SDK_PATH=<path_to_sdk> and ARM_GCC_DIR=<path_to_toolchain> before run config CMake
+Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and START_ADDR_FLASH (flash start address support calculate crc for module invariable memory) before run config CMake.
 
 ```sh
 $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
-$ export ARM_GCC_DIR=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7
+$ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+$ export TOOL_CHAINS=GCC
+$ export START_ADDR_FLASH=0x8000000
 ```
+
+with START_ADDR_FLASH=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
 
   1. Create Source and CMakeLists.txt
   2. mkdir build
@@ -162,6 +166,16 @@ $ make prepare
 $ cd build
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
 ```
+
+With the commands above, the default value supports calculation CRC-16. If you want to change to calculate for CRC-32 bits, use the config command below
+
+```sh
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
+```
+
+Here is some options to support running tests of invariable memory modules:
+- ENABLE_CAL_CRC_32
+- ENABLE_CRC_USE_SW (if this option ON, you can enable option: ENABLE_SW_CRC_TABLE)
 
 CMake Build
 
