@@ -326,7 +326,7 @@ jobs:
           if [ $? -eq 0 ] && [ -f "firmware_mg12_gcc.zip" ]; then
             echo "Download successful"
             mv firmware_mg12_gcc.zip ./build/
-            unzip ./build/test/unit_test/build/firmware_mg12_gcc.zip -d ./build/
+            unzip ./build/firmware_mg12_gcc.zip -d ./build/
             ls -R
           else
             echo "Download failed"
@@ -352,7 +352,7 @@ jobs:
           if [ $? -eq 0 ] && [ -f "firmware_mg24_gcc.zip" ]; then
             echo "Download successful"
             mv firmware_mg24_gcc.zip ./build/
-            unzip ./build/test/unit_test/build/firmware_mg24_gcc.zip -d ./build/
+            unzip ./build/firmware_mg24_gcc.zip -d ./build/
             ls -R
           else
             echo "Download failed"
