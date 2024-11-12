@@ -28,9 +28,9 @@
  *
  ******************************************************************************/
 #include "Test_System.h"
-#include "iec60730.h"
+#include "sl_iec60730.h"
 #include IEC_BOARD_HEADER
-#include "iec60730_oem_timer.h"
+#include "oem_iec60730_timer.h"
 
 #define IEC60730_IRQ_SIZE 8
 
@@ -71,7 +71,7 @@ void test_main(void)
   iec60730_systemClockToTestClockFrequency = 10;
 
   // Config imcTest varirable
-  imcTest.gpcrc = DEFAULT_GPRC;
+  imcTest.gpcrc = SL_IEC60730_DEFAULT_GPRC;
 
   // Config imcTest varirable
   vmcTest.start = RAMTEST_START;

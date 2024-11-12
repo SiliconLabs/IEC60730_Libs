@@ -14,7 +14,7 @@
  * sections of the MSLA applicable to Source Code.
  *
  ******************************************************************************/
-#include "iec60730_internal.h"
+#include "sl_iec60730_internal.h"
 
 const uint8_t iec60730_IRQFreqBoundsSize                      = 2;
 const iec60730_IRQExecutionBounds_t iec60730_IRQFreqBounds[2] = {1, 2};

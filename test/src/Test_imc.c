@@ -29,8 +29,8 @@
  ******************************************************************************/
 
 #include "Test_System.h"
-#include "iec60730.h"
-#include "iec60730_oem_timer.h"
+#include "sl_iec60730.h"
+#include "oem_iec60730_timer.h"
 
 #if defined(__ICCARM__)
 #pragma diag_suppress = Pe111
@@ -107,7 +107,7 @@ void test_main(void)
   iec60730_clockTestTolerance              = 1;
   iec60730_systemClockToTestClockFrequency = 10;
 
-  imcTest.gpcrc = DEFAULT_GPRC;
+  imcTest.gpcrc = SL_IEC60730_DEFAULT_GPRC;
 
   iec60730_Post();
 

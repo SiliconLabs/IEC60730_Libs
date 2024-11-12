@@ -83,17 +83,17 @@ define symbol __ICFEDIT_intvec_start__ = 0x{{ '%0x' % app_flash_start }};
 
 /*-Memory Regions*/
 {%- if bootloader_enable %}
-  define symbol __ICFEDIT_region_ROM_start__ = 0x{{ '%0x' % bootloader_flash_startaddr }};
+  define symbol __ICFEDIT_region_SL_IEC60730_ROM_START__ = 0x{{ '%0x' % bootloader_flash_startaddr }};
   {%- if (device_series | first) == 2 %}
-  define symbol __ICFEDIT_region_ROM_end__   = (0x{{ '%0x' % bootloader_flash_startaddr }}+0x{{ '%0x' % bootloader_flash_size }}-0x40-0x{{ '%0x' % (app_rollback_protection_size | sum) }}-1);
+  define symbol __ICFEDIT_region_SL_IEC60730_ROM_END__   = (0x{{ '%0x' % bootloader_flash_startaddr }}+0x{{ '%0x' % bootloader_flash_size }}-0x40-0x{{ '%0x' % (app_rollback_protection_size | sum) }}-1);
   {%- else %}
-  define symbol __ICFEDIT_region_ROM_end__   = (0x{{ '%0x' % bootloader_flash_startaddr }}+0x{{ '%0x' % bootloader_flash_size }}-0x4-0x{{ '%0x' % (app_rollback_protection_size | sum) }}-1);
+  define symbol __ICFEDIT_region_SL_IEC60730_ROM_END__   = (0x{{ '%0x' % bootloader_flash_startaddr }}+0x{{ '%0x' % bootloader_flash_size }}-0x4-0x{{ '%0x' % (app_rollback_protection_size | sum) }}-1);
   {%- endif %}
   define symbol __ICFEDIT_region_RAM_start__ = 0x{{ '%0x' % app_ram_start }};
   define symbol __ICFEDIT_region_RAM_end__   = (0x{{ '%0x' % app_ram_start }}+0x{{ '%0x' % app_ram_size }}-1);
 {%- else %}
-  define symbol __ICFEDIT_region_ROM_start__ = 0x{{ '%0x' % app_flash_start }};
-  define symbol __ICFEDIT_region_ROM_end__   = (0x{{ '%0x' % app_flash_start }}+0x{{ '%0x' % app_flash_size }}-1);
+  define symbol __ICFEDIT_region_SL_IEC60730_ROM_START__ = 0x{{ '%0x' % app_flash_start }};
+  define symbol __ICFEDIT_region_SL_IEC60730_ROM_END__   = (0x{{ '%0x' % app_flash_start }}+0x{{ '%0x' % app_flash_size }}-1);
   {%- if iec60730_custom_linker_enable %}
   define symbol __ICFEDIT_region_RAM_start__ = 0x{{ '%0x' % (app_ram_start + 0x80) }};
   define symbol __ICFEDIT_region_RAM_end__   = (0x{{ '%0x' % app_ram_start }}+0x{{ '%0x' % app_ram_size }}-1);
@@ -111,7 +111,7 @@ if ( !isdefinedsymbol( __ICFEDIT_size_cstack__ ) )
 { define symbol __ICFEDIT_size_cstack__   = 0x400; }
 if ( !isdefinedsymbol( __ICFEDIT_size_heap__ ) )
 { define symbol __ICFEDIT_size_heap__     = 0x800; }
-define exported symbol __FlashStart = __ICFEDIT_region_ROM_start__;
+define exported symbol __FlashStart = __ICFEDIT_region_SL_IEC60730_ROM_START__;
 define exported symbol __StackTop = __ICFEDIT_region_RAM_end__;
 define exported symbol __RamStart = __ICFEDIT_region_CLASSBRAM_start__;
 define exported symbol __ClassBLimit = __ICFEDIT_region_CLASSBRAM_end__ + 1;
@@ -119,7 +119,7 @@ define exported symbol __ClassBLimit = __ICFEDIT_region_CLASSBRAM_end__ + 1;
 
 /**** End of ICF editor section. ###ICF###*/
 define memory mem with size = 4G;
-define region ROM_region   = mem:[from __ICFEDIT_region_ROM_start__   to __ICFEDIT_region_ROM_end__];
+define region ROM_region   = mem:[from __ICFEDIT_region_SL_IEC60730_ROM_START__   to __ICFEDIT_region_SL_IEC60730_ROM_END__];
 define region RAM_region   = mem:[from __ICFEDIT_region_RAM_start__   to __ICFEDIT_region_RAM_end__];
 define region MAIN_FLASH_region   = mem:[from 0x{{ '%0x' % app_flash_start }}   to (0x{{ '%0x' % app_flash_start }}+0x{{ '%0x' % app_flash_size }}-1)];
 
@@ -154,12 +154,10 @@ define block .user_classb with fixed order, alignment = 4,
 keep { section *.overlap* };
 
 define block .ram_no_clear     with alignment = 4 { section *.ram_no_clear* };
-define block .ram_ret_no_clear with alignment = 4 { section *.ram_ret_no_clear* };
 define block .ram_check        with alignment = 8 { section *.stack_bottom* };
 define block .stack_order with fixed order { block .ram_check, block CSTACK, block HEAP };
 
 do not initialize { section *.ram_no_clear* };
-do not initialize { section *.ram_ret_no_clear* };
 {%- endif %}
 
 {%- if trustzone_secure %}
@@ -238,7 +236,7 @@ define block storage with alignment = {{ flash_page_size }}
 
 keep { block storage };
 {%- if bootloader_enable %}
-define block ROM_CONTENT with fixed order { readonly, readonly section ROM_SIZE};
+define block ROM_CONTENT with fixed order { readonly, readonly section SL_IEC60730_ROM_SIZE};
 {%- else %}
 define block application with fixed order
 {
@@ -343,8 +341,6 @@ place in ROM_region   { readonly, last block CHECKSUM };
 place in RAM_region   { readwrite,
 
                         block .ram_no_clear,
-
-                        block .ram_ret_no_clear,
 
                         block .stack_order };
 "CLASSB_RAM": place noload in CLASSBRAM_region   { block .user_classb };

@@ -28,7 +28,7 @@
  *
  ******************************************************************************/
 #include "Test_System.h"
-#include "iec60730_internal.h"
+#include "sl_iec60730_internal.h"
 
 const WDOG_Init_TypeDef wdog1_init = WDOG_INIT_DEFAULT;
 uint8_t wdog_restart_en            = 1;

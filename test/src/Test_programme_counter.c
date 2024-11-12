@@ -28,7 +28,7 @@
  *
  ******************************************************************************/
 #include "Test_System.h"
-#include "iec60730_internal.h"
+#include "sl_iec60730_internal.h"
 
 imcParams_t imcTest __CLASSB_RAM;
 vmcParams_t vmcTest __CLASSB_RAM;

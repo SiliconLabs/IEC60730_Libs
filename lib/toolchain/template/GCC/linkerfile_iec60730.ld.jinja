@@ -419,12 +419,6 @@ SECTIONS
     . = ALIGN(4);
   } > RAM
 
-  .ram_ret_no_clear (NOLOAD) :
-  {
-    . = ALIGN(4);
-    *(.ram_ret_no_clear*)
-    . = ALIGN(4);
-  } > RAM
 {%- endif %}
 
 /*
@@ -444,6 +438,7 @@ SECTIONS
   .stack_check (NOLOAD):
   {
     . = ALIGN(8);
+    PROVIDE (__stack_check = . );
     *(.stack_bottom)
     *(.stack_bottom*)
     . = ALIGN(8);
@@ -495,7 +490,7 @@ SECTIONS
   /*ASSERT( LENGTH(FLASH) >= (__etext + SIZEOF(.data)), "FLASH memory overflowed !")*/
 
 {%- if bootloader_enable %}
-  __rom_end__ = __etext + SIZEOF(.data);
+  __SL_IEC60730_ROM_END__ = __etext + SIZEOF(.data);
 {%- endif %}
 
   __ramfuncs_start__ = .;

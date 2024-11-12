@@ -39,7 +39,7 @@ import enums
 is_enableMatchX = True
 is_nonSecure = False
 
-# this value reference to file #IEC_BOARD_HEADER (iec60730_board.h)
+# this value reference to file #IEC_BOARD_HEADER (sl_iec60730_board.h)
 RAMTEST_END = 0x20000080
 
 ##  IEC60730 Variable Memory Plausibility Verification Tests

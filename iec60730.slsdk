@@ -1,5 +1,5 @@
 # Properties file for Simplicity Studio metadata
-id=com.silabs.sdk.edmi
+id=com.silabs.sdk.iec60730
 
 version=1.0.0
 

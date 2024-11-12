@@ -12,40 +12,27 @@ sdk: {id: gecko_sdk, version: 4.4.2}
 
 sdk_extension:
   - {id: iec60730, version: 1.0.0}
-define:
-  - name: USE_MARCHX
-    value: 1
-  - name: CRC_DEBUG
-    value: 1
-  - name: IEC_BOARD_HEADER
-    value: "\"iec60730_board.h\""
-  - name: IEC60730_SAVE_STAGE_ENABLE
-    value: 1
-  - name: HAL_CONFIG_HEADER
-    value: "\"hal_config_board.h\""
-  - name: SL_LEGACY_LINKER
+
 configuration:
- - name: SL_DEVICE_INIT_HFRCO_BAND
-   value: cmuHFRCOFreq_19M0Hz
-   condition:
+  - name: SL_DEVICE_INIT_HFRCO_BAND
+    value: cmuHFRCOFreq_19M0Hz
+    condition:
      - device_series_1
+
+define:
+  - name: HAL_CONFIG_HEADER
+    value: "\"oem_hal_config_board.h\""
+
 component:
   - id: sl_system
   - id: device_init
-  - id: device_init_hfrco
-  - id: emlib_wdog
-  - id: emlib_gpcrc
   - id: uartdrv_core
-  - id: emlib_timer
-  - id: emlib_letimer
   - id: iostream_usart
     instance: [vcom]
   - id: iec60730_lib
     from: iec60730
-  - id: iec60730_oem
-    from: iec60730
-    condition:
-      - iostream_usart
+  - id: device_init_hfrco
+  - id: udelay
 include:
   - path: ./
     file_list:
@@ -54,9 +41,22 @@ include:
     file_list:
       - path: test_fail.jpg
       - path: test_pass.jpg
+  - path: ./oem/inc/
+    file_list:
+      - path: oem_hal_config_board.h
+      - path: oem_iec60730_timer.h
+      - path: oem_iec60730.h
+      - path: oem_iec60730_init_device.h
+      - path: oem_iec60730_comm.h
 source:
   - path: main.c
   - path: app.c
+  - path: ./oem/src/oem_iec60730_init_device.c
+  - path: ./oem/src/oem_iec60730.c
+  - path: ./oem/src/oem_iec60730_comm.c
+  - path: ./oem/src/oem_iec60730_functions.c
+  - path: ./oem/src/iec60730_stub_functions.c
+  - path: ./oem/src/oem_iec60730_timer.c
 readme:
   - path: ./readme.html
 
@@ -64,9 +64,6 @@ ui_hints:
   highlight:
     - path: readme.html
       focus: false
-other_file:
-  - path: ../../Make/gcc_crc16.sh
-  - path: ../../Make/gcc_crc32.sh
 toolchain_settings:
   - option: linkerfile
     value: autogen/linkerfile_iec60730.ld

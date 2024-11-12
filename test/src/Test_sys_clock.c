@@ -28,8 +28,8 @@
  *
  ******************************************************************************/
 #include "Test_System.h"
-#include "iec60730.h"
-#include "iec60730_oem_timer.h"
+#include "sl_iec60730.h"
+#include "oem_iec60730_timer.h"
 
 __no_init imcParams_t imcTest __CLASSB_RAM;
 __no_init vmcParams_t vmcTest __CLASSB_RAM;

@@ -24,10 +24,10 @@ extern "C" {
 
 #include <stdint.h>
 
-void System_Config(void);
-void iec60730_commInitReceiveStatusMessage(void);
-void iec60730_commLog(const uint8_t *str);
-void iec60730_commTransmitStatusMessage(void);
+void oem_system_config(void);
+void oem_comm_init_receive_status_message(void);
+void oem_comm_log(const uint8_t *str);
+void oem_comm_transmit_status_message(void);
 
 #ifdef __cplusplus
 }

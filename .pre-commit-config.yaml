@@ -16,4 +16,4 @@ repos:
     -   id: clang-format
         args: [-i,--style=file:./tools/.clang-format]
     -   id: cppcheck
-        args: [--language=c,--std=c99,--check-config,-DIEC_BOARD_HEADER="iec60730_board.h",-DEFR32MG24_DEVICE,-D__CM33_REV,--suppress=missingInclude,--suppress=unmatchedSuppression]
+        args: [--language=c,--std=c99,--check-config,-DIEC_BOARD_HEADER="sl_iec60730_board.h",-DEFR32MG24_DEVICE,-D__CM33_REV,--suppress=missingInclude,--suppress=unmatchedSuppression]

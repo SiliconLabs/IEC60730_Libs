@@ -29,9 +29,9 @@
  ******************************************************************************/
 
 #include "Test_System.h"
-#include "iec60730.h"
+#include "sl_iec60730.h"
 #include IEC_BOARD_HEADER
-#include "iec60730_oem_timer.h"
+#include "oem_iec60730_timer.h"
 
 #if defined(__ICCARM__)
 #pragma diag_suppress = Pe111
@@ -97,7 +97,7 @@ void test_main_ns(void)
 {
   Test_Init();
 
-  imcTest.gpcrc = DEFAULT_GPRC;
+  imcTest.gpcrc = SL_IEC60730_DEFAULT_GPRC;
 
   iec60730_Post();
 

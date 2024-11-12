@@ -42,10 +42,10 @@ other_file:
 define:
 - {name: DEBUG_EFM}
 - {name: USE_MARCHX, value: '1'}
-- {name: IEC_BOARD_HEADER, value: '"iec60730_board.h"'}
+- {name: IEC_BOARD_HEADER, value: '"sl_iec60730_board.h"'}
 - {name: IEC60730_SAVE_STAGE_ENABLE, value: '1'}
 - {name: EFR32MG12P_DEVICE=1, value: '1'}
-- {name: HAL_CONFIG_HEADER, value: '"iec60730_board.h"'}
+- {name: HAL_CONFIG_HEADER, value: '"sl_iec60730_board.h"'}
 ui_hints:
   highlight:
   - {path: readme.md, focus: true}

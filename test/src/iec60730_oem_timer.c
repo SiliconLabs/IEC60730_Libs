@@ -1,5 +1,5 @@
 /***************************************************************************/ /**
- * @file iec60730_oem_timer.c
+ * @file oem_iec60730_timer.c
  * @brief Oem timer used for test
  *******************************************************************************
  * # License
@@ -27,10 +27,10 @@
  * 3. This notice may not be removed or altered from any source distribution.
  *
  ******************************************************************************/
-#include "iec60730_internal.h"
+#include "sl_iec60730_internal.h"
 #include "em_timer.h"
 #include "em_letimer.h"
-#include "iec60730_oem_timer.h"
+#include "oem_iec60730_timer.h"
 
 const TIMER_Init_TypeDef Timer_10ms_cfg    = TIMER_INIT_TEST_10MS;
 const LETIMER_Init_TypeDef Timer_100ms_cfg = TIMER_INIT_TEST_100MS;
