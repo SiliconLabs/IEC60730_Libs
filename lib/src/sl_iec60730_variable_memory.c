@@ -20,6 +20,10 @@
 
 #include "sl_iec60730_internal.h"
 
+#ifdef UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE
+#include "unit_test_iec60730_variable_memory.h"
+#endif // UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE
+
 /* RAM location for temporary storage for run-time test */
 static uint32_t iec60730_bk_buf[RT_BLOCKSIZE + 2] __RT_BUF;
 /* RAM pointer for run-time test */
@@ -37,10 +41,11 @@ extern bool sl_iec60730_vmc_marchxc_step(uint32_t *start,
                             uint32_t background,
                             uint32_t *backup);
 
-__WEAK void sl_iec60730_vmc_pre_run_marchxc_step(uint32_t *addr, uint32_t size)
+__WEAK bool sl_iec60730_vmc_pre_run_marchxc_step(uint32_t *addr, uint32_t size)
 {
   UNUSED_VAR(addr);
   UNUSED_VAR(size);
+  return true;
 }
 
 __WEAK void sl_iec60730_vmc_post_run_marchxc_step(uint32_t *addr, uint32_t size)
@@ -51,13 +56,13 @@ __WEAK void sl_iec60730_vmc_post_run_marchxc_step(uint32_t *addr, uint32_t size)
 
 void sl_iec60730_vmc_init(sl_iec60730_vmc_params_t *params)
 {
-  if ((NULL == params) || (params->start == NULL) ||
-      (params->end == NULL))
+  if (((NULL == params) || (params->start == NULL) ||
+      (params->end == NULL)) && (params->start < params->end))
     return;
 
   iec60730_vmc_test_config.start = params->start;
   iec60730_vmc_test_config.end = params->end;
-  iec60730_rt_check = (uint32_t *) ((uint32_t)(params->start -(RT_BLOCK_OVERLAP << 1)) & 0xFFFFFFFCUL);
+  iec60730_rt_check = (uint32_t *)((uint32_t)(params->start - (RT_BLOCK_OVERLAP << 1)) & 0xFFFFFFFCUL);
   INV_CLASSB_PVAR(uint32_t, iec60730_rt_check);
 
   iec60730_stack_test_over_flow[0] = SL_STACK_OVERFLOW_CONST_GUARD_VALUE_0;
@@ -77,7 +82,7 @@ sl_iec60730_test_result_t sl_iec60730_vmc_post(void)
     goto VMC_POST_DONE;
   }
 
-  iec60730_rt_check = (uint32_t *) ((uint32_t)(iec60730_vmc_test_config.start -(RT_BLOCK_OVERLAP << 1)) & 0xFFFFFFFCUL);
+  iec60730_rt_check = (uint32_t *)((uint32_t)(iec60730_vmc_test_config.start - (RT_BLOCK_OVERLAP << 1)) & 0xFFFFFFFCUL);
   INV_CLASSB_PVAR(uint32_t, iec60730_rt_check);
 
   LABEL_DEF(IEC60730_VMC_POST_START_BKPT);
@@ -93,7 +98,7 @@ sl_iec60730_test_result_t sl_iec60730_vmc_post(void)
       iec60730_rt_check += BLOCKSIZE;
     }
     if (!sl_iec60730_vmc_marchc_step(iec60730_rt_check,
-                         (uint32_t *) ((uint8_t *) (iec60730_rt_check + 4) - 1),
+                         (uint32_t *)((uint8_t *)(iec60730_rt_check + RT_BLOCKSIZE) - 1),
                          BACKGROUND,
                          iec60730_bk_buf)) {
       goto VMC_POST_DONE;
@@ -108,7 +113,7 @@ sl_iec60730_test_result_t sl_iec60730_vmc_post(void)
   // Check buffer iec60730_bk_buf
   if (CHECK_INTEGRITY(uint32_t, iec60730_rt_check)) {
     if (sl_iec60730_vmc_marchc_step(iec60730_bk_buf,
-                        (uint32_t *) ((uint8_t *) (iec60730_bk_buf + BLOCKSIZE) - 1),
+                        (uint32_t *)((uint8_t *)(iec60730_bk_buf + sizeof(iec60730_bk_buf)/sizeof(iec60730_bk_buf[0])) - 1),
                         BACKGROUND,
                         iec60730_bk_buf)) {
       result = IEC60730_TEST_PASSED;
@@ -140,7 +145,7 @@ sl_iec60730_test_result_t sl_iec60730_vmc_bist(void)
 
       // Check backup buffer iec60730_bk_buf
       if (sl_iec60730_vmc_marchxc_step(iec60730_bk_buf,
-                                      (uint32_t *) ((uint8_t *) (iec60730_bk_buf + BLOCKSIZE) - 1),
+                                      (uint32_t *)((uint8_t *)(iec60730_bk_buf + sizeof(iec60730_bk_buf)/sizeof(iec60730_bk_buf[0])) - 1),
                                       BACKGROUND,
                                       iec60730_bk_buf)) {
         result = IEC60730_TEST_PASSED;
@@ -148,20 +153,29 @@ sl_iec60730_test_result_t sl_iec60730_vmc_bist(void)
         result = IEC60730_TEST_FAILED;
       }
 
-      iec60730_rt_check = (uint32_t *) ((uint32_t)(iec60730_vmc_test_config.start -(RT_BLOCK_OVERLAP << 1)) & 0xFFFFFFFCUL);
+      iec60730_rt_check = (uint32_t *)((uint32_t)(iec60730_vmc_test_config.start - (RT_BLOCK_OVERLAP << 1)) & 0xFFFFFFFCUL);
       INV_CLASSB_PVAR(uint32_t, iec60730_rt_check);
       goto VMC_BIST_DONE;
     } else {
-      // if there is a requirement to run a pre-test before running testing
-      sl_iec60730_vmc_pre_run_marchxc_step(iec60730_rt_check, BLOCKSIZE);
+      // Checking the allowance run testing
+      if (!sl_iec60730_vmc_pre_run_marchxc_step(iec60730_rt_check, BLOCKSIZE)) {
+        sl_iec60730_vmc_post_run_marchxc_step(iec60730_rt_check, BLOCKSIZE);
+        iec60730_rt_check += BLOCKSIZE;
+        // If rtCheck equal bkBuf then jump to next block
+        if (iec60730_rt_check == iec60730_bk_buf) {
+          iec60730_rt_check += BLOCKSIZE;
+        }
+        INV_CLASSB_PVAR(uint32_t, iec60730_rt_check);
+        continue;
+      }
 
       // If iec60730_rt_check equal iec60730_bk_buf then jump to next block
       if (iec60730_rt_check == iec60730_bk_buf) {
         iec60730_rt_check += BLOCKSIZE;
       }
       // Call MarchXC
-      if (sl_iec60730_vmc_marchxc_step(iec60730_bk_buf,
-                                      (uint32_t *) ((uint8_t *) (iec60730_bk_buf + BLOCKSIZE) - 1),
+      if (sl_iec60730_vmc_marchxc_step(iec60730_rt_check,
+                                      (uint32_t *)((uint8_t *)(iec60730_rt_check + RT_BLOCKSIZE) - 1),
                                       BACKGROUND,
                                       iec60730_bk_buf)) {
         // Implement after invoking MarchXC

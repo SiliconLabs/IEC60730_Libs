@@ -1,6 +1,4 @@
 if(ENABLE_UNIT_TESTING)
-    include(CTest)
-    enable_testing()
     add_subdirectory(unit_test)
 endif()
 

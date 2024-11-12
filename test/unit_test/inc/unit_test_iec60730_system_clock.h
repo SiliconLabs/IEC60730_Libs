@@ -106,15 +106,6 @@ void test_sl_iec60730_test_clock_tick_test_clock_multiplier(void);
  *****************************************************************************/
 void test_sl_iec60730_get_number_test_timer_tick(void);
 
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the functions in system_clock module.
- *****************************************************************************/
-extern void unit_test_iec60730_system_clock(void);
-
 #endif  // UNIT_TEST_IEC60730_SAFETY_CHECK_H
 
 /** @} (end defgroup IEC60730_SYSTEM_CLOCK_VERIFICATION_UNIT_TEST) */

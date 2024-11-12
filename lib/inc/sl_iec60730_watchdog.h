@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_WATCHDOG_H__
-#define __IEC60730_WATCHDOG_H__
+#ifndef SL_IEC60730_WATCHDOG_H
+#define SL_IEC60730_WATCHDOG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -151,10 +151,14 @@ typedef enum {
 #define SL_IEC60730_RSTCAUSE_WDOG0 RMU_RSTCAUSE_WDOGRST
 #define SL_IEC60730_RSTCAUSE_WDOG1 RMU_RSTCAUSE_WDOGRST
 
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
   do {                                                                         \
     SL_IEC60730_RST->CMD |= RMU_CMD_RCCLR;                                        \
   } while (0)
+#else
+#define SL_IEC60730_RSTCAUSES_CLEAR()  unit_test_iec60730_watchdog_mock_rstcause_clear()
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #else // Series 2 devices
 #ifndef SL_IEC60730_RST
 #ifdef SL_IEC60730_NON_SECURE_EN
@@ -169,6 +173,7 @@ typedef enum {
 #define SL_IEC60730_RSTCAUSE_WDOG0 EMU_RSTCAUSE_WDOG0
 #define SL_IEC60730_RSTCAUSE_WDOG1 EMU_RSTCAUSE_WDOG1
 
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #ifdef WDOG_HAS_SET_CLEAR
 #define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
   do {                                                                         \
@@ -179,23 +184,50 @@ typedef enum {
   do {                                                                         \
     SL_IEC60730_RST->CMD |= EMU_CMD_RSTCAUSECLR;                                  \
   } while (0)
-#endif
+#endif // WDOG_HAS_SET_CLEAR
+#else
+#define SL_IEC60730_RSTCAUSES_CLEAR()  unit_test_iec60730_watchdog_mock_rstcause_clear()
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #endif // (_SILICON_LABS_32B_SERIES < 2)
 
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #define SL_IEC60730_RSTCAUSE (SL_IEC60730_RST->RSTCAUSE)
+#else
+#define SL_IEC60730_RSTCAUSE  unit_test_iec60730_watchdog_mock_rstcause()
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #define SL_IEC60730_RST_POR  (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_POR)
 #define SL_IEC60730_RST_EM4  (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_EM4)
+#else
+#define SL_IEC60730_RST_POR  unit_test_iec60730_watchdog_mock_rst_por()
+#define SL_IEC60730_RST_EM4  unit_test_iec60730_watchdog_mock_rst_em4()
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
 #define SL_IEC60730_RST_WDOG0 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG0)
 #else
 #define SL_IEC60730_RST_WDOG0 0
-#endif
+#endif // (SL_IEC60730_WDOG0_ENABLE == 1)
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
 #define SL_IEC60730_RST_WDOG1 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG1)
 #else
 #define SL_IEC60730_RST_WDOG1 0
-#endif
+#endif // (SL_IEC60730_WDOG1_ENABLE == 1)
+#else
+#if (SL_IEC60730_WDOG0_ENABLE == 1)
+#define SL_IEC60730_RST_WDOG0 unit_test_iec60730_watchdog_mock_rst_wdog0()
+#else
+#define SL_IEC60730_RST_WDOG0 0
+#endif // (SL_IEC60730_WDOG0_ENABLE == 1)
+#if (SL_IEC60730_WDOG1_ENABLE == 1)
+#define SL_IEC60730_RST_WDOG1 unit_test_iec60730_watchdog_mock_rst_wdog1()
+#else
+#define SL_IEC60730_RST_WDOG1 0
+#endif // (SL_IEC60730_WDOG1_ENABLE == 1)
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+
 #define SL_IEC60730_RST_WDOGS (SL_IEC60730_RST_WDOG0 || SL_IEC60730_RST_WDOG1)
 
 #ifndef SL_IEC60730_BURAM
@@ -213,6 +245,25 @@ typedef enum {
 ///
 /// @warning Must be placed in a memory area not cleared to 0x0 on start!
 extern volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state IEC60730_DATA_NO_CLEAR;
+
+#ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+/**************************************************************************/ /**
+ * public   Support unit test for reset local variable iec60730_watchdog_count.
+ *
+ * @returns None
+
+ *****************************************************************************/
+void sl_iec60730_watchdog_count_reset(void);
+
+/**************************************************************************/ /**
+ * public   Support unit test for set local variable iec60730_watchdog_count.
+ *
+ * @returns None
+
+ *****************************************************************************/
+void sl_iec60730_watchdog_count_set(uint8_t count);
+
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 
 /**************************************************************************/ /**
  * public IEC60730 Watchdog Power On Self Test
@@ -240,4 +291,4 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __IEC60730_WATCHDOG_H__ */
+#endif /* SL_IEC60730_WATCHDOG_H */

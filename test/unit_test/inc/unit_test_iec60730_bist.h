@@ -68,15 +68,6 @@ void test_sl_iec60730_bist_failed_check_condition(void);
  *****************************************************************************/
 void test_iec60730_safety_check_error_occur(void);
 
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_bist()
- *****************************************************************************/
-extern void unit_test_iec60730_bist(void);
-
 #endif  // UNIT_TEST_IEC60730_BIST_H
 
 /** @} (end defgroup IEC60730_BIST_VERIFICATION_UNIT_TEST) */
