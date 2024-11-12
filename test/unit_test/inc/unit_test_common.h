@@ -36,8 +36,29 @@ extern void setUp(void);
 extern void tearDown(void);
 extern void resetTest(void);
 /*=======Mock Management=====*/
+
+/**************************************************************************/ /**
+ * Public   Funtion set value simulate value function mock return.
+ *
+ * @returns None.
+ *
+ *****************************************************************************/
 extern void cmock_set_value(int value);
+
+/**************************************************************************/ /**
+ * Public   Funtion get value simulate value function mock return.
+ *
+ * @returns None.
+ *
+ *****************************************************************************/
 extern int cmock_return_value(void);
 
+/**************************************************************************/ /**
+ * Public   Funtion runs all unit test cases.
+ *
+ * @returns None.
+ *
+ *****************************************************************************/
+extern void unit_test_run_all_test_cases(void);
 
 #endif  // _TEST_COMMON_H

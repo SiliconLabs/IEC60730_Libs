@@ -19,39 +19,7 @@
 
 void app_init(void)
 {
-
-#ifdef UNIT_TEST_IEC60730_POST_ENABLE
-  unit_test_iec60730_post();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_BIST_ENABLE
-  unit_test_iec60730_bist();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_PROGRAM_COUNTER_ENABLE
-  unit_test_iec60730_program_counter();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_SAFETY_CHECK_ENABLE
-  unit_test_iec60730_safety_check();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_IRQ_ENABLE
-  unit_test_iec60730_irq();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_SYSTEM_CLOCK_ENABLE
-  unit_test_iec60730_system_clock();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
-  unit_test_iec60730_watchdog();
-#endif
-
-#ifdef UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
-  unit_test_iec60730_cpu_registers();
-#endif
-
+  unit_test_run_all_test_cases();
 }
 
 void app_process_action(void)

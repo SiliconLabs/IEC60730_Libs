@@ -55,57 +55,97 @@ void test_sl_iec60730_cpu_registers_bist_failed_check_condition(void)
   TEST_ASSERT_EQUAL(0, sl_iec60730_program_counter_check);
 }
 
-#if (IEC60370_CPU == IEC60370_CM33)
-#if defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
-#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
 void test_sl_iec60730_cpu_registers_bist_ns_pass_all_check_condition(void)
 {
+  #if (IEC60370_CPU == IEC60370_CM33)
+  #if defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
   /*Setup*/
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   cmock_set_value(IEC60730_TEST_PASSED);
   /*Execute test*/
   result = sl_iec60730_cpu_registers_bist_ns();
   TEST_ASSERT_EQUAL(IEC60730_TEST_PASSED, result);
+  #endif
+  #else
+  #error the CM33 without TZ is not supported
+  #endif // defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #endif // (IEC60370_CPU == IEC60370_CM33)
+
+  #if (IEC60370_CPU == IEC60370_CM4)
+  TEST_ASSERT(true);
+  #endif // IEC60370_CPU == IEC60370_CM4)
 }
 
 void test_sl_iec60730_cpu_registers_bist_ns_failed_check_condition(void)
 {
+  #if (IEC60370_CPU == IEC60370_CM33)
+  #if defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
   /*Setup*/
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   cmock_set_value(IEC60730_TEST_FAILED);
   /*Execute test*/
   result = sl_iec60730_cpu_registers_bist_ns();
   TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, result);
+  #endif
+  #else
+  #error the CM33 without TZ is not supported
+  #endif // defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #endif // (IEC60370_CPU == IEC60370_CM33)
+
+  #if (IEC60370_CPU == IEC60370_CM4)
+  TEST_ASSERT(true);
+  #endif // IEC60370_CPU == IEC60370_CM4)
 }
 
 void test_sl_iec60730_cpu_registers_bist_s_pass_all_check_condition(void)
 {
+  #if (IEC60370_CPU == IEC60370_CM33)
+  #if defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
   /*Setup*/
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   cmock_set_value(IEC60730_TEST_PASSED);
   /*Execute test*/
   result = sl_iec60730_cpu_registers_bist_s();
   TEST_ASSERT_EQUAL(IEC60730_TEST_PASSED, result);
+  #endif
+  #else
+  #error the CM33 without TZ is not supported
+  #endif // defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #endif // (IEC60370_CPU == IEC60370_CM33)
+
+  #if (IEC60370_CPU == IEC60370_CM4)
+  TEST_ASSERT(true);
+  #endif // IEC60370_CPU == IEC60370_CM4)
 }
 
 void test_sl_iec60730_cpu_registers_bist_s_failed_check_condition(void)
 {
+  #if (IEC60370_CPU == IEC60370_CM33)
+  #if defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
   /*Setup*/
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   cmock_set_value(IEC60730_TEST_FAILED);
   /*Execute test*/
   result = sl_iec60730_cpu_registers_bist_s();
   TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, result);
+  #endif
+  #else
+  #error the CM33 without TZ is not supported
+  #endif // defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
+  #endif // (IEC60370_CPU == IEC60370_CM33)
+
+  #if (IEC60370_CPU == IEC60370_CM4)
+  TEST_ASSERT(true);
+  #endif // IEC60370_CPU == IEC60370_CM4)
 }
-#endif
-#else
-#error the CM33 without TZ is not supported
-#endif // defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
-#endif // (IEC60370_CPU == IEC60370_CM33)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_cpu_registers(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));
@@ -116,18 +156,11 @@ void unit_test_iec60730_cpu_registers(void)
   UnityBegin("/unit_test/src/unit_test_iec60730_cpu_registers.c");
   run_test(test_sl_iec60730_cpu_registers_bist_pass_all_check_condition,"test_sl_iec60730_cpu_registers_bist_pass_all_check_condition",38);
   run_test(test_sl_iec60730_cpu_registers_bist_failed_check_condition,"test_sl_iec60730_cpu_registers_bist_failed_check_condition",48);
-#if (IEC60370_CPU == IEC60370_CM33)
-#if defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
-#if defined(__ARM_FEATURE_CMSE) && (__ARM_FEATURE_CMSE == 3U)
-  run_test(test_sl_iec60730_cpu_registers_bist_pass_all_check_condition,"test_sl_iec60730_cpu_registers_bist_pass_all_check_condition",61);
-  run_test(test_sl_iec60730_cpu_registers_bist_failed_check_condition,"test_sl_iec60730_cpu_registers_bist_failed_check_condition",71);
-  run_test(test_sl_iec60730_cpu_registers_bist_pass_all_check_condition,"test_sl_iec60730_cpu_registers_bist_pass_all_check_condition",81);
-  run_test(test_sl_iec60730_cpu_registers_bist_failed_check_condition,"test_sl_iec60730_cpu_registers_bist_failed_check_condition",91);
-#endif
-#else
-#error the CM33 without TZ is not supported
-#endif // defined(__TZ_PRESENT) && (__TZ_PRESENT == 1)
-#endif // (IEC60370_CPU == IEC60370_CM33)
+  run_test(test_sl_iec60730_cpu_registers_bist_ns_pass_all_check_condition,"test_sl_iec60730_cpu_registers_bist_ns_pass_all_check_condition",58);
+  run_test(test_sl_iec60730_cpu_registers_bist_ns_failed_check_condition,"test_sl_iec60730_cpu_registers_bist_ns_failed_check_condition",80);
+  run_test(test_sl_iec60730_cpu_registers_bist_s_pass_all_check_condition,"test_sl_iec60730_cpu_registers_bist_s_pass_all_check_condition",102);
+  run_test(test_sl_iec60730_cpu_registers_bist_s_failed_check_condition,"test_sl_iec60730_cpu_registers_bist_s_failed_check_condition",124);
+
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 

@@ -111,15 +111,6 @@ void test_sl_iec60730_irq_fail_occur(void);
  *****************************************************************************/
 void test_sl_iec60730_irq_reset_fail_result(void);
 
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases above to check operate functions in irq module.
- *****************************************************************************/
-extern void unit_test_iec60730_irq(void);
-
 #endif  // UNIT_TEST_IEC60730_IRQ_H
 
 /** @} (end defgroup IEC60730_IRQ_VERIFICATION_UNIT_TEST) */

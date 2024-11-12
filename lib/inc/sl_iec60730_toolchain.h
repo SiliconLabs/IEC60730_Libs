@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_TOOLCHAIN_H__
-#define __IEC60730_TOOLCHAIN_H__
+#ifndef SL_IEC60730_TOOLCHAIN_H
+#define SL_IEC60730_TOOLCHAIN_H
 
 /**************************************************************************/ /**
  *
@@ -141,4 +141,4 @@
 
 /** @} */
 
-#endif /* __IEC60730_TOOLCHAIN_H__ */
+#endif /* SL_IEC60730_TOOLCHAIN_H */

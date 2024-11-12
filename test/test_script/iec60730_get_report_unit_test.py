@@ -153,8 +153,11 @@ class iec60730_unit_test_result(unittest.TestCase, iec60730TestBase):
       return result
     def connect_device(self):
       self.pre_exec_test()
-      file_test_case = "../unit_test/src/" + file_name + ".c"
-      log_report = '../../log/' + file_name + ".log"
+      full_path = os.path.realpath(__file__)
+      dir_path = os.path.dirname(full_path)
+      file_test_case = dir_path + "/../unit_test/src/" + file_name + ".c"
+      logging.info("File name test: " + file_test_case)
+      log_report = dir_path + "/../../log/" + file_name + ".log"
       logging.info("----------------- Start get unit test result")
       result = get_result(self)
       logging.info("Get unit test result: Done. See " + log_report)
@@ -166,8 +169,6 @@ class iec60730_unit_test_result(unittest.TestCase, iec60730TestBase):
 if __name__ == "__main__":
 
   file_name= os.getenv('FILE_NAME')
-
-  funtion_name = file_name.replace('unit_test_','')
 
   chip_name = os.getenv('CHIP')
 
@@ -186,7 +187,7 @@ if __name__ == "__main__":
 
   print("Compiler: "+compiler)
 
-  if lst_file_path.find(funtion_name) != -1:
+  if lst_file_path.find(file_name) != -1:
     iec60730_unit_test_result = iec60730_unit_test_result()
     iec60730_unit_test_result.env_setup(adapter_serial_no,
                                         chip_name,
