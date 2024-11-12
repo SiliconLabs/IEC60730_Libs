@@ -1,6 +1,6 @@
 /***************************************************************************/ /**
- * @file  test_post.h
- * @brief Unit test function iec60730_Post().
+ * @file  unit_test_iec60730_post.h
+ * @brief Unit test function sl_iec60730_post().
  *******************************************************************************
  * # License
  * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
@@ -30,7 +30,7 @@
 /*======= External Functions =====*/
 
 /**************************************************************************/ /**
- *  IEC60730 POST Unit Tests
+ *  IEC60730 Post Unit Tests
  *
  * @details These test cases run unit tests to check the operation of the function sl_iec60730_post()
  *
@@ -57,15 +57,6 @@ void test_sl_iec60730_post_pass_all_check_condition(void);
  *
  *****************************************************************************/
 void test_sl_iec60730_post_failed_check_condition(void);
-
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_post()
- *****************************************************************************/
-extern void unit_test_iec60730_post(void);
 
 #endif  // UNIT_TEST_IEC60730_POST_H
 

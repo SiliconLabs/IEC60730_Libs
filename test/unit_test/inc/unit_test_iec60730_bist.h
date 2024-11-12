@@ -1,5 +1,5 @@
 /***************************************************************************/ /**
- * @file  test_bist.h
+ * @file  unit_test_iec60730_bist.h
  * @brief Unit test function sl_iec60730_bist().
  *******************************************************************************
  * # License
@@ -30,7 +30,7 @@
 /*======= External Functions =====*/
 
 /**************************************************************************/ /**
- *  IEC60730 BIST Unit Tests
+ *  IEC60730 Bist Unit Tests
  *
  * @details These test cases run unit tests to check the operation of the function sl_iec60730_bist()
  *
@@ -66,16 +66,7 @@ void test_sl_iec60730_bist_failed_check_condition(void);
  * It means test result rountine of sl_iec60730_bist is a failure, function sl_iec60730_safe_state() is called.
  *
  *****************************************************************************/
-void test_iec60730_SafetyCheck_is_failed(void);
-
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_bist()
- *****************************************************************************/
-extern void unit_test_iec60730_bist(void);
+void test_iec60730_safety_check_error_occur(void);
 
 #endif  // UNIT_TEST_IEC60730_BIST_H
 

@@ -1,6 +1,6 @@
 /***************************************************************************//**
- * @file
- * @brief Unit test bist
+ * @file  unit_test_iec60730_bist.c
+ * @brief Unit test function sl_iec60730_bist().
  *******************************************************************************
  * # License
  * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
@@ -84,7 +84,7 @@ void test_iec60730_safety_check_error_occur(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_bist(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));
@@ -93,9 +93,9 @@ void unit_test_iec60730_bist(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_bist.c");
-  run_test(test_sl_iec60730_bist_pass_all_check_condition, "test_sl_iec60730_bist_pass_all_check_condition",54);
-  run_test(test_sl_iec60730_bist_failed_check_condition, "test_sl_iec60730_bist_failed_check_condition",64);
-  run_test(test_iec60730_safety_check_error_occur, "test_iec60730_safety_check_error_occur",74);
+  run_test(test_sl_iec60730_bist_pass_all_check_condition,"test_sl_iec60730_bist_pass_all_check_condition",54);
+  run_test(test_sl_iec60730_bist_failed_check_condition,"test_sl_iec60730_bist_failed_check_condition",64);
+  run_test(test_iec60730_safety_check_error_occur,"test_iec60730_safety_check_error_occur",74);
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 

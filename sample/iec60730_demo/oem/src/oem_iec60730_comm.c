@@ -230,7 +230,6 @@ void oem_comm_send_message(uint8_t oem_message_byte)
                                           (uint8_t *) (&oem_tx_buffer),
                                           sizeof(oem_message_buffer_t)
                                               - sizeof(sl_iec60730_crc_t))) {
-    sl_iec60730_safety_check_error_occur(IEC60730_OEM_FAIL_1);
     sl_iec60730_safe_state(IEC60730_OEM_FAIL_1);
   }
 

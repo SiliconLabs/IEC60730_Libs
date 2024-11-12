@@ -166,10 +166,14 @@ typedef enum {
 #define INV_CLASSB_PVAR(vartype, name)                                         \
   CONCAT(name, _inv) = (vartype *) (~(vartype) name)
 
+#if ((defined UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE) || defined (UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE))
+#define CHECK_INTEGRITY(vartype, x)  unit_test_mock_check_integrity()
+#else
 /// The #CHECK_INTEGRITY definition used for checking integrity of pair of
 /// variables stored in *.classb_ram* section.
 #define CHECK_INTEGRITY(vartype, x)                                            \
   ((vartype) - 1 == ((vartype) x ^ (vartype) CONCAT(x, _inv)))
+#endif // (UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE || UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE)
 
 /** @} (end addtogroup sl_iec60730_post) */
 
@@ -180,7 +184,7 @@ typedef enum {
 
 #ifdef DOXYGEN
 /// Support for cleaner code.
-///   * If user use the #SL_IEC60730_USE_CRC_32_ENABLE == 1, #sl_iec60730_crc_t is uint32_t.
+///   * If user use the #SL_IEC60730_USE_CRC_32_ENABLE  definition, #sl_iec60730_crc_t is uint32_t.
 ///   * Otherwise, #sl_iec60730_crc_t is uint16_t.
 #define sl_iec60730_crc_t
 
@@ -193,9 +197,9 @@ typedef enum {
 
 #if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 typedef uint32_t sl_iec60730_crc_t;
-#else  /* !SL_IEC60730_USE_CRC_32_ENABLE */
+#else  /* !SL_IEC60730_USE_CRC_32_ENABLE  */
 typedef uint16_t sl_iec60730_crc_t;
-#endif /* SL_IEC60730_USE_CRC_32_ENABLE */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 
 #endif // DOXYGEN
 
@@ -219,26 +223,6 @@ extern sl_iec60730_crc_t __checksum;
 /// The #SL_IEC60730_FLASH_BLOCK_WORDS definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_INWORDS
 /// and #STEPS_NUMBER  definitions. User SHOULD not change it.
 #define SL_IEC60730_FLASH_BLOCK_WORDS ((uint32_t) (SL_IEC60730_ROM_SIZE_INWORDS / STEPS_NUMBER))
-
-/// The #SL_IEC60730_ROM_SIZE_TEST definition describes the size of region Flash calculated CRC value.
-/// This calculation based on #end address, and #start address region is transmitted.
-/// definitions.
-#define SL_IEC60730_ROM_SIZE_TEST(start,end)    \
-        ((uint32_t) end - (uint32_t) start)
-
-/// The #STEPS_NUMBER_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST and
-/// #SL_IEC60730_FLASH_BLOCK definition. User SHOULD not change it.
-#define STEPS_NUMBER_TEST(start,end)            \
-        ((uint32_t) SL_IEC60730_ROM_SIZE_TEST(start,end) / SL_IEC60730_FLASH_BLOCK)
-
-/// The #SL_IEC60730_ROM_SIZE_INWORDS_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST definition.
-/// User SHOULD not change it.
-#define SL_IEC60730_ROM_SIZE_INWORDS_TEST(start,end)  ((uint32_t) SL_IEC60730_ROM_SIZE_TEST(start,end) / 4U)
-
-/// The #SL_IEC60730_FLASH_BLOCK_WORDS_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST
-/// and #STEPS_NUMBER  definitions. User SHOULD not change it.
-#define SL_IEC60730_FLASH_BLOCK_WORDS_TEST(start,end) ((uint32_t) (SL_IEC60730_ROM_SIZE_INWORDS_TEST(start,end) / STEPS_NUMBER_TEST(start,end)))
-
 
 /// The #SL_IEC60730_REF_CRC definition describes variable that address of this variable
 /// store CRC value that is calculated by \ref gcc_crcXY in Post Build. We use
@@ -630,14 +614,6 @@ typedef struct{
 // Allocate storage for PRIMASK or BASEPRI value
 #define SL_IEC60370_DECLARE_IRQ_STATE CORE_DECLARE_IRQ_STATE;
 
-// Enter ATOMIC section of IMC Post
-#define SL_IEC60730_IMC_POST_ENTER_ATOMIC()                                       \
-  CORE_DECLARE_IRQ_STATE;                                                      \
-  CORE_ENTER_ATOMIC()
-
-// Exit ATOMIC section of VMC Post
-#define SL_IEC60730_IMC_POST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
-
 // Enter ATOMIC section of IMC Bist
 #define SL_IEC60730_IMC_BIST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
@@ -686,18 +662,6 @@ typedef struct {
 #endif                   /* SL_IEC60730_CRC_USE_SW_ENABLE */
   sl_iec60730_crc_t xorOut;          ///< XOR with calculated CRC value
 } sl_iec60730_update_crc_params_t;
-
-/// This structure is used as configuration for IMC testing
-typedef struct {
-  uint32_t *start; ///< Start address of RAM to check
-  uint32_t *end;   ///< End address of RAM to check
-} sl_iec60730_imc_test_region_t;
-
-/// This structure is used as multiple test regions for IMC testing
-typedef struct {
-  const sl_iec60730_imc_test_region_t *region;
-  uint8_t number_of_test_regions; ///< Number of test regions
-} sl_iec60730_imc_test_multiple_regions_t;
 
 #ifdef DOXYGEN
 /// This macro is the default of GPCRC Register.
@@ -810,7 +774,7 @@ typedef struct {
  * Performs a initialization of global variables and hardware configuration in
  * case hardware support.
  *****************************************************************************/
-void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params, sl_iec60730_imc_test_multiple_regions_t *test_config);
+void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params);
 
 /**************************************************************************/ /**
  * public IEC60730 Update CRC git pull with Data Buffer
@@ -843,44 +807,36 @@ sl_iec60730_test_result_t
  *****************************************************************************/
 
 // Enter ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_ENTER_CRITICAL()                                     \
-  CORE_DECLARE_IRQ_STATE;                                                       \
-  CORE_ENTER_CRITICAL()
+#define SL_IEC60730_VMC_POST_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
+#define SL_IEC60730_VMC_POST_EXIT_ATOMIC()
 
 // Enter ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_ENTER_CRITICAL()                                    \
+#define SL_IEC60730_VMC_BIST_ENTER_ATOMIC()                                       \
   CORE_DECLARE_IRQ_STATE;                                                      \
-  CORE_ENTER_CRITICAL()
+  CORE_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
+#define SL_IEC60730_VMC_BIST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
 
 /// This structure is used as configuration for VMC testing
 typedef struct {
   uint32_t *start; ///< Start address of RAM to check
   uint32_t *end;   ///< End address of RAM to check
-} sl_iec60730_vmc_test_region_t;
-
-/// This structure is used as multiple test regions for VMC testing
-typedef struct {
-  const sl_iec60730_vmc_test_region_t *region;
-  uint8_t number_of_test_regions; ///< Number of test regions
-} sl_iec60730_vmc_test_multiple_regions_t;
+} sl_iec60730_vmc_params_t;
 
 /**************************************************************************/ /**
  * public IEC60730 Variable Memory Check (VMC) Initialize
  *
- * @param params input parameter of struct #sl_iec60730_vmc_test_multiple_regions_t form
+ * @param params input parameter of struct #sl_iec60730_vmc_params_t form
  *
  * @return void
  *
  * Performs a initialization of global variables. This function SHOULD call
  * before calling #sl_iec60730_vmc_bist
  *****************************************************************************/
-void sl_iec60730_vmc_init(sl_iec60730_vmc_test_multiple_regions_t *test_config);
+void sl_iec60730_vmc_init(sl_iec60730_vmc_params_t *params);
 
 /** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
 

@@ -28,7 +28,7 @@ include:
       - path: sl_iec60730.h
       - path: silabs_license_agreement.h
 define:
-  - name: IEC_BOARD_HEADER
+  - name: SL_IEC60730_BOARD_HEADER
     value: "\"sl_iec60730_board.h\""
 ui_hints:
   visibility: never

@@ -1,6 +1,6 @@
 /***************************************************************************//**
- * @file
- * @brief Unit test post
+ * @file  unit_test_iec60730_post.c
+ * @brief Unit test function sl_iec60730_post().
  *******************************************************************************
  * # License
  * <b>Copyright 2020 Silicon Laboratories Inc. www.silabs.com</b>
@@ -87,7 +87,7 @@ void test_sl_iec60730_post_failed_check_condition(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_post(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));
