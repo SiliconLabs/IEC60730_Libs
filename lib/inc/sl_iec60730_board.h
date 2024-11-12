@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef IEC60730_BOARD_H_
-#define IEC60730_BOARD_H_
+#ifndef SL_IEC60730_BOARD_H
+#define SL_IEC60730_BOARD_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -80,15 +80,25 @@ extern uint32_t __StackTop;
 extern uint32_t __RamStart;
 extern uint32_t __ClassBLimit;
 
-#define RAM_START  ((uint32_t *) (&__RamStart))
-#define RAM_END    ((uint32_t *) ((uint32_t) RAM_BACKUP - 1))
-#define RAM_BACKUP ((uint32_t *) (&__StackTop))
+#if defined(__GNUC__)
+extern uint32_t __stack_check;
+#define STACK_CHECK     ((uint32_t *) (&__stack_check))
+#elif defined(__ICCARM__)
+#pragma section = ".stack_bottom"
+#define STACK_CHECK     __section_begin(".stack_bottom")
+#else // unknown toolchain
+#error Unrecognized toolchain in sl_iec60730_toolchain.h
+#endif
 
-#define CLASSB_START ((uint32_t *) (&__classb_start))
-#define CLASSB_END   ((uint32_t *) ((uint32_t) (&__ClassBLimit) - 1))
+#define RAM_START       ((uint32_t *) (&__RamStart))
+#define RAM_END         ((uint32_t *) ((uint32_t) RAM_BACKUP - 1))
+#define RAM_BACKUP      ((uint32_t *) (&__StackTop))
 
-#define RAMTEST_START CLASSB_START
-#define RAMTEST_END   CLASSB_END
+#define CLASSB_START    ((uint32_t *) (&__classb_start))
+#define CLASSB_END      ((uint32_t *) ((uint32_t) (&__ClassBLimit) - 1))
+
+#define RAMTEST_START   CLASSB_START
+#define RAMTEST_END     CLASSB_END
 
 /** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
 /** @} (end addtogroup efr32_iec60730) */
@@ -97,4 +107,4 @@ extern uint32_t __ClassBLimit;
 }
 #endif /* __cplusplus */
 
-#endif /* IEC60730_BOARD_H_ */
+#endif /* SL_IEC60730_BOARD_H */

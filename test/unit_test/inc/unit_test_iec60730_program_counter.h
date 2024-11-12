@@ -18,7 +18,7 @@
 /**************************************************************************/ /**
  * @addtogroup IEC60730_VERIFICATION
  * @{
- * @defgroup IEC60730_POST_VERIFICATION_UNIT_TEST Post Verification Unit Tests
+ * @defgroup IEC60730_PROGRAM_COUNTER_VERIFICATION_UNIT_TEST Program Counter Unit Verification Unit Tests
  * @{
  * Header file list of test cases for the Verification operate function sl_iec60730_program_counter_test().
  *
@@ -58,16 +58,7 @@ void test_sl_iec60730_program_counter_complete_all_bit_check(void);
  *****************************************************************************/
 void test_sl_iec60730_program_counter_fail_some_bit_check(void);
 
-/**************************************************************************/ /**
- * Public   funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_program_counter_test()
- *****************************************************************************/
-extern void unit_test_iec60730_program_counter(void);
-
 #endif  // UNIT_TEST_IEC60730_PROGRAM_COUNTER_H
 
-/** @} (end defgroup IEC60730_POST_VERIFICATION_UNIT_TEST) */
+/** @} (end defgroup IEC60730_PROGRAM_COUNTER_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

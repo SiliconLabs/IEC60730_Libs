@@ -87,7 +87,7 @@ void test_sl_iec60730_post_failed_check_condition(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_post(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));
@@ -96,8 +96,8 @@ void unit_test_iec60730_post(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_post.c");
-  run_test(test_sl_iec60730_post_pass_all_check_condition, "test_sl_iec60730_post_pass_all_check_condition", 68);
-  run_test(test_sl_iec60730_post_failed_check_condition, "test_sl_iec60730_post_failed_check_condition", 78);
+  run_test(test_sl_iec60730_post_pass_all_check_condition,"test_sl_iec60730_post_pass_all_check_condition",68);
+  run_test(test_sl_iec60730_post_failed_check_condition,"test_sl_iec60730_post_failed_check_condition",78);
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 

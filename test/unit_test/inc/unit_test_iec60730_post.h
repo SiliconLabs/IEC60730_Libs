@@ -58,15 +58,6 @@ void test_sl_iec60730_post_pass_all_check_condition(void);
  *****************************************************************************/
 void test_sl_iec60730_post_failed_check_condition(void);
 
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases of the function sl_iec60730_post()
- *****************************************************************************/
-extern void unit_test_iec60730_post(void);
-
 #endif  // UNIT_TEST_IEC60730_POST_H
 
 /** @} (end defgroup IEC60730_POST_VERIFICATION_UNIT_TEST) */
