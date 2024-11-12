@@ -255,7 +255,7 @@ jobs:
         retention-days: 90
   job2:
     name: Run unit test
-    runs-on: [self-hosted, ds-sqa-hn-iec]
+    runs-on: [self-hosted, DS_SQA_HN_01]
     needs: job1
     permissions:
       contents: read
