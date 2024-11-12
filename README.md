@@ -144,7 +144,7 @@ Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and 
 
 ```sh
 $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
-$ export ARM_GCC_DIR=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7
+$ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
 $ export TOOL_CHAINS=GCC
 $ export START_ADDR_FLASH=0x8000000
 ```

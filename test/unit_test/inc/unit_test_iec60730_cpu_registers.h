@@ -62,6 +62,7 @@ void test_sl_iec60730_cpu_registers_bist_failed_check_condition(void);
  * Public   Check sl_iec60730_cpu_registers_bist_ns() operate
  *
  * @returns None.
+ * This test case only checks when the chip supports is cortex M33.
  * If the register checks in the function sl_iec60730_cpu_registers_bist_ns() pass,
  * then function will be returned IEC60730_TEST_PASSED.
  *
@@ -72,6 +73,7 @@ void test_sl_iec60730_cpu_registers_bist_ns_pass_all_check_condition(void);
  * Public   Check sl_iec60730_cpu_registers_bist_ns() operate
  *
  * @returns None.
+ * This test case only checks when the chip supports is cortex M33.
  * If one of the register checks in the function sl_iec60730_cpu_registers_bist_ns() failed,
  * then function will be returned IEC60730_TEST_FAILED.
  *
@@ -82,6 +84,7 @@ void test_sl_iec60730_cpu_registers_bist_ns_failed_check_condition(void);
  * Public   Check sl_iec60730_cpu_registers_bist_s() operate
  *
  * @returns None.
+ * This test case only checks when the chip supports is cortex M33.
  * If the register checks in the function sl_iec60730_cpu_registers_bist_s() pass,
  * then function will be returned IEC60730_TEST_PASSED.
  *
@@ -92,6 +95,7 @@ void test_sl_iec60730_cpu_registers_bist_s_pass_all_check_condition(void);
  * Public   Check sl_iec60730_cpu_registers_bist_s() operate
  *
  * @returns None.
+ * This test case only checks when the chip supports is cortex M33.
  * If one of the register checks in the function sl_iec60730_cpu_registers_bist_s() failed,
  * then function will be returned IEC60730_TEST_FAILED.
  *

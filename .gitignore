@@ -7,3 +7,4 @@ doc/html/EFR32_ICE60730_Libraries/latex
 gecko_sdk/src/*
 !gecko_sdk/src/CMakeLists.txt
 cmake_build
+log/

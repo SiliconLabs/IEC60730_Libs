@@ -1,5 +1,6 @@
 # unit test info
 set(UNIT_TEST_INFO "unit_test_info")
+set(UNIT_TEST_CLEAN "unit_test_clean")
 
 # Support calculate CRC
 option(ENABLE_CAL_CRC_32 "Enable calculate crc 32" OFF)
@@ -46,6 +47,11 @@ add_custom_target(${UNIT_TEST_INFO}
                   " unit_test_iec60730_cpu_registers "
                   " unit_test_iec60730_variable_memory "
                   " unit_test_iec60730_invariable_memory\ "
+                  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
+)
+
+add_custom_target(${UNIT_TEST_CLEAN}
+                  COMMAND rm -rf ${CMAKE_BINARY_DIR}/test/unit_test/build/${BOARD_NAME}
                   WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
 )
 

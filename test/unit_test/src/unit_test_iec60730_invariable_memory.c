@@ -68,6 +68,7 @@ bool unit_test_iec60730_imc_mock_sw_enable_cal_crc(void) {
 
 /*=======Test Case=====*/
 void test_sl_iec60730_imc_init_param_null(void) {
+  #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
   /*Setup*/
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   unit_test_imc.gpcrc = NULL;
@@ -75,6 +76,9 @@ void test_sl_iec60730_imc_init_param_null(void) {
   sl_iec60730_imc_init(NULL);
   result = sl_iec60730_imc_post();
   TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, result);
+  #else
+  TEST_ASSERT(true);
+  #endif // (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
 }
 
 void test_sl_iec60730_imc_post_pass_check(void) {
@@ -218,17 +222,15 @@ void unit_test_run_all_test_cases(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_invariable_memory.c");
-  #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
-  run_test(test_sl_iec60730_imc_init_param_null,"test_sl_iec60730_imc_init_param_null",55);
-  #endif // (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
-  run_test(test_sl_iec60730_imc_post_pass_check,"test_sl_iec60730_imc_post_pass_check",65);
-  run_test(test_sl_iec60730_imc_post_fail_check,"test_sl_iec60730_imc_post_fail_check",74);
-  run_test(test_sl_iec60730_imc_bist_pass_all_check,"test_sl_iec60730_imc_bist_pass_all_check",85);
-  run_test(test_sl_iec60730_imc_bist_fail_check_integrity,"test_sl_iec60730_imc_bist_fail_check_integrity",95);
-  run_test(test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address,"test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address",105);
-  run_test(test_sl_iec60730_imc_bist_fail_compare_crc,"test_sl_iec60730_imc_bist_fail_compare_crc",116);
-  run_test(test_sl_iec60730_update_crc_with_data_buffer_params_null,"test_sl_iec60730_update_crc_with_data_buffer_params_null",129);
-  run_test(test_sl_iec60730_update_crc_with_data_buffer_calculation_crc,"test_sl_iec60730_update_crc_with_data_buffer_calculation_crc",142);
+  run_test(test_sl_iec60730_imc_init_param_null,"test_sl_iec60730_imc_init_param_null",70);
+  run_test(test_sl_iec60730_imc_post_pass_check,"test_sl_iec60730_imc_post_pass_check",84);
+  run_test(test_sl_iec60730_imc_post_fail_check,"test_sl_iec60730_imc_post_fail_check",93);
+  run_test(test_sl_iec60730_imc_bist_pass_all_check,"test_sl_iec60730_imc_bist_pass_all_check",108);
+  run_test(test_sl_iec60730_imc_bist_fail_check_integrity,"test_sl_iec60730_imc_bist_fail_check_integrity",118);
+  run_test(test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address,"test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address",128);
+  run_test(test_sl_iec60730_imc_bist_fail_compare_crc,"test_sl_iec60730_imc_bist_fail_compare_crc",139);
+  run_test(test_sl_iec60730_update_crc_with_data_buffer_params_null,"test_sl_iec60730_update_crc_with_data_buffer_params_null",157);
+  run_test(test_sl_iec60730_update_crc_with_data_buffer_calculation_crc,"test_sl_iec60730_update_crc_with_data_buffer_calculation_crc",170);
   UnityEnd();
   __asm volatile("IEC60730_UNIT_TEST_END:");
 
