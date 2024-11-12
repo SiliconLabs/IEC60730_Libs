@@ -1,9 +1,0 @@
-digraph "BIST"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=box];
-  rankdir=LR;
-  Node1 [label="BIST",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Built In Self Test - Executed periodically."];
-  Node2 [label="EFR32 IEC60730 Library",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__efr32__iec60730.html",tooltip="EFR32 IEC60730 Library."];
-  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
-}
