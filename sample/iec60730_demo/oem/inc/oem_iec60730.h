@@ -46,7 +46,7 @@ extern "C" {
 #include "oem_iec60730_comm.h"
 #include "oem_iec60730_timer.h"
 #include "sl_iec60730_internal.h"
-#include IEC_BOARD_HEADER
+#include SL_IEC60730_BOARD_HEADER
 
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730

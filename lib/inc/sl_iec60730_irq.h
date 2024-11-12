@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_IRQ_H__
-#define __IEC60730_IRQ_H__
+#ifndef SL_IEC60730_IRQ_H
+#define SL_IEC60730_IRQ_H
 
 #include "sl_iec60730_toolchain.h"
 #include <stdint.h>
@@ -177,4 +177,4 @@ void sl_iec60730_irq_check(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __IEC60730_IRQ_H__ */
+#endif /* SL_IEC60730_IRQ_H */

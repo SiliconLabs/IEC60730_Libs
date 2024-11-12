@@ -52,7 +52,7 @@ void test_sl_iec60730_safety_check_reset_error(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_safety_check(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));

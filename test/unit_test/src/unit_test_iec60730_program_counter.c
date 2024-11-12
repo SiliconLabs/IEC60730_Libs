@@ -16,7 +16,7 @@
  ******************************************************************************/
 
 #include "unit_test_common.h"
-#include "unit_test_iec60730_post.h"
+#include "unit_test_iec60730_program_counter.h"
 #include "sl_iec60730_internal.h"
 
 /*=======Mock Code=====*/
@@ -54,7 +54,7 @@ void test_sl_iec60730_program_counter_fail_some_bit_check(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_program_counter(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));

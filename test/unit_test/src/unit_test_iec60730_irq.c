@@ -16,7 +16,7 @@
  ******************************************************************************/
 
 #include "unit_test_common.h"
-#include "unit_test_iec60730_safety_check.h"
+#include "unit_test_iec60730_irq.h"
 #include "sl_iec60730_internal.h"
 
 /*=======Set up=====*/
@@ -143,7 +143,7 @@ void test_sl_iec60730_irq_reset_fail_result(void)
 
 /*=======Run Test Case=====*/
 
-void unit_test_iec60730_irq(void)
+void unit_test_run_all_test_cases(void)
 {
   // Initialize
   memset((void *)test_case_result, 0xff, sizeof(test_case_result));

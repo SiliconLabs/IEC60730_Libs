@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef IEC60730_CPU_REGISTERS_H_
-#define IEC60730_CPU_REGISTERS_H_
+#ifndef SL_IEC60730_CPU_REGISTERS_H
+#define SL_IEC60730_CPU_REGISTERS_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -137,4 +137,4 @@ sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void);
 }
 #endif /* __cplusplus */
 
-#endif /* IEC60730_CPU_REGISTERS_H_ */
+#endif /* SL_IEC60730_CPU_REGISTERS_H */

@@ -23,6 +23,10 @@
  * @{
  *****************************************************************************/
 
+#ifdef UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
+extern sl_iec60730_test_result_t unit_test_iec60730_cpu_registers_bist_mock(void);
+#endif // UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
+
 static sl_iec60730_test_result_t sl_iec60730_cpu_registers_core(void);
 
 #if (IEC60370_CPU == IEC60370_CM4)
@@ -117,6 +121,12 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
   if (IEC60730_TEST_FAILED == sl_iec60730_cpu_registers_fpu_fpsx()) {
     goto CPU_REGISTERS_BIST_DONE;
   }
+
+#ifdef UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
+  if (IEC60730_TEST_FAILED == unit_test_iec60730_cpu_registers_bist_mock()) {
+    goto CPU_REGISTERS_BIST_DONE;
+  }
+#endif // UNIT_TEST_IEC60730_CPU_REGISTERS_ENABLE
 
   result = IEC60730_TEST_PASSED;
   sl_iec60730_program_counter_check |= (IEC60730_CPU_REGS_COMPLETE);

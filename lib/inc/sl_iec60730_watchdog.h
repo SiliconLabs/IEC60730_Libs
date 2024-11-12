@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef __IEC60730_WATCHDOG_H__
-#define __IEC60730_WATCHDOG_H__
+#ifndef SL_IEC60730_WATCHDOG_H
+#define SL_IEC60730_WATCHDOG_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -291,4 +291,4 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void);
 }
 #endif /* __cplusplus */
 
-#endif /* __IEC60730_WATCHDOG_H__ */
+#endif /* SL_IEC60730_WATCHDOG_H */

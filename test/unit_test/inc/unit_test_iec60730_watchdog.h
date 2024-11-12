@@ -183,15 +183,6 @@ void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void);
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value(void);
 
-/**************************************************************************/ /**
- * Public   Funtion run all test cases above
- *
- * @returns None.
- *
- * Funtion runs all unit test cases above to check operate functions in watchdog module.
- *****************************************************************************/
-extern void unit_test_iec60730_watchdog(void);
-
 #endif  // UNIT_TEST_IEC60730_WATCHDOG_H
 
 /** @} (end defgroup IEC60730_WATCHDOG_VERIFICATION_UNIT_TEST) */
