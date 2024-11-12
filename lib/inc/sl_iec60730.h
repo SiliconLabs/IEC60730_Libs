@@ -863,3 +863,67 @@ void sl_iec60730_vmc_init(sl_iec60730_vmc_params_t *params);
 #endif /* __cplusplus */
 
 #endif /* SL_IEC60730_H */
+                                                                                                   ICAL()                                     \
+  CORE_DECLARE_IRQ_STATE;                                                       \
+  CORE_ENTER_CRITICAL()
+
+// Exit ATOMIC section of VMC Post
+#define SL_IEC60730_VMC_POST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
+
+// Enter ATOMIC section of VMC Bist
+#define SL_IEC60730_VMC_BIST_ENTER_CRITICAL()                                    \
+  CORE_DECLARE_IRQ_STATE;                                                      \
+  CORE_ENTER_CRITICAL()
+
+// Exit ATOMIC section of VMC Bist
+#define SL_IEC60730_VMC_BIST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
+
+/// This structure is used as configuration for VMC testing
+typedef struct {
+  uint32_t *start; ///< Start address of RAM to check
+  uint32_t *end;   ///< End address of RAM to check
+} sl_iec60730_vmc_test_region_t;
+
+/// This structure is used as multiple test regions for VMC testing
+typedef struct {
+  const sl_iec60730_vmc_test_region_t *region;
+  uint8_t number_of_test_regions; ///< Number of test regions
+} sl_iec60730_vmc_test_multiple_regions_t;
+
+/**************************************************************************/ /**
+ * public IEC60730 Variable Memory Check (VMC) Initialize
+ *
+ * @param params input parameter of struct #sl_iec60730_vmc_test_multiple_regions_t form
+ *
+ * @return void
+ *
+ * Performs a initialization of global variables. This function SHOULD call
+ * before calling #sl_iec60730_vmc_bist
+ *****************************************************************************/
+void sl_iec60730_vmc_init(sl_iec60730_vmc_test_multiple_regions_t *test_config);
+
+/** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
+
+#if (_SILICON_LABS_32B_SERIES == 2)
+// Write to backup ram module
+// buram_inst: Pointer to BURAM instance
+// idx: BURAM Reg index
+// val: write value
+#define SL_IEC60730_BURAM_WRITE(buram_inst, idx, val)                             \
+  do {                                                                         \
+    buram_inst->RET[idx].REG = val;                                            \
+  } while (0)
+
+// Read from backup ram module
+// buram_inst: Pointer to BURAM instance
+// idx: BURAM Reg index
+#define SL_IEC60730_BURAM_READ(buram_inst, idx) (buram_inst->RET[idx].REG)
+#endif
+
+/** @} (end addtogroup efr32_iec60730) */
+
+#ifdef __cplusplus
+}
+#endif /* __cplusplus */
+
+#endif /* SL_IEC60730_H */
