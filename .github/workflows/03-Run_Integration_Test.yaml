@@ -1,4 +1,4 @@
-name: 02-Run Integration Test
+name: 03-Run Integration Test
 on:
   pull_request:
     branches:
