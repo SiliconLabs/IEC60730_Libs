@@ -17,12 +17,9 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_post.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Mock Code=====*/
 uint8_t iec60730_timer_test_control = SL_IEC60730_TIMER_TEST_ENABLE;
-__no_init sl_iec60730_imc_params_t imc_unit_test __CLASSB_RAM;
-__no_init sl_iec60730_vmc_params_t vmc_unit_test __CLASSB_RAM;
 static bool is_function_called = false;
 
 __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){
@@ -99,7 +96,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_post_pass_all_check_condition,"test_sl_iec60730_post_pass_all_check_condition",68);
   run_test(test_sl_iec60730_post_failed_check_condition,"test_sl_iec60730_post_failed_check_condition",78);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing

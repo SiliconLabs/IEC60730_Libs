@@ -17,7 +17,6 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_safety_check.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Set up=====*/
 sl_iec60730_safety_check_t unit_test_safety_check = {IEC60730_NO_FAILURE,0};
@@ -64,7 +63,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_safety_check_error_occur,"test_sl_iec60730_safety_check_error_occur",29);
   run_test(test_sl_iec60730_safety_check_reset_error,"test_sl_iec60730_safety_check_reset_error",42);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing

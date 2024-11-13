@@ -77,3 +77,6 @@ toolchain_settings:
     value: "--keep __checksum --place_holder __checksum,2,.checksum,64"
     condition:
       - toolchain_iar
+template_contribution:
+  - name: trustzone_secure
+    value: 1

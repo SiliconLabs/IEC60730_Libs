@@ -21,7 +21,7 @@
 
 uint8_t test_case_result[MAX_NUMBER_OF_TEST_CASE];
 uint8_t current_test_numth;
-static uint8_t cmock_value_return;
+static sl_iec60730_test_result_t cmock_value_return;
 
 /*=======Mock Management=====*/
 static void cmock_init(void)
@@ -34,12 +34,12 @@ static void cmock_destroy(void)
 {
 }
 
-void cmock_set_value(int value)
+void cmock_set_value(sl_iec60730_test_result_t value)
 {
   cmock_value_return = value;
 }
 
-int cmock_return_value(void)
+sl_iec60730_test_result_t cmock_return_value(void)
 {
   return cmock_value_return;
 }

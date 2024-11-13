@@ -33,7 +33,7 @@ class JLinkDll:
     # Maximum number of CPU registers.
     MAX_NUM_CPU_REGISTERS = 256
 
-    logger = None
+    #logger = None
 
     def __init__(self, lib_path):
         try:
@@ -49,15 +49,15 @@ class JLinkDll:
         # Initialize all properties of the connected MCU
         self._initialize_mcu_properties()
 
-        self._init_logger()
+        #self._init_logger()
 
         # Suppress dialog from the DLL
         self._suppress_usb_dialog()
 
-    def _init_logger(self):
-        logging.basicConfig(level=logging.INFO,  
-                    format='%(asctime)s - %(levelname)s: %(message)s') 
-        self.logger = logging.getLogger()
+    # def _init_logger(self):
+    #     logging.basicConfig(level=logging.INFO,
+    #                 format='%(asctime)s - %(levelname)s: %(message)s')
+    #     self.logger = logging.getLogger()
 
     def abort(self, errMsg):
         self.logger.error(errMsg)

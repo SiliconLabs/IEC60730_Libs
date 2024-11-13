@@ -17,7 +17,6 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_system_clock.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Set up=====*/
 uint16_t sl_iec60730_program_counter_check = 0;
@@ -145,7 +144,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_test_clock_tick_test_clock_multiplier,"test_sl_iec60730_test_clock_tick_test_clock_multiplier",103);
   run_test(test_sl_iec60730_get_number_test_timer_tick,"test_sl_iec60730_get_number_test_timer_tick",120);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing

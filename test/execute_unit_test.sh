@@ -6,7 +6,7 @@
 # $3: components: all, unit_test_iec60730_bist, unit_test_iec60730_post, ...
 # $4: ADAPTER_SN
 # $5: compiler: GCC, IAR
-# $6: "-DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW"
+# $6: "-DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW=ON"
 
 # Example
 #  bash execute_unit_test.sh brd4187c all all 440111030 GCC
@@ -16,6 +16,7 @@
 #  bash execute_unit_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
 
 BASH_DIRECTION=$(pwd)
+BASH_PRE_IAR_BUILD=$(pwd)/../simplicity_sdk
 BOARD_NAME=$1
 TASK=$2
 COMPONENT=$3
@@ -24,12 +25,11 @@ COMPILER=$5
 OPTION_UNIT_TEST=${6//"%20"/" "}
 JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
 TEST_PATH=$(pwd)/test_script
-TEST_SCRIPT=$TEST_PATH/iec60730_get_report_unit_test.py
+TEST_SCRIPT=$TEST_PATH/unit_test_iec60730_get_report.py
 LOG_PATH=$(pwd)/../log
 LOG_FILE=$LOG_PATH/build_unit_test_components.log
-IMAGE_PATH=$(pwd)/../build/test/unit_test/build/$BOARD_NAME
+IMAGE_PATH=$(pwd)/../build/test/unit_test/build/$BOARD_NAME/$COMPILER
 DEVICE_NAME=
-
 
 function get_device_name
 {
@@ -56,6 +56,12 @@ fi
 
 function gen_image
 {
+    if [[ "$COMPILER" == "IAR" ]] ;then
+        echo "-- [I] Start run pre_build_iar!"
+        cd $BASH_PRE_IAR_BUILD
+        bash pre_build_iar.sh $BOARD_NAME "-DENABLE_UNIT_TESTING=ON $OPTION_UNIT_TEST" &> /dev/null
+        echo "-- [I] Run pre_build_iar done!"
+    fi
     cd $BASH_DIRECTION/..
     make prepare &> /dev/null
     cd $BASH_DIRECTION/../build
@@ -135,7 +141,6 @@ function flash_image
     #printf "Result: $result"
     printf "Flash file: $file_out\n"
     result=$($COMMANDER flash --serialno $ADAPTER_SN $file_out)
-    $COMMANDER device reset --serialno $ADAPTER_SN
     if [ "" = "$result" ]; then
         return 1
     else
@@ -156,15 +161,21 @@ function number_test_cases
 function number_failure_test_cases
 {
     local numberFailureTestCases
+    testString="Tests "
+    failureString=" Failures"
     log_file=$1
     tail -n 2 $log_file > $LOG_PATH/temp.txt
     result_test_cases=$(head -n 1 $LOG_PATH/temp.txt)
-    numberFailureTestCases=${result_test_cases:32:2}
+    positionFailureValue=${result_test_cases#*$testString}
+    #printf "positionFailureValue:$positionFailureValue\n"
+    numberFailureTestCases=${positionFailureValue%"$failureString"}
+    #printf "numberFailureTestCases:$numberFailureTestCases\n"
     return $numberFailureTestCases
 }
 
 function run
 {
+    cd $BASH_DIRECTION/../build
     local numberTestCases
     local numberFailureTestCases
 
@@ -192,14 +203,15 @@ function run
         if [[ -f $LOG_PATH/${component}.log ]]; then
             rm -rf $LOG_PATH/${component}.log
         fi
-        flash_image $component $compiler $arg
+        flash_image $component $compiler "$arg"
         local flashResult=$?
         local LST_PATH=$IMAGE_PATH/$component/
         # echo "$LST_PATH"
         if [ "0" = "$flashResult" ];then
-            echo "Flash Result: successful\n"
+            echo "Flash result $component successful!"
+            $COMMANDER device reset --serialno $ADAPTER_SN
             if [ -f "$TEST_SCRIPT" ] && [ -d "$LST_PATH" ];then
-                printf "Start run unit test: $component\n"
+                printf "\n= Start run unit test: $component\n"
                 echo $(pwd)
                 log=$(CHIP=$DEVICE_NAME FILE_NAME=$component ADAPTER_SN=$ADAPTER_SN LST_PATH=$LST_PATH JLINK_PATH=$JLINK_PATH python3 $TEST_SCRIPT $compiler)
                 if [ -f $LOG_PATH/${component}.log ]; then
@@ -212,17 +224,25 @@ function run
                         printf "\n= Finish run unit test $component - Success $numberTestCases/$numberTestCases - PASS\n"
                         resultBuild+=("Finish run unit test $component - Success $numberTestCases/$numberTestCases - PASS\n")
                     else
-                        printf "\n= Finish run unit test $component - Success $number_failure_test_cases/$numberTestCases - FAIL\n"
-                        resultBuild+=("Finish run unit test $component - Success $number_failure_test_cases/$numberTestCases - FAIL\n")
+                        printf "\n= Finish run unit test $component - Failures $numberFailureTestCases/$numberTestCases - FAIL\n"
+                        resultBuild+=("Finish run unit test $component - Failures $numberFailureTestCases/$numberTestCases - FAIL\n")
                     fi
                 else
-                    echo "File ${component}.log is not found in path $LOG_PATH\n!"
+                    echo "File ${component}.log is not found in path $LOG_PATH!"
+                    resultBuild+=("File ${component}.log is not found in path $LOG_PATH!")
                 fi
             else
-                printf "File ${component}.lst is not found in path $$LST_PATH\n"
+                if [ ! -f "$TEST_SCRIPT" ]; then
+                  printf "File $$TEST_SCRIPT is not found in path $TEST_PATH!\n"
+                  resultBuild+=(File $$TEST_SCRIPT is not found in path $TEST_PATH!\n)
+                elif [ ! -d "$LST_PATH" ]; then
+                  printf "File ${component}.lst is not found in path $LST_PATH!\n"
+                  resultBuild+=("File ${component}.lst is not found in path $LST_PATH!")
+                fi
             fi
         else
-            echo "Flash Result: failed\n"
+            echo "Flash result ${component} failed!"
+            resultBuild+=("Flash Result ${component} failed!")
         fi
     done
 
@@ -232,7 +252,7 @@ function run
         sumResultBuild="$sumResultBuild$restBuild\n"
     done
     printf "$sumResultBuild"
-    rm -rf $LOG_PATH/temp.txt
+    rm -rf $LOG_PATH/temp.*
 }
 
 case $TASK in

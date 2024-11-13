@@ -17,7 +17,6 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_cpu_registers.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Mock Code=====*/
 uint16_t sl_iec60730_program_counter_check = 0;
@@ -162,7 +161,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_cpu_registers_bist_s_failed_check_condition,"test_sl_iec60730_cpu_registers_bist_s_failed_check_condition",124);
 
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing

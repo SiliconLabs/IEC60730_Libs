@@ -17,11 +17,8 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_bist.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Mock Code=====*/
-__no_init sl_iec60730_imc_params_t imc_unit_test __CLASSB_RAM;
-__no_init sl_iec60730_vmc_params_t vmc_unit_test __CLASSB_RAM;
 static bool is_function_called = false;
 
 __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){
@@ -97,8 +94,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_bist_failed_check_condition,"test_sl_iec60730_bist_failed_check_condition",64);
   run_test(test_iec60730_safety_check_error_occur,"test_iec60730_safety_check_error_occur",74);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
-
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
   while(1){
     // Do nothing
   }

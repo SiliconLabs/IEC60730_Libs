@@ -45,7 +45,7 @@
  * Function simulates the result of iec60730_rt_check variable value integrity check.
  *
  *****************************************************************************/
-extern bool unit_test_mock_check_integrity(void);
+extern sl_iec60730_test_result_t unit_test_mock_check_integrity(void);
 
 /**************************************************************************/ /**
  * Public   Check sl_iec60730_vmc_init() operate

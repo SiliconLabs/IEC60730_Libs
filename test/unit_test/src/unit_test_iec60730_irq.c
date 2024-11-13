@@ -17,7 +17,6 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_irq.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Set up=====*/
 #define IEC60730_IRQ_SIZE           8
@@ -160,7 +159,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_irq_fail_occur,"test_sl_iec60730_irq_fail_occur",108);
   run_test(test_sl_iec60730_irq_reset_fail_result,"test_sl_iec60730_irq_reset_fail_result",120);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing

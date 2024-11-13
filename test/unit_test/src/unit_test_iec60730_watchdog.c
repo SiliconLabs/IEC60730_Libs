@@ -16,7 +16,6 @@
  ******************************************************************************/
 
 #include "unit_test_common.h"
-#include "sl_iec60730_internal.h"
 #include "unit_test_iec60730_watchdog.h"
 
 /*=======Mock Code=====*/
@@ -242,7 +241,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_watchdog_post_reset_resason_no_valid,"test_sl_iec60730_watchdog_post_reset_resason_no_valid",194);
   run_test(test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value,"test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value",215);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing

@@ -17,7 +17,6 @@
 
 #include "unit_test_common.h"
 #include "unit_test_iec60730_program_counter.h"
-#include "sl_iec60730_internal.h"
 
 /*=======Mock Code=====*/
 
@@ -66,7 +65,11 @@ void unit_test_run_all_test_cases(void)
   run_test(test_sl_iec60730_program_counter_complete_all_bit_check,"test_sl_iec60730_program_counter_complete_all_bit_check",35);
   run_test(test_sl_iec60730_program_counter_fail_some_bit_check,"test_sl_iec60730_program_counter_fail_some_bit_check",45);
   UnityEnd();
+  #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
+#else
+  __asm volatile("IEC60730_UNIT_TEST_END::");
+#endif
 
   while(1){
     // Do nothing
