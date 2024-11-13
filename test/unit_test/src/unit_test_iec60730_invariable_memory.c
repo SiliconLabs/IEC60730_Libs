@@ -26,6 +26,30 @@
 /*=======Mock Code=====*/
 uint16_t sl_iec60730_program_counter_check;
 __no_init sl_iec60730_imc_params_t unit_test_imc;
+__no_init sl_iec60730_imc_test_multiple_regions_t unit_test_imc_test __CLASSB_RAM;
+
+#define UNIT_TEST_NUM_FLASH_REGIONS_CHECK   3
+
+#if defined(__GNUC__)
+#define UNIT_TEST_FLASH_OFFSET              20
+#elif defined(__ICCARM__)
+#define UNIT_TEST_FLASH_OFFSET              80
+#else
+#endif
+
+#if defined(__GNUC__)
+const sl_iec60730_imc_test_region_t unit_test_imc_region_test[UNIT_TEST_NUM_FLASH_REGIONS_CHECK] =
+      {{.start = SL_IEC60730_ROM_START, .end= SL_IEC60730_ROM_END},
+      {.start = SL_IEC60730_ROM_START + 2*UNIT_TEST_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 3*UNIT_TEST_FLASH_OFFSET},
+      {.start = SL_IEC60730_ROM_START + 4*UNIT_TEST_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 5*UNIT_TEST_FLASH_OFFSET}};
+
+#elif defined(__ICCARM__)
+const sl_iec60730_imc_test_region_t unit_test_imc_region_test[UNIT_TEST_NUM_FLASH_REGIONS_CHECK] =
+      {{.start = SL_IEC60730_ROM_START, .end= (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + UNIT_TEST_FLASH_OFFSET)},
+      {.start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 2*UNIT_TEST_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 3*UNIT_TEST_FLASH_OFFSET)},
+      {.start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 4*UNIT_TEST_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 5*UNIT_TEST_FLASH_OFFSET)}};
+#else
+#endif
 
 #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
 bool unit_test_gpcrc_enable;
@@ -46,6 +70,8 @@ bool unit_test_mock_check_integrity(void) {
 void set_up_test_vmc_post_and_bist(void) {
   CMU_ClockEnable(cmuClock_GPCRC, true);
   unit_test_imc.gpcrc = SL_IEC60730_DEFAULT_GPRC;
+  unit_test_imc_test.region = unit_test_imc_region_test;
+  unit_test_imc_test.number_of_test_regions = 1;
   check_integrity_result = true;
   unit_test_init_run_crc = SL_IEC60730_ROM_START;
   #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
@@ -53,7 +79,7 @@ void set_up_test_vmc_post_and_bist(void) {
   #else
   unit_test_sw_cal_crc_enable = true;
   #endif // (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
-  sl_iec60730_imc_init(&unit_test_imc);
+  sl_iec60730_imc_init(&unit_test_imc,&unit_test_imc_test);
 }
 
 #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
@@ -68,17 +94,13 @@ bool unit_test_iec60730_imc_mock_sw_enable_cal_crc(void) {
 
 /*=======Test Case=====*/
 void test_sl_iec60730_imc_init_param_null(void) {
-  #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
   /*Setup*/
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   unit_test_imc.gpcrc = NULL;
   /*Execute test*/
-  sl_iec60730_imc_init(NULL);
+  sl_iec60730_imc_init(NULL,NULL);
   result = sl_iec60730_imc_post();
   TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, result);
-  #else
-  TEST_ASSERT(true);
-  #endif // (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
 }
 
 void test_sl_iec60730_imc_post_pass_check(void) {
@@ -100,7 +122,7 @@ void test_sl_iec60730_imc_post_fail_check(void) {
   unit_test_sw_cal_crc_enable = false;
   #endif // (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
   /*Execute test*/
-  sl_iec60730_imc_init(&unit_test_imc);
+  sl_iec60730_imc_init(&unit_test_imc,&unit_test_imc_test);
   result = sl_iec60730_imc_post();
   TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, result);
 }
@@ -130,7 +152,7 @@ void test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address(voi
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   set_up_test_vmc_post_and_bist();
   unit_test_init_run_crc = SL_IEC60730_ROM_END;
-  sl_iec60730_imc_init(&unit_test_imc);
+  sl_iec60730_imc_init(&unit_test_imc,&unit_test_imc_test);
   /*Execute test*/
   result = sl_iec60730_imc_bist();
   TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, result);
@@ -144,9 +166,9 @@ void test_sl_iec60730_imc_bist_fail_compare_crc(void) {
   set_up_test_vmc_post_and_bist();
   #if (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
   unit_test_gpcrc_enable = false;
-  sl_iec60730_imc_init(&unit_test_imc);
+  sl_iec60730_imc_init(&unit_test_imc,&unit_test_imc_test);
   #else
-  sl_iec60730_imc_init(&unit_test_imc);
+  sl_iec60730_imc_init(&unit_test_imc,&unit_test_imc_test);
   unit_test_sw_cal_crc_enable = false;
   #endif // (SL_IEC60730_CRC_USE_SW_ENABLE == 0)
   /*Execute test*/

@@ -5,7 +5,7 @@ Platform codes for EFR32 series chips which complies to IEC60730 safety standard
 The IEC60730 library for EFR32 provides a basic implementation required to support the necessary requirements found in Table H.1 in the IEC60730 specification. It includes all the Power On Self Test (POST) functions executed when a device is first powered on, as well as Built In Self Test (BIST) functions that are called periodically to ensure correct operation. Certain portions of the requirements require a detailed understanding of the system under development. Callback functions must be completed by the developer to guarantee meeting the full specification. These include a Safe State function used when validation detects an anomaly, properly implemented communications channels (redundancy, error detection, periodic communications), and Plausibility functions to validate system state (internal variables and inputs/outputs).
 
 ## License
-Please refer document in Doc/html.
+Please refer LICENSE.md.
 
 ## Release Notes
 Please refer document in Doc/html.
@@ -66,7 +66,7 @@ $ pre-commit run --all-files
 - GNU GCC V12.2
 - IAR EW for ARM V9.2
 
-**Tools specification**
+## Tools specification
 
 Test frame work tools:
 - Python V3.11
@@ -82,7 +82,13 @@ Support check coding convention by pre-commit
 Support CMake
 - CMake version >=3.25
 
-**Source code control:**
+SEGGER JLink
+- JLink version 17.0.11
+
+SLC-CLI
+- slc version 5.9.1.1
+
+Source code control:
 - GIT V2.39
 - JIRA V8.22.2
 
@@ -102,7 +108,7 @@ This EFR32 IEC60730 library fulfills the requirements for a **Class B** device.
 
 ### Install Dependencies
 
-#### Install slcc
+#### Install slc-cli
 
 - Follow this link to Install slc: [Install slc](https://docs.silabs.com/simplicity-studio-5-users-guide/latest/ss-5-users-guide-tools-slc-cli/02-installation)
 - Follow this link to [Install Amazon Corretto 17 on Debian-Based Linux](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
@@ -140,16 +146,24 @@ $ slc generate $GSDK/app/common/example/blink_baremetal -np -d blinky -name=blin
 
 ### Export Variable
 
-Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and START_ADDR_FLASH (flash start address support calculate crc for module invariable memory) before run config CMake.
+Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and FLASH_REGIONS_TEST (flash start address support calculate crc for module invariable memory) before run config CMake.
+
+If you want to calculate from start address to end address of flash:
 
 ```sh
 $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
 $ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
 $ export TOOL_CHAINS=GCC
-$ export START_ADDR_FLASH=0x8000000
+$ export FLASH_REGIONS_TEST=0x8000000
 ```
 
-with START_ADDR_FLASH=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
+or if you want to calculate multiple regions:
+
+```sh
+$ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
+```
+
+with FLASH_REGIONS_TEST=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
 
   1. Create Source and CMakeLists.txt
   2. mkdir build
@@ -158,34 +172,9 @@ with START_ADDR_FLASH=0x8000000 is flash start address of board name brd4187c (c
   5. cmake --build .
 
 ### Run unit test
+  - Refer to the guideline link: [run_unit_test.md](./docs/run_unit_test.md)
+### Run integration test
+  - Refer to the guideline link: [run_integration_test.md](./docs/run_integration_test.md)
 
-CMake config
 
-```sh
-$ make prepare
-$ cd build
-$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
-```
-
-With the commands above, the default value supports calculation CRC-16. If you want to change to calculate for CRC-32 bits, use the config command below
-
-```sh
-$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
-```
-
-Here is some options to support running tests of invariable memory modules:
-- ENABLE_CAL_CRC_32
-- ENABLE_CRC_USE_SW (if this option ON, you can enable option: ENABLE_SW_CRC_TABLE)
-
-CMake Build
-
-```sh
-$ cmake --build . --target unit_tests -j4
-```
-
-or
-
-```sh
-$ make unit_tests -j4
-```
 

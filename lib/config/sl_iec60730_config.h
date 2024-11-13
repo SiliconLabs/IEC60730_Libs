@@ -52,13 +52,17 @@
 
 // <q SL_IEC60730_WDOG0_ENABLE> Enable Watchdog 0
 // <i> Default: 1
+#ifndef SL_IEC60730_WDOG0_ENABLE
 #define SL_IEC60730_WDOG0_ENABLE                1
+#endif //SL_IEC60730_WDOG0_ENABLE
 
 // <q SL_IEC60730_WDOG1_ENABLE> Enable Watchdog 1
 // <i> Default: 0
+#ifndef SL_IEC60730_WDOG1_ENABLE
 #define SL_IEC60730_WDOG1_ENABLE                0
+#endif //SL_IEC60730_WDOG1_ENABLE
 
-// <q SL_IEC60730_SAVE_STAGE_ENABLE> Enable saving iec60730_WatchdogState to backup RAM on Series 2
+// <q SL_IEC60730_SAVE_STAGE_ENABLE> Enable saving iec60730_watchdog_state to backup RAM on Series 2
 // <i> Default: 0
 #define SL_IEC60730_SAVE_STAGE_ENABLE           0
 
@@ -107,7 +111,9 @@
 
 // <q SL_IEC60730_USE_MARCHX_ENABLE> Enable used the algorithm used in BIST is March-X.
 // <i> Default: 1
+#ifndef SL_IEC60730_USE_MARCHX_ENABLE
 #define SL_IEC60730_USE_MARCHX_ENABLE           1
+#endif // SL_IEC60730_USE_MARCHX_ENABLE
 
 // <o SL_IEC60730_VAR_BLOCKS_PER_BIST> SL_IEC60730_VAR_BLOCKS_PER_BIST
 // <i> Default: 256
