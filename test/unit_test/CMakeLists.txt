@@ -1,40 +1,7 @@
 # unit test info
 set(UNIT_TEST_INFO "unit_test_info")
+#unit test clean
 set(UNIT_TEST_CLEAN "unit_test_clean")
-
-# Support calculate CRC
-option(ENABLE_CAL_CRC_32 "Enable calculate crc 32" OFF)
-option(ENABLE_CRC_USE_SW "Enable using software calculate CRC" OFF)
-option(ENABLE_SW_CRC_TABLE "Enable software calculate CRC using table CRC" OFF)
-set(OPTION_SUPPORT_TEST_IMC_MODULE "ENABLE_CAL_CRC_32 ENABLE_CRC_USE_SW ENABLE_SW_CRC_TABLE")
-
-# Set address start calculate crc
-if(DEFINED ENV{START_ADDR_FLASH})
-  set(START_ADDR_FLASH "$ENV{START_ADDR_FLASH}")
-else()
-set(START_ADDR_FLASH "0x00000000")
-endif()
-
-message("-- Options to support running tests of invariable memory modules: ${OPTION_SUPPORT_TEST_IMC_MODULE}")
-
-if(ENABLE_CAL_CRC_32)
-  message("-- Support crc calculation for invariable memory modules: CRC-32")
-else()
-  message("-- Support crc calculation for invariable memory modules: CRC-16")
-endif()
-
-if(ENABLE_CRC_USE_SW)
-  message("-- Enable using software to calculate CRC")
-  if(ENABLE_SW_CRC_TABLE)
-    message("-- Enable software using CRC pre-defined table to calculate CRC")
-  else() # ENABLE_SW_CRC_TABLE
-    message("-- Disable software using CRC pre-defined table to calculate CRC")
-  endif() # ENABLE_SW_CRC_TABLE
-else() # ENABLE_CRC_USE_SW
-  message("-- Enable using harware GPCRC to calculate CRC")
-endif() # ENABLE_CRC_USE_SW
-
-message("-- Start address calculate crc value of flash: ${START_ADDR_FLASH}")
 
 add_custom_target(${UNIT_TEST_INFO}
                   COMMAND echo "Components list: unit_test_iec60730_post "

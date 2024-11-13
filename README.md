@@ -140,16 +140,24 @@ $ slc generate $GSDK/app/common/example/blink_baremetal -np -d blinky -name=blin
 
 ### Export Variable
 
-Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and START_ADDR_FLASH (flash start address support calculate crc for module invariable memory) before run config CMake.
+Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and FLASH_REGIONS_TEST (flash start address support calculate crc for module invariable memory) before run config CMake.
+
+If you want to calculate from start address to end address of flash:
 
 ```sh
 $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
 $ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
 $ export TOOL_CHAINS=GCC
-$ export START_ADDR_FLASH=0x8000000
+$ export FLASH_REGIONS_TEST=0x8000000
 ```
 
-with START_ADDR_FLASH=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
+or if you want to calculate multiple regions:
+
+```sh
+$ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
+```
+
+with FLASH_REGIONS_TEST=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
 
   1. Create Source and CMakeLists.txt
   2. mkdir build
@@ -167,25 +175,62 @@ $ cd build
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
 ```
 
+CMake Build
+
+```sh
+$ cmake --build . --target unit_test_info -j4
+```
+
+or
+
+```sh
+$ make unit_test_info -j4
+```
+
+### Run integration test
+
+CMake config
+
+```sh
+$ make prepare
+$ cd build
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c
+```
+
+CMake Build
+
+```sh
+$ cmake --build . --target integration_test_info -j4
+```
+
+or
+
+```sh
+$ make integration_test_info -j4
+```
+
+> [!NOTE]
+> For devices that have Trust zone implemented, secure and non-secure peripherals need to test.
+> Default enable checks secure peripherals. To check non-secure peripherals enable this option when run CMake config: TEST_NON_SECURE_PERIPHERALS_ENABLE. For example:
+>> $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DTEST_NON_SECURE_PERIPHERALS_ENABLE=ON -DBOARD_NAME=brd4187c
+
+### CRC calculation options
+
 With the commands above, the default value supports calculation CRC-16. If you want to change to calculate for CRC-32 bits, use the config command below
 
 ```sh
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
 ```
 
+or
+
+```sh
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
+```
+
 Here is some options to support running tests of invariable memory modules:
 - ENABLE_CAL_CRC_32
 - ENABLE_CRC_USE_SW (if this option ON, you can enable option: ENABLE_SW_CRC_TABLE)
 
-CMake Build
-
-```sh
-$ cmake --build . --target unit_tests -j4
-```
-
-or
-
-```sh
-$ make unit_tests -j4
-```
-
+> [!NOTE]
+> Only use ENABLE_SW_CRC_TABLE option when the ENABLE_CRC_USE_SW option is ON, otherwise an error will be reported during the build process.

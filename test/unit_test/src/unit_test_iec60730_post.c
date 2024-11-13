@@ -21,8 +21,6 @@
 
 /*=======Mock Code=====*/
 uint8_t iec60730_timer_test_control = SL_IEC60730_TIMER_TEST_ENABLE;
-__no_init sl_iec60730_imc_params_t imc_unit_test __CLASSB_RAM;
-__no_init sl_iec60730_vmc_params_t vmc_unit_test __CLASSB_RAM;
 static bool is_function_called = false;
 
 __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){
