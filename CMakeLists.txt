@@ -28,6 +28,8 @@ message("-- Toolchains build: ${TOOL_CHAINS}")
 
 # enable unit test
 option(ENABLE_UNIT_TESTING "Enable a Unit Testing Build" OFF)
+# enable integration test
+option(ENABLE_INTEGRATION_TESTING "Enable a Integration Testing Build" OFF)
 
 # choose board name
 option(BOARD_NAME "choose board name" brd4187c)
@@ -47,14 +49,11 @@ endif()
 
 add_subdirectory(lib)
 add_subdirectory(test)
-# Run Make file
-include(makefile)
-
-if(ENABLE_UNIT_TESTING)
 
 # Run generate_lib_iec60730
 include(generate_lib_iec60730)
 
+if(ENABLE_UNIT_TESTING)
 generate_lib_iec60730(${SDK_CMAKE_RELATIVE_DIR})
 get_target_property(MAIN_CFLAGS_LIB_IEC60730 slc_lib_iec60730 COMPILE_OPTIONS)
 string(REPLACE "$<$<COMPILE_LANGUAGE:C>:SHELL:-imacros sl_gcc_preinclude.h>;" "" MAIN_CFLAGS_LIB_IEC60730 "${MAIN_CFLAGS_LIB_IEC60730}")
@@ -64,5 +63,49 @@ target_compile_options(unity PUBLIC
                       ${MAIN_CFLAGS_LIB_IEC60730})
 
 endif()
+
+if(ENABLE_INTEGRATION_TESTING)
+generate_lib_iec60730(${SDK_CMAKE_RELATIVE_DIR})
+endif()
+
+# Support calculate CRC
+option(ENABLE_CAL_CRC_32 "Enable calculate crc 32" OFF)
+option(ENABLE_CRC_USE_SW "Enable using software calculate CRC" OFF)
+option(ENABLE_SW_CRC_TABLE "Enable software calculate CRC using table CRC" OFF)
+set(OPTION_SUPPORT_TEST_IMC_MODULE "ENABLE_CAL_CRC_32 ENABLE_CRC_USE_SW ENABLE_SW_CRC_TABLE")
+
+# Set address start calculate crc
+if(DEFINED ENV{FLASH_REGIONS_TEST})
+  set(FLASH_REGIONS_TEST "$ENV{FLASH_REGIONS_TEST}")
+else()
+  set(FLASH_REGIONS_TEST "0x00000000")
+endif()
+
+message("-- Options to support running tests of invariable memory modules: ${OPTION_SUPPORT_TEST_IMC_MODULE}")
+
+if(ENABLE_CAL_CRC_32)
+  set(DEFINE_ENABLE_CAL_CRC_32 "SL_IEC60730_USE_CRC_32_ENABLE=1")
+  message("-- Support crc calculation for invariable memory modules: CRC-32")
+else()
+  set(DEFINE_ENABLE_CAL_CRC_32 "SL_IEC60730_USE_CRC_32_ENABLE=0")
+  message("-- Support crc calculation for invariable memory modules: CRC-16")
+endif()
+
+if(ENABLE_CRC_USE_SW)
+  set(DEFINE_ENABLE_CRC_USE_SW "SL_IEC60730_CRC_USE_SW_ENABLE=1")
+  message("-- Enable using software to calculate CRC")
+  if(ENABLE_SW_CRC_TABLE)
+    set(DEFINE_ENABLE_SW_CRC_TABLE "SL_IEC60730_SW_CRC_TABLE_ENABLE=1")
+    message("-- Enable software using CRC pre-defined table to calculate CRC")
+  else() # ENABLE_SW_CRC_TABLE
+    set(DEFINE_ENABLE_SW_CRC_TABLE "SL_IEC60730_SW_CRC_TABLE_ENABLE=0")
+    message("-- Disable software using CRC pre-defined table to calculate CRC")
+  endif() # ENABLE_SW_CRC_TABLE
+else() # ENABLE_CRC_USE_SW
+  set(DEFINE_ENABLE_CRC_USE_SW "SL_IEC60730_CRC_USE_SW_ENABLE=0")
+  message("-- Enable using harware GPCRC to calculate CRC")
+endif() # ENABLE_CRC_USE_SW
+
+message("-- Start address calculate crc value of flash: ${FLASH_REGIONS_TEST}")
 
 

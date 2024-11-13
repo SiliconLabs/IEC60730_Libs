@@ -4,23 +4,6 @@ function(generate_unit_test relative_dir target_name source_file)
   set(UNIT_TEST_NAME ${target_name})
   set(UNIT_TEST_NAME_BUILD_DIR "build/${BOARD_NAME}/${target_name}")
 
-  if(ENABLE_CAL_CRC_32)
-    set(DEFINE_ENABLE_CAL_CRC_32 "SL_IEC60730_USE_CRC_32_ENABLE")
-  else()
-    set(DEFINE_ENABLE_CAL_CRC_32 "")
-  endif()
-
-  if(ENABLE_CRC_USE_SW)
-    set(DEFINE_ENABLE_CRC_USE_SW "SL_IEC60730_CRC_USE_SW_ENABLE")
-    if(ENABLE_SW_CRC_TABLE)
-      set(DEFINE_ENABLE_SW_CRC_TABLE "SL_IEC60730_SW_CRC_TABLE_ENABLE")
-    else() # ENABLE_SW_CRC_TABLE
-    set(DEFINE_ENABLE_SW_CRC_TABLE "")
-    endif() # ENABLE_SW_CRC_TABLE
-  else() # ENABLE_CRC_USE_SW
-    set(DEFINE_ENABLE_CRC_USE_SW "")
-  endif() # ENABLE_CRC_USE_SW
-
 	if(${target_name} STREQUAL "unit_test_iec60730_cpu_registers")
 		set(UNIT_TEST_SOURCES
     	"${FULL_DIR}/src/main.c"
@@ -50,6 +33,7 @@ function(generate_unit_test relative_dir target_name source_file)
                                                       ${DEFINE_ENABLE_CAL_CRC_32}
                                                       ${DEFINE_ENABLE_CRC_USE_SW}
                                                       ${DEFINE_ENABLE_SW_CRC_TABLE})
+
 	target_link_libraries(${UNIT_TEST_NAME} PUBLIC unity slc_lib_iec60730)
 
 	# Create .bin, .hex and .s37 artifacts after building the project
@@ -71,10 +55,10 @@ function(generate_unit_test relative_dir target_name source_file)
   if(${target_name} STREQUAL "unit_test_iec60730_invariable_memory")
     if(ENABLE_CAL_CRC_32)
       set(post_build_command ${CMAKE_OBJDUMP} -t -h -d -S ${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}.out > ${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}.lst
-      && bash ${CMAKE_SOURCE_DIR}/lib/crc/sl_iec60730_cal_crc32.sh '${CMAKE_CURRENT_BINARY_DIR}/${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}' '' 'C:/srecord/bin' '${TOOL_CHAINS}' '${START_ADDR_FLASH}')
+      && bash ${CMAKE_SOURCE_DIR}/lib/crc/sl_iec60730_cal_crc32.sh '${CMAKE_CURRENT_BINARY_DIR}/${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}' '' 'C:/srecord/bin' '${TOOL_CHAINS}' "${FLASH_REGIONS_TEST}")
     else()
       set(post_build_command ${CMAKE_OBJDUMP} -t -h -d -S ${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}.out > ${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}.lst
-      && bash ${CMAKE_SOURCE_DIR}/lib/crc/sl_iec60730_cal_crc16.sh '${CMAKE_CURRENT_BINARY_DIR}/${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}' '' 'C:/srecord/bin' '${TOOL_CHAINS}' '${START_ADDR_FLASH}')
+      && bash ${CMAKE_SOURCE_DIR}/lib/crc/sl_iec60730_cal_crc16.sh '${CMAKE_CURRENT_BINARY_DIR}/${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}' '' 'C:/srecord/bin' '${TOOL_CHAINS}' "${FLASH_REGIONS_TEST}")
     endif()
   else()
 	  set(post_build_command ${CMAKE_OBJDUMP} -t -h -d -S ${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}.out > ${UNIT_TEST_NAME_BUILD_DIR}/${UNIT_TEST_NAME}.lst)

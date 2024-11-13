@@ -33,13 +33,24 @@ Before running the bash file, you need to install Jlink, Srecord and slc tool, r
 If the compiler is GCC
 - If the compiler is GCC:
 
+If you want to calculate from start address to end address of flash:
+
 ```sh
 $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
-$ export ARM_GCC_DIR=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7
+$ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
 $ export TOOL_CHAINS=GCC
-$ export START_ADDR_FLASH=0x8000000
-$ export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+$ export FLASH_REGIONS_TEST=0x8000000
 ```
+
+or if you want to calculate multiple regions:
+
+```sh
+$ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
+```
+
+> [!NOTE]
+> In the current unit test file, only enable computation one region: from the FLASH_REGIONS_TEST address of ​​the flash to the end of the flash. Therefore, just export the flash's starting address. For example, chip EFR32MG24:
+>> $ export FLASH_REGIONS_TEST=0x8000000
 
 ### Example
 
@@ -53,3 +64,10 @@ In case you want to build CRC32 run this command. For example
 ```sh
 bash execute_unit_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
 ```
+
+Here is some options to support running tests of invariable memory modules:
+- ENABLE_CAL_CRC_32
+- ENABLE_CRC_USE_SW (if this option ON, you can enable option: ENABLE_SW_CRC_TABLE)
+
+> [!NOTE]
+> Only use ENABLE_SW_CRC_TABLE option when the ENABLE_CRC_USE_SW option is ON, otherwise an error will be reported during the build process.
