@@ -9,7 +9,6 @@ from os import listdir
 variables = {}
 asm_labels = {}
 chip_name = ""
-app_type = ""
 adapter_serial_no = ""
 lst_file_path = ""
 lib_path = ""
@@ -22,10 +21,8 @@ class iec60730TestBase():
                 chip_name,
                 lst_file_path,
                 library_path,
-                app_type,
                 comp = "GCC"):
         self._chip_name = chip_name
-        self._app_type = app_type
         self._adapter_serial_no = adapter_serial_no
         self._output_path = lst_file_path
         self._library_path = library_path

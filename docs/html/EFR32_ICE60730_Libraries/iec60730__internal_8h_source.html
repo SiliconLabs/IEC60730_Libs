@@ -90,11 +90,19 @@ $(function() {
 <div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="iec60730__irq_8h.html">sl_iec60730_irq.h</a>&quot;</span></div>
 <div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#include &quot;oem_iec60730.h&quot;</span></div>
 <div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
+<<<<<<< HEAD:docs/html/EFR32_ICE60730_Libraries/iec60730__internal_8h_source.html
 <div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// These macros should be defined in oem_iec60730.h by OEM, otherwise default definition will be used.</span></div>
 <div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#if (!defined(SL_IEC60370_ENTER_ATOMIC) || !defined(SL_IEC60370_EXIT_ATOMIC))</span></div>
 <div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define SL_IEC60370_ENTER_ATOMIC() __disable_irq()</span></div>
 <div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define SL_IEC60370_EXIT_ATOMIC()  __enable_irq()</span></div>
 <div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define SL_IEC60370_DECLARE_IRQ_STATE</span></div>
+=======
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="comment">// These macros should be defined in iec60730_oem.h by OEM, otherwise default definition will be used.</span></div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#if (!defined(IEC60370_ENTER_ATOMIC) || !defined(IEC60370_EXIT_ATOMIC))</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;<span class="preprocessor">#define IEC60370_ENTER_ATOMIC() __disable_irq()</span></div>
+<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#define IEC60370_EXIT_ATOMIC()  __enable_irq()</span></div>
+<div class="line"><a name="l00042"></a><span class="lineno">   42</span>&#160;<span class="preprocessor">#define IEC60370_DECLARE_IRQ_STATE</span></div>
+>>>>>>> develop:Doc/html/EFR32_ICE60730_Libraries/iec60730__internal_8h_source.html
 <div class="line"><a name="l00043"></a><span class="lineno">   43</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160; </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;<span class="comment">// Disable warnings on unused labels.  Labels are used to set breakpoints for</span></div>

@@ -455,19 +455,19 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_msp(void)
 #endif
       "   MRS R2, MSP           \n"   /* Get back stack value */
       "   CMP R2, R1            \n"   /* Verify value */
-      "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP   \n"
+      "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP_S   \n"
       "   LDR R1, =0x55555554   \n"
       "   MSR MSP, R1           \n"   /* load stack value */
       "   MRS R2, MSP           \n"   /* Get back stack value */
       "   CMP R2, R1            \n"   /* Verify value */
-      "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP   \n"
+      "   BNE IEC60730_FAIL_ENDLESS_LOOP_MSP_S   \n"
       "   MSR MSP, R0           \n"   /* Restore stack value */
       "   MSR CONTROL, R3       \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_MSP_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
-      "IEC60730_FAIL_ENDLESS_LOOP_MSP:  \n"
+      "IEC60730_FAIL_ENDLESS_LOOP_MSP_S:  \n"
 #else
-      "IEC60730_FAIL_ENDLESS_LOOP_MSP:: \n"
+      "IEC60730_FAIL_ENDLESS_LOOP_MSP_S:: \n"
 #endif
       "   MSR MSP, R0           \n"   /* Restore stack value */
       "   MSR CONTROL, R3       \n"   /* Restore Control value */
@@ -524,19 +524,19 @@ sl_iec60730_test_result_t result = IEC60730_TEST_PASSED;
 #endif
       "   MRS R2, PSP         \n"   /* Get back process stack value */
       "   CMP R2, R1          \n"   /* Verify value */
-      "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP   \n"
+      "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP_S   \n"
       "   LDR R1, =0x55555554 \n"
       "   MSR PSP, R1         \n"   /* load process stack value */
       "   MRS R2, PSP         \n"   /* Get back process stack value */
       "   CMP R2, R1          \n"   /* Verify value */
-      "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP   \n"
+      "   BNE IEC60730_FAIL_ENDLESS_LOOP_PSP_S   \n"
       "   MSR PSP, R0         \n"   /* Restore process stack value */
       "   MSR CONTROL, R3     \n"   /* Restore Control value */
       "   B IEC60730_CPU_REGS_PSP_S_PASS_ASM_BKPT   \n"
 #ifndef IAR_TESTING /* GCC */
-      "IEC60730_FAIL_ENDLESS_LOOP_PSP:  \n"
+      "IEC60730_FAIL_ENDLESS_LOOP_PSP_S:  \n"
 #else
-      "IEC60730_FAIL_ENDLESS_LOOP_PSP:: \n"
+      "IEC60730_FAIL_ENDLESS_LOOP_PSP_S:: \n"
 #endif
       "   MSR PSP, R0         \n"   /* Restore stack value */
       "   MSR CONTROL, R3     \n"   /* Restore Control value */
@@ -1700,9 +1700,9 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_fpu_fpsx(void)
 #else
       "IEC60730_CPU_REGS_FPU_Sx_DONE::\n"
 #endif
-      "   LDR R1, =0xE000ED88             \n"
+      "   LDR.W R1, =0xE000ED88           \n"
       "   STR R5, [R1, #0]                \n"   /* Restore CPACR */
-      "   LDR R1, =0xE000EF34             \n"
+      "   LDR.W R1, =0xE000EF34           \n"
       "   STR R6, [R1, #0]                \n"   /* Restore FPCCR */
       "   VMSR FPSCR, R4                  \n"   /* Restore FPSCR */
       "   LDMIA SP!, {R4, R5, R6}         \n"
