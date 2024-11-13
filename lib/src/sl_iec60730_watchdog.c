@@ -37,19 +37,19 @@ static uint8_t iec60730_watchdog_count IEC60730_DATA_NO_CLEAR;
 #if (_SILICON_LABS_32B_SERIES < 2)
 const sl_iec60730_watchdog_t  iec60730_wdog_inst_arr[SL_IEC60730_WDOGINST_NUMB] = {
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
-      {.wdog = WDOG0, .rst = RMU_RSTCAUSE_WDOGRST},
+      {.wdog = SL_IEC60730_WDOG_INST(0), .rst = RMU_RSTCAUSE_WDOGRST},
 #endif //(SL_IEC60730_WDOG0_ENABLE == 1)
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
-      {.wdog = WDOG1, .rst = RMU_RSTCAUSE_WDOGRST},
+      {.wdog = SL_IEC60730_WDOG_INST(1), .rst = RMU_RSTCAUSE_WDOGRST},
 #endif //(SL_IEC60730_WDOG1_ENABLE == 1)
       };
 #else
 const sl_iec60730_watchdog_t  iec60730_wdog_inst_arr[SL_IEC60730_WDOGINST_NUMB] = {
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
-      {.wdog = WDOG0, .rst = EMU_RSTCAUSE_WDOG0},
+      {.wdog = SL_IEC60730_WDOG_INST(0), .rst = EMU_RSTCAUSE_WDOG0},
 #endif //(SL_IEC60730_WDOG0_ENABLE == 1)
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
-      {.wdog = WDOG1, .rst = EMU_RSTCAUSE_WDOG0},
+      {.wdog = SL_IEC60730_WDOG_INST(1), .rst = EMU_RSTCAUSE_WDOG0},
 #endif //(SL_IEC60730_WDOG1_ENABLE == 1)
       };
 #endif
@@ -189,7 +189,6 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
 {
   sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
   volatile uint32_t timeOut;
-
   // Check for the power on reset and watchdog reset condition
   if (SL_IEC60730_RST_POR && !SL_IEC60730_RST_WDOGS) {
     LABEL_DEF(IEC60730_WATCHDOG_POST_POR_RESET_BKPT);
@@ -257,7 +256,6 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
       timeOut--;
     }
   }
-
   LABEL_DEF(IEC60730_WATCHDOG_POST_END_BKPT);
 
 WATCHDOG_POST_DONE:

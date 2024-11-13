@@ -20,8 +20,6 @@
 #include "sl_iec60730_internal.h"
 
 /*=======Mock Code=====*/
-__no_init sl_iec60730_imc_params_t imc_unit_test __CLASSB_RAM;
-__no_init sl_iec60730_vmc_params_t vmc_unit_test __CLASSB_RAM;
 static bool is_function_called = false;
 
 __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){

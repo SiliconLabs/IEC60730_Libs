@@ -89,7 +89,7 @@ extern "C" {
  * completed -> Enable the definition of macro "#define SL_IEC60730_RSTCAUSES_CLEAR_ENABLE"
  * on file sl_iec60730_config.h. By default this feature is disabled.
  *
- * If the Watchdog module is build in non-secure mode then the macro "SL_IEC60730_NON_SECURE_EN"
+ * If the Watchdog module is build in non-secure mode then the macro "SL_IEC60730_NON_SECURE_ENABLE"
  * must be defined to enable the lib using non-secure address of the Watchdog peripheral.
  *
  * @warning - The static variable iec60730_watchdog_count must be located at memory
@@ -134,11 +134,15 @@ typedef enum {
 #endif
 
 #ifndef  SL_IEC60730_WDOG_INST
-#ifdef SL_IEC60730_NON_SECURE_EN
+#if (_SILICON_LABS_32B_SERIES == 2)
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
 #define  SL_IEC60730_WDOG_INST(n) WDOG##n##_NS
 #else
 #define  SL_IEC60730_WDOG_INST(n) WDOG##n
 #endif
+#else // Series 1 devices
+#define  SL_IEC60730_WDOG_INST(n) WDOG##n
+#endif //(_SILICON_LABS_32B_SERIES == 2)
 #endif
 
 #if (_SILICON_LABS_32B_SERIES < 2)
@@ -161,7 +165,7 @@ typedef enum {
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #else // Series 2 devices
 #ifndef SL_IEC60730_RST
-#ifdef SL_IEC60730_NON_SECURE_EN
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_RST EMU_NS
 #else
 #define SL_IEC60730_RST EMU
@@ -231,12 +235,15 @@ typedef enum {
 #define SL_IEC60730_RST_WDOGS (SL_IEC60730_RST_WDOG0 || SL_IEC60730_RST_WDOG1)
 
 #ifndef SL_IEC60730_BURAM
-#ifdef SL_IEC60730_NON_SECURE_EN
+#if (_SILICON_LABS_32B_SERIES == 2)
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_BURAM BURAM_NS
 #else
 #define SL_IEC60730_BURAM BURAM
 #endif
+#endif // (_SILICON_LABS_32B_SERIES == 2)
 #endif
+
 #ifndef SL_IEC60730_BURAM_IDX
 #define SL_IEC60730_BURAM_IDX 0UL
 #endif
