@@ -100,9 +100,9 @@ extern "C" {
  * service routine.  When the test timer interrupt occurs,
  * #sl_iec60730_irq_check() executes. Inside this function, firmware compares
  * the count values to the bound values, and sets #iec60730_safety_check
- * by called funtion #sl_iec60730_safety_check_error_occur to #IEC60730_INTERRUPT_FAIL
+ * by called function #sl_iec60730_safety_check_error_occur to #SL_IEC60730_INTERRUPT_FAIL
  * if a count exceeds either the minimum or maximum bounds.
- * The next execution of the BIST routine will detect the #IEC60730_TEST_FAILED
+ * The next execution of the BIST routine will detect the #SL_IEC60730_TEST_FAILED
  * state and enter safe state.  A flowchart of this functionality
  * is shown in \link irq_plausibility_test_flowchart Figure 1\endlink.
  *
@@ -164,7 +164,7 @@ void sl_iec60730_irq_reset_counter(void);
  * This function compares each entry in #iec60730_IRQExecCount
  * with its corresponding bounds defined in #iec60730_IRQFreqBounds.  If the
  * entry is found to exceed the defined bounds, #iec60730_safety_check is
- * set to #IEC60730_INTERRUPT_FAIL.
+ * set to #SL_IEC60730_INTERRUPT_FAIL.
  * Otherwise no action is taken.  The function ends by setting
  * #IEC60730_INTERRUPT_COMPLETE in #sl_iec60730_program_counter_check.
  *****************************************************************************/

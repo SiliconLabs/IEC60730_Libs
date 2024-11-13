@@ -92,8 +92,8 @@ extern "C" {
  * public IEC60730 CPU Registers Built In Self Test
  *
  * @returns #sl_iec60730_test_result_t
- * @returns #IEC60730_TEST_FAILED means test failed,
- *          #IEC60730_TEST_PASSED means test passed.
+ * @returns #SL_IEC60730_TEST_FAILED means test failed,
+ *          #SL_IEC60730_TEST_PASSED means test passed.
  *
  * This function will do a test of all the CPU core registers in non-secure state
  *****************************************************************************/
@@ -103,8 +103,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist_ns(void);
  * public IEC60730 CPU Registers Built In Self Test
  *
  * @returns #sl_iec60730_test_result_t
- * @returns #IEC60730_TEST_FAILED means test failed,
- *          #IEC60730_TEST_PASSED means test passed.
+ * @returns #SL_IEC60730_TEST_FAILED means test failed,
+ *          #SL_IEC60730_TEST_PASSED means test passed.
  *
  * This function will do a test of all the CPU core registers in secure state
  *****************************************************************************/
@@ -114,8 +114,8 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist_s(void);
  * public IEC60730 CPU Registers Built In Self Test
  *
  * @returns #sl_iec60730_test_result_t
- * @returns #IEC60730_TEST_FAILED means test failed,
- *          #IEC60730_TEST_PASSED means test passed.
+ * @returns #SL_IEC60730_TEST_FAILED means test failed,
+ *          #SL_IEC60730_TEST_PASSED means test passed.
  *
  * This function will do a test of all the CPU core registers.
  *****************************************************************************/

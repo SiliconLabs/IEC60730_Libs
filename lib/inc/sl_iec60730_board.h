@@ -35,35 +35,35 @@ extern "C" {
  *****************************************************************************/
 
 /* Invariable Memory */
-extern uint32_t __FlashStart;
+extern uint32_t flash_start;
 
 /// The #SL_IEC60730_ROM_START definition describes the start address of Flash for CRC
 /// calculation. This definition MUST be alignment of #SL_IEC60730_FLASH_BLOCK and can be
 /// changed by user so that the value DOES NOT exceed the end address of Flash
 /// (the #SL_IEC60730_ROM_END definition). Otherwise, #sl_iec60730_imc_post and #sl_iec60730_imc_bist
-/// return #IEC60730_TEST_FAILED. The default value of the #SL_IEC60730_ROM_START can be found in
+/// return #SL_IEC60730_TEST_FAILED. The default value of the #SL_IEC60730_ROM_START can be found in
 /// sl_iec60730.h file.
 ///
 /// In case you change value of this definition then you SHOULD change the 5th
 /// parameter of the script \ref gcc_crcXY when running the Post Build.
 ///
-/// In our example, we use the variable __FlashStart provided by the linker file
+/// In our example, we use the variable flash_start provided by the linker file
 /// to simply define the start address of Flash. User can redefine #SL_IEC60730_ROM_START
 /// as follows.
 /// ```
-/// #define SL_IEC60730_ROM_START  ((uint32_t *)(&__FlashStart))
+/// #define SL_IEC60730_ROM_START  ((uint32_t *)(&flash_start))
 /// ```
 #ifndef SL_IEC60730_ROM_END
-#define SL_IEC60730_ROM_START ((uint32_t *) (&__FlashStart))
+#define SL_IEC60730_ROM_START ((uint32_t *) (&flash_start))
 #endif
 
 /// The #SL_IEC60730_ROM_END definition describes the end address of Flash. It is the
-/// address of #__checksum variables. In this version, users SHOULD not
+/// address of #check_sum variables. In this version, users SHOULD not
 /// change this definition. Refer to the example in
 /// \ref invariable_memory_check_example_flowchart, to better understand the
 /// #SL_IEC60730_ROM_START, and #SL_IEC60730_ROM_END definitions.
 #ifndef SL_IEC60730_ROM_END
-#define SL_IEC60730_ROM_END ((uint32_t *) (&__checksum))
+#define SL_IEC60730_ROM_END ((uint32_t *) (&check_sum))
 #endif
 
 /** @} (end addtogroup IEC60730_INVARIABLE_MEMORY_Test) */
@@ -74,15 +74,15 @@ extern uint32_t __FlashStart;
  *****************************************************************************/
 
 /* Variable Memory */
-extern uint32_t __classb_start;
-extern uint32_t __classb_end;
+extern uint32_t classb_start;
+extern uint32_t classb_end;
 extern uint32_t __StackTop;
-extern uint32_t __RamStart;
-extern uint32_t __ClassBLimit;
+extern uint32_t ram_start;
+extern uint32_t class_b_limit;
 
 #if defined(__GNUC__)
-extern uint32_t __stack_check;
-#define STACK_CHECK     ((uint32_t *) (&__stack_check))
+extern uint32_t stack_check;
+#define STACK_CHECK     ((uint32_t *) (&stack_check))
 #elif defined(__ICCARM__)
 #pragma section = ".stack_bottom"
 #define STACK_CHECK     __section_begin(".stack_bottom")
@@ -90,12 +90,12 @@ extern uint32_t __stack_check;
 #error Unrecognized toolchain in sl_iec60730_toolchain.h
 #endif
 
-#define RAM_START       ((uint32_t *) (&__RamStart))
+#define RAM_START       ((uint32_t *) (&ram_start))
 #define RAM_END         ((uint32_t *) ((uint32_t) RAM_BACKUP - 1))
 #define RAM_BACKUP      ((uint32_t *) (&__StackTop))
 
-#define CLASSB_START    ((uint32_t *) (&__classb_start))
-#define CLASSB_END      ((uint32_t *) ((uint32_t) (&__ClassBLimit) - 1))
+#define CLASSB_START    ((uint32_t *) (&classb_start))
+#define CLASSB_END      ((uint32_t *) ((uint32_t) (&class_b_limit) - 1))
 
 #define RAMTEST_START   CLASSB_START
 #define RAMTEST_END     CLASSB_END

@@ -64,7 +64,7 @@ void test_sl_iec60730_cpu_registers_bist_failed_check_condition(void);
  * @returns None.
  * This test case only checks when the chip supports is cortex M33.
  * If the register checks in the function sl_iec60730_cpu_registers_bist_ns() pass,
- * then function will be returned IEC60730_TEST_PASSED.
+ * then function will be returned SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_cpu_registers_bist_ns_pass_all_check_condition(void);
@@ -75,7 +75,7 @@ void test_sl_iec60730_cpu_registers_bist_ns_pass_all_check_condition(void);
  * @returns None.
  * This test case only checks when the chip supports is cortex M33.
  * If one of the register checks in the function sl_iec60730_cpu_registers_bist_ns() failed,
- * then function will be returned IEC60730_TEST_FAILED.
+ * then function will be returned SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_cpu_registers_bist_ns_failed_check_condition(void);
@@ -86,7 +86,7 @@ void test_sl_iec60730_cpu_registers_bist_ns_failed_check_condition(void);
  * @returns None.
  * This test case only checks when the chip supports is cortex M33.
  * If the register checks in the function sl_iec60730_cpu_registers_bist_s() pass,
- * then function will be returned IEC60730_TEST_PASSED.
+ * then function will be returned SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_cpu_registers_bist_s_pass_all_check_condition(void);
@@ -97,12 +97,12 @@ void test_sl_iec60730_cpu_registers_bist_s_pass_all_check_condition(void);
  * @returns None.
  * This test case only checks when the chip supports is cortex M33.
  * If one of the register checks in the function sl_iec60730_cpu_registers_bist_s() failed,
- * then function will be returned IEC60730_TEST_FAILED.
+ * then function will be returned SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_cpu_registers_bist_s_failed_check_condition(void);
 
-#endif  // UNIT_TEST_IEC60730_CPU_REGISTERS_H
+#endif // UNIT_TEST_IEC60730_CPU_REGISTERS_H
 
 /** @} (end defgroup IEC60730_CPU_REGISTERS_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

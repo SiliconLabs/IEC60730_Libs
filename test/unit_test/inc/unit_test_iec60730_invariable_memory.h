@@ -29,6 +29,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include "sl_iec60730_internal.h"
 
 /*======= External Functions =====*/
 
@@ -55,7 +56,7 @@ extern uint32_t* unit_test_iec60730_imc_mock_init_run_crc(void);
  * @returns boolean.
  *
  *****************************************************************************/
-extern bool unit_test_mock_check_integrity(void);
+extern sl_iec60730_test_result_t unit_test_mock_check_integrity(void);
 
 /**************************************************************************/ /**
  * Public   Function mock enable gpcrc hardware operate.
@@ -77,10 +78,8 @@ extern bool unit_test_iec60730_imc_mock_sw_enable_cal_crc(void);
  * Public   Check sl_iec60730_imc_init() operate
  *
  * @returns None.
- * This test case is tested when config SL_IEC60730_CRC_USE_SW_ENABLE == 0, mean using
- * hardware instead of software to calculate crc value.
- * If the passed paramater value is NULL, the sl_iec60730_imc_init() function will fail.
- * When calling the function sl_iec60730_imc_post(), the value will be returned IEC60730_TEST_FAILED.
+ * If the passed parameter value is NULL, the sl_iec60730_imc_init() function will fail.
+ * When calling the function sl_iec60730_imc_post(), the value will be returned SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_init_param_null(void);
@@ -89,8 +88,8 @@ void test_sl_iec60730_imc_init_param_null(void);
  * Public   Check sl_iec60730_imc_post() operate
  *
  * @returns None.
- * If the passed paramater value is valid, the sl_iec60730_imc_init() function will success.
- * When calling the function sl_iec60730_imc_post(), the value will be returned IEC60730_TEST_PASSED.
+ * If the passed parameter value is valid, the sl_iec60730_imc_init() function will success.
+ * When calling the function sl_iec60730_imc_post(), the value will be returned SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_post_pass_check(void);
@@ -101,8 +100,8 @@ void test_sl_iec60730_imc_post_pass_check(void);
  * @returns None.
  * In the case of SL_IEC60730_CRC_DEBUG_ENABLE == 1, if the initial crc calculated
  * value is 0, or in the case of SL_IEC60730_CRC_DEBUG_ENABLE == 0, the initial crc
- * calculated value is not equal to the value stored in __checksum. The function
- * returns IEC60730_TEST_FAILED.
+ * calculated value is not equal to the value stored in check_sum. The function
+ * returns SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_post_fail_check(void);
@@ -114,7 +113,7 @@ void test_sl_iec60730_imc_post_fail_check(void);
  * In the case of SL_IEC60730_CRC_DEBUG_ENABLE == 1, if the value crc calculated
  * value is equal value calculated from sl_iec60730_imc_post(), or in the case of
  * SL_IEC60730_CRC_DEBUG_ENABLE == 0, the initial crc calculated value is equal to
- * the value stored in __checksum. The function returns IEC60730_TEST_PASSED.
+ * the value stored in check_sum. The function returns SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_bist_pass_all_check(void);
@@ -126,7 +125,7 @@ void test_sl_iec60730_imc_bist_pass_all_check(void);
  * In the case of SL_IEC60730_CRC_DEBUG_ENABLE == 1, if the value crc calculated
  * value is equal value calculated from sl_iec60730_imc_post(), or in the case of
  * SL_IEC60730_CRC_DEBUG_ENABLE == 0, the initial crc calculated value is equal to
- * the value stored in __checksum. The function sl_iec60730_imc_bist() returns IEC60730_TEST_PASSED.
+ * the value stored in check_sum. The function sl_iec60730_imc_bist() returns SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_bist_pass_all_check(void);
@@ -135,7 +134,7 @@ void test_sl_iec60730_imc_bist_pass_all_check(void);
  * Public   Check sl_iec60730_imc_bist() operate
  *
  * @returns None.
- * If the check integrity of the pointer fails, the function sl_iec60730_imc_bist() returns IEC60730_TEST_FAILED.
+ * If the check integrity of the pointer fails, the function sl_iec60730_imc_bist() returns SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_bist_fail_check_integrity(void);
@@ -145,7 +144,7 @@ void test_sl_iec60730_imc_bist_fail_check_integrity(void);
  *
  * @returns None.
  * If iec60730_run_crc init greater than rom end address before iec60730_cur_crc is calculated.
- * Then the function sl_iec60730_imc_bist() returns IEC60730_TEST_FAILED.
+ * Then the function sl_iec60730_imc_bist() returns SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address(void);
@@ -157,7 +156,7 @@ void test_sl_iec60730_imc_bist_iec60730_run_crc_greater_than_rom_end_address(voi
  * In the case of SL_IEC60730_CRC_DEBUG_ENABLE == 1, if the value crc calculated
  * value is not equal value calculated from sl_iec60730_imc_post(), or in the case of
  * SL_IEC60730_CRC_DEBUG_ENABLE == 0, the initial crc calculated value is not equal to
- * the value stored in __checksum. The function sl_iec60730_imc_bist() returns IEC60730_TEST_FAILED.
+ * the value stored in check_sum. The function sl_iec60730_imc_bist() returns SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_imc_bist_fail_compare_crc(void);
@@ -166,8 +165,8 @@ void test_sl_iec60730_imc_bist_fail_compare_crc(void);
  * Public   Check sl_iec60730_update_crc_with_data_buffer() operate
  *
  * @returns None.
- * If the passed paramater value is NULL, the sl_iec60730_update_crc_with_data_buffer() function will fail.
- * returns IEC60730_TEST_FAILED.
+ * If the passed parameter value is NULL, the sl_iec60730_update_crc_with_data_buffer() function will fail.
+ * returns SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_update_crc_with_data_buffer_params_null(void);
@@ -181,7 +180,7 @@ void test_sl_iec60730_update_crc_with_data_buffer_params_null(void);
  *****************************************************************************/
 void test_sl_iec60730_update_crc_with_data_buffer_calculation_crc(void);
 
-#endif  // UNIT_TEST_IEC60730_INVARIABLE_MEMORY_H
+#endif // UNIT_TEST_IEC60730_INVARIABLE_MEMORY_H
 
 /** @} (end defgroup IEC60730_INVARIABLE_MEMORY_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */
