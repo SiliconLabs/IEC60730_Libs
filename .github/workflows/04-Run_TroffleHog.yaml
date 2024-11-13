@@ -1,4 +1,4 @@
-name: 04- Run TruffleHog Security Scan
+name: 04-Run TruffleHog Security Scan
 on:
   workflow_dispatch:
 jobs:
