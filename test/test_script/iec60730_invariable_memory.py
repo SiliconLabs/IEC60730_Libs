@@ -47,7 +47,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   TEST_SUITE_NAME = "IMC"
 
   def setUp(self):
-    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, app_type, compiler)
+    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
   def set_breakpoint(self, label) :
     self.adapter.set_breakpoint(address = asm_labels[label],
@@ -329,7 +329,6 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
 
 if __name__ == "__main__":
   chip_name = os.getenv('CHIP')
-  app_type = os.getenv('APP_TYPE')
   lst_file_path = os.getenv('LST_PATH')
   adapter_serial_no = os.getenv('ADAPTER_SN')
   lib_path = os.getenv('JLINK_PATH')

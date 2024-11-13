@@ -140,16 +140,24 @@ $ slc generate $GSDK/app/common/example/blink_baremetal -np -d blinky -name=blin
 
 ### Export Variable
 
-Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and START_ADDR_FLASH (flash start address support calculate crc for module invariable memory) before run config CMake.
+Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and FLASH_REGIONS_TEST (flash start address support calculate crc for module invariable memory) before run config CMake.
+
+If you want to calculate from start address to end address of flash:
 
 ```sh
 $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
 $ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
 $ export TOOL_CHAINS=GCC
-$ export START_ADDR_FLASH=0x8000000
+$ export FLASH_REGIONS_TEST=0x8000000
 ```
 
-with START_ADDR_FLASH=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
+or if you want to calculate multiple regions:
+
+```sh
+$ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
+```
+
+with FLASH_REGIONS_TEST=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
 
   1. Create Source and CMakeLists.txt
   2. mkdir build
@@ -167,25 +175,118 @@ $ cd build
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c
 ```
 
+CMake Build
+
+```sh
+$ cmake --build . --target unit_test_info -j4
+```
+
+or
+
+```sh
+$ make unit_test_info -j4
+```
+
+### Run integration test
+
+CMake config
+
+```sh
+$ make prepare
+$ cd build
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c
+```
+
+CMake Build
+
+```sh
+$ cmake --build . --target integration_test_info -j4
+```
+
+or
+
+```sh
+$ make integration_test_info -j4
+```
+
+To support running integration tests for the watchdog module, there are 2 options when running when running CMake config:
+- TEST_SECURE_PERIPHERALS_ENABLE: enable test secure peripherals
+
+- INTEGRATION_TEST_WDOG1_ENABLE: enable watchdog 1 to test if device supports
+
+To support running integration tests for the variable memory module, there are 1 options when running when running CMake config:
+- INTEGRATION_TEST_USE_MARCHX_DISABLE: disable using MarchXC algorithm
+
+By default when testing variable memory module, enable using MarchXC algorithm. For example:
+
+```sh
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DINTEGRATION_TEST_USE_MARCHX_DISABLE=ON -DBOARD_NAME=brd4187c
+```
+
+For devices that have Trust zone implemented, secure and non-secure peripherals need to test.
+Default enable checks non-secure peripherals. To check secure peripherals enable this option when run CMake config: TEST_SECURE_PERIPHERALS_ENABLE. For example:
+
+```sh
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DTEST_SECURE_PERIPHERALS_ENABLE=ON -DBOARD_NAME=brd4187c
+```
+
+For devices that support 2 watchdogs, if you want to test both watchdogs, enable option INTEGRATION_TEST_WDOG1_ENABLE to ON when run Cmake config:
+
+```sh
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DINTEGRATION_TEST_WDOG1_ENABLE=ON -DBOARD_NAME=brd4187c
+```
+
+To run integration tests for the watchdog module you need to connect the device to ethernet. Export CHIP, ADAPTER_SN, LST_PATH, JLINK_PATH and the device's IP address and run test script, for example:
+
+```sh
+$ export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440111030
+$ export LST_PATH=~/devs_safety_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+```
+
+if test secure peripherals or for non-secure peripherals:
+
+```sh
+$ export LST_PATH=~/devs_safety_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/NS
+```
+
+```sh
+$ export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+$ export HOST_IP=192.168.1.69
+```
+
+```sh
+$ python3 integration_test_iec60730_irq.py GCC
+```
+
+By default device enable watchdog 0 and test watchdog 0. If you want to test wachdog 1 using this command:
+
+```sh
+$ INTEGRATION_TEST_WDOG1_ENABLE=enable python3 integration_test_iec60730_watchdog.py GCC
+```
+
+If you want to test variable memory module with disable using MarchXC algorithm:
+
+```sh
+$ INTEGRATION_TEST_USE_MARCHX_DISABLE=disable python3 integration_test_iec60730_variable_memory.py GCC
+```
+
+### CRC calculation options
+
 With the commands above, the default value supports calculation CRC-16. If you want to change to calculate for CRC-32 bits, use the config command below
 
 ```sh
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
 ```
 
+or
+
+```sh
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
+```
+
 Here is some options to support running tests of invariable memory modules:
 - ENABLE_CAL_CRC_32
 - ENABLE_CRC_USE_SW (if this option ON, you can enable option: ENABLE_SW_CRC_TABLE)
 
-CMake Build
-
-```sh
-$ cmake --build . --target unit_tests -j4
-```
-
-or
-
-```sh
-$ make unit_tests -j4
-```
-
+> [!NOTE]
+> Only use ENABLE_SW_CRC_TABLE option when the ENABLE_CRC_USE_SW option is ON, otherwise an error will be reported during the build process.
