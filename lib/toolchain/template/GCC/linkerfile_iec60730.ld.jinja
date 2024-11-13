@@ -421,20 +421,6 @@ SECTIONS
 
 {%- endif %}
 
-/*
-{%- if trustzone_secure %}
-  /* ARMv8-M stack sealing:
-     to use ARMv8-M stack sealing uncomment '.stackseal' section
-   */
-  .stackseal (COPY):
-  {
-    __StackSeal = .;
-    . = . + 8;
-    . = ALIGN(8);
-  } > RAM
-{%- endif %}
-*/
-
   .stack_check (NOLOAD):
   {
     . = ALIGN(8);
@@ -483,7 +469,7 @@ SECTIONS
   ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
 
   PROVIDE(__FlashStart = ORIGIN(FLASH));
-  PROVIDE(__RamStart = ORIGIN(CLASSBRAM));
+  PROVIDE(__RamStart = ORIGIN(RAM));
   PROVIDE(__ClassBLimit = ORIGIN(CLASSBRAM) + LENGTH(CLASSBRAM));
 
   /* Check if FLASH usage exceeds FLASH size */

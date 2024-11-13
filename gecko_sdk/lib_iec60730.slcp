@@ -20,6 +20,7 @@ component:
   - id: uartdrv_core
   - id: emlib_timer
   - id: emlib_letimer
+  - id: emlib_rmu
   - id: iostream_usart
     instance: [vcom]
   - id: iostream_retarget_stdio
@@ -29,7 +30,7 @@ component:
     from: iec60730
 configuration:
   - name: SL_BOARD_ENABLE_VCOM
-    value: 0
+    value: 1
   - name: SL_IOSTREAM_USART_VCOM_CONVERT_BY_DEFAULT_LF_TO_CRLF
     value: 1
   - name: SL_IOSTREAM_USART_VCOM_RX_BUFFER_SIZE
@@ -40,7 +41,7 @@ configuration:
       - device_series_1
   - name: SL_IEC60730_IRQ_STATUS_ENABLE
     value: 1
-  - name: SL_IEC60730_WDOG1_ENABLE
+  - name: SL_IEC60730_SAVE_STAGE_ENABLE
     value: 1
   - name: SL_IEC60730_CRC_DEBUG_ENABLE
     value: 0

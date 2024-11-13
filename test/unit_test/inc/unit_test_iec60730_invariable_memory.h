@@ -77,8 +77,6 @@ extern bool unit_test_iec60730_imc_mock_sw_enable_cal_crc(void);
  * Public   Check sl_iec60730_imc_init() operate
  *
  * @returns None.
- * This test case is tested when config SL_IEC60730_CRC_USE_SW_ENABLE == 0, mean using
- * hardware instead of software to calculate crc value.
  * If the passed paramater value is NULL, the sl_iec60730_imc_init() function will fail.
  * When calling the function sl_iec60730_imc_post(), the value will be returned IEC60730_TEST_FAILED.
  *
