@@ -68,7 +68,7 @@ jobs:
         name: CodingConventionResult
         path: CodingConventionTool.txt
         retention-days: 90
-    - name: Check if multiple keywords exist in the log file
+    - name: Check log file to set status of the job
       run: |
         keywords=("Failed")
         for keyword in "${keywords[@]}"; do
