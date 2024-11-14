@@ -6,7 +6,7 @@
 # $3: components: all, unit_test_iec60730_bist, unit_test_iec60730_post, ...
 # $4: ADAPTER_SN
 # $5: compiler: GCC, IAR
-# $6: "-DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW"
+# $6: "-DENABLE_CAL_CRC_32=ON -DENABLE_CRC_USE_SW=ON"
 
 # Example
 #  bash execute_unit_test.sh brd4187c all all 440111030 GCC
@@ -16,6 +16,7 @@
 #  bash execute_unit_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
 
 BASH_DIRECTION=$(pwd)
+BASH_PRE_IAR_BUILD=$(pwd)/../simplicity_sdk
 BOARD_NAME=$1
 TASK=$2
 COMPONENT=$3
@@ -27,7 +28,7 @@ TEST_PATH=$(pwd)/test_script
 TEST_SCRIPT=$TEST_PATH/unit_test_iec60730_get_report.py
 LOG_PATH=$(pwd)/../log
 LOG_FILE=$LOG_PATH/build_unit_test_components.log
-IMAGE_PATH=$(pwd)/../build/test/unit_test/build/$BOARD_NAME
+IMAGE_PATH=$(pwd)/../build/test/unit_test/build/$BOARD_NAME/$COMPILER
 DEVICE_NAME=
 
 function get_device_name
@@ -55,6 +56,12 @@ fi
 
 function gen_image
 {
+    if [[ "$COMPILER" == "IAR" ]] ;then
+        echo "-- [I] Start run pre_build_iar!"
+        cd $BASH_PRE_IAR_BUILD
+        bash pre_build_iar.sh $BOARD_NAME "-DENABLE_UNIT_TESTING=ON $OPTION_UNIT_TEST" &> /dev/null
+        echo "-- [I] Run pre_build_iar done!"
+    fi
     cd $BASH_DIRECTION/..
     make prepare &> /dev/null
     cd $BASH_DIRECTION/../build
@@ -168,6 +175,7 @@ function number_failure_test_cases
 
 function run
 {
+    cd $BASH_DIRECTION/../build
     local numberTestCases
     local numberFailureTestCases
 
@@ -195,7 +203,7 @@ function run
         if [[ -f $LOG_PATH/${component}.log ]]; then
             rm -rf $LOG_PATH/${component}.log
         fi
-        flash_image $component $compiler $arg
+        flash_image $component $compiler "$arg"
         local flashResult=$?
         local LST_PATH=$IMAGE_PATH/$component/
         # echo "$LST_PATH"
@@ -203,7 +211,7 @@ function run
             echo "Flash result $component successful!"
             $COMMANDER device reset --serialno $ADAPTER_SN
             if [ -f "$TEST_SCRIPT" ] && [ -d "$LST_PATH" ];then
-                printf "Start run unit test: $component\n"
+                printf "\n= Start run unit test: $component\n"
                 echo $(pwd)
                 log=$(CHIP=$DEVICE_NAME FILE_NAME=$component ADAPTER_SN=$ADAPTER_SN LST_PATH=$LST_PATH JLINK_PATH=$JLINK_PATH python3 $TEST_SCRIPT $compiler)
                 if [ -f $LOG_PATH/${component}.log ]; then
@@ -224,8 +232,13 @@ function run
                     resultBuild+=("File ${component}.log is not found in path $LOG_PATH!")
                 fi
             else
-                printf "File ${component}.lst is not found in path $LST_PATH!\n"
-                resultBuild+=("File ${component}.lst is not found in path $LST_PATH!")
+                if [ ! -f "$TEST_SCRIPT" ]; then
+                  printf "File $$TEST_SCRIPT is not found in path $TEST_PATH!\n"
+                  resultBuild+=(File $$TEST_SCRIPT is not found in path $TEST_PATH!\n)
+                elif [ ! -d "$LST_PATH" ]; then
+                  printf "File ${component}.lst is not found in path $LST_PATH!\n"
+                  resultBuild+=("File ${component}.lst is not found in path $LST_PATH!")
+                fi
             fi
         else
             echo "Flash result ${component} failed!"
@@ -239,7 +252,7 @@ function run
         sumResultBuild="$sumResultBuild$restBuild\n"
     done
     printf "$sumResultBuild"
-    rm -rf $LOG_PATH/temp.txt
+    rm -rf $LOG_PATH/temp.*
 }
 
 case $TASK in
@@ -256,4 +269,3 @@ case $TASK in
     *)
         echo "Please choose one of those options:  gen-only ; run-only; all"
 esac
-

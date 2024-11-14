@@ -50,7 +50,7 @@ class iec60730_irq(unittest.TestCase, iec60730TestBase):
 
   ## Initialization function
   def setUp(self):
-    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, app_type, compiler)
+    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
   @iec60730_test_case('TC: IRQ execution test')
   ## Verify the DUT repeatedly executes the IRQ plausibility test, indicating no erroneous entry into safe state.
@@ -96,13 +96,13 @@ class iec60730_irq(unittest.TestCase, iec60730TestBase):
   #   - Verify code reaches breakpoint at IEC60730_IRQ_BKPT
   #   - Force value of interrupt count to be higher than maximum
   #   - Verify code reaches breakpoint at IEC60730_SAFE_STATE_BKPT
-  #     - Code correctly tested entered iec60730_SafeState() due to out of bounds clock
+  #     - Code correctly tested entered sl_iec60730_safe_state() due to out of bounds clock
   #     - Test passes, return True
   #
   # @return True
   #
   # \image html irq_plausibility_test_validation_flowchart.jpg "Figure 1 Execution Flow of of IRQ plausibility test" \anchor irq_plausibility_test_validation_flowchart
-  def test_IRQ_out_of_bounds(self):
+  def test_irq_out_of_bounds(self):
     irq_exec_count_location = variables['integration_test_irq_exec_count']
     self.assertNotEqual(0, irq_exec_count_location,\
                     "Can not read integration_test_irq_exec_count address")
@@ -154,8 +154,6 @@ class iec60730_irq(unittest.TestCase, iec60730TestBase):
 if __name__ == "__main__":
 
   chip_name = os.getenv('CHIP')
-
-  app_type = os.getenv('APP_TYPE')
 
   lst_file_path = os.getenv('LST_PATH')
 
