@@ -43,17 +43,17 @@ uint32_t offset_rst_cmd;
 // Dump functions
 __WEAK sl_iec60730_test_result_t sl_iec60730_vmc_bist()
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_imc_bist()
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 void integration_test_run_init(void)
@@ -75,12 +75,13 @@ void integration_test_run_init(void)
 
   integration_test_init();
   sl_iec60730_test_result_t result = sl_iec60730_watchdog_post();
-  if (result == IEC60730_TEST_FAILED) {
-    sl_iec60730_safety_check_error_occur(IEC60730_WATCHDOG_POST_FAIL);
-    sl_iec60730_safe_state(IEC60730_WATCHDOG_POST_FAIL);
+  if (result == SL_IEC60730_TEST_FAILED) {
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_WATCHDOG_POST_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_WATCHDOG_POST_FAIL);
   }
 
   LABEL_DEF(IEC60730_TEST_RESTART_WDOG_BKPT);
+  __NOP();
   while (1) {
     if (wdog_restart_enable) {
       sl_iec60730_restart_watchdogs();

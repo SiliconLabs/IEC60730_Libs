@@ -59,7 +59,7 @@ void test_sl_iec60730_safety_check_error_occur(void);
  *****************************************************************************/
 void test_sl_iec60730_safety_check_reset_error(void);
 
-#endif  // UNIT_TEST_IEC60730_SAFETY_CHECK_H
+#endif // UNIT_TEST_IEC60730_SAFETY_CHECK_H
 
 /** @} (end defgroup IEC60730_SAFETY_CHECK_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

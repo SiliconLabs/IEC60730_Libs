@@ -36,7 +36,7 @@ extern "C" {
  * In the current version, the calculation of CRC for Flash is calculated
  * starting from the starting address of the Flash (that value can be changed)
  * to the end address whose value is specified by the address of the
- * #__checksum variable. Currently, the #__checksum variable is set to the end
+ * #check_sum variable. Currently, the #check_sum variable is set to the end
  * address of user code that uses IEC Library.
  *
  * To test the Flash memory, a Cyclic Redundancy Check (CRC) is computed and
@@ -78,7 +78,7 @@ extern "C" {
  * We also provide scripts named gcc_crc16.sh (for CRC-16 mode) and gcc_crc32.sh
  * (for CRC-32 mode) which is used in Post Build process to calculate CRC value
  * of the Flash and place this CRC value at the end of user code determined by
- * address of #__checksum variable. We WILL call these scripts with the common
+ * address of #check_sum variable. We WILL call these scripts with the common
  * name \ref gcc_crcXY. Don't worry about the gcc prefix, these scripts
  * work for both GCC and IAR compiler. To use these scripts, user SHOULD install
  * srecord that can be downloaded (.exe) file for Window OS or run command as
@@ -91,7 +91,7 @@ extern "C" {
  * Script @ref gcc_crcXY requires the following parameters
  * \param #$1: Name of your project.
  * \param #$2: Directory of building. This directory MUST contain *.hex file and
- * *.map file. The *.map file MUST contains #__checksum variable.
+ * *.map file. The *.map file MUST contains #check_sum variable.
  * \param #$3: Path of srecord. With Linux OS, it SHOULD be blank. With Win OS,
  * it SHOULD be the path to install folder of srecord. For example:
  * 'C:\srecord-1.64-win32' in Win OS.
@@ -109,7 +109,7 @@ extern "C" {
  *
  *   * #DEC_CLASSB_VARS is used to declare a pair of variables.
  *   * #EXTERN_DEC_CLASSB_VARS is used to mark pair of variable to be extern.
- *   * #STATIC_DEC_CLASSB_VARS is used to declare a static pair of variables.
+ *   * #sl_static_dec_classb_vars is used to declare a static pair of variables.
  *   * #INV_CLASSB_VAR is used to inverse value of a variable.
  *   * #INV_CLASSB_PVAR is used to inverse value of a pointer.
  *
@@ -121,7 +121,7 @@ extern "C" {
  * In case user use definition #SL_IEC60730_CRC_DEBUG_ENABLE for debug purpose, \ref iec60730_ref_crc
  * variable is useful for debug purpose. Value of \ref iec60730_ref_crc is calculated in
  * #sl_iec60730_imc_post function. This value SHOULD be equal value that stored in
- * address of #__checksum.
+ * address of #check_sum.
  *
  * \anchor iec60730_cur_crc
  *   * Variable \ref iec60730_cur_crc is variable that stores on (*.classb_ram*) section.
@@ -158,24 +158,24 @@ extern "C" {
  * #SL_IEC60730_ROM_START is either #SL_IEC60730_ROM_START (1) or #SL_IEC60730_ROM_START (N).
  *
  * The #SL_IEC60730_ROM_END definition as described at the address of the variable
- * #__checksum. As the linker files is used in our example will be at
+ * #check_sum. As the linker files is used in our example will be at
  * address the end of Application (N). The CRC calculation will go from address
  * #SL_IEC60730_ROM_START to #SL_IEC60730_ROM_END.
  *
  * With #SL_IEC60730_ROM_START (1) we calculate CRC (1) and with #SL_IEC60730_ROM_START (N) we calculate
  * CRC (N). The CRC value is calculated and placed at the location of the
- * variable #__checksum. Calculating and placing are implemented by script
+ * variable #check_sum. Calculating and placing are implemented by script
  * \ref gcc_crcXY.
  *
  * In this example you see that Application (N + 1) is an application that does
  * not use the IEC library. Our reference solutions DO NOT support customizing
- * #__checksum anywhere in Flash. Therefore, the CRC calculation WILL not
+ * #check_sum anywhere in Flash. Therefore, the CRC calculation WILL not
  * cover the Flash area of Application (N + 1).
  *
- * In case the user edits their linker to let the #__checksum variable go
+ * In case the user edits their linker to let the #check_sum variable go
  * to any location (of course larger than #SL_IEC60730_ROM_START), the IMC modules WILL
  * still work normally. For example, the user adjust the address of
- * #__checksum to the end address of Flash of Application (N + 1), then the
+ * #check_sum to the end address of Flash of Application (N + 1), then the
  * CRC calculation WILL completely cover Application (N + 1).
  *
  * Function #sl_iec60730_imc_post() checks for all the invariable memory areas have
@@ -185,10 +185,10 @@ extern "C" {
  * time reasonable. Global variables store the current location being tested
  * and other information. Each call to #sl_iec60730_imc_bist() it checks
  * #SL_IEC60730_INVAR_BLOCKS_PER_BIST. If after the calculation, the CRC does not match the
- * expected value #IEC60730_TEST_FAILED is returned. If it does match, the
+ * expected value #SL_IEC60730_TEST_FAILED is returned. If it does match, the
  * global variables are configured for the next CRC entry. If all areas are
- * complete, #IEC60730_TEST_PASSED is returned. If all areas are not complete,
- * #IEC60730_TEST_IN_PROGRESS is returned.
+ * complete, #SL_IEC60730_TEST_PASSED is returned. If all areas are not complete,
+ * #SL_IEC60730_TEST_IN_PROGRESS is returned.
  *
  * \anchor invariable_memory_check_post_flowchart
  * \image html invariable_memory_check_post_flowchart.png "Figure 2 Flow chart of Invariable Memory Check BIST&POST"
@@ -228,28 +228,28 @@ extern "C" {
 #if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 #define SL_IEC60730_IMC_INIT_VALUE (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_XOROUTPUT  (0xFFFFFFFFuL)
-#define SL_IEC60730_IMC_INIT_DEFAULT                                                       \
-  {                                                                            \
-      0x04C11DB7UL,   /* CRC32 Polynomial value. */                            \
-      SL_IEC60730_IMC_INIT_VALUE, /* Initialization value. */                              \
-      false,          /* Byte order is normal. */                              \
-      false,          /* Bit order is not reversed on output. */               \
-      false,          /* Disable byte mode. */                                 \
-      false,          /* Disable automatic initialization on data read. */     \
-      true,           /* Enable GPCRC. */                                      \
+#define SL_IEC60730_IMC_INIT_DEFAULT                                       \
+  {                                                                        \
+    0x04C11DB7UL,     /* CRC32 Polynomial value. */                        \
+    SL_IEC60730_IMC_INIT_VALUE,   /* Initialization value. */              \
+    false,            /* Byte order is normal. */                          \
+    false,            /* Bit order is not reversed on output. */           \
+    false,            /* Disable byte mode. */                             \
+    false,            /* Disable automatic initialization on data read. */ \
+    true,             /* Enable GPCRC. */                                  \
   }
 #else /* !SL_IEC60730_USE_CRC_32_ENABLE */
 #define SL_IEC60730_IMC_INIT_VALUE (0x0000)
 #define SL_IEC60730_IMC_XOROUTPUT  (0x0000)
-#define SL_IEC60730_IMC_INIT_DEFAULT                                                       \
-  {                                                                            \
-      0x1021UL,                                                                \
-      SL_IEC60730_IMC_INIT_VALUE,                                                          \
-      false,                                                                   \
-      true,                                                                    \
-      false,                                                                   \
-      false,                                                                   \
-      true,                                                                    \
+#define SL_IEC60730_IMC_INIT_DEFAULT \
+  {                                  \
+    0x1021UL,                        \
+    SL_IEC60730_IMC_INIT_VALUE,      \
+    false,                           \
+    true,                            \
+    false,                           \
+    false,                           \
+    true,                            \
   }
 #endif /* SL_IEC60730_USE_CRC_32_ENABLE */
 #endif // DOXYGEN
@@ -258,8 +258,8 @@ extern "C" {
  * public IEC60730 Invariable Memory Check POST
  *
  * @returns #sl_iec60730_test_result_t.
- *          * If test fails, returns #IEC60730_TEST_FAILED;
- *          * Otherwise, return #IEC60730_TEST_PASSED.
+ *          * If test fails, returns #SL_IEC60730_TEST_FAILED;
+ *          * Otherwise, return #SL_IEC60730_TEST_PASSED.
  *
  * Performs a CRC check across all defined memory areas.
  *****************************************************************************/
@@ -269,9 +269,9 @@ sl_iec60730_test_result_t sl_iec60730_imc_post(void);
  * public IEC60730 Invariable Memory Check BIST
  *
  * @returns #sl_iec60730_test_result_t.
- *          * If test fails, return #IEC60730_TEST_FAILED;
- *          * Else if not complete, return #IEC60730_TEST_IN_PROGRESS
- *          * Otherwise, return #IEC60730_TEST_PASSED.
+ *          * If test fails, return #SL_IEC60730_TEST_FAILED;
+ *          * Else if not complete, return #SL_IEC60730_TEST_IN_PROGRESS
+ *          * Otherwise, return #SL_IEC60730_TEST_PASSED.
  *
  * Performs a CRC check across all defined memory areas. For details
  * how #sl_iec60730_imc_bist work, please refer to @ref imc_software_architecture

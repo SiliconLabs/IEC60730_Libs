@@ -14,6 +14,30 @@ lst_file_path = ""
 lib_path = ""
 compiler = ""
 
+class iec60730_logger:
+    @staticmethod
+    def init_logger():
+        logging.basicConfig(level=logging.INFO,
+                    format='%(asctime)s - %(levelname)s: %(message)s')
+        logger = logging.getLogger()
+        # Create file handler which logs even debug messages
+        full_path = os.path.realpath(__file__)
+        dir_path = os.path.dirname(full_path)
+        log_report = dir_path + "/../../log/" + "temp.log"
+        file_handler = logging.FileHandler(filename=log_report)
+        file_handler.setLevel(logging.INFO)
+        formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+        logger.propagate = False
+        return logger
+    def remove_handler():
+        # Remove all handlers associated with the root logger object.
+        for handler in logging.root.handlers[:]:
+            handler.close()
+            logging.root.removeHandler(handler)
+
+
 class iec60730TestBase():
 
     def env_setup(self,
@@ -27,6 +51,8 @@ class iec60730TestBase():
         self._output_path = lst_file_path
         self._library_path = library_path
         self._compiler = comp
+        iec60730_logger.remove_handler()
+        self.logger = iec60730_logger.init_logger()
 
     def _initialize(self):
         self._adapter_list = self._jlink._adapter_list
@@ -210,6 +236,7 @@ class iec60730TestBase():
         self._adapter_serial_number = "0"
         self._initialize()
         self.scan_adapter(self._adapter_serial_no, self._chip_name)
+        #self.logger = LogGen.loggen()
 
     def post_exec_test(self):
         self.init_connect_group()

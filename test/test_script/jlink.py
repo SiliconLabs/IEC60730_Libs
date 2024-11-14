@@ -33,7 +33,7 @@ class JLinkDll:
     # Maximum number of CPU registers.
     MAX_NUM_CPU_REGISTERS = 256
 
-    logger = None
+    #logger = None
 
     def __init__(self, lib_path):
         try:
@@ -49,15 +49,15 @@ class JLinkDll:
         # Initialize all properties of the connected MCU
         self._initialize_mcu_properties()
 
-        self._init_logger()
+        #self._init_logger()
 
         # Suppress dialog from the DLL
         self._suppress_usb_dialog()
 
-    def _init_logger(self):
-        logging.basicConfig(level=logging.INFO,  
-                    format='%(asctime)s - %(levelname)s: %(message)s') 
-        self.logger = logging.getLogger()
+    # def _init_logger(self):
+    #     logging.basicConfig(level=logging.INFO,
+    #                 format='%(asctime)s - %(levelname)s: %(message)s')
+    #     self.logger = logging.getLogger()
 
     def abort(self, errMsg):
         self.logger.error(errMsg)
@@ -78,7 +78,7 @@ class JLinkDll:
         buffer_size = ct.c_int(self.MAX_BUF_SIZE)
         res = self._dll.JLINKARM_ExecCommand(command_string.encode(), err_buf, buffer_size)
         err_buf = ctypes.string_at(err_buf).decode()
-        
+
         if len(err_buf) > 0:
             raise errors.JLinkException(err_buf.strip())
 
@@ -222,7 +222,7 @@ class JLinkDll:
         speedSet = int(maxSpeed / 2)
         logging.info("JLINKARM_SetSpeed: " + str(speedSet))
         self._dll.JLINKARM_SetSpeed(speedSet)
-    
+
         # Connect, halt, and get the Part ID
         result = self._dll.JLINKARM_Connect()
 
@@ -283,14 +283,14 @@ class JLinkDll:
 
     def get_id(self):
         """
-        Retrives ID of the core.
+        Retrieves ID of the core.
         """
         id = self._dll.JLINKARM_GetId()
         return id
 
     def get_id_data(self):
         """
-        Retrives detailed info of the device on the JTAG bus.
+        Retrieves detailed info of the device on the JTAG bus.
         """
         id_data = JLinkJtagIdData_CStruct()
         self._dll.JLINKARM_GetIdData(ct.pointer(id_data))
@@ -460,7 +460,7 @@ class JLinkDll:
         Clears breakpoint on the connected device.
 
         Keyword arguments:
-        bp_to_clear - Handle of the breakpoint to clear. 
+        bp_to_clear - Handle of the breakpoint to clear.
             Pass JLINKARM_BP_HANDLE_ALL to clear all breakpoints.
         '''
         result = self._dll.JLINKARM_ClrBPEx(ct.c_int32(bp_to_clear))
@@ -473,7 +473,7 @@ class JLinkDll:
             raise errors.JLinkException("JLINKARM_ClrBPEx clear all breakpoints error")
 
     def register_name(self, register_index):
-        """Retrives and returns the name of an ARM CPU register.
+        """Retrieves and returns the name of an ARM CPU register.
 
         Args:
           self (JLink): the ``JLink`` instance
@@ -484,7 +484,7 @@ class JLinkDll:
         """
         self._dll.JLINKARM_GetRegisterName.restype = ctypes.POINTER(ctypes.c_char)
 
-        result = self._dll.JLINKARM_GetRegisterName(register_index) 
+        result = self._dll.JLINKARM_GetRegisterName(register_index)
         return ctypes.cast(result, ctypes.c_char_p).value.decode()
 
     def register_list(self):

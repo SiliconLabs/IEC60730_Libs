@@ -56,47 +56,47 @@
 
 /* Init structure for timers */
 #if defined(_TIMER_CTRL_MODE_MASK)
-#if defined(TIMER_CTRL_X2CNT)                                                   \
-    && (defined(TIMER_CTRL_ATI) || defined(TIMER_CFG_ATI))
-#define TIMER_INIT_TEST_10MS                                                    \
-   {false,                /* Enable timer when initialization completes. */     \
-    false,                /* Stop counter during debug halt. */                 \
-    timerPrescale4,       /* DIV 16. */                                         \
-    timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                    \
-    false,                /* Not 2x count mode. */                              \
-    false,                /* No ATI. */                                         \
-    timerInputActionNone, /* No action on falling input edge. */                \
-    timerInputActionNone, /* No action on rising input edge. */                 \
-    _TIMER_CTRL_MODE_UP,  /* Up-counting. */                                    \
-    false, /* Do not clear DMA requests when DMA channel is active. */          \
-    false, /* Select X2 quadrature decode mode (if used). */                    \
-    false, /* Disable one shot. */                                              \
-    false, /* Not started/stopped/reloaded by other timers. */                  \
-    true}
+#if defined(TIMER_CTRL_X2CNT) \
+  && (defined(TIMER_CTRL_ATI) || defined(TIMER_CFG_ATI))
+#define TIMER_INIT_TEST_10MS                                                \
+  { false,                /* Enable timer when initialization completes. */ \
+    false,                /* Stop counter during debug halt. */             \
+    timerPrescale4,       /* DIV 16. */                                     \
+    timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                \
+    false,                /* Not 2x count mode. */                          \
+    false,                /* No ATI. */                                     \
+    timerInputActionNone, /* No action on falling input edge. */            \
+    timerInputActionNone, /* No action on rising input edge. */             \
+    _TIMER_CTRL_MODE_UP,  /* Up-counting. */                                \
+    false, /* Do not clear DMA requests when DMA channel is active. */      \
+    false, /* Select X2 quadrature decode mode (if used). */                \
+    false, /* Disable one shot. */                                          \
+    false, /* Not started/stopped/reloaded by other timers. */              \
+    true }
 #else
-#define TIMER_INIT_TEST_10MS                                                   \
-  {                                                                            \
-      false,                /* Enable timer when initialization completes. */  \
-      false,                /* Stop counter during debug halt. */              \
-      timerPrescale4,       /* DIV 16. */                                      \
-      timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                 \
-      timerInputActionNone, /* No action on falling input edge. */             \
-      timerInputActionNone, /* No action on rising input edge. */              \
-      _TIMER_CTRL_MODE_UP,  /* Up-counting. */                                 \
-      false, /* Do not clear DMA requests when DMA channel is active. */       \
-      false, /* Select X2 quadrature decode mode (if used). */                 \
-      false, /* Disable one shot. */                                           \
-      false  /* Not started/stopped/reloaded by other timers. */               \
+#define TIMER_INIT_TEST_10MS                                                  \
+  {                                                                           \
+    false,                  /* Enable timer when initialization completes. */ \
+    false,                  /* Stop counter during debug halt. */             \
+    timerPrescale4,         /* DIV 16. */                                     \
+    timerClkSelHFPerClk,    /* Select HFPER / HFPERB clock. */                \
+    timerInputActionNone,   /* No action on falling input edge. */            \
+    timerInputActionNone,   /* No action on rising input edge. */             \
+    _TIMER_CTRL_MODE_UP,    /* Up-counting. */                                \
+    false,   /* Do not clear DMA requests when DMA channel is active. */      \
+    false,   /* Select X2 quadrature decode mode (if used). */                \
+    false,   /* Disable one shot. */                                          \
+    false    /* Not started/stopped/reloaded by other timers. */              \
   }
 #endif
 #endif
 
 #if defined(_TIMER_CFG_MODE_MASK)
-#if defined(TIMER_CTRL_X2CNT)                                                  \
-    && (defined(TIMER_CTRL_ATI) || defined(TIMER_CFG_ATI))
+#if defined(TIMER_CTRL_X2CNT) \
+  && (defined(TIMER_CTRL_ATI) || defined(TIMER_CFG_ATI))
 #if (defined(TIMER_CTRL_DISSYNCOUT) || defined(TIMER_CFG_DISSYNCOUT))
 #define TIMER_INIT_TEST_10MS                                                          \
-{                                                                                     \
+  {                                                                                   \
     true,                 /* Enable timer when initialization completes. */           \
     false,                /* Stop counter during debug halt. */                       \
     timerPrescale4,       /* DIV 16. */                                               \
@@ -114,43 +114,43 @@
     false                 /* Disable ability to start/stop/reload other timers. */    \
   };
 #else
-#define TIMER_INIT_TEST_10MS                                                    \
-   {false,                /* Enable timer when initialization completes. */     \
-    false,                /* Stop counter during debug halt. */                 \
-    timerPrescale4,       /* DIV 16. */                                         \
-    timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                    \
-    false,                /* Not 2x count mode. */                              \
-    false,                /* No ATI. */                                         \
-    timerInputActionNone, /* No action on falling input edge. */                \
-    timerInputActionNone, /* No action on rising input edge. */                 \
-    timerModeUp,   /* Up-counting. */                                           \
-    false, /* Do not clear DMA requests when DMA channel is active. */          \
-    false, /* Select X2 quadrature decode mode (if used). */                    \
-    false, /* Disable one shot. */                                              \
-    false, /* Not started/stopped/reloaded by other timers. */                  \
-    true}
+#define TIMER_INIT_TEST_10MS                                                \
+  { false,                /* Enable timer when initialization completes. */ \
+    false,                /* Stop counter during debug halt. */             \
+    timerPrescale4,       /* DIV 16. */                                     \
+    timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                \
+    false,                /* Not 2x count mode. */                          \
+    false,                /* No ATI. */                                     \
+    timerInputActionNone, /* No action on falling input edge. */            \
+    timerInputActionNone, /* No action on rising input edge. */             \
+    timerModeUp,   /* Up-counting. */                                       \
+    false, /* Do not clear DMA requests when DMA channel is active. */      \
+    false, /* Select X2 quadrature decode mode (if used). */                \
+    false, /* Disable one shot. */                                          \
+    false, /* Not started/stopped/reloaded by other timers. */              \
+    true }
 #endif
 #else
-#define TIMER_INIT_TEST_10MS                                                   \
-  {                                                                            \
-    false,                /* Enable timer when initialization completes. */  \
-    false,                /* Stop counter during debug halt. */              \
-    timerPrescale4,       /* DIV 16. */                                      \
-    timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                 \
-    timerInputActionNone, /* No action on falling input edge. */             \
-    timerInputActionNone, /* No action on rising input edge. */              \
-    timerModeUp,   /* Up-counting. */                                        \
-    false, /* Do not clear DMA requests when DMA channel is active. */       \
-    false, /* Select X2 quadrature decode mode (if used). */                 \
-    false, /* Disable one shot. */                                           \
-    false  /* Not started/stopped/reloaded by other timers. */               \
+#define TIMER_INIT_TEST_10MS                                                \
+  {                                                                         \
+    false,                /* Enable timer when initialization completes. */ \
+    false,                /* Stop counter during debug halt. */             \
+    timerPrescale4,       /* DIV 16. */                                     \
+    timerClkSelHFPerClk,  /* Select HFPER / HFPERB clock. */                \
+    timerInputActionNone, /* No action on falling input edge. */            \
+    timerInputActionNone, /* No action on rising input edge. */             \
+    timerModeUp,   /* Up-counting. */                                       \
+    false, /* Do not clear DMA requests when DMA channel is active. */      \
+    false, /* Select X2 quadrature decode mode (if used). */                \
+    false, /* Disable one shot. */                                          \
+    false  /* Not started/stopped/reloaded by other timers. */              \
   }
 #endif
 #endif
 
 #if defined(LETIMER_CTRL_RTCC0TEN)
-#define TIMER_INIT_TEST_100MS                                                  \
-  {                                                                            \
+#define TIMER_INIT_TEST_100MS                                                \
+  {                                                                          \
     false,           /* Enable timer when initialization completes. */       \
     false,           /* Stop counter during debug halt. */                   \
     false,           /* Do not start counting on RTC COMP0 match. */         \
@@ -165,8 +165,8 @@
     0                  /* Use default top Value. */                          \
   }
 #else
-#define TIMER_INIT_TEST_100MS                                                  \
-  {                                                                            \
+#define TIMER_INIT_TEST_100MS                                                \
+  {                                                                          \
     false,           /* Enable timer when initialization completes. */       \
     false,           /* Stop counter during debug halt. */                   \
     true,            /* Load COMP0 into CNT on underflow. */                 \
@@ -212,9 +212,9 @@ void system_init_ns(void);
 void integration_test_clock_config(void);
 /* Init timer test */
 void integration_test_timers_init(void);
-/* Enable timer to test interupt */
+/* Enable timer to test interrupt */
 void integration_test_timers_enable(void);
-/* Disable timer to test interupt */
+/* Disable timer to test interrupt */
 void integration_test_timers_disable(void);
 /* Setup irq before run test */
 void integration_test_init(void);

@@ -34,19 +34,19 @@
 #define IEC60730_IRQ_SIZE               8
 #define INTEGRATION_TEST_NUM_IRQ_CHECK  1
 
-volatile SL_IEC60730_IRQ_TYPE_VARIABLE integration_test_irq_exec_count[IEC60730_IRQ_SIZE] = {0};
-const sl_iec60730_irq_execution_bounds_t integration_test_irq_freq_bounds[IEC60730_IRQ_SIZE] = {{.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11}};
+volatile SL_IEC60730_IRQ_TYPE_VARIABLE integration_test_irq_exec_count[IEC60730_IRQ_SIZE] = { 0 };
+const sl_iec60730_irq_execution_bounds_t integration_test_irq_freq_bounds[IEC60730_IRQ_SIZE] = { { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 } };
 
-sl_iec60730_irq_cfg_t integration_test_irq_config = {&integration_test_irq_exec_count[0],
-                                        &integration_test_irq_freq_bounds[0],
-                                        INTEGRATION_TEST_NUM_IRQ_CHECK};
+sl_iec60730_irq_cfg_t integration_test_irq_config = { &integration_test_irq_exec_count[0],
+                                                      &integration_test_irq_freq_bounds[0],
+                                                      INTEGRATION_TEST_NUM_IRQ_CHECK };
 
 /* count which irq is executed  */
 void integration_test_irq_tick(void)
@@ -57,14 +57,16 @@ void integration_test_irq_tick(void)
 }
 
 /* 10ms timer interrupt handler */
-void TIMER0_IRQHandler(void) {
+void TIMER0_IRQHandler(void)
+{
   TIMER_IntClear(TIMER_10MS, TIMER_IF_OF);
   // Increase IRQ counter
   integration_test_irq_tick();
 }
 
 /* 100ms timer interrupt handler */
-void LETIMER0_IRQHandler(void) {
+void LETIMER0_IRQHandler(void)
+{
   LETIMER_IntClear(TIMER_100MS, LETIMER_IF_UF);
   sl_iec60730_irq_check();
 }
