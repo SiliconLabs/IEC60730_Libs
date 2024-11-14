@@ -28,14 +28,14 @@ done
 #printf "START_ARR_ADDR: $START_ARR_ADDR\n"
 #printf "NUMBER_ELEMENT: $NUMBER_ELEMENT\n"
 
-SUFFIX_SECURE=""
-if [ ! -z $6 ]; then
-  NON_SECURE=$6
-  echo NonSecure: ${NON_SECURE}
-  if [ "$NON_SECURE" = "true" ]; then
-    SUFFIX_SECURE="_NS"
-  fi
-fi
+# SUFFIX_SECURE=""
+# if [ ! -z $6 ]; then
+#   NON_SECURE=$6
+#   echo NonSecure: ${NON_SECURE}
+#   if [ "$NON_SECURE" = "true" ]; then
+#     SUFFIX_SECURE="_NS"
+#   fi
+# fi
 
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)
@@ -93,12 +93,13 @@ if [ "${TOOL_CHAINS}" = "IAR" ]; then
   while IFS=' ' read -r a1 a2 a3 remainder; do
     if [ $a2 = "CHECKSUM" ]; then
       LINE_NO=${a1%%:*}
-      CRC_ADDR=$a3
+      # CRC_ADDR=$a3
+      CRC_ADDR=$( echo "$a3" | sed s/\'//g)
     fi
   done < ${TEMP_FILE}
-else
-  grep -n "PROVIDE (__checksum = .)" ${MAPFILE}>${TEMP_FILE}
-  # Find address of __checksum
+else # GCC
+  grep -n "PROVIDE (check_sum = .)" ${MAPFILE}>${TEMP_FILE}
+  # Find address of check_sum
   while IFS=' ' read -r a1 a2 remainder; do
     LINE_NO=${a1%%:*}
     CRC_ADDR=$a2
