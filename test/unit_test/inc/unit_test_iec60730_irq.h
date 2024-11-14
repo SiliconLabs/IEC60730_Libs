@@ -111,7 +111,7 @@ void test_sl_iec60730_irq_fail_occur(void);
  *****************************************************************************/
 void test_sl_iec60730_irq_reset_fail_result(void);
 
-#endif  // UNIT_TEST_IEC60730_IRQ_H
+#endif // UNIT_TEST_IEC60730_IRQ_H
 
 /** @} (end defgroup IEC60730_IRQ_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

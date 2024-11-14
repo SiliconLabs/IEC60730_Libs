@@ -16,56 +16,56 @@
  ******************************************************************************/
 
 /**************************************************************************/ /**
-@addtogroup efr32_iec60730
-@{
-@addtogroup IEC60730_EXTRA
-@{
-@addtogroup iec60730_release_notes
-@{
-@verbatim
-Silicon Laboratories EFR32 IEC60730 Library Release Notes
-Copyright (C) 2023 Silicon Laboratories, Inc.
+   @addtogroup efr32_iec60730
+   @{
+   @addtogroup IEC60730_EXTRA
+   @{
+   @addtogroup iec60730_release_notes
+   @{
+   @verbatim
+   Silicon Laboratories EFR32 IEC60730 Library Release Notes
+   Copyright (C) 2023 Silicon Laboratories, Inc.
 
-This release contains the following components:
------------------------------------------------
-* Library (source files)
-  - <repo>/Releases/src
-  - <repo>/Releases/inc
-  - <repo>/Releases/asm
-* Library Dependencies (header files)
-  - <repo>/Lib/CMSIS
-  - <repo>/Lib/Device/<device>/Include
-Note: Refer to the Silabs GSDK package for the latest version of
-  the dependencies files.
+   This release contains the following components:
+   -----------------------------------------------
+ * Library (source files)
+   - <repo>/Releases/src
+   - <repo>/Releases/inc
+   - <repo>/Releases/asm
+ * Library Dependencies (header files)
+   - <repo>/Lib/CMSIS
+   - <repo>/Lib/Device/<device>/Include
+   Note: Refer to the Silabs GSDK package for the latest version of
+   the dependencies files.
 
-* Examples
-* Documentation
-* SDK extension files
+ * Examples
+ * Documentation
+ * SDK extension files
 
-Revision History
-----------------
-1.2.0 Release
+   Revision History
+   ----------------
+   1.2.0 Release
 
-- Supported Devices: EFR32xG24, EFM32xG12
-- Supported Compilers: GCC, IAR
-- Added GSDK extension for the IEC60730 Library.
-- Integrated demo app to the GSDK extension.
+   - Supported Devices: EFR32xG24, EFM32xG12
+   - Supported Compilers: GCC, IAR
+   - Added GSDK extension for the IEC60730 Library.
+   - Integrated demo app to the GSDK extension.
 
-----------------
-1.1.0 Release
+   ----------------
+   1.1.0 Release
 
-- Supported IEC60730 standard
-- Supported Devices: EFR32xG22, EFM32PG22
-- Supported Compilers: GCC, IAR
+   - Supported IEC60730 standard
+   - Supported Devices: EFR32xG22, EFM32PG22
+   - Supported Compilers: GCC, IAR
 
-----------------
-1.0.0 Release
+   ----------------
+   1.0.0 Release
 
-- Supported IEC60730 standard
-- Supported Devices: EFR32xG21, EFR32xG23
-- Supported Compilers: GCC, IAR
+   - Supported IEC60730 standard
+   - Supported Devices: EFR32xG21, EFR32xG23
+   - Supported Compilers: GCC, IAR
 
-@endverbatim
+   @endverbatim
  ******************************************************************************/
 
 /** @} (end addtogroup iec60730_release_notes) */

@@ -388,7 +388,7 @@ $(function() {
 <div class="line"><a name="l00367"></a><span class="lineno">  367</span>&#160;<span class="preprocessor">  extern __no_init vartype name __CLASSB_RAM;                                  \</span></div>
 <div class="line"><a name="l00368"></a><span class="lineno">  368</span>&#160;<span class="preprocessor">  extern __no_init vartype CONCAT(name, Inv) __CLASSB_RAM</span></div>
 <div class="line"><a name="l00369"></a><span class="lineno">  369</span>&#160; </div>
-<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="group__IEC60730__POST.html#ga6c276c6c39755499927558bd8067b18f">  372</a></span>&#160;<span class="preprocessor">#define STATIC_DEC_CLASSB_VARS(vartype, name)                                  \</span></div>
+<div class="line"><a name="l00372"></a><span class="lineno"><a class="line" href="group__IEC60730__POST.html#ga6c276c6c39755499927558bd8067b18f">  372</a></span>&#160;<span class="preprocessor">#define sl_static_dec_classb_vars(vartype, name)                                  \</span></div>
 <div class="line"><a name="l00373"></a><span class="lineno">  373</span>&#160;<span class="preprocessor">  static __no_init vartype name __CLASSB_RAM;                                  \</span></div>
 <div class="line"><a name="l00374"></a><span class="lineno">  374</span>&#160;<span class="preprocessor">  static __no_init vartype CONCAT(name, Inv) __CLASSB_RAM</span></div>
 <div class="line"><a name="l00375"></a><span class="lineno">  375</span>&#160; </div>
@@ -419,14 +419,14 @@ $(function() {
 <div class="line"><a name="l00434"></a><span class="lineno">  434</span>&#160; </div>
 <div class="line"><a name="l00435"></a><span class="lineno">  435</span>&#160;<span class="preprocessor">#endif // DOXYGEN</span></div>
 <div class="line"><a name="l00436"></a><span class="lineno">  436</span>&#160; </div>
-<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="keyword">extern</span> crc_t <a class="code" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">__checksum</a>;</div>
+<div class="line"><a name="l00440"></a><span class="lineno">  440</span>&#160;<span class="keyword">extern</span> crc_t <a class="code" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">check_sum</a>;</div>
 <div class="line"><a name="l00441"></a><span class="lineno">  441</span>&#160; </div>
 <div class="line"><a name="l00449"></a><span class="lineno">  449</span>&#160;<span class="preprocessor">#ifndef FLASH_BLOCK</span></div>
 <div class="line"><a name="l00450"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga6dba447a327f1cb1da83327a4e7abb80">  450</a></span>&#160;<span class="preprocessor">#define FLASH_BLOCK (64)</span></div>
 <div class="line"><a name="l00451"></a><span class="lineno">  451</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00452"></a><span class="lineno">  452</span>&#160; </div>
 <div class="line"><a name="l00458"></a><span class="lineno">  458</span>&#160;<span class="preprocessor">#ifndef ROM_END</span></div>
-<div class="line"><a name="l00459"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1fafdaede51f1a2092840264d1776522">  459</a></span>&#160;<span class="preprocessor">#define ROM_END ((uint32_t *) (&amp;__checksum))</span></div>
+<div class="line"><a name="l00459"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1fafdaede51f1a2092840264d1776522">  459</a></span>&#160;<span class="preprocessor">#define ROM_END ((uint32_t *) (&amp;check_sum))</span></div>
 <div class="line"><a name="l00460"></a><span class="lineno">  460</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00461"></a><span class="lineno">  461</span>&#160; </div>
 <div class="line"><a name="l00464"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gad9e53d1418399b36953a40395ac1384d">  464</a></span>&#160;<span class="preprocessor">#define ROM_SIZE ((uint32_t) ROM_END - (uint32_t) ROM_START)</span></div>
@@ -438,7 +438,7 @@ $(function() {
 <div class="line"><a name="l00476"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga9ab72a2f0d6a9c3bc531b69362b202a1">  476</a></span>&#160;<span class="preprocessor">#define FLASH_BLOCK_WORDS ((uint32_t) (ROM_SIZE_INWORDS / STEPS_NUMBER))</span></div>
 <div class="line"><a name="l00477"></a><span class="lineno">  477</span>&#160; </div>
 <div class="line"><a name="l00481"></a><span class="lineno">  481</span>&#160;<span class="preprocessor">#ifndef REF_CRC</span></div>
-<div class="line"><a name="l00482"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gac8a3e47f009f04f9dfdee367c0507f22">  482</a></span>&#160;<span class="preprocessor">#define REF_CRC (__checksum)</span></div>
+<div class="line"><a name="l00482"></a><span class="lineno"><a class="line" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gac8a3e47f009f04f9dfdee367c0507f22">  482</a></span>&#160;<span class="preprocessor">#define REF_CRC (check_sum)</span></div>
 <div class="line"><a name="l00483"></a><span class="lineno">  483</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00484"></a><span class="lineno">  484</span>&#160; </div>
 <div class="line"><a name="l00487"></a><span class="lineno">  487</span>&#160;<span class="comment">/**************************************************************************/</span> </div>
@@ -764,7 +764,7 @@ $(function() {
 <div class="ttc" id="agroup__IEC60730__POST_html_ggab423b676af8982b70e767164f1574023a88f37f65231d879973c84ef81a10f843"><div class="ttname"><a href="group__IEC60730__POST.html#ggab423b676af8982b70e767164f1574023a88f37f65231d879973c84ef81a10f843">iec60730_Pdm0Fail</a></div><div class="ttdeci">@ iec60730_Pdm0Fail</div><div class="ttdoc">PDM comms channel detected a failure.</div><div class="ttdef"><b>Definition:</b> sl_iec60730.h:292</div></div>
 <div class="ttc" id="astructupdateCrcParams__t_html_abcc7407def14860e8e7937ca993327cb"><div class="ttname"><a href="structupdateCrcParams__t.html#abcc7407def14860e8e7937ca993327cb">updateCrcParams_t::init</a></div><div class="ttdeci">CRC_INIT_TypeDef init</div><div class="ttdoc">CRC initialization structure.</div><div class="ttdef"><b>Definition:</b> sl_iec60730.h:873</div></div>
 <div class="ttc" id="agroup__IEC60730__INVARIABLE__MEMORY__Test_html_gaa655a39e13c235af64c9c1a65798eda5"><div class="ttname"><a href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gaa655a39e13c235af64c9c1a65798eda5">iec60730_ImcInit</a></div><div class="ttdeci">void iec60730_ImcInit(imcParams_t *params)</div></div>
-<div class="ttc" id="agroup__IEC60730__INVARIABLE__MEMORY__Test_html_ga958cd3e171526a901e3c8b99cf2dfd56"><div class="ttname"><a href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">__checksum</a></div><div class="ttdeci">crc_t __checksum</div></div>
+<div class="ttc" id="agroup__IEC60730__INVARIABLE__MEMORY__Test_html_ga958cd3e171526a901e3c8b99cf2dfd56"><div class="ttname"><a href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">check_sum</a></div><div class="ttdeci">crc_t check_sum</div></div>
 <div class="ttc" id="agroup__IEC60730__POST_html_gga15a78a582ee2ef5999615f3a64d26741a6796830621fbae14b5c78b4a36af1b84"><div class="ttname"><a href="group__IEC60730__POST.html#gga15a78a582ee2ef5999615f3a64d26741a6796830621fbae14b5c78b4a36af1b84">iec60730_TestPassed</a></div><div class="ttdeci">@ iec60730_TestPassed</div><div class="ttdoc">test result passed</div><div class="ttdef"><b>Definition:</b> sl_iec60730.h:261</div></div>
 <div class="ttc" id="astructvmcParams__t_html"><div class="ttname"><a href="structvmcParams__t.html">vmcParams_t</a></div><div class="ttdoc">This structure is used as configuration for VMC testing.</div><div class="ttdef"><b>Definition:</b> sl_iec60730.h:1023</div></div>
 <div class="ttc" id="agroup__IEC60730__POST_html_ggab423b676af8982b70e767164f1574023ac87264cca086949be9c9aa9daea6b0a9"><div class="ttname"><a href="group__IEC60730__POST.html#ggab423b676af8982b70e767164f1574023ac87264cca086949be9c9aa9daea6b0a9">iec60730_LeSense0Fail</a></div><div class="ttdeci">@ iec60730_LeSense0Fail</div><div class="ttdoc">LESENSE0 detected a failure.</div><div class="ttdef"><b>Definition:</b> sl_iec60730.h:282</div></div>

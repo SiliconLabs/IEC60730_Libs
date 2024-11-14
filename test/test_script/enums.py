@@ -71,7 +71,7 @@ class JLinkGlobalErrors(object):
         elif error_code == cls.FLASH_PROG_COMPARE_FAILED:
             return 'Programmed data differs from source data.'
         elif error_code == cls.FLASH_PROG_PROGRAM_FAILED:
-            return 'Programming error occured.'
+            return 'Programming error occurred.'
         elif error_code == cls.FLASH_PROG_VERIFY_FAILED:
             return 'Error while verifying programmed data.'
         elif error_code == cls.OPEN_FILE_FAILED:
@@ -267,7 +267,7 @@ class JLinkResetStrategyCortexM3(object):
       CORE: only the core is reset via the ``VECTRESET`` bit.
       RESETPIN: pulls the reset pin low to reset the core and peripherals.
       CONNECT_UNDER_RESET: J-Link connects to target while keeping reset
-        active.  This is recommented for STM32 devices.
+        active.  This is recommended for STM32 devices.
       HALT_AFTER_BTL: halt the core after the bootloader is executed.
       HALT_BEFORE_BTL: halt the core before the bootloader is executed.
       KINETIS: performs a normal reset, but also disables the watchdog.
@@ -582,7 +582,7 @@ class JLinkAccessMaskFlags(object):
 
 
 class JLinkStraceCommand(object):
-    """STRACE commmands."""
+    """STRACE commands."""
     TRACE_EVENT_SET = 0
     TRACE_EVENT_CLR = 1
     TRACE_EVENT_CLR_ALL = 2

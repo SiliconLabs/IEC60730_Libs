@@ -30,53 +30,21 @@
 
 #include "integration_test_common.h"
 
-// Dump functions
-__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_bist()
+__WEAK void sl_iec60730_irq_check(void)
 {
-  return IEC60730_TEST_PASSED;
 }
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_imc_bist()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_post()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_imc_post()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK void sl_iec60730_irq_check(void) {}
 
 /* 10ms timer interrupt handler */
-void TIMER0_IRQHandler(void) {
+void TIMER0_IRQHandler(void)
+{
   TIMER_IntClear(TIMER_10MS, TIMER_IF_OF);
   // Increase clock tick counter
   sl_iec60730_sys_clock_count_tick();
 }
 
 /* 100ms timer interrupt handler */
-void LETIMER0_IRQHandler(void) {
+void LETIMER0_IRQHandler(void)
+{
   LETIMER_IntClear(TIMER_100MS, LETIMER_IF_UF);
   sl_iec60730_test_clock_tick();
 }
