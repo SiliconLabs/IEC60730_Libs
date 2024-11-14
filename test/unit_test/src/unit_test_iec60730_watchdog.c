@@ -20,7 +20,7 @@
 
 /*=======Mock Code=====*/
 extern volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state;
-sl_iec60730_test_result_t unit_test_result = IEC60730_TEST_FAILED;
+sl_iec60730_test_result_t unit_test_result = SL_IEC60730_TEST_FAILED;
 bool iec60730_watchdog_mock_rst_por = false;
 bool iec60730_watchdog_mock_rst_em4 = false;
 bool iec60730_watchdog_mock_set_watchdog_timout_min = false;
@@ -35,9 +35,10 @@ bool iec60730_watchdog_mock_rst_wdog0 = false;
 bool iec60730_watchdog_mock_rst_wdog1 = false;
 #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
 
-void unit_test_iec60730_watchdog_set_up(void) {
-  unit_test_result = IEC60730_TEST_FAILED;
-  iec60730_watchdog_state = IEC60730_WATCHDOG_INVALID;
+void unit_test_iec60730_watchdog_set_up(void)
+{
+  unit_test_result = SL_IEC60730_TEST_FAILED;
+  iec60730_watchdog_state = SL_IEC60730_WATCHDOG_INVALID;
   iec60730_watchdog_mock_rst_por = false;
   iec60730_watchdog_mock_set_watchdog_timout_min = false;
   iec60730_watchdog_mock_rstcause_flag_valid = false;
@@ -50,32 +51,38 @@ void unit_test_iec60730_watchdog_set_up(void) {
   sl_iec60730_watchdog_count_reset();
 }
 
-bool unit_test_iec60730_watchdog_mock_rst_por(void) {
+bool unit_test_iec60730_watchdog_mock_rst_por(void)
+{
   return iec60730_watchdog_mock_rst_por;
 }
 
-bool unit_test_iec60730_watchdog_mock_rst_em4(void) {
+bool unit_test_iec60730_watchdog_mock_rst_em4(void)
+{
   return iec60730_watchdog_mock_rst_em4;
 }
 
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
-bool unit_test_iec60730_watchdog_mock_rst_wdog0(void) {
+bool unit_test_iec60730_watchdog_mock_rst_wdog0(void)
+{
   return iec60730_watchdog_mock_rst_wdog0;
 }
 #endif // (SL_IEC60730_WDOG0_ENABLE == 1)
 
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
-bool unit_test_iec60730_watchdog_mock_rst_wdog1(void) {
+bool unit_test_iec60730_watchdog_mock_rst_wdog1(void)
+{
   return iec60730_watchdog_mock_rst_wdog1;
 }
 #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
 
-bool unit_test_iec60730_watchdog_mock_set_watchdog_timout_min(void) {
+bool unit_test_iec60730_watchdog_mock_set_watchdog_timout_min(void)
+{
   return iec60730_watchdog_mock_set_watchdog_timout_min;
 }
 
 #ifdef SL_IEC60730_RSTCAUSES_CLEAR_ENABLE
-void unit_test_iec60730_watchdog_mock_rstcause_clear(void) {
+void unit_test_iec60730_watchdog_mock_rstcause_clear(void)
+{
   iec60730_watchdog_mock_rst_por = false;
   iec60730_watchdog_mock_rst_em4 = false;
   iec60730_watchdog_mock_rstcause = 0;
@@ -88,7 +95,8 @@ void unit_test_iec60730_watchdog_mock_rstcause_clear(void) {
 }
 #endif // SL_IEC60730_RSTCAUSES_CLEAR_ENABLE
 
-uint32_t unit_test_iec60730_watchdog_mock_rstcause(void) {
+uint32_t unit_test_iec60730_watchdog_mock_rstcause(void)
+{
   if (iec60730_watchdog_mock_rstcause_flag_valid) {
 #if (_SILICON_LABS_32B_SERIES < 2)
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
@@ -128,15 +136,17 @@ uint32_t unit_test_iec60730_watchdog_mock_rstcause(void) {
 
 /*=======Test Case=====*/
 
-void test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog(void) {
+void test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog(void)
+{
   /*Setup*/
   unit_test_iec60730_watchdog_set_up();
   /*Execute test*/
   unit_test_result = sl_iec60730_watchdog_post();
-  TEST_ASSERT_EQUAL(IEC60730_TEST_PASSED, unit_test_result);
+  TEST_ASSERT_EQUAL(SL_IEC60730_TEST_PASSED, unit_test_result);
 }
 
-void test_sl_iec60730_watchdog_post_wachdog_reset_before_por(void) {
+void test_sl_iec60730_watchdog_post_wachdog_reset_before_por(void)
+{
   /*Setup*/
   unit_test_iec60730_watchdog_set_up();
   #if (SL_IEC60730_WDOG0_ENABLE == 1)
@@ -147,10 +157,11 @@ void test_sl_iec60730_watchdog_post_wachdog_reset_before_por(void) {
   #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
   /*Execute test*/
   unit_test_result = sl_iec60730_watchdog_post();
-  TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, unit_test_result);
+  TEST_ASSERT_EQUAL(SL_IEC60730_TEST_FAILED, unit_test_result);
 }
 
-void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success(void) {
+void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success(void)
+{
   /*Setup*/
   unit_test_iec60730_watchdog_set_up();
   iec60730_watchdog_mock_rst_por = true;
@@ -158,7 +169,7 @@ void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success(void) {
   iec60730_watchdog_mock_rstcause_flag_valid = true;
   /*Execute test*/
   unit_test_result = sl_iec60730_watchdog_post();
-  if(unit_test_iec60730_watchdog_mock_set_watchdog_timout_min()) {
+  if (unit_test_iec60730_watchdog_mock_set_watchdog_timout_min()) {
     #if (SL_IEC60730_WDOG0_ENABLE == 1)
     iec60730_watchdog_mock_rst_wdog0 = true;
     unit_test_result = sl_iec60730_watchdog_post();
@@ -168,16 +179,17 @@ void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success(void) {
     unit_test_result = sl_iec60730_watchdog_post();
     #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
   }
-  TEST_ASSERT_EQUAL(IEC60730_TEST_PASSED, unit_test_result);
+  TEST_ASSERT_EQUAL(SL_IEC60730_TEST_PASSED, unit_test_result);
 }
 
-void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail(void) {
+void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail(void)
+{
   /*Setup*/
   unit_test_iec60730_watchdog_set_up();
   iec60730_watchdog_mock_rst_por = true;
   /*Execute test*/
   unit_test_result = sl_iec60730_watchdog_post();
-  if(!unit_test_iec60730_watchdog_mock_set_watchdog_timout_min()) {
+  if (!unit_test_iec60730_watchdog_mock_set_watchdog_timout_min()) {
     #if (SL_IEC60730_WDOG0_ENABLE == 1)
     iec60730_watchdog_mock_rst_wdog0 = false;
     unit_test_result = sl_iec60730_watchdog_post();
@@ -187,10 +199,11 @@ void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail(void) {
     unit_test_result = sl_iec60730_watchdog_post();
     #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
   }
-  TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, unit_test_result);
+  TEST_ASSERT_EQUAL(SL_IEC60730_TEST_FAILED, unit_test_result);
 }
 
-void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void) {
+void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void)
+{
   /*Setup*/
   unit_test_iec60730_watchdog_set_up();
   iec60730_watchdog_mock_rst_por = true;
@@ -198,7 +211,7 @@ void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void) {
   sl_iec60730_watchdog_post();
   /*Execute test*/
   unit_test_result = sl_iec60730_watchdog_post();
-  if(unit_test_iec60730_watchdog_mock_set_watchdog_timout_min()) {
+  if (unit_test_iec60730_watchdog_mock_set_watchdog_timout_min()) {
     #if (SL_IEC60730_WDOG0_ENABLE == 1)
     iec60730_watchdog_mock_rst_wdog0 = true;
     unit_test_result = sl_iec60730_watchdog_post();
@@ -208,10 +221,11 @@ void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void) {
     unit_test_result = sl_iec60730_watchdog_post();
     #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
   }
-  TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, unit_test_result);
+  TEST_ASSERT_EQUAL(SL_IEC60730_TEST_FAILED, unit_test_result);
 }
 
-void test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value(void) {
+void test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value(void)
+{
   /*Setup*/
   unit_test_iec60730_watchdog_set_up();
   iec60730_watchdog_mock_rst_por = true;
@@ -220,7 +234,7 @@ void test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value(void) {
   sl_iec60730_watchdog_count_set(SL_IEC60730_WDOGINST_NUMB);
   /*Execute test*/
   unit_test_result = sl_iec60730_watchdog_post();
-  TEST_ASSERT_EQUAL(IEC60730_TEST_FAILED, unit_test_result);
+  TEST_ASSERT_EQUAL(SL_IEC60730_TEST_FAILED, unit_test_result);
 }
 
 /*=======Run Test Case=====*/
@@ -234,12 +248,12 @@ void unit_test_run_all_test_cases(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_watchdog.c");
-  run_test(test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog,"test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog",132);
-  run_test(test_sl_iec60730_watchdog_post_wachdog_reset_before_por,"test_sl_iec60730_watchdog_post_wachdog_reset_before_por",140);
-  run_test(test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success,"test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success",154);
-  run_test(test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail,"test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail",175);
-  run_test(test_sl_iec60730_watchdog_post_reset_resason_no_valid,"test_sl_iec60730_watchdog_post_reset_resason_no_valid",194);
-  run_test(test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value,"test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value",215);
+  run_test(test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog, "test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog", 132);
+  run_test(test_sl_iec60730_watchdog_post_wachdog_reset_before_por, "test_sl_iec60730_watchdog_post_wachdog_reset_before_por", 140);
+  run_test(test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success, "test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success", 154);
+  run_test(test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail, "test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail", 175);
+  run_test(test_sl_iec60730_watchdog_post_reset_resason_no_valid, "test_sl_iec60730_watchdog_post_reset_resason_no_valid", 194);
+  run_test(test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value, "test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value", 215);
   UnityEnd();
   #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
@@ -247,7 +261,7 @@ void unit_test_run_all_test_cases(void)
   __asm volatile("IEC60730_UNIT_TEST_END::");
 #endif
 
-  while(1){
+  while (1) {
     // Do nothing
   }
 }

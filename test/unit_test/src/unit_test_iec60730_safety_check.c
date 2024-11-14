@@ -19,7 +19,7 @@
 #include "unit_test_iec60730_safety_check.h"
 
 /*=======Set up=====*/
-sl_iec60730_safety_check_t unit_test_safety_check = {IEC60730_NO_FAILURE,0};
+sl_iec60730_safety_check_t unit_test_safety_check = { SL_IEC60730_NO_FAILURE, 0 };
 sl_iec60730_safety_check_t* get_result_safety_check = NULL;
 
 /*=======Mock Code=====*/
@@ -30,9 +30,9 @@ void test_sl_iec60730_safety_check_error_occur(void)
   /*Setup*/
 
   /*Execute test*/
-  sl_iec60730_safety_check_error_occur(IEC60730_INTERRUPT_FAIL);
+  sl_iec60730_safety_check_error_occur(SL_IEC60730_INTERRUPT_FAIL);
   unit_test_safety_check.number_error++;
-  unit_test_safety_check.error |= (1<<IEC60730_INTERRUPT_FAIL);
+  unit_test_safety_check.error |= (1 << SL_IEC60730_INTERRUPT_FAIL);
   get_result_safety_check = sl_iec60730_safety_check_get_error();
   TEST_ASSERT_EQUAL(unit_test_safety_check.number_error, get_result_safety_check->number_error);
   TEST_ASSERT_EQUAL(unit_test_safety_check.error, get_result_safety_check->error);
@@ -60,8 +60,8 @@ void unit_test_run_all_test_cases(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_safety_check.c");
-  run_test(test_sl_iec60730_safety_check_error_occur,"test_sl_iec60730_safety_check_error_occur",29);
-  run_test(test_sl_iec60730_safety_check_reset_error,"test_sl_iec60730_safety_check_reset_error",42);
+  run_test(test_sl_iec60730_safety_check_error_occur, "test_sl_iec60730_safety_check_error_occur", 29);
+  run_test(test_sl_iec60730_safety_check_reset_error, "test_sl_iec60730_safety_check_reset_error", 42);
   UnityEnd();
   #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
@@ -69,7 +69,7 @@ void unit_test_run_all_test_cases(void)
   __asm volatile("IEC60730_UNIT_TEST_END::");
 #endif
 
-  while(1){
+  while (1) {
     // Do nothing
   }
 }

@@ -91,29 +91,29 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_SAVE
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP1
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP2
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP3
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP4
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP5
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP6
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_RESTORE
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_MARCH_RET
-  # - Verify code reachs breakpoint at IEC60730_VMC_POST_MARCHC_STEP_BKPT
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_SAVE
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP1
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP2
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP3
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP4
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP5
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP6
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_RESTORE
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_MARCH_RET
+  # - Verify code reaches breakpoint at IEC60730_VMC_POST_MARCHC_STEP_BKPT
   #
   # This process in loop with coditon \ref iec60730_rt_check < #RAMTEST_END. In case this
   # condition is not satisfied, clear all break point and verify
   #
-  # - Verify code reachs breakpoint at IEC60730_VMC_POST_CHECK_BKBUF_BKPT
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF1
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF2
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF3
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF4
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF5
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF6
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_MARCH_RET
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_RET
+  # - Verify code reaches breakpoint at IEC60730_VMC_POST_CHECK_BKBUF_BKPT
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF1
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF2
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF3
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF4
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF5
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF6
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_MARCH_RET
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_RET
   #
   # @return True
   #
@@ -203,41 +203,41 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP2. We don't reach
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP2. We don't reach
   # IEC60730_MARCHC_STEP_STEP1 because this step only write (W1)
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP3
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP3
   #   - Edit value at address of \ref iec60730_rt_check
-  #   + Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP4
+  #   + Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP4
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP5
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP5
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_STEP6
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_STEP6
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   #
-  # - Verify code reachs breakpoint at IEC60730_VMC_POST_CHECK_BKBUF_BKPT
+  # - Verify code reaches breakpoint at IEC60730_VMC_POST_CHECK_BKBUF_BKPT
   #
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF2. We don't reach
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF2. We don't reach
   # IEC60730_MARCHC_STEP_BUFF1 because this step only write (W1)
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF3
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF3
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF4
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF4
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF5
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF5
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHC_STEP_BUFF6
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHC_STEP_BUFF6
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   #
   # @return True
   #
@@ -297,34 +297,34 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
   # @details Order of execution
   # - Reset device
   #
-  # - Verify code reachs breakpoint at IEC60730_VMC_BIST_START_BKPT
+  # - Verify code reaches breakpoint at IEC60730_VMC_BIST_START_BKPT
   #
   # The loop with coditon \ref iec60730_rt_check < #RAMTEST_END
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_SAVE
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP1
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP2
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_SAVE
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP1
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP2
   # - if not enable MatchX
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP3
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP4
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP5
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP6
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_RESTORE
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_MARCH_RET
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_RET
-  # - Verify code reachs breakpoint at IEC60730_VMC_BIST_MARCHC_STEP_BKPT
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP3
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP4
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP5
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP6
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_RESTORE
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_MARCH_RET
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_RET
+  # - Verify code reaches breakpoint at IEC60730_VMC_BIST_MARCHC_STEP_BKPT
   #
   # In case condition is not satisfied, clear all break point and verify
   #
-  # - Verify code reachs breakpoint at IEC60730_IMC_BIST_CHECK_BKBUF_BKPT
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF1
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF2
+  # - Verify code reaches breakpoint at IEC60730_IMC_BIST_CHECK_BKBUF_BKPT
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF1
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF2
   # - if not enable MatchX
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF3
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF4
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF5
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF6
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_MARCH_RET
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_RET
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF3
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF4
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF5
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF6
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_MARCH_RET
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_RET
   #
   # @return True
   #
@@ -441,45 +441,45 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
   # @details Order of execution
   # - Reset device
   #
-  # - Verify code reachs breakpoint at IEC60730_VMC_BIST_START_BKPT
+  # - Verify code reaches breakpoint at IEC60730_VMC_BIST_START_BKPT
   #
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP2. We don't reach
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP2. We don't reach
   # IEC60730_MARCHXC_STEP_STEP1 because this step only write (W1)
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   # - if not enable MatchX
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP3
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP3
   #     - Edit value at address of \ref iec60730_rt_check
-  #     - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP4
+  #     - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP4
   #     - Edit value at address of \ref iec60730_rt_check
-  #     - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP5
+  #     - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP5
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_STEP6
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_STEP6
   #   - Edit value at address of \ref iec60730_rt_check
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   #
-  # - Verify code reachs breakpoint at IEC60730_IMC_BIST_CHECK_BKBUF_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_BIST_CHECK_BKBUF_BKPT
   #
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF2. We don't reach
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF2. We don't reach
   # IEC60730_MARCHXC_STEP_BUFF1 because this step only write (W1)
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   # - if not enable MatchX
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF3
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF3
   #     - Edit value at address of \ref iec60730_bk_buf
-  #     - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  #   - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF4
+  #     - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF4
   #     - Edit value at address of \ref iec60730_bk_buf
-  #     - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF6
+  #     - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF6
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
-  # - Verify code reachs breakpoint at IEC60730_MARCHXC_STEP_BUFF6
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
+  # - Verify code reaches breakpoint at IEC60730_MARCHXC_STEP_BUFF6
   #   - Edit value at address of \ref iec60730_bk_buf
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   #
   # @return True
   #
@@ -549,8 +549,8 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
   # @details Order of execution
   # - Reset device
   #
-  # - Verify code reachs breakpoint at IEC60730_VMC_BIST_START_BKPT
-  # - Verify code reachs breakpoint at IEC60730_VMC_BIST_STACK_TEST_OK_BKPT
+  # - Verify code reaches breakpoint at IEC60730_VMC_BIST_START_BKPT
+  # - Verify code reaches breakpoint at IEC60730_VMC_BIST_STACK_TEST_OK_BKPT
   #
   # @return True
   #
@@ -582,9 +582,9 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
   # @details Order of execution
   # - Reset device
   #
-  # - Verify code reachs breakpoint at IEC60730_VMC_BIST_START_BKPT
+  # - Verify code reaches breakpoint at IEC60730_VMC_BIST_START_BKPT
   #   - Edit value at address of \ref iec60730_stack_test_over_flow
-  #   - Verify code reachs breakpoint at #sl_iec60730_safe_state
+  #   - Verify code reaches breakpoint at #sl_iec60730_safe_state
   #
   # @return True
   #

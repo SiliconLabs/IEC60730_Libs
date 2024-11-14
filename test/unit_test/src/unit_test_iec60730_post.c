@@ -22,7 +22,8 @@
 uint8_t iec60730_timer_test_control = SL_IEC60730_TIMER_TEST_ENABLE;
 static bool is_function_called = false;
 
-__WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){
+__WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
+{
   (void)failure;
   is_function_called = true;
 }
@@ -49,16 +50,17 @@ __WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
   return cmock_return_value();
 }
 
-__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure) {
+__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
+{
   (void) failure;
 }
 
-__WEAK void sl_iec60730_restart_watchdogs(void) {
-
+__WEAK void sl_iec60730_restart_watchdogs(void)
+{
 }
 
-__WEAK void sl_iec60730_sys_clock_test_enable(void) {
-
+__WEAK void sl_iec60730_sys_clock_test_enable(void)
+{
 }
 
 /*=======Test Case=====*/
@@ -66,7 +68,7 @@ void test_sl_iec60730_post_pass_all_check_condition(void)
 {
   /*Setup*/
   is_function_called = false;
-  cmock_set_value(IEC60730_TEST_PASSED);
+  cmock_set_value(SL_IEC60730_TEST_PASSED);
   /*Execute test*/
   sl_iec60730_post();
   TEST_ASSERT_EQUAL(false, is_function_called);
@@ -76,7 +78,7 @@ void test_sl_iec60730_post_failed_check_condition(void)
 {
   /*Setup*/
   is_function_called = false;
-  cmock_set_value(IEC60730_TEST_FAILED);
+  cmock_set_value(SL_IEC60730_TEST_FAILED);
   /*Execute test*/
   sl_iec60730_post();
   TEST_ASSERT_EQUAL(true, is_function_called);
@@ -93,8 +95,8 @@ void unit_test_run_all_test_cases(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_post.c");
-  run_test(test_sl_iec60730_post_pass_all_check_condition,"test_sl_iec60730_post_pass_all_check_condition",68);
-  run_test(test_sl_iec60730_post_failed_check_condition,"test_sl_iec60730_post_failed_check_condition",78);
+  run_test(test_sl_iec60730_post_pass_all_check_condition, "test_sl_iec60730_post_pass_all_check_condition", 68);
+  run_test(test_sl_iec60730_post_failed_check_condition, "test_sl_iec60730_post_failed_check_condition", 78);
   UnityEnd();
   #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
@@ -102,7 +104,7 @@ void unit_test_run_all_test_cases(void)
   __asm volatile("IEC60730_UNIT_TEST_END::");
 #endif
 
-  while(1){
+  while (1) {
     // Do nothing
   }
 }

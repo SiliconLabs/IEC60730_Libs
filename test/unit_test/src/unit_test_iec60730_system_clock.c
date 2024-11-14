@@ -25,20 +25,23 @@ uint16_t count_sl_iec60730_test_clock_tick_called = 0;
 
 /*=======Mock Code=====*/
 
-__WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure){
+__WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
+{
   (void)failure;
   is_function_called = true;
 }
 
-__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure) {
+__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
+{
   (void) failure;
 }
 
-__WEAK void sl_iec60730_irq_check(void) {
-
+__WEAK void sl_iec60730_irq_check(void)
+{
 }
 
-__WEAK void sl_iec60730_program_counter_test(void) {
+__WEAK void sl_iec60730_program_counter_test(void)
+{
   is_function_called = true;
 }
 
@@ -60,7 +63,7 @@ void test_sl_iec60730_test_clock_tick_count_in_bound(void)
   uint8_t index;
   is_function_called = false;
   sl_iec60730_sys_clock_test_enable();
-  for(index = 0; index < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE); index++) {
+  for (index = 0; index < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE); index++) {
     sl_iec60730_sys_clock_count_tick();
   }
   /*Execute test*/
@@ -75,7 +78,7 @@ void test_sl_iec60730_test_clock_tick_count_out_bound(void)
   uint8_t index;
   is_function_called = false;
   sl_iec60730_sys_clock_test_enable();
-  for(index = 0; index <= (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE + 1); index++) {
+  for (index = 0; index <= (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE + 1); index++) {
     sl_iec60730_sys_clock_count_tick();
   }
   /*Execute test*/
@@ -90,7 +93,7 @@ void test_sl_iec60730_sys_clock_count_reset(void)
   uint8_t index;
   is_function_called = false;
   sl_iec60730_sys_clock_test_enable();
-  for(index = 0; index < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE); index++) {
+  for (index = 0; index < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE); index++) {
     sl_iec60730_sys_clock_count_tick();
   }
   /*Execute test*/
@@ -107,8 +110,8 @@ void test_sl_iec60730_test_clock_tick_test_clock_multiplier(void)
   is_function_called = false;
   sl_iec60730_sys_clock_test_enable();
   /*Execute test*/
-  while(count_sl_iec60730_test_clock_tick_called <= SL_IEC60730_TEST_CLOCK_MULTIPLIER + 1) {
-    for(index = 0; index < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE); index++) {
+  while (count_sl_iec60730_test_clock_tick_called <= SL_IEC60730_TEST_CLOCK_MULTIPLIER + 1) {
+    for (index = 0; index < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE); index++) {
       sl_iec60730_sys_clock_count_tick();
     }
     sl_iec60730_test_clock_tick();
@@ -137,12 +140,12 @@ void unit_test_run_all_test_cases(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_system_clock.c");
-  run_test(test_sl_iec60730_test_clock_tick_timer_test_disable,"test_sl_iec60730_test_clock_tick_timer_test_disable",46);
-  run_test(test_sl_iec60730_test_clock_tick_count_in_bound,"test_sl_iec60730_test_clock_tick_count_in_bound",57);
-  run_test(test_sl_iec60730_test_clock_tick_count_out_bound,"test_sl_iec60730_test_clock_tick_count_out_bound",72);
-  run_test(test_sl_iec60730_sys_clock_count_reset,"test_sl_iec60730_sys_clock_count_reset",87);
-  run_test(test_sl_iec60730_test_clock_tick_test_clock_multiplier,"test_sl_iec60730_test_clock_tick_test_clock_multiplier",103);
-  run_test(test_sl_iec60730_get_number_test_timer_tick,"test_sl_iec60730_get_number_test_timer_tick",120);
+  run_test(test_sl_iec60730_test_clock_tick_timer_test_disable, "test_sl_iec60730_test_clock_tick_timer_test_disable", 46);
+  run_test(test_sl_iec60730_test_clock_tick_count_in_bound, "test_sl_iec60730_test_clock_tick_count_in_bound", 57);
+  run_test(test_sl_iec60730_test_clock_tick_count_out_bound, "test_sl_iec60730_test_clock_tick_count_out_bound", 72);
+  run_test(test_sl_iec60730_sys_clock_count_reset, "test_sl_iec60730_sys_clock_count_reset", 87);
+  run_test(test_sl_iec60730_test_clock_tick_test_clock_multiplier, "test_sl_iec60730_test_clock_tick_test_clock_multiplier", 103);
+  run_test(test_sl_iec60730_get_number_test_timer_tick, "test_sl_iec60730_get_number_test_timer_tick", 120);
   UnityEnd();
   #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
@@ -150,7 +153,7 @@ void unit_test_run_all_test_cases(void)
   __asm volatile("IEC60730_UNIT_TEST_END::");
 #endif
 
-  while(1){
+  while (1) {
     // Do nothing
   }
 }

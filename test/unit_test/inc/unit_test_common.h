@@ -39,7 +39,7 @@ extern void resetTest(void);
 /*=======Mock Management=====*/
 
 /**************************************************************************/ /**
- * Public   Funtion set value simulate value function mock return.
+ * Public   Function set value simulate value function mock return.
  *
  * @returns None.
  *
@@ -47,7 +47,7 @@ extern void resetTest(void);
 extern void cmock_set_value(sl_iec60730_test_result_t sl_iec60730_test_result_t);
 
 /**************************************************************************/ /**
- * Public   Funtion get value simulate value function mock return.
+ * Public   Function get value simulate value function mock return.
  *
  * @returns None.
  *
@@ -55,11 +55,11 @@ extern void cmock_set_value(sl_iec60730_test_result_t sl_iec60730_test_result_t)
 extern sl_iec60730_test_result_t cmock_return_value(void);
 
 /**************************************************************************/ /**
- * Public   Funtion runs all unit test cases.
+ * Public   Function runs all unit test cases.
  *
  * @returns None.
  *
  *****************************************************************************/
 extern void unit_test_run_all_test_cases(void);
 
-#endif  // _TEST_COMMON_H
+#endif // _TEST_COMMON_H

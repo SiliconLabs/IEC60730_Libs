@@ -38,6 +38,8 @@ option(INTEGRATION_TEST_WDOG1_ENABLE "Enable integration test watchdog 1" OFF)
 option(INTEGRATION_TEST_USE_MARCHX_DISABLE "Disable using MarchXC algorithm" OFF)
 # pre-build iar tool
 option(PRE_BUILD_IAR_TOOL "pre-build iar tool" OFF)
+# Coding convention
+option(CHECK_CODING_CONVETION_ENABLE "check coding convention" OFF)
 
 # choose board name
 option(BOARD_NAME "choose board name" brd4187c)
@@ -84,7 +86,7 @@ if(ENABLE_CRC_USE_SW)
     message("-- [I] Disable software using CRC pre-defined table to calculate CRC")
   endif() # ENABLE_SW_CRC_TABLE
 else() # ENABLE_CRC_USE_SW
-  message("-- [I] Enable using harware GPCRC to calculate CRC")
+  message("-- [I] Enable using hardware GPCRC to calculate CRC")
 endif() # ENABLE_CRC_USE_SW
 
 message("-- [I] Start address calculate crc value of flash: ${FLASH_REGIONS_TEST}")
@@ -195,8 +197,21 @@ elseif (${TOOL_CHAINS} STREQUAL "IAR")
   endif()
 endif()
 
-#Start run test
+# Start run test
 add_subdirectory(lib)
-add_subdirectory(test)
 
+if(ENABLE_INTEGRATION_TESTING OR ENABLE_UNIT_TESTING)
+  add_subdirectory(test)
+endif()
 
+# Start check coding convention
+# Run coding_convention
+include(coding_convention)
+
+if(CHECK_CODING_CONVETION_ENABLE)
+  set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+  # Disable response files
+  set(CMAKE_C_USE_RESPONSE_FILE_FOR_INCLUDES ON)
+  message("-- [I] Check coding convention: enable")
+  generate_coding_convention(${SDK_CMAKE_RELATIVE_DIR})
+endif()

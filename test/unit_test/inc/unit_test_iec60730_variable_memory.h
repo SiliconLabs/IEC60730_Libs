@@ -52,7 +52,7 @@ extern sl_iec60730_test_result_t unit_test_mock_check_integrity(void);
  *
  * @returns None.
  * If the input parameter has the value NULL, the components in the initialization value are NULL,
- * the vmc test initialization flag fails. The function sl_iec60730_vmc_post() returns the value IEC60730_TEST_FAILED.
+ * the vmc test initialization flag fails. The function sl_iec60730_vmc_post() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_init_param_null(void);
@@ -62,7 +62,7 @@ void test_sl_iec60730_vmc_init_param_null(void);
  *
  * @returns None.
  * If the input parameter has the value start member greater than value end member,
- * the vmc test initialization flag fails. The function sl_iec60730_vmc_post() returns the value IEC60730_TEST_FAILED.
+ * the vmc test initialization flag fails. The function sl_iec60730_vmc_post() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_init_start_address_greater_than_end_address(void);
@@ -73,7 +73,7 @@ void test_sl_iec60730_vmc_init_start_address_greater_than_end_address(void);
  * @returns None.
  * If the initialization value is successful, the functions run the marchc algorithms to check the ram and
  * backup section pass, checking the integrity of the variable iec60730_rt_check pass. The function sl_iec60730_vmc_post()
- * returns the value IEC60730_TEST_PASSED.
+ * returns the value SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_post_pass_all_check_sections(void);
@@ -83,7 +83,7 @@ void test_sl_iec60730_vmc_post_pass_all_check_sections(void);
  *
  * @returns None.
  * If the initialization value is successful, the functions run the marchc algorithms to check
- * the ram and backup section fail. The function sl_iec60730_vmc_post() returns the value IEC60730_TEST_FAILED.
+ * the ram and backup section fail. The function sl_iec60730_vmc_post() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_post_fail_marchc_check_ram_section(void);
@@ -93,7 +93,7 @@ void test_sl_iec60730_vmc_post_fail_marchc_check_ram_section(void);
  *
  * @returns None.
  * If the initialization value is successful, the functions run the marchc algorithms to check the backup
- * section fail. The function sl_iec60730_vmc_post() returns the value IEC60730_TEST_FAILED.
+ * section fail. The function sl_iec60730_vmc_post() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_post_fail_marchc_check_backup_section(void);
@@ -104,7 +104,7 @@ void test_sl_iec60730_vmc_post_fail_marchc_check_backup_section(void);
  * @returns None.
  * If the initialization value is successful, the functions run the marchc algorithms to check the ram
  * section pass, but checking the integrity of the variable iec60730_rt_check fail.
- * The function sl_iec60730_vmc_post() returns the value IEC60730_TEST_FAILED.
+ * The function sl_iec60730_vmc_post() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_post_fail_check_integrity_ram_section(void);
@@ -115,7 +115,7 @@ void test_sl_iec60730_vmc_post_fail_check_integrity_ram_section(void);
  * @returns None.
  * If the initialization value is successful, the functions run the marchc algorithms to check the backup
  * section pass, but checking the integrity of the variable iec60730_rt_check fail.
- * The function sl_iec60730_vmc_post() returns the value IEC60730_TEST_FAILED.
+ * The function sl_iec60730_vmc_post() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_post_fail_check_integrity_backup_section(void);
@@ -126,7 +126,7 @@ void test_sl_iec60730_vmc_post_fail_check_integrity_backup_section(void);
  * @returns None.
  * If the initialization value is successful, the functions run the marchxc algorithms to check the ram and
  * backup section pass, checking the integrity of the variable iec60730_rt_check pass, check stack over flow pass
- * The function sl_iec60730_vmc_bist() returns the value IEC60730_TEST_PASSED.
+ * The function sl_iec60730_vmc_bist() returns the value SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_pass_all_check_sections(void);
@@ -136,7 +136,7 @@ void test_sl_iec60730_vmc_bist_pass_all_check_sections(void);
  *
  * @returns None.
  * If the initialization value is successful, the functions run the marchxc algorithms to check
- * the ram and backup section fail. The function sl_iec60730_vmc_bist() returns the value IEC60730_TEST_FAILED.
+ * the ram and backup section fail. The function sl_iec60730_vmc_bist() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_fail_marchxc_check_ram_section(void);
@@ -146,7 +146,7 @@ void test_sl_iec60730_vmc_bist_fail_marchxc_check_ram_section(void);
  *
  * @returns None.
  * If the initialization value is successful, the functions run the marchxc algorithms to check the backup
- * section fail. The function sl_iec60730_vmc_bist() returns the value IEC60730_TEST_FAILED.
+ * section fail. The function sl_iec60730_vmc_bist() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_fail_marchxc_check_backup_section(void);
@@ -157,7 +157,7 @@ void test_sl_iec60730_vmc_bist_fail_marchxc_check_backup_section(void);
  * @returns None.
  * If the initialization value is successful, the functions run the marchxc algorithms to check the ram
  * section pass, but checking the integrity of the variable iec60730_rt_check fail.
- * The function sl_iec60730_vmc_bist() returns the value IEC60730_TEST_FAILED.
+ * The function sl_iec60730_vmc_bist() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_fail_check_integrity_ram_section(void);
@@ -168,7 +168,7 @@ void test_sl_iec60730_vmc_bist_fail_check_integrity_ram_section(void);
  * @returns None.
  * If the initialization value is successful, the functions run the marchxc algorithms to check the backup
  * section pass, but checking the integrity of the variable iec60730_rt_check fail.
- * The function sl_iec60730_vmc_bist() returns the value IEC60730_TEST_FAILED.
+ * The function sl_iec60730_vmc_bist() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_fail_check_integrity_backup_section(void);
@@ -189,12 +189,12 @@ void test_sl_iec60730_vmc_bist_checking_allow_run_test(void);
  *
  * @returns None.
  * If check that the value of the iec60730_stack_test_over_flow variable located in the ending stack area is
- * different from the initial initial value. The function sl_iec60730_vmc_bist() returns the value IEC60730_TEST_FAILED.
+ * different from the initial initial value. The function sl_iec60730_vmc_bist() returns the value SL_IEC60730_TEST_FAILED.
  *
  *****************************************************************************/
 void test_sl_iec60730_vmc_bist_fail_stack_test_over_flow(void);
 
-#endif  // UNIT_TEST_IEC60730_VARIABLE_MEMORY_H
+#endif // UNIT_TEST_IEC60730_VARIABLE_MEMORY_H
 
 /** @} (end defgroup IEC60730_VARIABLE_MEMORY_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

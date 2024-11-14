@@ -1,9 +1,9 @@
 project_name: lib_iec60730
 package: iec60730
 quality: test
-label: Source code lib IEC60730 for unit test
+label: Souce code lib IEC60730 for unit test
 description: >
-  Source code lib IEC60730 for unit test.
+  Souce code lib IEC60730 for unit test.
 category: Example|iec60730
 
 sdk: {id: gecko_sdk, version: 4.4.2}
@@ -24,12 +24,12 @@ component:
   - id: iostream_usart
     instance: [vcom]
   - id: iostream_retarget_stdio
-  - id: iec60730_unit_test
-    from: iec60730
   - id: iec60730_custom_linker
     from: iec60730
 define:
   - name: SL_TRUSTZONE_SECURE
+  - name: SL_IEC60730_BOARD_HEADER
+    value: "sl_iec60730_board.h"
 configuration:
   - name: SL_BOARD_ENABLE_VCOM
     value: 0

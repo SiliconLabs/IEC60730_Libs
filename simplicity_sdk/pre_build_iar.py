@@ -126,9 +126,9 @@ if __name__ == "__main__":
   #print("-- [I] CORE_TYPE=M33\n") if is_coretex_m33 else print("-- [I] CORE_TYPE=M4\n")
   #print("-- [I] CAL_CRC_32=enable\n") if is_crc32 else print("-- [I] CAL_CRC_32=disable\n")
   if is_crc32:
-    checksum_flags = "--keep __checksum --place_holder __checksum,4,.checksum,64"
+    checksum_flags = "--keep check_sum --place_holder check_sum,4,.checksum,64"
   else:
-    checksum_flags = "--keep __checksum --place_holder __checksum,2,.checksum,64"
+    checksum_flags = "--keep check_sum --place_holder check_sum,2,.checksum,64"
 
   if is_coretex_m33:
     build_option = cortex_m33_option_str + "    " + checksum_flags + end_of_str

@@ -84,7 +84,7 @@ bool unit_test_iec60730_watchdog_mock_rst_wdog0(void);
 bool unit_test_iec60730_watchdog_mock_rst_wdog1(void);
 
 /**************************************************************************/ /**
- * Public   Function replaces watchdog timout min set value successfully or not.
+ * Public   Function replaces watchdog timeout min set value successfully or not.
  *          Only used for unit testing.
  *
  * @returns boolean.
@@ -115,7 +115,7 @@ uint32_t unit_test_iec60730_watchdog_mock_rstcause(void);
  *
  * @returns None.
  * If reset causes are not POR and not Watchdog reset then no action. Value return by
- * function sl_iec60730_watchdog_post() is IEC60730_TEST_PASSED.
+ * function sl_iec60730_watchdog_post() is SL_IEC60730_TEST_PASSED.
  *
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog(void);
@@ -125,7 +125,7 @@ void test_sl_iec60730_watchdog_post_reset_causes_not_por_and_watchdog(void);
  *
  * @returns None.
  * When the device is reset by power on reset after watchdog reset, the variable iec60730_watchdog_state does not
- * set to the value IEC60730_WATCHDOG_TESTING, then check return value is IEC60730_TEST_FAILED
+ * set to the value SL_IEC60730_WATCHDOG_TESTING, then check return value is SL_IEC60730_TEST_FAILED
  *
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_wachdog_reset_before_por(void);
@@ -135,11 +135,11 @@ void test_sl_iec60730_watchdog_post_wachdog_reset_before_por(void);
  *
  * @returns None.
  * When the device is reset by power on reset first set the variable iec60730_watchdog_state
- * to the value IEC60730_WATCHDOG_TESTING, then check the watchdog reset.
+ * to the value SL_IEC60730_WATCHDOG_TESTING, then check the watchdog reset.
  * If sli_iec60730_set_watchdog_timout_min() is set successfully,
  * and the device does not wake up from EM4, all Watchdogs are tested then finished.
  * The cause of the reset is by watchdog, the function sl_iec60730_watchdog_post()
- * return result is IEC60730_TEST_PASSED
+ * return result is SL_IEC60730_TEST_PASSED
  *
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success(void);
@@ -149,9 +149,9 @@ void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_success(void);
  *
  * @returns None.
  * When the device is reset by power on reset first set the variable iec60730_watchdog_state
- * to the value IEC60730_WATCHDOG_TESTING, then check the watchdog reset.
+ * to the value SL_IEC60730_WATCHDOG_TESTING, then check the watchdog reset.
  * If sli_iec60730_set_watchdog_timout_min() is failed, then after call sl_iec60730_watchdog_post()
- * again, return result is IEC60730_TEST_FAILED
+ * again, return result is SL_IEC60730_TEST_FAILED
  *
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail(void);
@@ -161,11 +161,11 @@ void test_sl_iec60730_watchdog_post_set_watchdog_timout_min_fail(void);
  *
  * @returns None.
  * When the device is reset by power on reset first set the variable iec60730_watchdog_state
- * to the value IEC60730_WATCHDOG_TESTING, then check the watchdog reset.
+ * to the value SL_IEC60730_WATCHDOG_TESTING, then check the watchdog reset.
  * If sli_iec60730_set_watchdog_timout_min() is set successfully,
  * and the device does not wake up from EM4, all Watchdogs are tested then finished.
  * The cause of the reset is not by watchdog, the function sl_iec60730_watchdog_post()
- * return result is IEC60730_TEST_PASSED
+ * return result is SL_IEC60730_TEST_PASSED
  *
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void);
@@ -178,12 +178,12 @@ void test_sl_iec60730_watchdog_post_reset_resason_no_valid(void);
  * prevent unexpected changed value when reset or return from power saving mode.
  * If iec60730_watchdog_count value >= SL_IEC60730_WDOGINST_NUMB after device
  * power on reset, the function sl_iec60730_watchdog_post() return result is
- * IEC60730_TEST_FAILED
+ * SL_IEC60730_TEST_FAILED
  *
  *****************************************************************************/
 void test_sl_iec60730_watchdog_post_prevent_unexpected_changed_value(void);
 
-#endif  // UNIT_TEST_IEC60730_WATCHDOG_H
+#endif // UNIT_TEST_IEC60730_WATCHDOG_H
 
 /** @} (end defgroup IEC60730_WATCHDOG_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

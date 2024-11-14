@@ -30,7 +30,6 @@
 
 #include "integration_test_common.h"
 
-
 // Watchdog config
 const WDOG_Init_TypeDef integration_test_wdog0_init  = WDOG_INIT_DEFAULT;
 const WDOG_Init_TypeDef integration_test_wdog1_init = WDOG_INIT_DEFAULT;
@@ -42,7 +41,7 @@ void nvic_init(void)
 {
   // One Group Priority
   NVIC_SetPriorityGrouping(7);
- /* Timer 0 */
+  /* Timer 0 */
   NVIC_SetPriority(TIMER0_IRQn, 1);
   NVIC_EnableIRQ(TIMER0_IRQn);
   /* LETIMER 0 */
@@ -62,7 +61,7 @@ void integration_test_init(void)
   WDOGn_Init(SL_IEC60730_WDOG_INST(0), &integration_test_wdog0_init);
 #endif
 #if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
-  WDOGn_Init( SL_IEC60730_WDOG_INST(1), &integration_test_wdog1_init);
+  WDOGn_Init(SL_IEC60730_WDOG_INST(1), &integration_test_wdog1_init);
 #endif
   CORE_ATOMIC_IRQ_ENABLE();
 }
@@ -74,7 +73,7 @@ void integration_test_deinit(void)
   WDOGn_Enable(SL_IEC60730_WDOG_INST(0), false);
 #endif
 #if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
-  WDOGn_Enable( SL_IEC60730_WDOG_INST(1), false);
+  WDOGn_Enable(SL_IEC60730_WDOG_INST(1), false);
 #endif
 }
 
@@ -126,7 +125,8 @@ void integration_test_clock_config(void)
 }
 
 /* Init timer test */
-void integration_test_timers_init(void) {
+void integration_test_timers_init(void)
+{
   /* Initialize 10ms timer */
   TIMER_Init(TIMER_10MS, &integration_test_timer_10ms_config);
   /* Initialize 10ms timer */
@@ -149,7 +149,7 @@ void integration_test_timers_init(void) {
   LETIMER_IntEnable(TIMER_100MS, LETIMER_IEN_UF);
 }
 
-/* Enable timer to test interupt */
+/* Enable timer to test interrupt */
 void integration_test_timers_enable(void)
 {
   // Start timer
@@ -157,7 +157,7 @@ void integration_test_timers_enable(void)
   LETIMER_Enable(TIMER_100MS, true);
 }
 
-/* Disable timer to test interupt */
+/* Disable timer to test interrupt */
 void integration_test_timers_disable(void)
 {
   // Start timer
@@ -168,43 +168,43 @@ void integration_test_timers_disable(void)
 // Dump functions
 __WEAK sl_iec60730_test_result_t sl_iec60730_vmc_bist()
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_imc_bist()
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_vmc_post()
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_imc_post()
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 __WEAK sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
 {
-  return IEC60730_TEST_PASSED;
+  return SL_IEC60730_TEST_PASSED;
 }
 
 /* IEC60730 safe state */
 void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
 {
-  printf("Fail-Test. Error status: %d\n",failure);
+  printf("Fail-Test. Error status: %d\n", failure);
   LABEL_DEF(IEC60730_SAFE_STATE_BKPT);
   SL_IEC60730_RSTCAUSES_CLEAR();
   while (1) {

@@ -48,16 +48,16 @@ uint32_t num_flash_regions_check;
 #if defined(__GNUC__)
 
 sl_iec60730_imc_test_region_t integration_test_imc_region_test[INTEGRATION_TEST_NUM_FLASH_REGIONS_CHECK] =
-      {{.start = SL_IEC60730_ROM_START, .end= SL_IEC60730_ROM_END},
-      {.start = SL_IEC60730_ROM_START + 2*INTEGRATION_TEST_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 3*INTEGRATION_TEST_FLASH_OFFSET},
-      {.start = SL_IEC60730_ROM_START + 4*INTEGRATION_TEST_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 5*INTEGRATION_TEST_FLASH_OFFSET}};
+{ { .start = SL_IEC60730_ROM_START, .end = SL_IEC60730_ROM_END },
+  { .start = SL_IEC60730_ROM_START + 2 * INTEGRATION_TEST_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 3 * INTEGRATION_TEST_FLASH_OFFSET },
+  { .start = SL_IEC60730_ROM_START + 4 * INTEGRATION_TEST_FLASH_OFFSET, .end = SL_IEC60730_ROM_START + 5 * INTEGRATION_TEST_FLASH_OFFSET } };
 
 #elif defined(__ICCARM__)
 
 sl_iec60730_imc_test_region_t integration_test_imc_region_test[INTEGRATION_TEST_NUM_FLASH_REGIONS_CHECK] =
-      {{.start = SL_IEC60730_ROM_START, .end= SL_IEC60730_ROM_END},
-      {.start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 2*INTEGRATION_TEST_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 3*INTEGRATION_TEST_FLASH_OFFSET)},
-      {.start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 4*INTEGRATION_TEST_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 5*INTEGRATION_TEST_FLASH_OFFSET)}};
+{ { .start = SL_IEC60730_ROM_START, .end = SL_IEC60730_ROM_END },
+  { .start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 2 * INTEGRATION_TEST_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 3 * INTEGRATION_TEST_FLASH_OFFSET) },
+  { .start = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 4 * INTEGRATION_TEST_FLASH_OFFSET), .end = (uint32_t *)((uint32_t)SL_IEC60730_ROM_START + 5 * INTEGRATION_TEST_FLASH_OFFSET) } };
 
 #else
 #endif
@@ -72,7 +72,7 @@ void integration_test_run_init(void)
   num_flash_regions_check = 1;
 
   // Init regions vmc test
-  sl_iec60730_imc_init(&integration_test_imc,&integration_test_imc_test);
+  sl_iec60730_imc_init(&integration_test_imc, &integration_test_imc_test);
   sl_iec60730_post();
 }
 

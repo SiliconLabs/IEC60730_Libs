@@ -68,31 +68,29 @@ void verifyTest(void)
 /*=======Test Runner Used To Run Each Test=====*/
 void run_test(UnityTestFunction func, const char* name, UNITY_LINE_TYPE line_num)
 {
-    Unity.CurrentTestName = name;
-    Unity.CurrentTestLineNumber = line_num;
+  Unity.CurrentTestName = name;
+  Unity.CurrentTestLineNumber = line_num;
 #ifdef UNITY_USE_COMMAND_LINE_ARGS
-    if (!UnityTestMatches())
-        return;
+  if (!UnityTestMatches()) {
+    return;
+  }
 #endif
-    Unity.NumberOfTests++;
-    UNITY_CLR_DETAILS();
-    UNITY_EXEC_TIME_START();
-    cmock_init();
-    if (TEST_PROTECT())
-    {
-        setUp();
-        func();
-    }
-    if (TEST_PROTECT())
-    {
-        tearDown();
-        cmock_verify();
-    }
-    cmock_destroy();
-    UNITY_EXEC_TIME_STOP();
+  Unity.NumberOfTests++;
+  UNITY_CLR_DETAILS();
+  UNITY_EXEC_TIME_START();
+  cmock_init();
+  if (TEST_PROTECT()) {
+    setUp();
+    func();
+  }
+  if (TEST_PROTECT()) {
+    tearDown();
+    cmock_verify();
+  }
+  cmock_destroy();
+  UNITY_EXEC_TIME_STOP();
 
-    test_case_result[current_test_numth++] = Unity.CurrentTestFailed;
+  test_case_result[current_test_numth++] = Unity.CurrentTestFailed;
 
-    UnityConcludeTest();
+  UnityConcludeTest();
 }
-

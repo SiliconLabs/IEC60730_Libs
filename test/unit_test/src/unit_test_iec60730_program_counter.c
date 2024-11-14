@@ -25,7 +25,8 @@ static bool is_function_called = false;
 
 // Dump functions
 
-__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure) {
+__WEAK void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
+{
   (void)failure;
   is_function_called = true;
 }
@@ -41,7 +42,7 @@ void test_sl_iec60730_program_counter_complete_all_bit_check(void)
   TEST_ASSERT_EQUAL(false, is_function_called);
 }
 
-void test_sl_iec60730_program_counter_fail_some_bit_check(void)
+void test_sl_SL_IEC60730_PROGRAM_COUNTER_FAIL_some_bit_check(void)
 {
   /*Setup*/
   is_function_called = false;
@@ -62,8 +63,8 @@ void unit_test_run_all_test_cases(void)
   // Start run test
   printf("--- BEGIN UNIT TEST ---\n");
   UnityBegin("/unit_test/src/unit_test_iec60730_program_counter.c");
-  run_test(test_sl_iec60730_program_counter_complete_all_bit_check,"test_sl_iec60730_program_counter_complete_all_bit_check",35);
-  run_test(test_sl_iec60730_program_counter_fail_some_bit_check,"test_sl_iec60730_program_counter_fail_some_bit_check",45);
+  run_test(test_sl_iec60730_program_counter_complete_all_bit_check, "test_sl_iec60730_program_counter_complete_all_bit_check", 35);
+  run_test(test_sl_SL_IEC60730_PROGRAM_COUNTER_FAIL_some_bit_check, "test_sl_SL_IEC60730_PROGRAM_COUNTER_FAIL_some_bit_check", 45);
   UnityEnd();
   #ifndef IAR_TESTING  /* GCC */
   __asm volatile("IEC60730_UNIT_TEST_END:");
@@ -71,7 +72,7 @@ void unit_test_run_all_test_cases(void)
   __asm volatile("IEC60730_UNIT_TEST_END::");
 #endif
 
-  while(1){
+  while (1) {
     // Do nothing
   }
 }

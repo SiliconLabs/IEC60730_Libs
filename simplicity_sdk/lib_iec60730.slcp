@@ -55,6 +55,6 @@ toolchain_settings:
     condition:
       - toolchain_iar
   - option: iar_linker_option
-    value: "--keep __checksum --place_holder __checksum,2,.checksum,64"
+    value: "--keep check_sum --place_holder check_sum,2,.checksum,64"
     condition:
       - toolchain_iar

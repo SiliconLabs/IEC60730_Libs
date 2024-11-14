@@ -30,17 +30,21 @@
 
 #include "integration_test_common.h"
 
-__WEAK void sl_iec60730_irq_check(void) {}
+__WEAK void sl_iec60730_irq_check(void)
+{
+}
 
 /* 10ms timer interrupt handler */
-void TIMER0_IRQHandler(void) {
+void TIMER0_IRQHandler(void)
+{
   TIMER_IntClear(TIMER_10MS, TIMER_IF_OF);
   // Increase clock tick counter
   sl_iec60730_sys_clock_count_tick();
 }
 
 /* 100ms timer interrupt handler */
-void LETIMER0_IRQHandler(void) {
+void LETIMER0_IRQHandler(void)
+{
   LETIMER_IntClear(TIMER_100MS, LETIMER_IF_UF);
   sl_iec60730_test_clock_tick();
 }
