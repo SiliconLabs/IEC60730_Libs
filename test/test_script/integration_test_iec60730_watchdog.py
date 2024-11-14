@@ -54,7 +54,7 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
   TEST_SUITE_NAME = "Watchdog"
 
   def setUp(self):
-    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, app_type, compiler)
+    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
 
   def clear_rst_causes(self):
@@ -99,8 +99,8 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
   #   - Verify code reaches breakpoint at IEC60730_WATCHDOG_POST_TIMEOUT_BKPT
   #   - Verify code reaches breakpoint at IEC60730_WATCHDOG_POST_TESTING_BKPT
   #   - Verify code reaches breakpoint at IEC60730_WATCHDOG_POST_END_BKPT
-  #     - Verify the Watchdog status is IEC60730_WATCHDOG_VALID
-  #     - Verify the Watchdog status saved to BURAM is IEC60730_WATCHDOG_VALID (On EFR32 series 2 only)
+  #     - Verify the Watchdog status is SL_IEC60730_WATCHDOG_VALID
+  #     - Verify the Watchdog status saved to BURAM is SL_IEC60730_WATCHDOG_VALID (On EFR32 series 2 only)
   #     - Code correctly tested watchdog timer and watchdog reset trigger,
   #       enters main loop
   #     - Test passes, return True
@@ -171,7 +171,7 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
     logging.info("Read mem at address: " + hex(watchdogStateLocation))
     reg = self.adapter.memory_read8(watchdogStateLocation, 1, zone=None)
 
-    # State must be IEC60730_WATCHDOG_VALID (2)
+    # State must be SL_IEC60730_WATCHDOG_VALID (2)
     self.assertEqual(reg[0], 2, "DUT failed in POR completed state")
 
     if -1 != chip_name.find("G2"):
@@ -179,7 +179,7 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
       buram_addr = self.adapter.memory_read32(variables['buram_addr'], 1)
       logging.info("Read BURAM Register at address: " + hex(buram_addr[0]))
       reg = self.adapter.read_ram_arm_32(buram_addr[0], num_words = 1)
-      # State must be IEC60730_WATCHDOG_VALID (2)
+      # State must be SL_IEC60730_WATCHDOG_VALID (2)
       self.assertEqual(reg[0], 0x2, "DUT failed to save state")
 
     logging.info("DUT correctly running the watchdog POR test.")
@@ -388,8 +388,6 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
 if __name__ == "__main__":
 
   chip_name = os.getenv('CHIP')
-
-  app_type = os.getenv('APP_TYPE')
 
   lst_file_path = os.getenv('LST_PATH')
 

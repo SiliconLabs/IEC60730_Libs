@@ -50,7 +50,7 @@ class iec60730_irq(unittest.TestCase, iec60730TestBase):
 
   ## Initialization function
   def setUp(self):
-    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, app_type, compiler)
+    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
   @iec60730_test_case('TC: IRQ execution test')
   ## Verify the DUT repeatedly executes the IRQ plausibility test, indicating no erroneous entry into safe state.
@@ -154,8 +154,6 @@ class iec60730_irq(unittest.TestCase, iec60730TestBase):
 if __name__ == "__main__":
 
   chip_name = os.getenv('CHIP')
-
-  app_type = os.getenv('APP_TYPE')
 
   lst_file_path = os.getenv('LST_PATH')
 

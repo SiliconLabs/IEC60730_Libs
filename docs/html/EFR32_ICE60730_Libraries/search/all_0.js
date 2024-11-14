@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['_5f_5fchecksum_0',['__checksum',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56',1,'sl_iec60730.h']]],
+  ['_5f_5fchecksum_0',['check_sum',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56',1,'sl_iec60730.h']]],
   ['_5f_5fclassb_5fram_1',['__CLASSB_RAM',['../group__IEC60730__POST.html#gad812b380481d0985a9998c87002bb1c7',1,'sl_iec60730.h']]],
   ['_5f_5finit_5f_5f_2',['__init__',['../classerrors_1_1JLinkException.html#a267980212c110cb6e265bff8cabb6e3f',1,'errors::JLinkException']]],
   ['_5f_5foverlap_3',['__OVERLAP',['../group__IEC60730__POST.html#ga81130e671032ca30a2e18c6b181e3a02',1,'sl_iec60730.h']]],

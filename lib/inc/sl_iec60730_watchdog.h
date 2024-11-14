@@ -22,6 +22,10 @@
 extern "C" {
 #endif /* __cplusplus */
 
+#include <stdint.h>
+#include "em_wdog.h"
+#include "sl_iec60730.h"
+
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
@@ -106,25 +110,26 @@ extern "C" {
  * "#define SL_IEC60730_SAVE_STAGE_ENABLE" on file sl_iec60730_config.h. By default it will be disabled.
  * Define macro "SL_IEC60730_BURAM_IDX" to select which register of the BURAM will be used.
  * The default value is 0x0.
-*****************************************************************************/
+ *****************************************************************************/
 /// Watchdog component configuration structure
 typedef struct {
-  WDOG_TypeDef *const wdog; ///< Pointer to Watchdog instance
-  const uint32_t rst;       ///< Watchdog reset cause value
+  WDOG_TypeDef *const SL_WDOG; ///< Pointer to Watchdog instance
+  uint32_t rst;       ///< Watchdog reset cause value
 } sl_iec60730_watchdog_t;
 
 /// State of watchdog testing
 typedef enum {
-  IEC60730_WATCHDOG_INVALID = 0, ///< Watchdog POST test not done
-  IEC60730_WATCHDOG_TESTING = 1, ///< Watchdog POST testing in progress
-  IEC60730_WATCHDOG_VALID   = 2, ///< Watchdog POST test complete, watchdog valid
+  SL_IEC60730_WATCHDOG_INVALID = 0, ///< Watchdog POST test not done
+  SL_IEC60730_WATCHDOG_TESTING = 1, ///< Watchdog POST testing in progress
+  SL_IEC60730_WATCHDOG_VALID   = 2, ///< Watchdog POST test complete, watchdog valid
 } sl_iec60730_test_watchdog_t;
 
 // Default configuration number of enabled watchdog SL_IEC60730_WDOGINST_NUMB
 #if ((SL_IEC60730_WDOG0_ENABLE == 1) && (SL_IEC60730_WDOG1_ENABLE == 1))
 #define SL_IEC60730_WDOGINST_NUMB          2
 #elif ((SL_IEC60730_WDOG0_ENABLE == 0) && (SL_IEC60730_WDOG1_ENABLE == 0))
-#error "No watchdogs have been selected for testing!"
+#warning No watchdogs have been selected for testing!
+#define SL_IEC60730_WDOGINST_NUMB          0
 #else
 #define SL_IEC60730_WDOGINST_NUMB          1
 #endif
@@ -135,7 +140,7 @@ typedef enum {
 
 #ifndef  SL_IEC60730_WDOG_INST
 #if (_SILICON_LABS_32B_SERIES == 2)
-#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
 #define  SL_IEC60730_WDOG_INST(n) WDOG##n##_NS
 #else
 #define  SL_IEC60730_WDOG_INST(n) WDOG##n
@@ -156,16 +161,16 @@ typedef enum {
 #define SL_IEC60730_RSTCAUSE_WDOG1 RMU_RSTCAUSE_WDOGRST
 
 #ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
-#define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
-  do {                                                                         \
-    SL_IEC60730_RST->CMD |= RMU_CMD_RCCLR;                                        \
+#define SL_IEC60730_RSTCAUSES_CLEAR()      \
+  do {                                     \
+    SL_IEC60730_RST->CMD |= RMU_CMD_RCCLR; \
   } while (0)
 #else
 #define SL_IEC60730_RSTCAUSES_CLEAR()  unit_test_iec60730_watchdog_mock_rstcause_clear()
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #else // Series 2 devices
 #ifndef SL_IEC60730_RST
-#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_RST EMU_NS
 #else
 #define SL_IEC60730_RST EMU
@@ -179,14 +184,14 @@ typedef enum {
 
 #ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #ifdef WDOG_HAS_SET_CLEAR
-#define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
-  do {                                                                         \
-    SL_IEC60730_RST->CMD_SET = EMU_CMD_RSTCAUSECLR;                               \
+#define SL_IEC60730_RSTCAUSES_CLEAR()               \
+  do {                                              \
+    SL_IEC60730_RST->CMD_SET = EMU_CMD_RSTCAUSECLR; \
   } while (0)
 #else
-#define SL_IEC60730_RSTCAUSES_CLEAR()                                             \
-  do {                                                                         \
-    SL_IEC60730_RST->CMD |= EMU_CMD_RSTCAUSECLR;                                  \
+#define SL_IEC60730_RSTCAUSES_CLEAR()            \
+  do {                                           \
+    SL_IEC60730_RST->CMD |= EMU_CMD_RSTCAUSECLR; \
   } while (0)
 #endif // WDOG_HAS_SET_CLEAR
 #else
@@ -236,7 +241,7 @@ typedef enum {
 
 #ifndef SL_IEC60730_BURAM
 #if (_SILICON_LABS_32B_SERIES == 2)
-#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_BURAM BURAM_NS
 #else
 #define SL_IEC60730_BURAM BURAM
@@ -279,7 +284,7 @@ void sl_iec60730_watchdog_count_set(uint8_t count);
  * test watchdog (will not return).
  * Otherwise determine if watchdog reset was planned or unplanned.
  * Unplanned watchdog resets result in failure and entry to Safe State.
- * Planned watchdog resets return #IEC60730_TEST_PASSED.
+ * Planned watchdog resets return #SL_IEC60730_TEST_PASSED.
  *
  * This function will test the watchdog timer by forcing a watchdog reset
  * on the first power-up. Any subsequent watchdog reset forces entry into

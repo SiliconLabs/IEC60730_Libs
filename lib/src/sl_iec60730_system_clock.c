@@ -65,9 +65,9 @@ void sl_iec60730_test_clock_tick(void)
     if ((sl_iec60730_sys_clock_count > (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ
                                         + SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE))
         || (sl_iec60730_sys_clock_count < (SL_IEC60730_SYS_CLOCK_TEST_CLK_FREQ
-                                        - SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE))) {
-      sl_iec60730_safety_check_error_occur(IEC60730_CLOCK_FAIL);
-      sl_iec60730_safe_state(IEC60730_CLOCK_FAIL);
+                                           - SL_IEC60730_SYS_CLOCK_TEST_TOLERANCE))) {
+      sl_iec60730_safety_check_error_occur(SL_IEC60730_CLOCK_FAIL);
+      sl_iec60730_safe_state(SL_IEC60730_CLOCK_FAIL);
     }
     sl_iec60730_irq_check();
     // Increment multiplier, which runs bist frequency test at terminal value
@@ -77,8 +77,8 @@ void sl_iec60730_test_clock_tick(void)
       test_clock_tick_counter = 0;
     }
   } else {
-    sl_iec60730_safety_check_error_occur(IEC60730_CLOCK_FAIL);
-    sl_iec60730_safe_state(IEC60730_CLOCK_FAIL);
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_CLOCK_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_CLOCK_FAIL);
   }
   sl_iec60730_sys_clock_count_reset();
   sl_iec60730_program_counter_check |= IEC60730_CPU_CLOCKS_COMPLETE;

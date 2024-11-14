@@ -106,7 +106,7 @@ void test_sl_iec60730_test_clock_tick_test_clock_multiplier(void);
  *****************************************************************************/
 void test_sl_iec60730_get_number_test_timer_tick(void);
 
-#endif  // UNIT_TEST_IEC60730_SAFETY_CHECK_H
+#endif // UNIT_TEST_IEC60730_SAFETY_CHECK_H
 
 /** @} (end defgroup IEC60730_SYSTEM_CLOCK_VERIFICATION_UNIT_TEST) */
 /** @} (end addtogroup IEC60730_VERIFICATION) */

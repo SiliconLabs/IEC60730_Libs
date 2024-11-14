@@ -111,7 +111,9 @@
 
 // <q SL_IEC60730_USE_MARCHX_ENABLE> Enable used the algorithm used in BIST is March-X.
 // <i> Default: 1
+#ifndef SL_IEC60730_USE_MARCHX_ENABLE
 #define SL_IEC60730_USE_MARCHX_ENABLE           1
+#endif // SL_IEC60730_USE_MARCHX_ENABLE
 
 // <o SL_IEC60730_VAR_BLOCKS_PER_BIST> SL_IEC60730_VAR_BLOCKS_PER_BIST
 // <i> Default: 256
@@ -132,7 +134,6 @@
 // <s.14 SL_STACK_OVERFLOW_CONST_GUARD_VALUE_3> Pattern 3 is used for stack overflow
 // <i> Default: (0xDDDDDDDDuL)
 #define SL_STACK_OVERFLOW_CONST_GUARD_VALUE_3   (0xDDDDDDDDuL)
-
 
 // </h>
 
@@ -159,8 +160,8 @@
 /// definition SHOULD be a power of two. The minimal value SHOULD be 4 and
 /// maximum value SHOULD be the alignment value that is defined in linker (GCC
 /// compiler) or in configuration of IAR. Our example use alignment 64 for
-/// #__checksum variable. So that in our example the #SL_IEC60730_FLASH_BLOCK definition
-/// is 64. User can refer to our example linker on how to provide #__checksum
+/// #check_sum variable. So that in our example the #SL_IEC60730_FLASH_BLOCK definition
+/// is 64. User can refer to our example linker on how to provide #check_sum
 /// variable with alignment 64.
 // <i> Default: 64
 #define SL_IEC60730_FLASH_BLOCK                 64

@@ -18,6 +18,14 @@ configuration:
     value: cmuHFRCOFreq_19M0Hz
     condition:
      - device_series_1
+  - name: SL_IOSTREAM_USART_VCOM_PERIPHERAL
+    value: USART0
+    condition:
+     - device_series_2
+  - name: SL_IOSTREAM_USART_VCOM_PERIPHERAL_NO
+    value: 0
+    condition:
+     - device_series_2
 
 define:
   - name: HAL_CONFIG_HEADER
@@ -74,6 +82,6 @@ toolchain_settings:
     condition:
       - toolchain_iar
   - option: iar_linker_option
-    value: "--keep __checksum --place_holder __checksum,2,.checksum,64"
+    value: "--keep check_sum --place_holder check_sum,2,.checksum,64"
     condition:
       - toolchain_iar

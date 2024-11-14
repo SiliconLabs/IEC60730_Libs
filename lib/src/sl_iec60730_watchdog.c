@@ -35,23 +35,23 @@ static uint8_t iec60730_watchdog_count IEC60730_DATA_NO_CLEAR;
 
 // Define Watchdog configuration
 #if (_SILICON_LABS_32B_SERIES < 2)
-const sl_iec60730_watchdog_t  iec60730_wdog_inst_arr[SL_IEC60730_WDOGINST_NUMB] = {
+const sl_iec60730_watchdog_t  SL_IEC60730_WDOG_INST_ARR[SL_IEC60730_WDOGINST_NUMB] = {
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
-      {.wdog = SL_IEC60730_WDOG_INST(0), .rst = RMU_RSTCAUSE_WDOGRST},
+  { .SL_WDOG = SL_IEC60730_WDOG_INST(0), .rst = RMU_RSTCAUSE_WDOGRST },
 #endif //(SL_IEC60730_WDOG0_ENABLE == 1)
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
-      {.wdog = SL_IEC60730_WDOG_INST(1), .rst = RMU_RSTCAUSE_WDOGRST},
+  { .SL_WDOG = SL_IEC60730_WDOG_INST(1), .rst = RMU_RSTCAUSE_WDOGRST },
 #endif //(SL_IEC60730_WDOG1_ENABLE == 1)
-      };
+};
 #else
-const sl_iec60730_watchdog_t  iec60730_wdog_inst_arr[SL_IEC60730_WDOGINST_NUMB] = {
+const sl_iec60730_watchdog_t  SL_IEC60730_WDOG_INST_ARR[SL_IEC60730_WDOGINST_NUMB] = {
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
-      {.wdog = SL_IEC60730_WDOG_INST(0), .rst = EMU_RSTCAUSE_WDOG0},
+  { .SL_WDOG = SL_IEC60730_WDOG_INST(0), .rst = EMU_RSTCAUSE_WDOG0 },
 #endif //(SL_IEC60730_WDOG0_ENABLE == 1)
 #if (SL_IEC60730_WDOG1_ENABLE == 1)
-      {.wdog = SL_IEC60730_WDOG_INST(1), .rst = EMU_RSTCAUSE_WDOG0},
+  { .SL_WDOG = SL_IEC60730_WDOG_INST(1), .rst = EMU_RSTCAUSE_WDOG0 },
 #endif //(SL_IEC60730_WDOG1_ENABLE == 1)
-      };
+};
 #endif
 
 /**************************************************************************/ /**
@@ -77,40 +77,39 @@ static void sli_iec60730_set_watchdog_timout_min(const sl_iec60730_watchdog_t* i
 
 void sli_iec60730_set_watchdog_timout_min(const sl_iec60730_watchdog_t* iec60730_wachdog)
 {
-
 #ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 // Min value for PERSEL is zero
 #if (_SILICON_LABS_32B_SERIES < 2)
   do {
-    while ((iec60730_wachdog->wdog->SYNCBUSY & WDOG_SYNCBUSY_CTRL)!= 0U) {
+    while ((iec60730_wachdog->SL_WDOG->SYNCBUSY & WDOG_SYNCBUSY_CTRL) != 0U) {
       // wait syncbusy
     }
-    iec60730_wachdog->wdog->CTRL &= ~(uint32_t) _WDOG_CTRL_PERSEL_MASK;
+    iec60730_wachdog->SL_WDOG->CTRL &= ~(uint32_t) _WDOG_CTRL_PERSEL_MASK;
   } while (0);
 #else // Series 2 devices
 #ifdef WDOG_HAS_SET_CLEAR
   do {
-    iec60730_wachdog->wdog->EN_CLR = WDOG_EN_EN;
-#if (defined _SILICON_LABS_32B_SERIES_2_CONFIG_3)       \
+    iec60730_wachdog->SL_WDOG->EN_CLR = WDOG_EN_EN;
+#if (defined _SILICON_LABS_32B_SERIES_2_CONFIG_3) \
     || (defined _SILICON_LABS_32B_SERIES_2_CONFIG_4)
-    while ((iec60730_wachdog->wdog->EN & WDOG_EN_DISABLING) != 0U) {
+    while ((iec60730_wachdog->SL_WDOG->EN & WDOG_EN_DISABLING) != 0U) {
       // wait disabling watchdog
     }
 #endif // _SILICON_LABS_32B_SERIES_2_CONFIG_3 || _SILICON_LABS_32B_SERIES_2_CONFIG_4
-    iec60730_wachdog->wdog->CFG_CLR = _WDOG_CFG_PERSEL_MASK;
-    iec60730_wachdog->wdog->EN_SET  = WDOG_EN_EN;
+    iec60730_wachdog->SL_WDOG->CFG_CLR = _WDOG_CFG_PERSEL_MASK;
+    iec60730_wachdog->SL_WDOG->EN_SET  = WDOG_EN_EN;
   } while (0);
 #else
   do {
-    iec60730_wachdog->wdog->EN &= ~_WDOG_EN_MASK;
-#if (defined _SILICON_LABS_32B_SERIES_2_CONFIG_3)       \
+    iec60730_wachdog->SL_WDOG->EN &= ~_WDOG_EN_MASK;
+#if (defined _SILICON_LABS_32B_SERIES_2_CONFIG_3) \
     || (defined _SILICON_LABS_32B_SERIES_2_CONFIG_4)
-    while ((iec60730_wachdog->wdog->EN & WDOG_EN_DISABLING) != 0U) {
+    while ((iec60730_wachdog->SL_WDOG->EN & WDOG_EN_DISABLING) != 0U) {
       // wait disabling watchdog
     }
 #endif // _SILICON_LABS_32B_SERIES_2_CONFIG_3 || _SILICON_LABS_32B_SERIES_2_CONFIG_4
-    iec60730_wachdog->wdog->CFG &= ~(uint32_t) _WDOG_CFG_PERSEL_MASK;
-    iec60730_wachdog->wdog->EN |= WDOG_EN_EN;
+    iec60730_wachdog->SL_WDOG->CFG &= ~(uint32_t) _WDOG_CFG_PERSEL_MASK;
+    iec60730_wachdog->SL_WDOG->EN |= WDOG_EN_EN;
   } while (0);
 #endif // WDOG_HAS_SET_CLEAR
 #endif // (_SILICON_LABS_32B_SERIES < 2)
@@ -140,7 +139,8 @@ void sli_iec60730_restart_watchdog(WDOG_TypeDef *wdog)
   }
   // Before writing to the WDOG_CMD register, make sure that
   // any previous write to the WDOG_CTRL is complete.
-  while ((wdog->SYNCBUSY & WDOG_SYNCBUSY_CTRL) != 0U) {}
+  while ((wdog->SYNCBUSY & WDOG_SYNCBUSY_CTRL) != 0U) {
+  }
 
   wdog->CMD = WDOG_CMD_CLEAR;
 
@@ -176,35 +176,39 @@ void sl_iec60730_restart_watchdogs(void)
 }
 
 #ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
-void sl_iec60730_watchdog_count_reset(void) {
+void sl_iec60730_watchdog_count_reset(void)
+{
   iec60730_watchdog_count = 0;
 }
 
-void sl_iec60730_watchdog_count_set(uint8_t count) {
+void sl_iec60730_watchdog_count_set(uint8_t count)
+{
   iec60730_watchdog_count = count;
 }
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 
 sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
 {
-  sl_iec60730_test_result_t result = IEC60730_TEST_FAILED;
-  volatile uint32_t timeOut;
+  sl_iec60730_test_result_t result = SL_IEC60730_TEST_FAILED;
+  volatile uint32_t time_out;
   // Check for the power on reset and watchdog reset condition
   if (SL_IEC60730_RST_POR && !SL_IEC60730_RST_WDOGS) {
     LABEL_DEF(IEC60730_WATCHDOG_POST_POR_RESET_BKPT);
     iec60730_watchdog_count = 0;
     // Set watchdog state to TESTING
-    iec60730_watchdog_state = IEC60730_WATCHDOG_TESTING;
+    iec60730_watchdog_state = SL_IEC60730_WATCHDOG_TESTING;
   } else { // It's not power on reset context
     LABEL_DEF(IEC60730_WATCHDOG_POST_WORKING_BKPT);
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #if (SL_IEC60730_SAVE_STAGE_ENABLE == 1) && (_SILICON_LABS_32B_SERIES == 2)
     if (SL_IEC60730_RST_EM4) {
       iec60730_watchdog_state =
-          (sl_iec60730_test_watchdog_t) SL_IEC60730_BURAM_READ(SL_IEC60730_BURAM,
-                                                        SL_IEC60730_BURAM_IDX);
+        (sl_iec60730_test_watchdog_t) SL_IEC60730_BURAM_READ(SL_IEC60730_BURAM,
+                                                             SL_IEC60730_BURAM_IDX);
     }
 #endif
-    if (iec60730_watchdog_state == IEC60730_WATCHDOG_TESTING) {
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+    if (iec60730_watchdog_state == SL_IEC60730_WATCHDOG_TESTING) {
       LABEL_DEF(IEC60730_WATCHDOG_POST_TESTING_BKPT);
       // Prevent unexpected changed value when reset or
       // return from power saving mode
@@ -212,53 +216,55 @@ sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
         goto WATCHDOG_POST_DONE;
       }
       // Check for the validity of the Watchdog reset reason
-      if (iec60730_wdog_inst_arr[iec60730_watchdog_count].rst & SL_IEC60730_RSTCAUSE) {
+      if (SL_IEC60730_WDOG_INST_ARR[iec60730_watchdog_count].rst & SL_IEC60730_RSTCAUSE) {
         // Next Watchdog to test
         iec60730_watchdog_count++;
 
         // If all Watchdogs are tested then finish
         if (iec60730_watchdog_count >= SL_IEC60730_WDOGINST_NUMB) {
-          iec60730_watchdog_state = IEC60730_WATCHDOG_VALID;
+          iec60730_watchdog_state = SL_IEC60730_WATCHDOG_VALID;
 
+#ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #if (SL_IEC60730_SAVE_STAGE_ENABLE == 1) && (_SILICON_LABS_32B_SERIES == 2)
           // Write to backup ram
           SL_IEC60730_BURAM_WRITE(SL_IEC60730_BURAM,
-                              SL_IEC60730_BURAM_IDX,
-                              iec60730_watchdog_state);
+                                  SL_IEC60730_BURAM_IDX,
+                                  iec60730_watchdog_state);
 #endif
-          result = IEC60730_TEST_PASSED;
+#endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+          result = SL_IEC60730_TEST_PASSED;
 // Clear reset flags of the reset causes register
 #if  (SL_IEC60730_RSTCAUSES_CLEAR_ENABLE == 1)
           SL_IEC60730_RSTCAUSES_CLEAR();
 #endif
         }
       } else { // Watchdog reset checking failed
-          goto WATCHDOG_POST_DONE;
+        goto WATCHDOG_POST_DONE;
       }
     } else { // Watchdog is not in the testing state
       // If reset causes are not POR and not Watchdog reset then no action
       if (!SL_IEC60730_RST_POR && !SL_IEC60730_RST_WDOGS) {
-        result = IEC60730_TEST_PASSED;
+        result = SL_IEC60730_TEST_PASSED;
       } else { // Otherwise system has failed
-          goto WATCHDOG_POST_DONE;
+        goto WATCHDOG_POST_DONE;
       }
     }
   }
 
-  if (iec60730_watchdog_state == IEC60730_WATCHDOG_TESTING) {
+  if (iec60730_watchdog_state == SL_IEC60730_WATCHDOG_TESTING) {
     LABEL_DEF(IEC60730_WATCHDOG_POST_TIMEOUT_BKPT);
     // Set timeout to minimum
-    sli_iec60730_set_watchdog_timout_min(&iec60730_wdog_inst_arr[iec60730_watchdog_count]);
+    sli_iec60730_set_watchdog_timout_min(&SL_IEC60730_WDOG_INST_ARR[iec60730_watchdog_count]);
 
     // Wait for watchdog reset
-    timeOut = SL_IEC60730_WDOG_WAIT_TIMEOUT;
-    while (timeOut > 0) {
-      timeOut--;
+    time_out = SL_IEC60730_WDOG_WAIT_TIMEOUT;
+    while (time_out > 0) {
+      time_out--;
     }
   }
   LABEL_DEF(IEC60730_WATCHDOG_POST_END_BKPT);
 
-WATCHDOG_POST_DONE:
+  WATCHDOG_POST_DONE:
   return result;
 }
 
