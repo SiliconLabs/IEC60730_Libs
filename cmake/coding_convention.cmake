@@ -146,7 +146,4 @@ function(generate_coding_convention relative_dir)
     	COMMAND ${post_build_command}
 	  )
 	endif()
-  # copy database to folder tools
-  execute_process(COMMAND rm -rf ${CMAKE_SOURCE_DIR}/tools/compile_commands.json
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endfunction(generate_coding_convention)
