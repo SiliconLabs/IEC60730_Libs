@@ -17,6 +17,6 @@ var searchData=
   ['stack_5foverflow_5fconst_5fguard_5fvalue_5f2_255',['STACK_OVERFLOW_CONST_GUARD_VALUE_2',['../group__IEC60730__VARIABLE__MEMORY__Test.html#ga62b63b5f7a13c9323f91477ecec6aba1',1,'sl_iec60730.h']]],
   ['stack_5foverflow_5fconst_5fguard_5fvalue_5f3_256',['STACK_OVERFLOW_CONST_GUARD_VALUE_3',['../group__IEC60730__VARIABLE__MEMORY__Test.html#ga75a78ca5e999345b5e082c1695e97582',1,'sl_iec60730.h']]],
   ['start_257',['start',['../structvmcParams__t.html#af7e0cd524a978d1587a5eb0edc38d9b2',1,'vmcParams_t']]],
-  ['static_5fdec_5fclassb_5fvars_258',['STATIC_DEC_CLASSB_VARS',['../group__IEC60730__POST.html#ga6c276c6c39755499927558bd8067b18f',1,'sl_iec60730.h']]],
+  ['static_5fdec_5fclassb_5fvars_258',['sl_static_dec_classb_vars',['../group__IEC60730__POST.html#ga6c276c6c39755499927558bd8067b18f',1,'sl_iec60730.h']]],
   ['steps_5fnumber_259',['STEPS_NUMBER',['../group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1756482c5c8ec4b8e3a2635e3cac8778',1,'sl_iec60730.h']]]
 ];

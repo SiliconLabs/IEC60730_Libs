@@ -150,7 +150,7 @@ Macros</h2></td></tr>
 <tr class="separator:ga8b1f082b1b96f93a3325897446c18128"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga3facba7fb5e30c4dc4f1733910b309a2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__POST.html#ga3facba7fb5e30c4dc4f1733910b309a2">EXTERN_DEC_CLASSB_VARS</a>(vartype,  name)</td></tr>
 <tr class="separator:ga3facba7fb5e30c4dc4f1733910b309a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga6c276c6c39755499927558bd8067b18f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__POST.html#ga6c276c6c39755499927558bd8067b18f">STATIC_DEC_CLASSB_VARS</a>(vartype,  name)</td></tr>
+<tr class="memitem:ga6c276c6c39755499927558bd8067b18f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__POST.html#ga6c276c6c39755499927558bd8067b18f">sl_static_dec_classb_vars</a>(vartype,  name)</td></tr>
 <tr class="separator:ga6c276c6c39755499927558bd8067b18f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga7ceff82eebbc7dd125727947508df7ea"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__POST.html#ga7ceff82eebbc7dd125727947508df7ea">INV_CLASSB_VAR</a>(vartype,  name)&#160;&#160;&#160;CONCAT(name, Inv) = (vartype) (~(vartype) name)</td></tr>
 <tr class="separator:ga7ceff82eebbc7dd125727947508df7ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -160,7 +160,7 @@ Macros</h2></td></tr>
 <tr class="separator:ga71232bd1d7304cf1c37c7595f45421e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga6dba447a327f1cb1da83327a4e7abb80"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga6dba447a327f1cb1da83327a4e7abb80">FLASH_BLOCK</a>&#160;&#160;&#160;(64)</td></tr>
 <tr class="separator:ga6dba447a327f1cb1da83327a4e7abb80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga1fafdaede51f1a2092840264d1776522"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1fafdaede51f1a2092840264d1776522">ROM_END</a>&#160;&#160;&#160;((uint32_t *) (&amp;<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">__checksum</a>))</td></tr>
+<tr class="memitem:ga1fafdaede51f1a2092840264d1776522"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1fafdaede51f1a2092840264d1776522">ROM_END</a>&#160;&#160;&#160;((uint32_t *) (&amp;<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">check_sum</a>))</td></tr>
 <tr class="separator:ga1fafdaede51f1a2092840264d1776522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gad9e53d1418399b36953a40395ac1384d"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gad9e53d1418399b36953a40395ac1384d">ROM_SIZE</a>&#160;&#160;&#160;((uint32_t) <a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1fafdaede51f1a2092840264d1776522">ROM_END</a> - (uint32_t) ROM_START)</td></tr>
 <tr class="separator:gad9e53d1418399b36953a40395ac1384d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -170,7 +170,7 @@ Macros</h2></td></tr>
 <tr class="separator:ga31d3955f55968c7f8dee5682092847b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9ab72a2f0d6a9c3bc531b69362b202a1"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga9ab72a2f0d6a9c3bc531b69362b202a1">FLASH_BLOCK_WORDS</a>&#160;&#160;&#160;((uint32_t) (<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga31d3955f55968c7f8dee5682092847b1">ROM_SIZE_INWORDS</a> / <a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga1756482c5c8ec4b8e3a2635e3cac8778">STEPS_NUMBER</a>))</td></tr>
 <tr class="separator:ga9ab72a2f0d6a9c3bc531b69362b202a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:gac8a3e47f009f04f9dfdee367c0507f22"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gac8a3e47f009f04f9dfdee367c0507f22">REF_CRC</a>&#160;&#160;&#160;(<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">__checksum</a>)</td></tr>
+<tr class="memitem:gac8a3e47f009f04f9dfdee367c0507f22"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gac8a3e47f009f04f9dfdee367c0507f22">REF_CRC</a>&#160;&#160;&#160;(<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">check_sum</a>)</td></tr>
 <tr class="separator:gac8a3e47f009f04f9dfdee367c0507f22"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gafcf795f5a96fd55561abe69f56224630"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__VARIABLE__MEMORY__Test.html#gafcf795f5a96fd55561abe69f56224630">BLOCKSIZE</a>&#160;&#160;&#160;(4)</td></tr>
 <tr class="separator:gafcf795f5a96fd55561abe69f56224630"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -266,22 +266,22 @@ Macros</h2></td></tr>
 <tr class="memdesc:ga6babd698ebbbd319c2bda154a1679b8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Mask used for checking that all bits are set.  <a href="group__IEC60730__PROGRAMME__COUNTER.html#ga6babd698ebbbd319c2bda154a1679b8d">More...</a><br /></td></tr>
 <tr class="separator:ga6babd698ebbbd319c2bda154a1679b8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga156dbd14b4ce248fe9c88819982a7a5d"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SL_IEC60730_DEFAULT_GPRC</b>&#160;&#160;&#160;GPCRC</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>DEFAULT_GPRC</b>&#160;&#160;&#160;GPCRC</td></tr>
 <tr class="separator:ga156dbd14b4ce248fe9c88819982a7a5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga558de50fe1c89a1afb8292d2ee4346da"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga558de50fe1c89a1afb8292d2ee4346da">SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_TEST</a>&#160;&#160;&#160;&quot;123456789&quot;</td></tr>
+<tr class="memitem:ga558de50fe1c89a1afb8292d2ee4346da"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga558de50fe1c89a1afb8292d2ee4346da">IMC_CRCBUFFER_SAMPLETEST</a>&#160;&#160;&#160;&quot;123456789&quot;</td></tr>
 <tr class="separator:ga558de50fe1c89a1afb8292d2ee4346da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:gace0835e825dfeca0c043ef08af67d9e4"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE</b>&#160;&#160;&#160;(0xFFFF)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>IMC_CRCBUFFER_INIT_VALUE</b>&#160;&#160;&#160;(0xFFFF)</td></tr>
 <tr class="separator:gace0835e825dfeca0c043ef08af67d9e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9c3356b134655aec941235118b70fae9"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT</b>&#160;&#160;&#160;(0x0000)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>IMC_CRCBUFFER_XOROUTPUT</b>&#160;&#160;&#160;(0x0000)</td></tr>
 <tr class="separator:ga9c3356b134655aec941235118b70fae9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ga9ccd80b391104e8c4c07e02de05b80cc"><td class="memItemLeft" align="right" valign="top">
-#define&#160;</td><td class="memItemRight" valign="bottom"><b>SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT</b>&#160;&#160;&#160;(0x29B1)</td></tr>
+#define&#160;</td><td class="memItemRight" valign="bottom"><b>IMC_CRCBUFFER_SAMPLERESULT</b>&#160;&#160;&#160;(0x29B1)</td></tr>
 <tr class="separator:ga9ccd80b391104e8c4c07e02de05b80cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga3921ff9a1a6850b76e609667f2cb30c3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT</b></td></tr>
+<tr class="memitem:ga3921ff9a1a6850b76e609667f2cb30c3"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>IMC_CRCBUFFER_INIT_DEFAULT</b></td></tr>
 <tr class="separator:ga3921ff9a1a6850b76e609667f2cb30c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga7d44834c1dcf3032838d3d68945da3b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT</b></td></tr>
+<tr class="memitem:ga7d44834c1dcf3032838d3d68945da3b4"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><b>IMC_CRCBUFFER_UPDATE_DEFAULT</b></td></tr>
 <tr class="separator:ga7d44834c1dcf3032838d3d68945da3b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -345,9 +345,9 @@ Enumerations</h2></td></tr>
  }</td></tr>
 <tr class="memdesc:ga5d9503d6c07fff2f4cf1ace3cb59c989"><td class="mdescLeft">&#160;</td><td class="mdescRight">Enable/disable switch for system timer test.  <a href="group__IEC60730__SYSTEM__CLOCK__Test.html#ga5d9503d6c07fff2f4cf1ace3cb59c989">More...</a><br /></td></tr>
 <tr class="separator:ga5d9503d6c07fff2f4cf1ace3cb59c989"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba81e9d30c093158a799c13cf1d42df28a">SL_IEC60730_IMC_DATA_READ</a> = 0, 
-<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba14b98b0e584e8059ab9e3990ffe8e149">SL_IEC60730_IMC_DATA_READ_BIT_REVERSED</a>, 
-<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba641228c714e8ef6fb667f3ee76761f22">SL_IEC60730_IMC_DATA_READ_BYTE_REVERSED</a>
+<tr class="memitem:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom">{ <a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba81e9d30c093158a799c13cf1d42df28a">IMC_DATA_READ</a> = 0, 
+<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba14b98b0e584e8059ab9e3990ffe8e149">IMC_DATA_READ_BIT_REVERSED</a>, 
+<a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#gga06fc87d81c62e9abb8790b6e5713c55ba641228c714e8ef6fb667f3ee76761f22">IMC_DATA_READ_BYTE_REVERSED</a>
  }</td></tr>
 <tr class="separator:ga06fc87d81c62e9abb8790b6e5713c55b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -402,7 +402,7 @@ Variables</h2></td></tr>
 const <a class="el" href="structiec60730__LibraryVersion__t.html">iec60730_LibraryVersion_t</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__POST.html#ga94096c59bc99dd72fca3e99d49a09cbe">iec60730_LibraryVersion</a></td></tr>
 <tr class="memdesc:ga94096c59bc99dd72fca3e99d49a09cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Global variable which holds the IEC60370 library version. <br /></td></tr>
 <tr class="separator:ga94096c59bc99dd72fca3e99d49a09cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ga958cd3e171526a901e3c8b99cf2dfd56"><td class="memItemLeft" align="right" valign="top">crc_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">__checksum</a></td></tr>
+<tr class="memitem:ga958cd3e171526a901e3c8b99cf2dfd56"><td class="memItemLeft" align="right" valign="top">crc_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__IEC60730__INVARIABLE__MEMORY__Test.html#ga958cd3e171526a901e3c8b99cf2dfd56">check_sum</a></td></tr>
 <tr class="separator:ga958cd3e171526a901e3c8b99cf2dfd56"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -414,4 +414,9 @@ License</h1>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://w
+Generated by &#160;<a href="http://www.doxygen.org/index.html">
+<img class="footer" src="doxygen.png" alt="doxygen"/>
+</a> 1.8.17
+</small></address>
+</body>
+</html>

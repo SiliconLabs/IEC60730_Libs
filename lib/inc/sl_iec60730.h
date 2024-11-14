@@ -29,7 +29,7 @@ extern "C" {
 #include "em_gpcrc.h"
 #include SL_IEC60730_BOARD_HEADER
 
-#define IE60730_LIBRARY_VERSION {1,2,0}
+#define IE60730_LIBRARY_VERSION { 1, 2, 0 }
 
 #ifdef DOXYGEN
 /// User SHOULD define #SL_IEC60730_BOARD_HEADER definition for using IMC and VMC modules.
@@ -66,45 +66,45 @@ typedef struct {
 } sl_iec60730_library_version_t;
 
 /// Global variable which holds the IEC60370 library version.
-extern const sl_iec60730_library_version_t iec60730_library_version;
+extern const sl_iec60730_library_version_t SL_IEC60730_LIBRARY_VERSION;
 
 /// The result of a test.
 typedef enum {
-  IEC60730_TEST_FAILED      = 0, ///< test result failed
-  IEC60730_TEST_PASSED      = 1, ///< test result passed
-  IEC60730_TEST_IN_PROGRESS = 2, ///< test is still in progress
+  SL_IEC60730_TEST_FAILED      = 0, ///< test result failed
+  SL_IEC60730_TEST_PASSED      = 1, ///< test result passed
+  SL_IEC60730_TEST_IN_PROGRESS = 2, ///< test is still in progress
 } sl_iec60730_test_result_t;
 
 /// Cause of failure passed to Safe State function.
 typedef enum {
-  IEC60730_NO_FAILURE           = 0, ///< No failure detected
-  IEC60730_TEST_VERIFY          = 1, ///< Special case used for automated verification testing
-  IEC60730_WATCHDOG_POST_FAIL   = 2, ///< Watchdog POST test failed
-  IEC60730_VMC_FAIL             = 3, ///< Variable Memory Check detected a failure
-  IEC60730_IMC_FAIL             = 4, ///< Invariable Memory Check detected a failure
-  IEC60730_CPU_REGISTERS_FAIL   = 5, ///< CPU Registers Check detected a failure
-  IEC60730_CLOCK_FAIL           = 6, ///< System Clock Check detected a failure
-  IEC60730_INTERRUPT_FAIL       = 7, ///< Interrupt Plausibility Check detected a failure
-  IEC60730_PROGRAM_COUNTER_FAIL = 8, ///< Program Counter Check detected a failure
-  IEC60730_GPIO_FAIL            = 9, ///< GPIO Plausibility Check detected a failure
-  IEC60730_ANALOG_FAIL          = 10, ///< Analog Plausibility Check detected a failure
-  IEC60730_CS0_FAIL             = 11, ///< CSEN0 detected a failureLESENSE
-  IEC60730_LESENSE0_FAIL        = 12, ///< LESENSE0 detected a failure
-  IEC60730_RADIO_FAIL           = 13, ///< Radio comms detected a failure
-  IEC60730_I2C0_FAIL            = 14, ///< I2C0 comms channel detected a failure
-  IEC60730_I2C1_FAIL            = 15, ///< I2C1 comms channel detected a failure
-  IEC60730_USART0_FAIL          = 16, ///< USART0 comms channel detected a failure
-  IEC60730_USART1_FAIL          = 17, ///< USART1 comms channel detected a failure
-  IEC60730_USART2_FAIL          = 18, ///< USART2 comms channel detected a failure
-  IEC60730_USART3_FAIL          = 19, ///< USART3 comms channel detected a failure
-  IEC60730_LEUART0_FAIL         = 20, ///< LEUART comms channel detected a failure
-  IEC60730_EUART0_FAIL          = 21, ///< EUART comms channel detected a failure
-  IEC60730_PDM0_FAIL            = 22, ///< PDM comms channel detected a failure
-  IEC60730_OEM_FAIL_1           = 23, ///< OEM defined failure
-  IEC60730_OEM_FAIL_2           = 24, ///< OEM defined failure
-  IEC60730_OEM_FAIL_3           = 25, ///< OEM defined failure
-  IEC60730_OEM_FAIL_4           = 26, ///< OEM defined failure
-  IEC60730_SAFETY_CHECK_FAIL    = 0XFF, ///< iec60730_safety_check detected some failure
+  SL_IEC60730_NO_FAILURE           = 0, ///< No failure detected
+  SL_IEC60730_TEST_VERIFY          = 1, ///< Special case used for automated verification testing
+  SL_IEC60730_WATCHDOG_POST_FAIL   = 2, ///< Watchdog POST test failed
+  SL_IEC60730_VMC_FAIL             = 3, ///< Variable Memory Check detected a failure
+  SL_IEC60730_IMC_FAIL             = 4, ///< Invariable Memory Check detected a failure
+  SL_IEC60730_CPU_REGISTERS_FAIL   = 5, ///< CPU Registers Check detected a failure
+  SL_IEC60730_CLOCK_FAIL           = 6, ///< System Clock Check detected a failure
+  SL_IEC60730_INTERRUPT_FAIL       = 7, ///< Interrupt Plausibility Check detected a failure
+  SL_IEC60730_PROGRAM_COUNTER_FAIL = 8, ///< Program Counter Check detected a failure
+  SL_IEC60730_GPIO_FAIL            = 9, ///< GPIO Plausibility Check detected a failure
+  SL_IEC60730_ANALOG_FAIL          = 10, ///< Analog Plausibility Check detected a failure
+  SL_IEC60730_CS0_FAIL             = 11, ///< CSEN0 detected a failureLESENSE
+  SL_IEC60730_LESENSE0_FAIL        = 12, ///< LESENSE0 detected a failure
+  SL_IEC60730_RADIO_FAIL           = 13, ///< Radio comms detected a failure
+  SL_IEC60730_I2C0_FAIL            = 14, ///< I2C0 comms channel detected a failure
+  SL_IEC60730_I2C1_FAIL            = 15, ///< I2C1 comms channel detected a failure
+  SL_IEC60730_USART0_FAIL          = 16, ///< USART0 comms channel detected a failure
+  SL_IEC60730_USART1_FAIL          = 17, ///< USART1 comms channel detected a failure
+  SL_IEC60730_USART2_FAIL          = 18, ///< USART2 comms channel detected a failure
+  SL_IEC60730_USART3_FAIL          = 19, ///< USART3 comms channel detected a failure
+  SL_IEC60730_LEUART0_FAIL         = 20, ///< LEUART comms channel detected a failure
+  SL_IEC60730_EUART0_FAIL          = 21, ///< EUART comms channel detected a failure
+  SL_IEC60730_PDM0_FAIL            = 22, ///< PDM comms channel detected a failure
+  SL_IEC60730_OEM_FAIL_1           = 23, ///< OEM defined failure
+  SL_IEC60730_OEM_FAIL_2           = 24, ///< OEM defined failure
+  SL_IEC60730_OEM_FAIL_3           = 25, ///< OEM defined failure
+  SL_IEC60730_OEM_FAIL_4           = 26, ///< OEM defined failure
+  SL_IEC60730_SAFETY_CHECK_FAIL    = 0XFF, ///< iec60730_safety_check detected some failure
 } sl_iec60730_test_failure_t;
 
 /// Useful macro for avoiding compiler warnings related to unused function
@@ -140,30 +140,30 @@ typedef enum {
 
 /// The #DEC_CLASSB_VARS definition is used for declaring pair of classsb_ram
 /// variables.
-#define DEC_CLASSB_VARS(vartype, name)                                         \
-  __no_init vartype name __CLASSB_RAM;                                         \
+#define DEC_CLASSB_VARS(vartype, name) \
+  __no_init vartype name __CLASSB_RAM; \
   __no_init vartype CONCAT(name, _inv) __CLASSB_RAM
 
 /// The #EXTERN_DEC_CLASSB_VARS definition is extern of pair of
 /// #DEC_CLASSB_VARS
-#define EXTERN_DEC_CLASSB_VARS(vartype, name)                                  \
-  extern __no_init vartype name __CLASSB_RAM;                                  \
+#define EXTERN_DEC_CLASSB_VARS(vartype, name) \
+  extern __no_init vartype name __CLASSB_RAM; \
   extern __no_init vartype CONCAT(name, _inv) __CLASSB_RAM
 
-/// The #STATIC_DEC_CLASSB_VARS definition used for declaring static pair
+/// The #sl_static_dec_classb_vars definition used for declaring static pair
 /// #DEC_CLASSB_VARS
-#define STATIC_DEC_CLASSB_VARS(vartype, name)                                  \
-  static __no_init vartype name __CLASSB_RAM;                                  \
+#define sl_static_dec_classb_vars(vartype, name) \
+  static __no_init vartype name __CLASSB_RAM;    \
   static __no_init vartype CONCAT(name, _inv) __CLASSB_RAM
 
 /// The #INV_CLASSB_VAR macro is used to inverse a Inv value of pair
 /// #DEC_CLASSB_VARS
-#define INV_CLASSB_VAR(vartype, name)                                          \
+#define INV_CLASSB_VAR(vartype, name) \
   CONCAT(name, _inv) = (vartype) (~(vartype) name)
 
 /// The #INV_CLASSB_PVAR macro is used to inverse a Inv value of pointer pair
 /// #DEC_CLASSB_VARS
-#define INV_CLASSB_PVAR(vartype, name)                                         \
+#define INV_CLASSB_PVAR(vartype, name) \
   CONCAT(name, _inv) = (vartype *) (~(vartype) name)
 
 #if ((defined UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE) || defined (UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE))
@@ -171,7 +171,7 @@ typedef enum {
 #else
 /// The #CHECK_INTEGRITY definition used for checking integrity of pair of
 /// variables stored in *.classb_ram* section.
-#define CHECK_INTEGRITY(vartype, x)                                            \
+#define CHECK_INTEGRITY(vartype, x) \
   ((vartype) - 1 == ((vartype) x ^ (vartype) CONCAT(x, _inv)))
 #endif // (UNIT_TEST_IEC60730_VARIABLE_MEMORY_ENABLE || UNIT_TEST_IEC60730_INVARIABLE_MEMORY_ENABLE)
 
@@ -184,7 +184,7 @@ typedef enum {
 
 #ifdef DOXYGEN
 /// Support for cleaner code.
-///   * If user use the #SL_IEC60730_USE_CRC_32_ENABLE  definition, #sl_iec60730_crc_t is uint32_t.
+///   * If user use the #SL_IEC60730_USE_CRC_32_ENABLE == 1, #sl_iec60730_crc_t is uint32_t.
 ///   * Otherwise, #sl_iec60730_crc_t is uint16_t.
 #define sl_iec60730_crc_t
 
@@ -197,16 +197,16 @@ typedef enum {
 
 #if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 typedef uint32_t sl_iec60730_crc_t;
-#else  /* !SL_IEC60730_USE_CRC_32_ENABLE  */
+#else /* !SL_IEC60730_USE_CRC_32_ENABLE */
 typedef uint16_t sl_iec60730_crc_t;
-#endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
+#endif /* SL_IEC60730_USE_CRC_32_ENABLE */
 
 #endif // DOXYGEN
 
-/// The end address of Flash is specified by the address of the #__checksum
+/// The end address of Flash is specified by the address of the #check_sum
 /// variable. This variable is provided by linker in GCC or generated by
 /// configurations in IAR.
-extern sl_iec60730_crc_t __checksum;
+extern sl_iec60730_crc_t check_sum;
 
 /// The #SL_IEC60730_ROM_SIZE definition describes the size of Flash calculated CRC value.
 /// This calculation based on #SL_IEC60730_ROM_END, and #SL_IEC60730_ROM_START definitions.
@@ -224,11 +224,30 @@ extern sl_iec60730_crc_t __checksum;
 /// and #STEPS_NUMBER  definitions. User SHOULD not change it.
 #define SL_IEC60730_FLASH_BLOCK_WORDS ((uint32_t) (SL_IEC60730_ROM_SIZE_INWORDS / STEPS_NUMBER))
 
+/// The #SL_IEC60730_ROM_SIZE_TEST definition describes the size of region Flash calculated CRC value.
+/// This calculation based on #end address, and #start address region is transmitted.
+/// definitions.
+#define SL_IEC60730_ROM_SIZE_TEST(start, end) \
+  ((uint32_t) end - (uint32_t) start)
+
+/// The #STEPS_NUMBER_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST and
+/// #SL_IEC60730_FLASH_BLOCK definition. User SHOULD not change it.
+#define STEPS_NUMBER_TEST(start, end) \
+  ((uint32_t) SL_IEC60730_ROM_SIZE_TEST(start, end) / SL_IEC60730_FLASH_BLOCK)
+
+/// The #SL_IEC60730_ROM_SIZE_INWORDS_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST definition.
+/// User SHOULD not change it.
+#define SL_IEC60730_ROM_SIZE_INWORDS_TEST(start, end)  ((uint32_t) SL_IEC60730_ROM_SIZE_TEST(start, end) / 4U)
+
+/// The #SL_IEC60730_FLASH_BLOCK_WORDS_TEST definitionn WILL be defined base on #SL_IEC60730_ROM_SIZE_TEST
+/// and #STEPS_NUMBER  definitions. User SHOULD not change it.
+#define SL_IEC60730_FLASH_BLOCK_WORDS_TEST(start, end) ((uint32_t) (SL_IEC60730_ROM_SIZE_INWORDS_TEST(start, end) / STEPS_NUMBER_TEST(start, end)))
+
 /// The #SL_IEC60730_REF_CRC definition describes variable that address of this variable
 /// store CRC value that is calculated by \ref gcc_crcXY in Post Build. We use
-/// #__checksum so in our example #SL_IEC60730_REF_CRC definition is #__checksum.
+/// #check_sum so in our example #SL_IEC60730_REF_CRC definition is #check_sum.
 #ifndef SL_IEC60730_REF_CRC
-#define SL_IEC60730_REF_CRC (__checksum)
+#define SL_IEC60730_REF_CRC (check_sum)
 #endif
 
 /** @} (end addtogroup IEC60730_INVARIABLE_MEMORY_Test) */
@@ -287,7 +306,7 @@ extern sl_iec60730_crc_t __checksum;
  * executed to prevent further system failures.
  * @note This is an example; an OEM must fully implement this according
  * to their system needs.
-*****************************************************************************/
+ *****************************************************************************/
 void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure);
 /** @} (end addtogroup IEC60730_SAFE_STATE) */
 
@@ -338,14 +357,14 @@ extern uint16_t sl_iec60730_program_counter_check;
 /// Mask bit used for OEM Check 7 completed
 #define IEC60730_OEM7_COMPLETE        (1 << 15)
 /// Mask used for checking that all bits are set
-#define IEC60730_ALL_COMPLETE_BITS                                             \
-  (IEC60730_VMC_COMPLETE | IEC60730_IMC_COMPLETE                               \
-  | IEC60730_CPU_CLOCKS_COMPLETE | IEC60730_CPU_REGS_COMPLETE                 \
-  | IEC60730_INTERRUPT_COMPLETE | IEC60730_GPIO_COMPLETE                      \
-  | IEC60730_ANALOG_COMPLETE | IEC60730_COMMS_COMPLETE                        \
-  | IEC60730_OEM0_COMPLETE | IEC60730_OEM1_COMPLETE | IEC60730_OEM2_COMPLETE  \
-  | IEC60730_OEM3_COMPLETE | IEC60730_OEM4_COMPLETE | IEC60730_OEM5_COMPLETE  \
-  | IEC60730_OEM6_COMPLETE | IEC60730_OEM7_COMPLETE)
+#define IEC60730_ALL_COMPLETE_BITS                                            \
+  (IEC60730_VMC_COMPLETE | IEC60730_IMC_COMPLETE                              \
+   | IEC60730_CPU_CLOCKS_COMPLETE | IEC60730_CPU_REGS_COMPLETE                \
+   | IEC60730_INTERRUPT_COMPLETE | IEC60730_GPIO_COMPLETE                     \
+   | IEC60730_ANALOG_COMPLETE | IEC60730_COMMS_COMPLETE                       \
+   | IEC60730_OEM0_COMPLETE | IEC60730_OEM1_COMPLETE | IEC60730_OEM2_COMPLETE \
+   | IEC60730_OEM3_COMPLETE | IEC60730_OEM4_COMPLETE | IEC60730_OEM5_COMPLETE \
+   | IEC60730_OEM6_COMPLETE | IEC60730_OEM7_COMPLETE)
 
 /** @} (end addtogroup IEC60730_PROGRAMME_COUNTER) */
 
@@ -417,7 +436,7 @@ typedef struct {
  * @returns None.
  *
  * Called by OEM and interrupt check functions to set #iec60730_safety_check
- * to #IEC60730_TEST_FAILED.
+ * to #SL_IEC60730_TEST_FAILED.
  *****************************************************************************/
 void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure);
 
@@ -438,7 +457,7 @@ void sl_iec60730_safety_check_reset_error(void);
  * the errors that occurred and the number of errors
  *
  * Called by OEM in sl_iec60730_safe_state functions to get value #iec60730_safety_check,
- * so OEM can get all #IEC60730_TEST_FAILED occur
+ * so OEM can get all #SL_IEC60730_TEST_FAILED occur
  *****************************************************************************/
 sl_iec60730_safety_check_t* sl_iec60730_safety_check_get_error(void);
 
@@ -452,7 +471,7 @@ sl_iec60730_safety_check_t* sl_iec60730_safety_check_get_error(void);
  * Each module is tested, and if a failure is detected sl_iec60730_safe_state()
  * is called. If a test failure occurs outside this function (such as comms),
  * called function #sl_iec60730_safety_check_error_occur set #iec60730_safety_check
- * to #IEC60730_TEST_FAILED.
+ * to #SL_IEC60730_TEST_FAILED.
  *****************************************************************************/
 void sl_iec60730_bist(void);
 /** @} (end addtogroup sl_iec60730_bist) */
@@ -561,9 +580,9 @@ void sl_iec60730_sys_clock_count_reset(void);
 /// of executions for each interrupt included in a project.
 typedef struct {
   SL_IEC60730_IRQ_TYPE_VARIABLE
-      min; ///< Minimum expected executions of ISR.  Can be 0-255, must be less than or equal to max.
+    min;   ///< Minimum expected executions of ISR.  Can be 0-255, must be less than or equal to max.
   SL_IEC60730_IRQ_TYPE_VARIABLE
-      max; ///< Maximum executed executions of ISR.  Can be 0-255, must be greater than or equal to min
+    max;   ///< Maximum executed executions of ISR.  Can be 0-255, must be greater than or equal to min
 } sl_iec60730_irq_execution_bounds_t;
 
 /// Struct contains information about the IRQ number and
@@ -595,7 +614,7 @@ typedef struct {
 /// compares the number of ISR executions for each ISR as defined in the
 /// #irq_count array.  A count outside the defined bounds results
 /// in a safe state entry.
-typedef struct{
+typedef struct {
   volatile SL_IEC60730_IRQ_TYPE_VARIABLE* irq_count;
   const sl_iec60730_irq_execution_bounds_t* irq_bounds;
   uint8_t size;
@@ -614,9 +633,17 @@ typedef struct{
 // Allocate storage for PRIMASK or BASEPRI value
 #define SL_IEC60370_DECLARE_IRQ_STATE CORE_DECLARE_IRQ_STATE;
 
+// Enter ATOMIC section of IMC Post
+#define SL_IEC60730_IMC_POST_ENTER_ATOMIC() \
+  CORE_DECLARE_IRQ_STATE;                   \
+  CORE_ENTER_ATOMIC()
+
+// Exit ATOMIC section of VMC Post
+#define SL_IEC60730_IMC_POST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
+
 // Enter ATOMIC section of IMC Bist
-#define SL_IEC60730_IMC_BIST_ENTER_ATOMIC()                                       \
-  CORE_DECLARE_IRQ_STATE;                                                      \
+#define SL_IEC60730_IMC_BIST_ENTER_ATOMIC() \
+  CORE_DECLARE_IRQ_STATE;                   \
   CORE_ENTER_ATOMIC()
 
 // Exit ATOMIC section of VMC Bist
@@ -641,9 +668,9 @@ typedef uint8_t sl_iec60730_read_type_t;
 enum {
   SL_IEC60730_IMC_DATA_READ = 0, ///< use function GPCRC_DataRead to read CRC
   SL_IEC60730_IMC_DATA_READ_BIT_REVERSED =
-      1, ///< use function GPCRC_DataReadBitReversed to read CRC
+    1,   ///< use function GPCRC_DataReadBitReversed to read CRC
   SL_IEC60730_IMC_DATA_READ_BYTE_REVERSED =
-      2, ///< use function GPCRC_DataReadByteReversed to read CRC
+    2,   ///< use function GPCRC_DataReadByteReversed to read CRC
 };
 
 /// This structure is used as configuration for IMC testing, that holds GPCRC Register
@@ -659,23 +686,39 @@ typedef struct {
   sl_iec60730_imc_params_t hal;       ///< struct #sl_iec60730_imc_params_t that contain GPCRC Register
   sl_iec60730_crc_init_typedef init; ///< CRC initialization structure.
   sl_iec60730_read_type_t readType;   ///< The way to read calculated CRC value
-#endif                   /* SL_IEC60730_CRC_USE_SW_ENABLE */
+#endif /* SL_IEC60730_CRC_USE_SW_ENABLE */
   sl_iec60730_crc_t xorOut;          ///< XOR with calculated CRC value
 } sl_iec60730_update_crc_params_t;
+
+/// This structure is used as configuration for IMC testing
+typedef struct {
+  uint32_t *start; ///< Start address of RAM to check
+  uint32_t *end;   ///< End address of RAM to check
+} sl_iec60730_imc_test_region_t;
+
+/// This structure is used as multiple test regions for IMC testing
+typedef struct {
+  const sl_iec60730_imc_test_region_t *region;
+  uint8_t number_of_test_regions; ///< Number of test regions
+} sl_iec60730_imc_test_multiple_regions_t;
 
 #ifdef DOXYGEN
 /// This macro is the default of GPCRC Register.
 ///   * Default #SL_IEC60730_DEFAULT_GPRC is GPCRC (also GPCRC_S).
-///   * If the #SL_IEC60730_NON_SECURE_EN is enable, #SL_IEC60730_DEFAULT_GPRC is GPCRC_NS.
+///   * If the #SL_IEC60730_NON_SECURE_ENABLE is enable, #SL_IEC60730_DEFAULT_GPRC is GPCRC_NS.
 #define SL_IEC60730_DEFAULT_GPRC
 #else
 #ifndef SL_IEC60730_DEFAULT_GPRC
-#ifndef SL_IEC60730_NON_SECURE_EN
-#define SL_IEC60730_DEFAULT_GPRC GPCRC
-#else
+#if (_SILICON_LABS_32B_SERIES == 2)
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_DEFAULT_GPRC GPCRC_NS
+#else
+#define SL_IEC60730_DEFAULT_GPRC GPCRC
 #endif
-#endif // SL_IEC60730_DEFAULT_GPRC
+#else // (_SILICON_LABS_32B_SERIES == 2)
+#define SL_IEC60730_DEFAULT_GPRC GPCRC
+#endif // (_SILICON_LABS_32B_SERIES == 2)
+#endif // !SL_IEC60730_DEFAULT_GPRC
 #endif // DOXYGEN
 
 /// This macro is the sample test buffer used for testing CRC algorithm. This
@@ -712,53 +755,53 @@ typedef struct {
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0xCBF43926)
-#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   { SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT }
 #else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0x0000)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x31C3)
-#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   {SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT   { SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT }
 #endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
-#else  /* !SL_IEC60730_CRC_USE_SW_ENABLE */
+#else /* !SL_IEC60730_CRC_USE_SW_ENABLE */
 #if (SL_IEC60730_USE_CRC_32_ENABLE == 1)
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0xFFFFFFFFuL)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0xCBF43926)
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
-  {                                                                            \
-      0x04C11DB7UL,                                                            \
-      SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE,                                                \
-      false,                                                                   \
-      false,                                                                   \
-      false,                                                                   \
-      false,                                                                   \
-      true,                                                                    \
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT \
+  {                                             \
+    0x04C11DB7UL,                               \
+    SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE,      \
+    false,                                      \
+    false,                                      \
+    false,                                      \
+    false,                                      \
+    true,                                       \
   }
 
-#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT                                           \
-  {{SL_IEC60730_DEFAULT_GPRC},                                                             \
-  SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
-  SL_IEC60730_IMC_DATA_READ,                                                              \
-  SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT \
+  { { SL_IEC60730_DEFAULT_GPRC },                 \
+    SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,      \
+    SL_IEC60730_IMC_DATA_READ,                    \
+    SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT }
 #else /* !SL_IEC60730_USE_CRC_32_ENABLE  */
 #define SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE       SL_IEC60730_IMC_INIT_VALUE
 #define SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT       (0x0000)
 #define SL_IEC60730_IMC_CRC_BUFFER_SAMPLE_RESULT    (0x31C3)
-#define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT                                             \
-  {                                                                            \
-      0x1021UL,                                                                \
-      SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE,                                                \
-      false,                                                                   \
-      true,                                                                    \
-      false,                                                                   \
-      false,                                                                   \
-      true,                                                                    \
+#define SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT \
+  {                                             \
+    0x1021UL,                                   \
+    SL_IEC60730_IMC_CRC_BUFFER_INIT_VALUE,      \
+    false,                                      \
+    true,                                       \
+    false,                                      \
+    false,                                      \
+    true,                                       \
   }
-#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT                                           \
-  {{SL_IEC60730_DEFAULT_GPRC},                                                             \
-  SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,                                                 \
-  SL_IEC60730_IMC_DATA_READ_BIT_REVERSED,                                                 \
-  SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT}
+#define SL_IEC60730_IMC_CRC_BUFFER_UPDATE_DEFAULT \
+  { { SL_IEC60730_DEFAULT_GPRC },                 \
+    SL_IEC60730_IMC_CRC_BUFFER_INIT_DEFAULT,      \
+    SL_IEC60730_IMC_DATA_READ_BIT_REVERSED,       \
+    SL_IEC60730_IMC_CRC_BUFFER_XOR_OUTPUT }
 #endif /* SL_IEC60730_USE_CRC_32_ENABLE  */
 #endif /* SL_IEC60730_CRC_USE_SW_ENABLE */
 
@@ -774,7 +817,7 @@ typedef struct {
  * Performs a initialization of global variables and hardware configuration in
  * case hardware support.
  *****************************************************************************/
-void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params);
+void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params, sl_iec60730_imc_test_multiple_regions_t *test_config);
 
 /**************************************************************************/ /**
  * public IEC60730 Update CRC git pull with Data Buffer
@@ -786,18 +829,18 @@ void sl_iec60730_imc_init(sl_iec60730_imc_params_t *params);
  * @param size The number of bytes stored in the buffer.
  *
  * @returns #sl_iec60730_test_result_t.
- *          * If test fails, returns #IEC60730_TEST_FAILED;
- *          * Otherwise, return #IEC60730_TEST_PASSED.
+ *          * If test fails, returns #SL_IEC60730_TEST_FAILED;
+ *          * Otherwise, return #SL_IEC60730_TEST_PASSED.
  *
  * This routine takes a CRC and updates it using a buffer of one or more
  * bytes of data. For details on the CRC polynomial used, see
  * @ref imc_hardware_architecture
  *****************************************************************************/
 sl_iec60730_test_result_t
-    sl_iec60730_update_crc_with_data_buffer(sl_iec60730_update_crc_params_t *params,
-                                      sl_iec60730_crc_t *crc,
-                                      uint8_t *buffer,
-                                      uint32_t size);
+sl_iec60730_update_crc_with_data_buffer(sl_iec60730_update_crc_params_t *params,
+                                        sl_iec60730_crc_t *crc,
+                                        uint8_t *buffer,
+                                        uint32_t size);
 
 /** @} (end addtogroup IEC60730_INVARIABLE_MEMORY_Test) */
 
@@ -807,72 +850,16 @@ sl_iec60730_test_result_t
  *****************************************************************************/
 
 // Enter ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_ENTER_ATOMIC()
-
-// Exit ATOMIC section of VMC Post
-#define SL_IEC60730_VMC_POST_EXIT_ATOMIC()
-
-// Enter ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_ENTER_ATOMIC()                                       \
-  CORE_DECLARE_IRQ_STATE;                                                      \
-  CORE_ENTER_ATOMIC()
-
-// Exit ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_EXIT_ATOMIC() CORE_EXIT_ATOMIC()
-
-/// This structure is used as configuration for VMC testing
-typedef struct {
-  uint32_t *start; ///< Start address of RAM to check
-  uint32_t *end;   ///< End address of RAM to check
-} sl_iec60730_vmc_params_t;
-
-/**************************************************************************/ /**
- * public IEC60730 Variable Memory Check (VMC) Initialize
- *
- * @param params input parameter of struct #sl_iec60730_vmc_params_t form
- *
- * @return void
- *
- * Performs a initialization of global variables. This function SHOULD call
- * before calling #sl_iec60730_vmc_bist
- *****************************************************************************/
-void sl_iec60730_vmc_init(sl_iec60730_vmc_params_t *params);
-
-/** @} (end addtogroup IEC60730_VARIABLE_MEMORY_Test) */
-
-#if (_SILICON_LABS_32B_SERIES == 2)
-// Write to backup ram module
-// buram_inst: Pointer to BURAM instance
-// idx: BURAM Reg index
-// val: write value
-#define SL_IEC60730_BURAM_WRITE(buram_inst, idx, val)                             \
-  do {                                                                         \
-    buram_inst->RET[idx].REG = val;                                            \
-  } while (0)
-
-// Read from backup ram module
-// buram_inst: Pointer to BURAM instance
-// idx: BURAM Reg index
-#define SL_IEC60730_BURAM_READ(buram_inst, idx) (buram_inst->RET[idx].REG)
-#endif
-
-/** @} (end addtogroup efr32_iec60730) */
-
-#ifdef __cplusplus
-}
-#endif /* __cplusplus */
-
-#endif /* SL_IEC60730_H */
-                                                                                                   ICAL()                                     \
-  CORE_DECLARE_IRQ_STATE;                                                       \
+#define SL_IEC60730_VMC_POST_ENTER_CRITICAL() \
+  CORE_DECLARE_IRQ_STATE;                     \
   CORE_ENTER_CRITICAL()
 
 // Exit ATOMIC section of VMC Post
 #define SL_IEC60730_VMC_POST_EXIT_CRITICAL()  CORE_EXIT_CRITICAL()
 
 // Enter ATOMIC section of VMC Bist
-#define SL_IEC60730_VMC_BIST_ENTER_CRITICAL()                                    \
-  CORE_DECLARE_IRQ_STATE;                                                      \
+#define SL_IEC60730_VMC_BIST_ENTER_CRITICAL() \
+  CORE_DECLARE_IRQ_STATE;                     \
   CORE_ENTER_CRITICAL()
 
 // Exit ATOMIC section of VMC Bist
@@ -909,9 +896,9 @@ void sl_iec60730_vmc_init(sl_iec60730_vmc_test_multiple_regions_t *test_config);
 // buram_inst: Pointer to BURAM instance
 // idx: BURAM Reg index
 // val: write value
-#define SL_IEC60730_BURAM_WRITE(buram_inst, idx, val)                             \
-  do {                                                                         \
-    buram_inst->RET[idx].REG = val;                                            \
+#define SL_IEC60730_BURAM_WRITE(buram_inst, idx, val) \
+  do {                                                \
+    buram_inst->RET[idx].REG = val;                   \
   } while (0)
 
 // Read from backup ram module

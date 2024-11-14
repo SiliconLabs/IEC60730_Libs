@@ -18,7 +18,6 @@ import sys
 from time import sleep
 import glob
 
-from iec60730_get_report_unit_test import *
 from iec60730_test_base import *
 import jlink, jlink_constants
 import unittest
@@ -172,7 +171,6 @@ if __name__ == "__main__":
 
   chip_name = os.getenv('CHIP')
 
-  app_type = os.getenv('APP_TYPE')
 
   lst_file_path = os.getenv('LST_PATH')
 
@@ -193,11 +191,8 @@ if __name__ == "__main__":
                                         chip_name,
                                         lst_file_path,
                                         lib_path,
-                                        app_type,
                                         compiler)
     iec60730_unit_test_result.get_unit_test_result()
   else:
     print("The FILE_NAME environment variable is not the same as the *.lst file prefix name"
     " in the path " + lst_file_path)
-
-
