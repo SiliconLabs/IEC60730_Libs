@@ -34,19 +34,19 @@
 #define IEC60730_IRQ_SIZE               8
 #define INTEGRATION_TEST_NUM_IRQ_CHECK  1
 
-volatile SL_IEC60730_IRQ_TYPE_VARIABLE integration_test_irq_exec_count[IEC60730_IRQ_SIZE] = {0};
-const sl_iec60730_irq_execution_bounds_t integration_test_irq_freq_bounds[IEC60730_IRQ_SIZE] = {{.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11},
-                                                                            {.min = 9, .max = 11}};
+volatile SL_IEC60730_IRQ_TYPE_VARIABLE integration_test_irq_exec_count[IEC60730_IRQ_SIZE] = { 0 };
+const sl_iec60730_irq_execution_bounds_t integration_test_irq_freq_bounds[IEC60730_IRQ_SIZE] = { { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 },
+                                                                                                 { .min = 9, .max = 11 } };
 
-sl_iec60730_irq_cfg_t integration_test_irq_config = {&integration_test_irq_exec_count[0],
-                                        &integration_test_irq_freq_bounds[0],
-                                        INTEGRATION_TEST_NUM_IRQ_CHECK};
+sl_iec60730_irq_cfg_t integration_test_irq_config = { &integration_test_irq_exec_count[0],
+                                                      &integration_test_irq_freq_bounds[0],
+                                                      INTEGRATION_TEST_NUM_IRQ_CHECK };
 
 /* count which irq is executed  */
 void integration_test_irq_tick(void)
@@ -56,51 +56,17 @@ void integration_test_irq_tick(void)
   }
 }
 
-// Dump functions
-__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_bist()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_imc_bist()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_post()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_imc_post()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
 /* 10ms timer interrupt handler */
-void TIMER0_IRQHandler(void) {
+void TIMER0_IRQHandler(void)
+{
   TIMER_IntClear(TIMER_10MS, TIMER_IF_OF);
   // Increase IRQ counter
   integration_test_irq_tick();
 }
 
 /* 100ms timer interrupt handler */
-void LETIMER0_IRQHandler(void) {
+void LETIMER0_IRQHandler(void)
+{
   LETIMER_IntClear(TIMER_100MS, LETIMER_IF_UF);
   sl_iec60730_irq_check();
 }
@@ -111,6 +77,7 @@ void integration_test_run_init(void)
   integration_test_timers_init();
   integration_test_timers_enable();
   sl_iec60730_irq_init(&integration_test_irq_config);
+  sl_iec60730_post();
 }
 
 void integration_test_run_process_action(void)

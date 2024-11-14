@@ -96,11 +96,11 @@
  *
  * @section doxygen Generate document
  *
- *Using Doxygen to generate HTML documentation, the documents will be generated in `Doc/html/EFR32_ICE60730_Libraries`
+ * Using Doxygen to generate HTML documentation, the documents will be generated in `Doc/html/EFR32_ICE60730_Libraries`
  *
  *```sh
- $ sudo apt-get install doxygen
- $ doxygen qat.doxygen
+   $ sudo apt-get install doxygen
+   $ doxygen qat.doxygen
  *```
  *
  * @section pre-commit Coding convention tool
@@ -115,15 +115,15 @@
  * @subsection installation Installation
  *
  *```sh
- $ pip install pre-commit
- $ sudo apt install clang-format clang-tidy cppcheck
+   $ pip install pre-commit
+   $ sudo apt install clang-format clang-tidy cppcheck
  *```
  *
  * @subsection run Run
  *
  *```sh
- $ pre-commit install
- $ pre-commit run --all-files
+   $ pre-commit install
+   $ pre-commit run --all-files
  *```
  *
  * @section compilers Compiler specifications
@@ -447,7 +447,7 @@
  *
  * @subsection additional_oem_tests Additional OEM safety checks
  * OEMs can implement additional safety checks and call sl_iec60730_safe_state()
- * with custom #IEC60730_OEM_FAIL_1 settings.
+ * with custom #SL_IEC60730_OEM_FAIL_1 settings.
  *
  * \subsection resources_used Resources Used
  * The sizes given below are for the example programs demo provided by extension with the SDK.
@@ -633,10 +633,10 @@
  *****************************************************************************/
 
 /**************************************************************************/ /**
-  * @defgroup IEC60730_VERIFICATION IEC60730 Test Specification
-  * @{
-  * @brief Automated tests for validating correct firmware operation.
-  * @}
-  *****************************************************************************/
+ * @defgroup IEC60730_VERIFICATION IEC60730 Test Specification
+ * @{
+ * @brief Automated tests for validating correct firmware operation.
+ * @}
+ *****************************************************************************/
 
 /** @} (end addtogroup efr32_iec60730) */

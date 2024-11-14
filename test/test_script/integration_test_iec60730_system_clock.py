@@ -51,14 +51,14 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
   TEST_SUITE_NAME = "SystemClock"
 
   def setUp(self):
-    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, app_type, compiler)
+    self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
 
   @iec60730_test_case('TC: System Clock execution test')
   ## Verify the DUT repeatedly executes the system clock test, indicating no erroneous entry into safe state.
   # @details Order of execution:
   #   - Verify code reaches breakpoint at IEC60730_SYSTEM_CLOCK_TICK_BKPT (to verify Clock counter is working).
-  #   - Verify code reaches breakpoint at IEC60730_TEST_CLOCK_TICK_BKPT (To verify Clock counter is checked. Test finishes without stucked in safe state.).
+  #   - Verify code reaches breakpoint at IEC60730_TEST_CLOCK_TICK_BKPT (To verify Clock counter is checked. Test finishes without stuck in safe state.).
   #     - Test passes, return True
   #
   # @return True
@@ -67,7 +67,7 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
     # Set breakpoints in system clock test-related ISRs.
     self.adapter.halt()
     self.adapter.clear_all_breakpoints()
-    bp1 = self.adapter.set_breakpoint(address = asm_labels['IEC60730_SYSTEM_CLOCK_TICK_BKPT'], 
+    bp1 = self.adapter.set_breakpoint(address = asm_labels['IEC60730_SYSTEM_CLOCK_TICK_BKPT'],
                                       typeflags=enums.JLinkBreakpoint.ANY)
     # Reset device
     self.adapter.reset()
@@ -88,7 +88,7 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
                     " , pc = " + hex(pc))
 
     self.adapter.clear_all_breakpoints()
-    bp1 = self.adapter.set_breakpoint(address = asm_labels['IEC60730_SYSTEM_CLOCK_TICK_BKPT'], 
+    bp1 = self.adapter.set_breakpoint(address = asm_labels['IEC60730_SYSTEM_CLOCK_TICK_BKPT'],
                                       typeflags=enums.JLinkBreakpoint.ANY)
 
     pc = self.adapter.run_to_breakpoint(1)
@@ -169,8 +169,6 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
 if __name__ == "__main__":
 
   chip_name = os.getenv('CHIP')
-
-  app_type = os.getenv('APP_TYPE')
 
   lst_file_path = os.getenv('LST_PATH')
 

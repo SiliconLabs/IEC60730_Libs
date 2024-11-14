@@ -28,49 +28,20 @@
  *
  ******************************************************************************/
 
-/* Use CMSE intrinsics */
-#if defined(TEST_NONSECURE_ENABLE)
-#include <arm_cmse.h>
-#include "partition_ARMCM33.h"
-#endif
 #include "integration_test_common.h"
 
-/* TZ_START_NS: Start address of non-secure application */
-#ifndef TZ_START_NS
-#define TZ_START_NS (FLASH_MEM_BASE + 0x00028000U)
-#endif
-
-/* typedef for non-secure callback functions */
-#if defined(TEST_NONSECURE_ENABLE)
-typedef void (*funcptr_void)(void) __attribute__((cmse_nonsecure_call));
-#endif
-
+// Watchdog config
+const WDOG_Init_TypeDef integration_test_wdog0_init  = WDOG_INIT_DEFAULT;
+const WDOG_Init_TypeDef integration_test_wdog1_init = WDOG_INIT_DEFAULT;
+// Timer config
 const TIMER_Init_TypeDef integration_test_timer_10ms_config    = TIMER_INIT_TEST_10MS;
 const LETIMER_Init_TypeDef integration_test_timer_100ms_config = TIMER_INIT_TEST_100MS;
-
-void system_init_ns(void)
-{
-#if defined(TEST_NONSECURE_ENABLE)
-#if defined(__VTOR_PRESENT) && (__VTOR_PRESENT == 1U)
-  SCB_NS->VTOR = (uint32_t) TZ_START_NS;
-#endif
-
-#if defined(UNALIGNED_SUPPORT_DISABLE)
-  SCB_NS->CCR |= SCB_CCR_UNALIGN_TRP_Msk;
-#endif
-
-#if (__FPU_PRESENT == 1) && (__FPU_USED == 1)
-  SCB_NS->CPACR |= ((3U << 10U * 2U)     /* set CP10 Full Access */
-                    | (3U << 11U * 2U)); /* set CP11 Full Access */
-#endif
-#endif
-}
 
 void nvic_init(void)
 {
   // One Group Priority
   NVIC_SetPriorityGrouping(7);
- /* Timer 0 */
+  /* Timer 0 */
   NVIC_SetPriority(TIMER0_IRQn, 1);
   NVIC_EnableIRQ(TIMER0_IRQn);
   /* LETIMER 0 */
@@ -78,47 +49,19 @@ void nvic_init(void)
   NVIC_EnableIRQ(LETIMER0_IRQn);
 }
 
-/* SMU configuration */
-void smu_config(void)
-{
-#if defined(SMU_PRESENT) && defined(_SILICON_LABS_32B_SERIES_2)
-  /* WDOG0, WDOG1 non-secure */
-  SMU_S->PPUSATD0_CLR =
-      (SMU_PPUSATD0_CMU | SMU_PPUSATD0_HFRCO0 | SMU_PPUSATD0_FSRCO
-       | SMU_PPUSATD0_DPLL0 | SMU_PPUSATD0_LFXO | SMU_PPUSATD0_LFRCO
-       | SMU_PPUSATD0_GPIO | SMU_PPUSATD0_TIMER0 | SMU_PPUSATD0_BURAM
-       | SMU_PPUSATD0_GPCRC | SMU_PPUSATD0_EMU)
-      & _SMU_PPUSATD0_MASK;
-  /* WDOG0, WDOG1 non-secure */
-  SMU_S->PPUSATD1_CLR =
-      (SMU_PPUSATD1_LETIMER0 | SMU_PPUSATD1_WDOG0) & _SMU_PPUSATD1_MASK;
-#if (WDOG_COUNT > 1)
-  SMU_S->PPUSATD1_CLR |= SMU_PPUSATD1_WDOG1;
-#endif
-  /* Flash Secure region */
-  SMU_S->ESAUMRB01 = 0x00020000 & _SMU_ESAUMRB01_MASK;
-  /* Flash Secure - Non secure callable region */
-  SMU_S->ESAUMRB12 = 0x00028000 & _SMU_ESAUMRB12_MASK;
-  /* RAM Secure region */
-  SMU_S->ESAUMRB45 = 0x2000A000 & _SMU_ESAUMRB45_MASK;
-  /* RAM Secure - Non secure callable region */
-  SMU_S->ESAUMRB56 = 0x2000C000 & _SMU_ESAUMRB56_MASK;
-#endif
-}
-
 /* Function Definition */
 void integration_test_init(void)
 {
   integration_test_clock_config();
   nvic_init();
-#ifdef TEST_WDOG_EN
 #if defined(_RMU_CTRL_PINRMODE_MASK)
   RMU_ResetControl(rmuResetWdog, rmuResetModeExtended);
-#endif //defined(_RMU_CTRL_PINRMODE_MASK)
-  WDOGn_Init(TEST_WDOG_INST0, &wdog_init);
-#ifdef IEC60730_ENABLE_WDOG1
-  WDOGn_Init(TEST_WDOG_INST1, &wdog_init);
+#endif // defined(_RMU_CTRL_PINRMODE_MASK)
+#if (defined(WDOG0) && (SL_IEC60730_WDOG0_ENABLE == 1))
+  WDOGn_Init(SL_IEC60730_WDOG_INST(0), &integration_test_wdog0_init);
 #endif
+#if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
+  WDOGn_Init(SL_IEC60730_WDOG_INST(1), &integration_test_wdog1_init);
 #endif
   CORE_ATOMIC_IRQ_ENABLE();
 }
@@ -126,11 +69,11 @@ void integration_test_init(void)
 void integration_test_deinit(void)
 {
   /* Disable watchdog timer */
-#ifdef TEST_WDOG_EN
-  WDOGn_Enable(TEST_WDOG_INST0, TEST_DISABLE);
-#ifdef IEC60730_ENABLE_WDOG1
-  WDOGn_Enable(TEST_WDOG_INST1, TEST_DISABLE);
+#if (defined(WDOG0) && (SL_IEC60730_WDOG0_ENABLE == 1))
+  WDOGn_Enable(SL_IEC60730_WDOG_INST(0), false);
 #endif
+#if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
+  WDOGn_Enable(SL_IEC60730_WDOG_INST(1), false);
 #endif
 }
 
@@ -148,8 +91,10 @@ void integration_test_clock_config(void)
 #if (_SILICON_LABS_32B_SERIES_2_CONFIG > 1)
   CMU_ClockEnable(cmuClock_TIMER0, true);
   CMU_ClockEnable(cmuClock_LETIMER0, true);
+#if (defined(WDOG0) && (SL_IEC60730_WDOG0_ENABLE == 1))
   CMU_ClockEnable(cmuClock_WDOG0, true);
-#if (WDOG_COUNT > 1)
+#endif
+#if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
   CMU_ClockEnable(cmuClock_WDOG1, true);
 #endif
   CMU_ClockEnable(cmuClock_GPCRC, true);
@@ -180,7 +125,8 @@ void integration_test_clock_config(void)
 }
 
 /* Init timer test */
-void integration_test_timers_init(void) {
+void integration_test_timers_init(void)
+{
   /* Initialize 10ms timer */
   TIMER_Init(TIMER_10MS, &integration_test_timer_10ms_config);
   /* Initialize 10ms timer */
@@ -203,7 +149,7 @@ void integration_test_timers_init(void) {
   LETIMER_IntEnable(TIMER_100MS, LETIMER_IEN_UF);
 }
 
-/* Enable timer to test interupt */
+/* Enable timer to test interrupt */
 void integration_test_timers_enable(void)
 {
   // Start timer
@@ -211,7 +157,7 @@ void integration_test_timers_enable(void)
   LETIMER_Enable(TIMER_100MS, true);
 }
 
-/* Disable timer to test interupt */
+/* Disable timer to test interrupt */
 void integration_test_timers_disable(void)
 {
   // Start timer
@@ -219,10 +165,46 @@ void integration_test_timers_disable(void)
   LETIMER_Enable(TIMER_100MS, false);
 }
 
+// Dump functions
+__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_bist()
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
+__WEAK sl_iec60730_test_result_t sl_iec60730_imc_bist()
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
+__WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
+__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_post()
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
+__WEAK sl_iec60730_test_result_t sl_iec60730_imc_post()
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
+__WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
+__WEAK sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
+{
+  return SL_IEC60730_TEST_PASSED;
+}
+
 /* IEC60730 safe state */
 void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
 {
-  printf("Fail-Test. Error status: %d\n",failure);
+  printf("Fail-Test. Error status: %d\n", failure);
   LABEL_DEF(IEC60730_SAFE_STATE_BKPT);
   SL_IEC60730_RSTCAUSES_CLEAR();
   while (1) {

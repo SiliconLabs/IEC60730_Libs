@@ -29,45 +29,10 @@
  ******************************************************************************/
 #include "integration_test_common.h"
 
-// Dump functions
-__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_bist(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_imc_bist(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_vmc_post()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_imc_post()
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
-__WEAK sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
-{
-  return IEC60730_TEST_PASSED;
-}
-
 void integration_test_run_init(void)
 {
   integration_test_init();
+  sl_iec60730_post();
 }
 
 void integration_test_run_process_action(void)

@@ -75,8 +75,8 @@ extern "C" {
 ///
 /// Checks flags in #sl_iec60730_program_counter_check set by each BIST test to determine if BIST is
 /// executing within a specified period.
-/// @return #sl_iec60730_test_result_t. If test fails, returns #IEC60730_TEST_FAILED;
-/// otherwise #IEC60730_TEST_PASSED.
+/// @return #sl_iec60730_test_result_t. If test fails, returns #SL_IEC60730_TEST_FAILED;
+/// otherwise #SL_IEC60730_TEST_PASSED.
 void sl_iec60730_program_counter_test(void);
 
 /** @} (end addtogroup IEC60730_PROGRAMME_COUNTER) */
