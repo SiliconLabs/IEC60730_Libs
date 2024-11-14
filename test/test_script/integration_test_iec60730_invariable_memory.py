@@ -71,9 +71,9 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_IMC_POST_START_BKPT
-  # - Verify code reachs breakpoint at IEC60730_IMC_POST_IEC60730_REF_CRC_BKPT
-  # - Verify code reachs breakpoint at IEC60730_IMC_POST_END_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_POST_START_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_POST_IEC60730_REF_CRC_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_POST_END_BKPT
   #
   # @return True
   #
@@ -133,8 +133,8 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_IMC_POST_START_BKPT
-  # - Verify code reachs breakpoint at IEC60730_IMC_POST_IEC60730_REF_CRC_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_POST_START_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_POST_IEC60730_REF_CRC_BKPT
   #   - Edit value of \ref iec60730_ref_crc variable
   #   - Verify execution breaks at #sl_iec60730_safe_state()
   #
@@ -179,9 +179,9 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_IMC_BIST_CRCBLOCK_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_BIST_CRCBLOCK_BKPT
   # - Loop with IEC60730_IMC_BIST_CALCRC_BKPT
-  # - Verify code reachs breakpoint at IEC60730_IMC_BIST_END_BKPT (success)
+  # - Verify code reaches breakpoint at IEC60730_IMC_BIST_END_BKPT (success)
   #
   # @return True
   #
@@ -199,10 +199,10 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
     iec60730_run_crc_location = variables['iec60730_run_crc']
     iec60730_run_crc = self.adapter.memory_read32(iec60730_run_crc_location, 1)
 
-    rom_end_location = variables['__checksum']
+    rom_end_location = variables['check_sum']
 
     # Debug
-    logging.info("DUT iec60730_run_crc at " + hex(iec60730_run_crc_location) + " __checksum at " + hex(rom_end_location))
+    logging.info("DUT iec60730_run_crc at " + hex(iec60730_run_crc_location) + " check_sum at " + hex(rom_end_location))
 
     while iec60730_run_crc[0] < rom_end_location :
       # logging.info("TC: iec60730_run_crc: " + hex(iec60730_run_crc[0]) + " < ROM_END: " + hex(rom_end_location))
@@ -245,7 +245,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_IMC_BIST_CALCRC_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_BIST_CALCRC_BKPT
   #   - Edit value of \ref iec60730_cur_crc
   #   - Verify execution breaks at #sl_iec60730_safe_state()
   #
@@ -297,7 +297,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @details Order of execution
   # - Reset device
-  # - Verify code reachs breakpoint at IEC60730_IMC_BIST_CRCBLOCK_BKPT
+  # - Verify code reaches breakpoint at IEC60730_IMC_BIST_CRCBLOCK_BKPT
   #   - Edit value of \ref iec60730_run_crc variable
   #   - Verify execution breaks at #sl_iec60730_safe_state()
   #

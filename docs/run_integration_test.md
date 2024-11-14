@@ -1,5 +1,100 @@
 # Guideline for running integration test
 
+## Export Variable
+
+> [!NOTE]
+> Before running cmake, you need to export some variables first.
+
+Export SDK_PATH=<path_to_sdk>, TOOL_DIRS=<path_to_toolchain>, TOOL_CHAINS, FLASH_REGIONS_TEST (flash start address support calculate crc for module invariable memory), JLINK_PATH and path to `slc-cli` tool a before run config CMake.
+
+If you want to calculate from start address to end address of flash:
+
+```sh
+$ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
+$ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
+$ export TOOL_CHAINS=GCC
+$ export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+$ export PATH=$PATH:/media/slc_cli/slc_cli_linux_check/slc_cli
+$ export FLASH_REGIONS_TEST=0x8000000
+```
+
+or if you want to calculate multiple regions:
+
+```sh
+$ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
+```
+
+with FLASH_REGIONS_TEST=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
+
+To run integration tests by manually, for the watchdog module you need to connect the device to ethernet. Export CHIP, ADAPTER_SN, LST_PATH, JLINK_PATH and the device's IP address and run test script, for example:
+
+```sh
+$ export CHIP=EFR32MG24BXXXF1536 ADAPTER_SN=440111030
+$ export LST_PATH=~/devs_safety_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/S
+```
+
+if test secure peripherals or for non-secure peripherals:
+
+```sh
+$ export LST_PATH=~/devs_safety_lib/build/test/integration_test/build/brd4187c/integration_test_iec60730_watchdog/NS
+```
+
+```sh
+$ export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+$ export HOST_IP=192.168.1.69
+```
+
+> [!NOTE]
+> Environment variables need to be exported during test execution:
+>> export TOOL_CHAINS= (IAR or GCC)
+>>
+>> export TOOL_DIRS= <path_to_tool_chains>
+>>
+>> export FLASH_REGIONS_TEST= <start_address_flash_board>
+>>
+>> export HOST_IP= <ip_board>
+>>
+>> export JLINK_PATH= <path_to_jlink>
+
+## Build test for IAR tool
+
+To build tests for the IAR tool, if you run manually test, you need to run the pre-build command below.
+
+```sh
+$ make prepare
+$ cd build
+$ cmake --toolchain ../cmake/toolchain.cmake .. -DPRE_BUILD_IAR_TOOL=ON -DBOARD_NAME=${BOARD_NAME} $OPTION_PRE_BUILD_IAR_TOOL
+$ cd ..
+$ make prepare
+```
+> [!NOTE]
+> Keep `$OPTION_PRE_BUILD_IAR_TOOL` the same when running integration test cmake config
+
+For example build integration test:
+
+```sh
+$ make prepare
+$ cd build
+$ cmake --toolchain ../cmake/toolchain.cmake ..  -DPRE_BUILD_IAR_TOOL=ON -DBOARD_NAME=brd4187c -DINTEGRATION_TEST_WDOG1_ENABLE=ON  -DENABLE_INTEGRATION_TESTING=ON -DINTEGRATION_TEST_USE_MARCHX_DISABLE=ON -DENABLE_CRC_USE_SW=ON -DENABLE_CAL_CRC_32=ON
+$ cd ..
+$ make prepare
+```
+
+or you can run bash script `pre_build_iar.sh` in path [./../simplicity_sdk/pre_build_iar.sh](../simplicity_sdk/) with:
+
+- $1: BOARD_NAME: brd4187c or EFR32MG24B220F1536IM48
+- $2: OPTION_INTEGRATION_TEST: -DENABLE_INTEGRATION_TESTING=ON, etc...
+
+```sh
+$ bash pre_build_iar.sh $BOARD_NAME $OPTION_INTEGRATION_TEST
+```
+
+for example:
+
+```sh
+$ bash pre_build_iar.sh brd4187c "-DENABLE_INTEGRATION_TESTING=ON"
+```
+
 ## Manually run integration tests
 
 CMake config
@@ -99,7 +194,7 @@ bash execute_test.sh $1 $2 $3 $4 $5 $6
 
 With the input arguments, there is the following information
 
-- $1: BOARD_NAME: brd4187c
+- $1: BOARD_NAME: brd4187c or EFR32MG24B220F1536IM48
 - $2: task: all, gen-only, run-only
 - $3: components: all, unit_test_iec60730_bist, unit_test_iec60730_post, ...
 - $4: ADAPTER_SN
@@ -126,6 +221,8 @@ $ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
 $ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
 $ export TOOL_CHAINS=GCC
 $ export FLASH_REGIONS_TEST=0x8000000
+$ export JLINK_PATH=/opt/SEGGER/JLink/libjlinkarm.so
+$ export HOST_IP=192.168.1.69
 ```
 
 or if you want to calculate multiple regions:
@@ -135,13 +232,21 @@ $ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0
 ```
 
 > [!NOTE]
-> In the current integration test file, only enable computation one region: from the FLASH_REGIONS_TEST address of ​​the flash to the end of the flash. Therefore, just export the flash's starting address. For example, chip EFR32MG24:
+> In the current integration test file, only enable computation one region: from the start address of ​​the flash to the end of the flash. Therefore, just export the flash's starting address. For example, chip EFR32MG24:
 >> $ export FLASH_REGIONS_TEST=0x8000000
 
 ### Example
 
+- With GCC toolchain:
+
 ```sh
 bash execute_integration_test.sh brd4187c all all 440111030 GCC
+```
+
+- With IAR toolchain:
+
+```sh
+bash execute_integration_test.sh brd4187c all all 440111030 IAR
 ```
 
 ### Note:
@@ -151,7 +256,7 @@ In case you want to build CRC32 run this command. For example:
 bash execute_integration_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
 ```
 
-Or case you want to enable test secure peripherals run this command. For example:
+Or case you want to use the above integration test support options, run this command. For example:
 
 ```sh
 bash execute_integration_test.sh brd4187c all all 440111030 GCC "-DTEST_SECURE_PERIPHERALS_ENABLE=ON -DINTEGRATION_TEST_WDOG1_ENABLE=ON -DINTEGRATION_TEST_USE_MARCHX_DISABLE=ON -DENABLE_CAL_CRC_32=ON"
@@ -163,17 +268,20 @@ When running build cmake to run unit tests and integration tests for invariable 
 
 With the commands above, the default value supports calculation CRC-16. If you want to change to calculate for CRC-32 bits, use the CMake config command below:
 
-- With unit test:
+- With integration test:
 
-```sh
-$ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
-```
-
-- or with integration test:
+by mannually
 
 ```sh
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=brd4187c -DENABLE_CAL_CRC_32=ON
 ```
+
+or by automatically
+
+```sh
+bash execute_integration_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
+```
+
 
 Here is some options to support running tests of invariable memory modules:
 - ENABLE_CAL_CRC_32

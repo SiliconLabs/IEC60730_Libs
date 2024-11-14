@@ -16,6 +16,7 @@
 #  bash execute_unit_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
 
 BASH_DIRECTION=$(pwd)
+BASH_PRE_IAR_BUILD=$(pwd)/../simplicity_sdk
 BOARD_NAME=$1
 TASK=$2
 COMPONENT=$3
@@ -28,7 +29,7 @@ LOG_PATH=$(pwd)/../log
 LOG_FILE_TEMP=$(pwd)/../log/temp.log
 LOG_BUILD=$LOG_PATH/build_integration_test_components.log
 LOG_FILE=$LOG_PATH/build_integration_test_components.log
-IMAGE_PATH=$(pwd)/../build/test/integration_test/build/$BOARD_NAME
+IMAGE_PATH=$(pwd)/../build/test/integration_test/build/$BOARD_NAME/$COMPILER
 DEVICE_NAME=
 
 if [ -d "$LOG_PATH" ];then
@@ -68,6 +69,12 @@ fi
 
 function gen_image
 {
+    if [[ "$COMPILER" == "IAR" ]] ;then
+        echo "-- [I] Start run pre_build_iar!"
+        cd $BASH_PRE_IAR_BUILD
+        bash pre_build_iar.sh $BOARD_NAME "-DENABLE_INTEGRATION_TESTING=ON $OPTION_INTEGRATION_TEST" &> /dev/null
+        echo "-- [I] Run pre_build_iar done!"
+    fi
     cd $BASH_DIRECTION/..
     make prepare &> /dev/null
     cd $BASH_DIRECTION/../build
@@ -186,9 +193,9 @@ function run
         fi
 
         if [[ "$OPTION_INTEGRATION_TEST" == *"TEST_SECURE_PERIPHERALS_ENABLE=ON"* ]];then
-          IMAGE_PATH=$(pwd)/../build/test/integration_test/build/$BOARD_NAME/$component/S
+          IMAGE_PATH=$(pwd)/../build/test/integration_test/build/$BOARD_NAME/$compiler/$component/S
         else
-          IMAGE_PATH=$(pwd)/../build/test/integration_test/build/$BOARD_NAME/$component/NS
+          IMAGE_PATH=$(pwd)/../build/test/integration_test/build/$BOARD_NAME/$compiler/$component/NS
         fi
         #echo "OPTION_INTEGRATION_TEST: $OPTION_INTEGRATION_TEST"
         flash_image $component $compiler "$arg"
@@ -210,19 +217,21 @@ function run
                 TEST_SCRIPT=$TEST_PATH/$component.py
 
                 if [[ "$component" == "integration_test_iec60730_watchdog" ]] && [[ "$arg" == *"INTEGRATION_TEST_WDOG1_ENABLE=ON"* ]];then
-                  printf "\n= Start run integration test: $component with INTEGRATION_TEST_WDOG1_ENABLE=enable"
+                  printf "\n= Start run integration test: $component with INTEGRATION_TEST_WDOG1_ENABLE=enable\n"
                   log=$(CHIP=$DEVICE_NAME ADAPTER_SN=$ADAPTER_SN LST_PATH=$LST_PATH JLINK_PATH=$JLINK_PATH INTEGRATION_TEST_WDOG1_ENABLE=enable python3 $TEST_SCRIPT $compiler $arg)
                 elif [[ "$component" == "integration_test_iec60730_variable_memory" ]] && [[ "$arg" == *"INTEGRATION_TEST_USE_MARCHX_DISABLE=ON"* ]]; then
-                  printf "\n= Start run integration test: $component with INTEGRATION_TEST_USE_MARCHX_DISABLE=disable"
+                  printf "\n= Start run integration test: $component with INTEGRATION_TEST_USE_MARCHX_DISABLE=disable\n"
                   log=$(CHIP=$DEVICE_NAME ADAPTER_SN=$ADAPTER_SN LST_PATH=$LST_PATH JLINK_PATH=$JLINK_PATH INTEGRATION_TEST_USE_MARCHX_DISABLE=disable python3 $TEST_SCRIPT $compiler $arg)
                 elif [[ "$component" == "integration_test_iec60730_invariable_memory" ]] && [[ "$arg" == *"ENABLE_CAL_CRC_32=ON"* ]]; then
-                  printf "\n= Start run integration test: $component with INTEGRATION_TEST_ENABLE_CAL_CRC_32=enable"
+                  printf "\n= Start run integration test: $component with INTEGRATION_TEST_ENABLE_CAL_CRC_32=enable\n"
                   log=$(CHIP=$DEVICE_NAME ADAPTER_SN=$ADAPTER_SN LST_PATH=$LST_PATH JLINK_PATH=$JLINK_PATH INTEGRATION_TEST_ENABLE_CAL_CRC_32=enable python3 $TEST_SCRIPT $compiler $arg)
                 else
                   printf "\n= Start run integration test: $component\n"
                   log=$(CHIP=$DEVICE_NAME ADAPTER_SN=$ADAPTER_SN LST_PATH=$LST_PATH JLINK_PATH=$JLINK_PATH python3 $TEST_SCRIPT $compiler $arg)
                 fi
+                #echo "============================"
                 #echo $log
+                #echo "============================"
                 $(mv $LOG_FILE_TEMP $LOG_FILE)
                 # Save output to log file
                 for line in echo $log; do
@@ -279,4 +288,3 @@ case $TASK in
     *)
         echo "Please choose one of those options:  gen-only ; run-only; all"
 esac
-

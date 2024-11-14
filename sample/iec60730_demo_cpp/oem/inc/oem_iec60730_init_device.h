@@ -31,20 +31,15 @@
 #ifndef OEM_INIT_DEVICE_H
 #define OEM_INIT_DEVICE_H
 
-#define WDOG_INIT_TEST                                                         \
-  {                                                                            \
-    true,            /* Start watchdog when initialization is done. */       \
-    false,           /* WDOG is not counting during debug halt. */           \
-    false,           /* WDOG is not counting when in EM2. */                 \
-    false,           /* WDOG is not counting when in EM3. */                 \
-    false,           /* EM4 can be entered. */                               \
-    false,           /* Do not lock WDOG configuration. */                   \
-    wdogPeriod_256k, /* Set longest possible timeout period. */              \
-    wdogWarnDisable, /* Disable warning interrupt. */                        \
-    wdogIllegalWindowDisable, /* Disable illegal window interrupt. */        \
-    false                     /* Do not disable reset. */                    \
-  }
-
+/**************************************************************************/ /**
+ * public init system config
+ *
+ * @param
+ *
+ * @return
+ *
+ * This function init clock, nvic and peripherals.
+ *****************************************************************************/
 void oem_system_config(void);
 
 #endif /* OEM_INIT_DEVICE_H */

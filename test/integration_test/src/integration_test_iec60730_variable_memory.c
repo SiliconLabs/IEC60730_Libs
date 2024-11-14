@@ -47,16 +47,16 @@ uint32_t num_ram_regions_check;
 #if defined(__GNUC__)
 
 sl_iec60730_vmc_test_region_t integration_test_vmc_region_test[INTEGRATION_TEST_NUM_RAM_REGIONS_CHECK] =
-        {{.start = RAMTEST_START, .end= RAMTEST_END},
-        {.start = RAM_START, .end = RAM_START + INTEGRATION_TEST_RAM_OFFSET},
-        {.start = RAM_START + 2*INTEGRATION_TEST_RAM_OFFSET, .end = RAM_START + 3*INTEGRATION_TEST_RAM_OFFSET}};
+{ { .start = RAMTEST_START, .end = RAMTEST_END },
+  { .start = RAM_START, .end = RAM_START + INTEGRATION_TEST_RAM_OFFSET },
+  { .start = RAM_START + 2 * INTEGRATION_TEST_RAM_OFFSET, .end = RAM_START + 3 * INTEGRATION_TEST_RAM_OFFSET } };
 
 #elif defined(__ICCARM__)
 
 sl_iec60730_vmc_test_region_t integration_test_vmc_region_test[INTEGRATION_TEST_NUM_RAM_REGIONS_CHECK] =
-        {{.start = RAMTEST_START, .end= RAMTEST_END},
-        {.start = RAM_START, .end = (uint32_t *)((uint32_t)RAM_START + INTEGRATION_TEST_RAM_OFFSET)},
-        {.start = (uint32_t *)((uint32_t)RAM_START + 2*INTEGRATION_TEST_RAM_OFFSET), .end = (uint32_t *)((uint32_t)RAM_START + 3*INTEGRATION_TEST_RAM_OFFSET)}};
+{ { .start = RAMTEST_START, .end = RAMTEST_END },
+  { .start = RAM_START, .end = (uint32_t *)((uint32_t)RAM_START + INTEGRATION_TEST_RAM_OFFSET) },
+  { .start = (uint32_t *)((uint32_t)RAM_START + 2 * INTEGRATION_TEST_RAM_OFFSET), .end = (uint32_t *)((uint32_t)RAM_START + 3 * INTEGRATION_TEST_RAM_OFFSET) } };
 
 #else
 #endif

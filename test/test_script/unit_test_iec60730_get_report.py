@@ -196,5 +196,3 @@ if __name__ == "__main__":
   else:
     print("The FILE_NAME environment variable is not the same as the *.lst file prefix name"
     " in the path " + lst_file_path)
-
-

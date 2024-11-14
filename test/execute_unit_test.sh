@@ -16,6 +16,7 @@
 #  bash execute_unit_test.sh brd4187c all all 440111030 GCC "-DENABLE_CAL_CRC_32=ON"
 
 BASH_DIRECTION=$(pwd)
+BASH_PRE_IAR_BUILD=$(pwd)/../simplicity_sdk
 BOARD_NAME=$1
 TASK=$2
 COMPONENT=$3
@@ -27,7 +28,7 @@ TEST_PATH=$(pwd)/test_script
 TEST_SCRIPT=$TEST_PATH/unit_test_iec60730_get_report.py
 LOG_PATH=$(pwd)/../log
 LOG_FILE=$LOG_PATH/build_unit_test_components.log
-IMAGE_PATH=$(pwd)/../build/test/unit_test/build/$BOARD_NAME
+IMAGE_PATH=$(pwd)/../build/test/unit_test/build/$BOARD_NAME/$COMPILER
 DEVICE_NAME=
 
 function get_device_name
@@ -55,6 +56,12 @@ fi
 
 function gen_image
 {
+    if [[ "$COMPILER" == "IAR" ]] ;then
+        echo "-- [I] Start run pre_build_iar!"
+        cd $BASH_PRE_IAR_BUILD
+        bash pre_build_iar.sh $BOARD_NAME "-DENABLE_UNIT_TESTING=ON $OPTION_UNIT_TEST" &> /dev/null
+        echo "-- [I] Run pre_build_iar done!"
+    fi
     cd $BASH_DIRECTION/..
     make prepare &> /dev/null
     cd $BASH_DIRECTION/../build
@@ -245,7 +252,7 @@ function run
         sumResultBuild="$sumResultBuild$restBuild\n"
     done
     printf "$sumResultBuild"
-    rm -rf $LOG_PATH/temp.txt
+    rm -rf $LOG_PATH/temp.*
 }
 
 case $TASK in
@@ -262,4 +269,3 @@ case $TASK in
     *)
         echo "Please choose one of those options:  gen-only ; run-only; all"
 esac
-

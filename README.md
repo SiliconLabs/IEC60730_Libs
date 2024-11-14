@@ -39,32 +39,12 @@ $ doxygen qat.doxygen
 
 ## Coding convention tool
 
-### Features
-
-- Automatically fixes end-of-file issues.
-- Removes trailing whitespace from lines.
-- Identifies and suggests fixes for common spelling errors using codespell.
-- Formats code according to specified clang-format rules base on Silabs's coding standard.
-- Checks code for potential errors and style issues using cppcheck.
-
-### Installation
-
-```sh
-$ pip install pre-commit
-$ sudo apt install clang-format clang-tidy cppcheck
-```
-
-### Run
-
-```sh
-$ pre-commit install
-$ pre-commit run --all-files
-```
+- Refer file: [coding_convention_tool.md](./docs/coding_convention_tool.md).
 
 ## Compiler specifications
 **The C compilers:**
 - GNU GCC V12.2
-- IAR EW for ARM V9.2
+- IAR EW for ARM V9.20
 
 ## Tools specification
 
@@ -73,11 +53,6 @@ Test frame work tools:
 
 Simplicity Studio Commander
 - Simplicity Commander version 1v16p8b1613
-
-Support check coding convention by pre-commit
-- pre-commit 3.5.0
-- clang-format version 19.0.0
-- Cppcheck 1.90
 
 Support CMake
 - CMake version >=3.25
@@ -91,6 +66,17 @@ SLC-CLI
 Source code control:
 - GIT V2.39
 - JIRA V8.22.2
+
+SDK support:
+- Gecko SDK Suite v4.4.2
+> [!NOTE]
+> If you want this extension to match your geck_sdk change the sdk field in the `iec60730.slce` file. For example, you want to use simplicity sdk version:
+>
+> ```sh
+> sdk:
+>  id: simplicity_sdk
+>  version: 2024.6.1
+> ```
 
 ## System Architecture
 This library has two primary components. The POST component is run immediately after power on, validating system state before entering the main execution loop.
@@ -142,39 +128,10 @@ $ GSDK=~/SimplicityStudio/SDKs/gecko_sdk
 $ slc configuration --sdk=$GSDK --gcc-toolchain=/Applications/ARM
 $ slc generate $GSDK/app/common/example/blink_baremetal -np -d blinky -name=blinky -o makefile
    --with brd4166a
+$ slc signature trust -extpath <path_to_your_extension_sdk>
 ```
-
-### Export Variable
-
-Export SDK_PATH=<path_to_sdk>, ARM_GCC_DIR=<path_to_toolchain>, TOOL_CHAINS and FLASH_REGIONS_TEST (flash start address support calculate crc for module invariable memory) before run config CMake.
-
-If you want to calculate from start address to end address of flash:
-
-```sh
-$ export SDK_PATH=~/SimplicityStudio/SDKs/gecko_sdk
-$ export TOOL_DIRS=~/Downloads/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin
-$ export TOOL_CHAINS=GCC
-$ export FLASH_REGIONS_TEST=0x8000000
-```
-
-or if you want to calculate multiple regions:
-
-```sh
-$ export FLASH_REGIONS_TEST="0x8000000 0x8000050 0x80000a0 0x80000f0 0x8000140 0x8000190"
-```
-
-with FLASH_REGIONS_TEST=0x8000000 is flash start address of board name brd4187c (chip EFR32MG24)
-
-  1. Create Source and CMakeLists.txt
-  2. mkdir build
-  3. cd build
-  4. cmake ..   -  Generting the Build Files / Configure the Project
-  5. cmake --build .
 
 ### Run unit test
   - Refer to the guideline link: [run_unit_test.md](./docs/run_unit_test.md)
 ### Run integration test
   - Refer to the guideline link: [run_integration_test.md](./docs/run_integration_test.md)
-
-
-
