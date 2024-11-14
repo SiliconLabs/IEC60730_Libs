@@ -91,8 +91,8 @@ void oem_comm_transmit_status_message(void);
  * @return void
  *
  * This function examines the received buffer to check that the CRC is valid.
- * @returns Returns #IEC60730_TEST_FAILED if message does not provide
- * correct CRC and address, #IEC60730_TEST_PASSED otherwise.
+ * @returns Returns #SL_IEC60730_TEST_FAILED if message does not provide
+ * correct CRC and address, #SL_IEC60730_TEST_PASSED otherwise.
  *****************************************************************************/
 sl_iec60730_test_result_t oem_comm_check_received_message(void);
 

@@ -407,7 +407,7 @@ There will be functions that will not return sl_status_t. For example, functions
 
 In any case, the following requirements must be complied with:
 
-if a function can fail, there must be a clear indication as to how to detect a failure. This is preferrably done through returning sl_status, but having a special 'invalid' value returned in case of failure is also allowed. No matter how this is achieved, it must be documented in the doxygen function header.
+if a function can fail, there must be a clear indication as to how to detect a failure. This is preferably done through returning sl_status, but having a special 'invalid' value returned in case of failure is also allowed. No matter how this is achieved, it must be documented in the doxygen function header.
 bool must not be returned to indicate success or failure. bool should only be used to indicate if a given condition is true or false. Even then, using an enum should be considered for future-proofing the function, should it need to return more than a true/false value in the future.
 Example
 
@@ -1168,7 +1168,7 @@ static void restart_discovery_after_delay(uint8_t delay_ms);
 uint8_t sli_get_discovery_time_remaining_ms(void);
 
 4.6.4.5 Functions/stubs called on specific events/callbacks should start 'on' in their name (Required)
-Whenever a function is called to indicate an event occurred, or is called in 'reaction' to an event happenning, this function should have on in its name, directly after the <module>_ prefix. This also applies to callbacks or function stubs shipped to the user.
+Whenever a function is called to indicate an event occurred, or is called in 'reaction' to an event happening, this function should have on in its name, directly after the <module>_ prefix. This also applies to callbacks or function stubs shipped to the user.
 
 Example void sl_usb_on_device_connection(void);
 
@@ -1542,6 +1542,6 @@ Content that is "multi-licensed" (offered to us under our choice of more than on
 
 
 @endverbatim
- 
+
 @}
  ******************************************************************************/

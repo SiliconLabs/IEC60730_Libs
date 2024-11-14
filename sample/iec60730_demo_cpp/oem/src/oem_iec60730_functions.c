@@ -32,7 +32,7 @@
 #include "sl_udelay.h"
 #include "oem_iec60730.h"
 
-uint32_t oem_current_failure = IEC60730_NO_FAILURE;
+uint32_t oem_current_failure = SL_IEC60730_NO_FAILURE;
 uint8_t oem_err_log[30];
 
 void oem_print_error(void)

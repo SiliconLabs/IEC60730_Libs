@@ -28,7 +28,7 @@
 static sl_iec60730_irq_cfg_t* iec60730_irq_cfg = NULL;
 
 #if (SL_IEC60730_IRQ_STATUS_ENABLE == 1)
-static sl_iec60730_irq_fail_t iec60730_irq_fail_result = {0,0};
+static sl_iec60730_irq_fail_t iec60730_irq_fail_result = { 0, 0 };
 #endif //(SL_IEC60730_IRQ_STATUS_ENABLE == 1)
 
 #if (SL_IEC60730_IRQ_STATUS_ENABLE == 1)
@@ -42,7 +42,8 @@ sl_iec60730_irq_fail_t* sl_iec60730_get_irq_index_failed(void)
   return result;
 }
 
-void sl_iec60730_irq_reset_fail_result(void) {
+void sl_iec60730_irq_reset_fail_result(void)
+{
   iec60730_irq_fail_result.num_irq_fail = 0;
   iec60730_irq_fail_result.irq_fail = 0;
 }
@@ -58,7 +59,7 @@ void sl_iec60730_irq_reset_fail_result(void) {
  *****************************************************************************/
 static void sl_iec60730_irq_fail_occur(uint8_t position)
 {
-  iec60730_irq_fail_result.irq_fail |= (1<<position);
+  iec60730_irq_fail_result.irq_fail |= (1 << position);
   iec60730_irq_fail_result.num_irq_fail++;
 }
 
@@ -66,22 +67,20 @@ static void sl_iec60730_irq_fail_occur(uint8_t position)
 
 void sl_iec60730_irq_init(sl_iec60730_irq_cfg_t * irq_cfg_ptr)
 {
-  if(irq_cfg_ptr != NULL) {
-    if(irq_cfg_ptr->size < IEC60730_MAX_IRQ_CHECK) {
+  if (irq_cfg_ptr != NULL) {
+    if (irq_cfg_ptr->size < IEC60730_MAX_IRQ_CHECK) {
       iec60730_irq_cfg = irq_cfg_ptr;
     } else {
-      sl_iec60730_safety_check_error_occur(IEC60730_INTERRUPT_FAIL);
-      sl_iec60730_safe_state(IEC60730_INTERRUPT_FAIL);
+      sl_iec60730_safety_check_error_occur(SL_IEC60730_INTERRUPT_FAIL);
+      sl_iec60730_safe_state(SL_IEC60730_INTERRUPT_FAIL);
     }
   }
 }
 
 void sl_iec60730_irq_reset_counter(void)
 {
-  uint8_t index;
-
-  if(iec60730_irq_cfg != NULL) {
-    for (index = 0; index < iec60730_irq_cfg->size; index++) {
+  if (iec60730_irq_cfg != NULL) {
+    for (uint8_t index = 0; index < iec60730_irq_cfg->size; index++) {
       iec60730_irq_cfg->irq_count[index] = 0;
     }
   }
@@ -89,23 +88,21 @@ void sl_iec60730_irq_reset_counter(void)
 
 void sl_iec60730_irq_check(void)
 {
-  uint8_t index;
-
-  if(iec60730_irq_cfg != NULL) {
+  if (iec60730_irq_cfg != NULL) {
     LABEL_DEF(IEC60730_IRQ_BKPT);
-    for (index = 0; index < iec60730_irq_cfg->size; index++) {
+    for (uint8_t index = 0; index < iec60730_irq_cfg->size; index++) {
       if ((iec60730_irq_cfg->irq_count[index] > iec60730_irq_cfg->irq_bounds[index].max)
-        || (iec60730_irq_cfg->irq_count[index] < iec60730_irq_cfg->irq_bounds[index].min)) {
+          || (iec60730_irq_cfg->irq_count[index] < iec60730_irq_cfg->irq_bounds[index].min)) {
         #if (SL_IEC60730_IRQ_STATUS_ENABLE == 1)
         sl_iec60730_irq_fail_occur(index);
         #endif // (SL_IEC60730_IRQ_STATUS_ENABLE == 1)
-        sl_iec60730_safety_check_error_occur(IEC60730_INTERRUPT_FAIL);
-        sl_iec60730_safe_state(IEC60730_INTERRUPT_FAIL);
+        sl_iec60730_safety_check_error_occur(SL_IEC60730_INTERRUPT_FAIL);
+        sl_iec60730_safe_state(SL_IEC60730_INTERRUPT_FAIL);
       }
     }
   } else {
-    sl_iec60730_safety_check_error_occur(IEC60730_INTERRUPT_FAIL);
-    sl_iec60730_safe_state(IEC60730_INTERRUPT_FAIL);
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_INTERRUPT_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_INTERRUPT_FAIL);
   }
   sl_iec60730_irq_reset_counter();
   sl_iec60730_program_counter_check |= IEC60730_INTERRUPT_COMPLETE;

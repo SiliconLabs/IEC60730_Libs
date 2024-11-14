@@ -24,7 +24,7 @@
  * @{
  *****************************************************************************/
 
-static sl_iec60730_safety_check_t iec60730_safety_check = {IEC60730_NO_FAILURE,0};
+static sl_iec60730_safety_check_t iec60730_safety_check = { SL_IEC60730_NO_FAILURE, 0 };
 
 __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
 {
@@ -39,13 +39,13 @@ __WEAK void sl_iec60730_safe_state(sl_iec60730_test_failure_t failure)
 
 void sl_iec60730_safety_check_reset_error(void)
 {
-  iec60730_safety_check.error = IEC60730_NO_FAILURE;
+  iec60730_safety_check.error = SL_IEC60730_NO_FAILURE;
   iec60730_safety_check.number_error = 0;
 }
 
 void sl_iec60730_safety_check_error_occur(sl_iec60730_test_failure_t failure)
 {
-  iec60730_safety_check.error |= (1<<failure);
+  iec60730_safety_check.error |= (1 << failure);
   iec60730_safety_check.number_error++;
 }
 
@@ -61,36 +61,36 @@ sl_iec60730_safety_check_t* sl_iec60730_safety_check_get_error(void)
 void sl_iec60730_bist(void)
 {
   sl_iec60730_test_result_t
-      result; ///< Temporary storage of the result of each test
+    result;   ///< Temporary storage of the result of each test
 
   result = sl_iec60730_imc_bist();
-  if (result == IEC60730_TEST_FAILED) {
-    sl_iec60730_safety_check_error_occur(IEC60730_IMC_FAIL);
-    sl_iec60730_safe_state(IEC60730_IMC_FAIL);
+  if (result == SL_IEC60730_TEST_FAILED) {
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_IMC_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_IMC_FAIL);
   }
   LABEL_DEF(IEC60730_IMC_BIST_END_BKPT);
 
   result = sl_iec60730_vmc_bist();
-  if (IEC60730_TEST_FAILED == result) {
-    sl_iec60730_safety_check_error_occur(IEC60730_VMC_FAIL);
-    sl_iec60730_safe_state(IEC60730_VMC_FAIL);
+  if (SL_IEC60730_TEST_FAILED == result) {
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_VMC_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_VMC_FAIL);
   }
 
   // CPU Register Check
   result = sl_iec60730_cpu_registers_bist();
-  if (result == IEC60730_TEST_FAILED) {
-    sl_iec60730_safety_check_error_occur(IEC60730_CPU_REGISTERS_FAIL);
-    sl_iec60730_safe_state(IEC60730_CPU_REGISTERS_FAIL);
+  if (result == SL_IEC60730_TEST_FAILED) {
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_CPU_REGISTERS_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_CPU_REGISTERS_FAIL);
   }
 
   LABEL_DEF(IEC60730_RESTART_WATCHDOG_BKPT);
 
-  if (iec60730_safety_check.number_error == IEC60730_NO_FAILURE) {
+  if (iec60730_safety_check.number_error == SL_IEC60730_NO_FAILURE) {
     // Pet the watchdog
     sl_iec60730_restart_watchdogs();
   } else {
     // Enter Safe State and secure the system
-    sl_iec60730_safe_state(IEC60730_SAFETY_CHECK_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_SAFETY_CHECK_FAIL);
   }
   return;
 }
