@@ -1,13 +1,8 @@
 name: 01-Generate Firmware
 on:
-  push:
-    branches-ignore:
-      - main
-      - "tests/**"
   pull_request:
     branches:
       - 'main'       
-      - 'release/**'
   workflow_dispatch:
     inputs:
       branch: 
