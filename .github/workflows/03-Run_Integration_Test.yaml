@@ -366,13 +366,13 @@ jobs:
         slc configuration --sdk=${SDK_PATH_RUN}
         ninja --version
         slc signature trust --sdk $SDK_PATH_RUN
+        slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         slc configuration -gcc=$TOOL_DIRS_RUN
         # make prepare
         echo "Run unit test for MG12"
         cd build
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         make integration_test_info -j4
-        slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         cd ../test
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
             ADAPTER_SN_MG12=440189400
@@ -400,9 +400,9 @@ jobs:
         unzip ./build/firmware_mg24_gcc.zip -d ./build/
         ls -R
         cd build
+        slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_INTEGRATION_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
         make integration_test_info -j4
-        slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         cd ../test
         if [ -z "${{ github.event.inputs.ADAPTER_SN_MG12 }}" ]; then
             ADAPTER_SN_MG12=440189400
