@@ -367,7 +367,7 @@ jobs:
         ninja --version
         slc signature trust --sdk $SDK_PATH_RUN
         echo "TOOL_DIRS=$TOOL_DIRS"
-        slc configuration -gcc=$TOOL_DIRS
+        #slc configuration -gcc=$TOOL_DIRS
         slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         # make prepare
         echo "Run unit test for MG12"
