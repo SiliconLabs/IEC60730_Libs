@@ -30,6 +30,10 @@
 
 #include "oem_iec60730.h"
 
+#ifdef IEC60730_OS_PRESENT
+#include "os.h"
+#endif
+
 //oem_test_clock_source_t TestClock_Status = CLK_SYS;
 
 const TIMER_Init_TypeDef oem_timer_10ms_config    = TIMER_INIT_TEST_10MS;
@@ -65,11 +69,16 @@ void oem_timers_init(void)
 /* 10ms timer interrupt handler */
 void TIMER0_IRQHandler(void)
 {
+#ifdef IEC60730_OS_PRESENT
+  OSIntEnter();
+#endif
   TIMER_IntClear(TIMER_10MS, TIMER_IF_OF);
 
   // Signal the Bist execution
+#ifndef IEC60730_OS_PRESENT
 #ifndef IEC60730_DISABLE_COMM
   oem_bist_check_flag = true;
+#endif
 #endif
 
   // Increase clock tick counter
@@ -77,19 +86,32 @@ void TIMER0_IRQHandler(void)
 
   // Increase IRQ counter
   oem_irq_exec_count_tick();
+
+#ifdef IEC60730_OS_PRESENT
+  OSIntExit();
+#endif
 }
 
 /* 100ms timer interrupt handler */
 void LETIMER0_IRQHandler(void)
 {
+#ifdef IEC60730_OS_PRESENT
+  OSIntEnter();
+#endif
   LETIMER_IntClear(TIMER_100MS, LETIMER_IF_UF);
 
+#ifndef IEC60730_OS_PRESENT
 #ifndef IEC60730_DISABLE_COMM
   oem_usart_flag = true;
+#endif
 #endif
 
   // Execute clock checking
   sl_iec60730_test_clock_tick();
+
+#ifdef IEC60730_OS_PRESENT
+  OSIntExit();
+#endif
 }
 
 void oem_timers_enable(void)
@@ -117,7 +139,7 @@ void oem_adj_top_val_timer(void)
 
   // Calculate top_value of the timer to generate 10ms
 #if (_SILICON_LABS_32B_SERIES < 2)
-  uint32_t top_val = (freq * SYSTICK_10MS) / (SYSTICK_1000MS * (1 << oem_timer_10ms_config.prescale));
+  uint32_t top_val = (freq * SYSTICK_10MS) / (SYSTICK_1000MS * (1<<oem_timer_10ms_config.prescale));
 #else
   uint32_t top_val = (freq * SYSTICK_10MS) / (SYSTICK_1000MS * (oem_timer_10ms_config.prescale + 1));
 #endif //(_SILICON_LABS_32B_SERIES < 2)

@@ -69,14 +69,6 @@ Source code control:
 
 SDK support:
 - Gecko SDK Suite v4.4.2
-> [!NOTE]
-> If you want this extension to match your geck_sdk change the sdk field in the `iec60730.slce` file. For example, you want to use simplicity sdk version:
->
-> ```sh
-> sdk:
->  id: simplicity_sdk
->  version: 2024.6.1
-> ```
 
 ## System Architecture
 This library has two primary components. The POST component is run immediately after power on, validating system state before entering the main execution loop.

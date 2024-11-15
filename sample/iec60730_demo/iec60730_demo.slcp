@@ -18,14 +18,6 @@ configuration:
     value: cmuHFRCOFreq_19M0Hz
     condition:
      - device_series_1
-  - name: SL_IOSTREAM_USART_VCOM_PERIPHERAL
-    value: USART0
-    condition:
-     - device_series_2
-  - name: SL_IOSTREAM_USART_VCOM_PERIPHERAL_NO
-    value: 0
-    condition:
-     - device_series_2
 
 define:
   - name: HAL_CONFIG_HEADER

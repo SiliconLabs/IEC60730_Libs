@@ -55,7 +55,7 @@ void oem_system_config(void)
   WDOGn_Init(SL_IEC60730_WDOG_INST(0), &oem_wdog0_init);
 #endif
 #if (defined(WDOG1) && (SL_IEC60730_WDOG1_ENABLE == 1))
-  WDOGn_Init(SL_IEC60730_WDOG_INST(1), &oem_wdog1_init);
+  WDOGn_Init( SL_IEC60730_WDOG_INST(1), &oem_wdog1_init);
 #endif
 
   CORE_ATOMIC_IRQ_ENABLE();
@@ -64,9 +64,11 @@ void oem_system_config(void)
 void oem_clock_config(void)
 {
 #if (_SILICON_LABS_32B_SERIES_2_CONFIG >= 1)
+#ifndef IEC60730_OS_PRESENT
 #if (_SILICON_LABS_32B_SERIES_2_CONFIG > 1)
   CMU_ClockEnable(cmuClock_HFXO, true);
   CMU_ClockEnable(cmuClock_DPLL0, true);
+#endif
 
   /* Enable HFXO */
   CMU_HFXOInit(&oem_hfxo_init);
@@ -133,7 +135,9 @@ void oem_clock_config(void)
 void oem_nvic_init(void)
 {
   /* One Group Priority */
+#ifndef IEC60730_OS_PRESENT
   NVIC_SetPriorityGrouping(7);
+#endif
   /* Timer 0 */
   NVIC_SetPriority(TIMER0_IRQn, 1);
   NVIC_EnableIRQ(TIMER0_IRQn);

@@ -1,5 +1,5 @@
 package: iec60730
-description: This component supports running unit test function lib IEC60730
+description: This components support run unit test function lib IEC60730
 label: IEC60730 Unit Test
 quality: test
 id: iec60730_unit_test
