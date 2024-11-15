@@ -361,12 +361,13 @@ jobs:
         export PATH=$PATH:~/slc_cli
         export PATH=$PATH:/usr/bin/
         export PATH=$PATH:~/amazon-corretto-17.0.12.7.1-linux-x64/bin
+        export TOOL_DIRS=$TOOL_DIRS_RUN
         export LST_PATH=$PWD/build/test/integration_test/build/${BOARD_NAME}/integration_test_iec60730_watchdog/S
         slc configuration --sdk=${SDK_PATH_RUN}
         ninja --version
         slc signature trust --sdk $SDK_PATH_RUN
-        echo "TOOL_DIRS_RUN=$TOOL_DIRS_RUN"
-        slc configuration -gcc=$TOOL_DIRS_RUN
+        echo "TOOL_DIRS=$TOOL_DIRS"
+        slc configuration -gcc=$TOOL_DIRS
         slc signature trust -extpath $SDK_PATH_RUN/extension/$REPO_NAME
         # make prepare
         echo "Run unit test for MG12"
