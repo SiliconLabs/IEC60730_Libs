@@ -1,9 +1,9 @@
 /***************************************************************************/ /**
  * @file  integration_test_common.c
- * @brief integration_test_common
+ * @brief Integration test init
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib
@@ -196,7 +196,7 @@ __WEAK sl_iec60730_test_result_t sl_iec60730_watchdog_post(void)
   return SL_IEC60730_TEST_PASSED;
 }
 
-__WEAK sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
+__WEAK sl_iec60730_test_result_t sl_iec60730_cpu_registers_post(void)
 {
   return SL_IEC60730_TEST_PASSED;
 }

@@ -3,7 +3,7 @@
  * @brief Watchdog check
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -28,9 +28,9 @@
  * @{
  *****************************************************************************/
 
-// Global variable to store Watchdog states
+/// Global variable to store Watchdog states. With load in IEC60730_DATA_NO_CLEAR is region No clear at startup.
 volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state IEC60730_DATA_NO_CLEAR;
-// Local variable to store Watchdog instance under testing
+/// Local variable to store Watchdog instance under testing. With load in IEC60730_DATA_NO_CLEAR is region No clear at startup.
 static uint8_t iec60730_watchdog_count IEC60730_DATA_NO_CLEAR;
 
 // Define Watchdog configuration

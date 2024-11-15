@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # License
-# <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+# <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
 # *******************************************************************************
 #
 # The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -11,7 +11,7 @@
 # sections of the MSLA applicable to Source Code.
 # *******************************************************************************
 
-## @addtogroup IEC60730_VERIFICATION
+## @addtogroup IEC60730_INTEGRATION_TEST
 # @{
 # @defgroup IEC60730_CPU_REGISTERS_VERIFICATION CPU Register Check Automated Verification Tests
 # @{
@@ -50,10 +50,11 @@ class iec60730_cpu_regs(unittest.TestCase, iec60730TestBase):
   ## Text name of the test suite, used in XML output.
   TEST_SUITE_NAME = "CPU_REGS"
 
+  ## Set up connect device.
   def setUp(self):
     self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
-
+  ## Supports setting breakpoints and changing test register values
   def core_register_common_test(self,
                                 bkp_label_inject,
                                 bkp_testcase_pass,
@@ -578,17 +579,23 @@ class iec60730_cpu_regs(unittest.TestCase, iec60730TestBase):
 
 if __name__ == "__main__":
 
+  ## Chip name run test
   chip_name = os.getenv('CHIP')
 
+  ## Path to file *.lst
   lst_file_path = os.getenv('LST_PATH')
 
+  ## serialno of device
   adapter_serial_no = os.getenv('ADAPTER_SN')
 
+  ## Path to jlink library
   lib_path = os.getenv('JLINK_PATH')
 
   while len(sys.argv) > 1:
+    ## Number of arguments passed into the script file
     line = sys.argv.pop()
     if len(sys.argv) == 1:
+        ## compiler creates the file *.lst
         compiler = line
 
   print("Compiler: "+compiler)

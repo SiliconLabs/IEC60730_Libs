@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # License
-# <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+# <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
 # *******************************************************************************
 #
 # The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -11,7 +11,7 @@
 # sections of the MSLA applicable to Source Code.
 # *******************************************************************************
 
-## @addtogroup IEC60730_VERIFICATION
+## @addtogroup IEC60730_INTEGRATION_TEST
 # @{
 # @defgroup IEC60730_SYSTEM_CLOCK_VERIFICATION System Clock Automated Verification Tests
 # @{
@@ -48,8 +48,9 @@ def int_to_bytes(number: int) -> bytes:
 
 class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
   ## Text name of the test suite, used in XML output.
-  TEST_SUITE_NAME = "SystemClock"
+  TEST_SUITE_NAME = "System Clock"
 
+  ## Set up connect device.
   def setUp(self):
     self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
@@ -104,7 +105,7 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
   ## Verifies that the BIST system clock test enters safe state when out-of-bounds system clock is enabled
   # @details The system clock test is validated by forcing a system clock frequency that runs low
   # bound checked by the test.  Testing validates that the system enters safe state
-  # after the system clock is forced low bound, as shown in  \link BIST_system_clock_frequency_validation Figure 2.\endlink
+  # after the system clock is forced low bound.
   #
   # Order of execution:
   #   - Verify code reaches breakpoint at IEC60730_SYSTEM_CLOCK_FREQ_ADJUSTMENT_BKPT
@@ -114,8 +115,6 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
   #     - Test passes, return True
   #
   # @return True
-  #
-  # \image html BIST_system_clock_frequency_validation.jpg "Figure 2 System clock frequency check flowchart" \anchor BIST_system_clock_frequency_validation
 
   def test_system_clock_out_of_bound(self):
     sys_clock_count_location = variables['sl_iec60730_sys_clock_count']
@@ -168,17 +167,23 @@ class iec60730_system_clock(unittest.TestCase, iec60730TestBase):
 
 if __name__ == "__main__":
 
+  ## Chip name run test
   chip_name = os.getenv('CHIP')
 
+  ## Path to file *.lst
   lst_file_path = os.getenv('LST_PATH')
 
+  ## serialno of device
   adapter_serial_no = os.getenv('ADAPTER_SN')
 
+  ## Path to jlink library
   lib_path = os.getenv('JLINK_PATH')
 
   while len(sys.argv) > 1:
+    ## Number of arguments passed into the script file
     line = sys.argv.pop()
     if len(sys.argv) == 1:
+        ## compiler creates the file *.lst
         compiler = line
 
   print("Compiler: "+compiler)

@@ -1,9 +1,9 @@
 /***************************************************************************/ /**
- * @file Test_irq.c
- * @brief Irq test cases
+ * @file integration_test_iec60730_system_clock.c
+ * @brief setup integration test system clock
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib

@@ -5,84 +5,56 @@ Platform codes for EFR32 series chips which complies to IEC60730 safety standard
 The IEC60730 library for EFR32 provides a basic implementation required to support the necessary requirements found in Table H.1 in the IEC60730 specification. It includes all the Power On Self Test (POST) functions executed when a device is first powered on, as well as Built In Self Test (BIST) functions that are called periodically to ensure correct operation. Certain portions of the requirements require a detailed understanding of the system under development. Callback functions must be completed by the developer to guarantee meeting the full specification. These include a Safe State function used when validation detects an anomaly, properly implemented communications channels (redundancy, error detection, periodic communications), and Plausibility functions to validate system state (internal variables and inputs/outputs).
 
 ## License
-Please refer LICENSE.md.
+
+Please refer [License](LICENSE.md)
 
 ## Release Notes
-Please refer document in Doc/html.
+
+Please refer document in [release_note.md](./docs/release_note.md)
 
 ## IEC60730 Certificate
+
 The Silicon Labs Appliances homepage will contain the final certificate and detailed report when it is completed.
 
 ## OEM Testing
+
 Once OEMs have completed integrating their system with the IEC60730 Library, they will need to certify their device with a qualified certification house.
 
 ## Supported Families
-This library supports all EFR32 devices listed in Doc/html.
+
+- Refer section [Supported Families](./docs/html/EFR32_IEC60730_Libraries/group__efr32__iec60730.html)
 
 ## Software Requirements
-The IEC 60730 library dependencies:
-- CMSIS package.
-- Silicon Labs Devices header files. They are available in the Gecko SDK suite (platform).
 
-Currently tested on Windows and Linux platforms.
+- Refer section [Software Requirements](./docs/html/EFR32_IEC60730_Libraries/group__efr32__iec60730.html)
 
 ## Building the IEC60730 Demo
-To use Simplicity Studio to generate and build a demo IEC60730 and OEM Customization, refer to the IEC60730 Safety Library Integration Manual in the Doc folder for more details.
 
-## Generate document
-Using Doxygen to generate HTML documentation, the documents will be generated in `Doc/html/EFR32_ICE60730_Libraries`
+- Refer section [Building the IEC60730 Demo](./docs/html/EFR32_IEC60730_Libraries/group__efr32__iec60730.html)
 
-```sh
-$ sudo apt-get install doxygen
-$ doxygen qat.doxygen
-```
+## Generate document API
+
+- Refer section [Generate document API](./docs/html/EFR32_IEC60730_Libraries/group__efr32__iec60730.html)
 
 ## Coding convention tool
 
 - Refer file: [coding_convention_tool.md](./docs/coding_convention_tool.md).
 
 ## Compiler specifications
-**The C compilers:**
-- GNU GCC V12.2
-- IAR EW for ARM V9.20
 
-## Tools specification
-
-Test frame work tools:
-- Python V3.11
-
-Simplicity Studio Commander
-- Simplicity Commander version 1v16p8b1613
-
-Support CMake
-- CMake version >=3.25
-
-SEGGER JLink
-- JLink version 17.0.11
-
-SLC-CLI
-- slc version 5.9.1.1
-
-Source code control:
-- GIT V2.39
-- JIRA V8.22.2
-
-SDK support:
-- Gecko SDK Suite v4.4.2
+- Refer section [Compiler specifications](./docs/html/EFR32_IEC60730_Libraries/group__efr32__iec60730.html)
 
 ## System Architecture
-This library has two primary components. The POST component is run immediately after power on, validating system state before entering the main execution loop.
 
-The BIST component is run periodically in the
-main execution loop.
+- Refer section [System Architecture](./docs/html/EFR32_IEC60730_Libraries/group__efr32__iec60730.html)
 
-Validation for IEC 60730 also requires external communications validation. Every OEM application has unique external communications requirements. This library provides an example UART communications library that meets IEC 60730 requirements. OEMs must adapt their communications to IEC60730 requirements.
+## CMake
 
-This EFR32 IEC60730 library fulfills the requirements for a **Class B** device.
+The project has a CMake template that supports running tests. Follow the steps below one by one to build and run tests.
 
-**For more details, please refer document in Doc/html.**
+### Add the IEC60730 Library extension to the SDK
 
-## Step run CMake
+- Refer to the [IEC60730 safety library integration to SDK](./docs/iec60730_safety_library_integration_to_sdk.md) in the [docs](./docs) folder for more details.
 
 ### Install Dependencies
 
@@ -99,9 +71,9 @@ Configure SDK. For example sh slc configuration --sdk ~/SimplicityStudio/SDKs/ge
 
 Run slc signature trust --sdk <path_to_the_gecko_sdk> if you have not yet trusted your SDK.
 
-For example your SDK locate at ~/SimplicityStudio/SDKs/gecko_sdk/ sh slc signature trust --sdk ~/SimplicityStudio/SDKs/gecko_sdk/
+For example your SDK locate at ~/SimplicityStudio/SDKs/gecko_sdk/. Run `slc signature trust --sdk ~/SimplicityStudio/SDKs/gecko_sdk/`
 
-Set toolchain For example sh slc configuration -gcc=~/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/10.3_2021.10/
+Set toolchain For example sh slc configuration -gcc=~/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/
 
 Generate the project sh slc generate \path\to\example.slcp -np -d <project_destination> -name=<new_name> --with <board_or_device_that_supports_project>
 
@@ -113,6 +85,9 @@ Choose one of the options below to generate the project
 |^ | -cpproj, --copy-proj-sources | Copies all files referenced by the project and links any SDK sources. This can be combined with -cpsdk. |
 |^ | -cpsdk, --copy-sdk-sources | Copies all files referenced by the selected components and links any project sources. This can be combined with -cpproj. |
 
+> [!NOTE]: To be able to use the extension LibIEC60730. You need to add the LibIEC60730
+> extension to your SDK in the extension folder and run the command: `slc signature trust -extpath <path_to_your_extension_sdk>`
+
 ##### For example
 
 ```sh
@@ -120,10 +95,10 @@ $ GSDK=~/SimplicityStudio/SDKs/gecko_sdk
 $ slc configuration --sdk=$GSDK --gcc-toolchain=/Applications/ARM
 $ slc generate $GSDK/app/common/example/blink_baremetal -np -d blinky -name=blinky -o makefile
    --with brd4166a
-$ slc signature trust -extpath <path_to_your_extension_sdk>
+$ slc signature trust -extpath $GSDK/extension/IEC60730_Libs
 ```
 
 ### Run unit test
-  - Refer to the guideline link: [run_unit_test.md](./docs/run_unit_test.md)
+  - Refer to the guideline link: [guideline_for_running_unit_test.md](./docs/guideline_for_running_unit_test.md)
 ### Run integration test
-  - Refer to the guideline link: [run_integration_test.md](./docs/run_integration_test.md)
+  - Refer to the guideline link: [guideline_for_running_integration_test.md](./docs/guideline_for_running_integration_test.md)

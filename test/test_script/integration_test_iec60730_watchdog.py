@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # License
-# <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+# <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
 # *******************************************************************************
 #
 # The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -11,7 +11,7 @@
 # sections of the MSLA applicable to Source Code.
 # *******************************************************************************
 
-## @addtogroup IEC60730_VERIFICATION
+## @addtogroup IEC60730_INTEGRATION_TEST
 # @{
 # @defgroup IEC60730_WATCHDOG_VERIFICATION Watchdog Automated Verification Tests
 # @{
@@ -40,6 +40,7 @@ import enums
 def int_to_bytes(number: int) -> bytes:
     return number.to_bytes(length=(8 + (number + (number < 0)).bit_length()) // 8, byteorder='big', signed=True)
 
+## IP address of device
 hostIP = os.getenv('HOST_IP')
 
 ##  IEC60730 Watchdog Verification Tests
@@ -53,10 +54,11 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
   ## Text name of the test suite, used in XML output.
   TEST_SUITE_NAME = "Watchdog"
 
+  ## Set up connect device.
   def setUp(self):
     self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
-
+  ## Clear reset cause register.
   def clear_rst_causes(self):
     logging.info("Clear RSTCAUSES register.")
     rstcauses_register = self.adapter.memory_read32(variables['rstcauses_register'], 1)
@@ -69,6 +71,7 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
     logging.info("Read bit mask value uses to clear reset cause: " + hex(rstcauses_clear[0]))
     reg = self.adapter.memory_write32(rstcauses_register[0], data = [rstcauses_clear[0]], zone=None)
 
+  ## Allows to start running test watchdog.
   def wdog_test_running_enable(self):
     pc = self.adapter.run_to_breakpoint(20)
     logging.info("Halted at label: " + self.get_label(pc))
@@ -79,6 +82,7 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
     logging.info("Set wdog_por_wait flag at address: " + hex(watchdogStateLocation))
     reg = self.adapter.memory_write32(watchdogStateLocation, data = [1], zone=None)
 
+  ## Reset watchdog by power on by sending command to hostIP.
   def wdog_power_cycle(self):
     self.adapter_close()
 
@@ -387,22 +391,29 @@ class iec60730_watchdog(unittest.TestCase, iec60730TestBase):
 
 if __name__ == "__main__":
 
+  ## Chip name run test
   chip_name = os.getenv('CHIP')
 
+  ## Path to file *.lst
   lst_file_path = os.getenv('LST_PATH')
 
+  ## serialno of device
   adapter_serial_no = os.getenv('ADAPTER_SN')
 
+  ## Path to jlink library
   lib_path = os.getenv('JLINK_PATH')
 
+  ## Enable test watchdog 1
   wdog1_present = os.getenv('INTEGRATION_TEST_WDOG1_ENABLE')
   if not wdog1_present:
     wdog1_present = "disable"
   print("Watchdog 1 testing: "+wdog1_present)
 
   while len(sys.argv) > 1:
+    ## Number of arguments passed into the script file
     line = sys.argv.pop()
     if len(sys.argv) == 1:
+        ## compiler creates the file *.lst
         compiler = line
 
   print("Compiler: "+compiler)

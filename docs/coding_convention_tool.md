@@ -1,11 +1,12 @@
+# Guideline for running check coding convetion
+
 > [!NOTE]
 > This is a code formatter tool that helps ensure consistent coding style and detects common issues in source code files.
 It integrates with pre-commit, allowing you to automate code formatting and checks as part of your development workflow.
 
-- See details rule check in folder tools: [tools](../tools/).
--  See details coding standard by Silicon Labs in file: [coding_standard.md](./coding_standard.md).
+- See details rule check in folder tools: [tools]().
 
-# Features
+## Features
 
 - Automatically fixes end-of-file issues.
 - Removes trailing whitespace from lines.
@@ -14,7 +15,7 @@ It integrates with pre-commit, allowing you to automate code formatting and chec
 - Checks for identifiers naming style mismatch of function, definition, struct, variable using clang-tidy.
 - Checks code for potential errors and style issues using cppcheck.
 
-# Project Structure
+## Project Structure
 the following outlines the structure of the code formatter project, detailing the purpose of each file and directory.
 
 ```sh
@@ -35,8 +36,8 @@ the following outlines the structure of the code formatter project, detailing th
     to be run before commits.
 ```
 
-# Installation
-##  Ubuntu
+## Installation
+###  Ubuntu
 Recommended operating system: WSL, Ubuntu 20.04.
 
 Ensure Python is installed on your system. Then, install pre-commit clang-format clang-tidy cppcheck by running:
@@ -53,8 +54,8 @@ Recommended version:
 - Clang tidy 14.0.0
 - Cppcheck 1.9
 
-# Quick start
-## How To Run
+## Quick start
+### How To Run
 
 Before running the coding convention test, to create a database file for clang-tidy to test, run the command below
 
@@ -63,7 +64,7 @@ $ make prepare
 $ cd build
 $ cmake --toolchain ../cmake/toolchain.cmake .. -DCHECK_CODING_CONVETION_ENABLE=ON -DBOARD_NAME=brd4187c
 ```
-After running the above command, the file `compile_commands.json` data base will be created in the folder [build](../build/).
+After running the above command, the file `compile_commands.json` data base will be created in the folder [build]().
 
 Run pre-commit install to install pre-commit into your git hooks. pre-commit will now run on every commit:
 
@@ -83,7 +84,7 @@ Run pre-commit hooks on a repository to check coding convention.
 $ pre-commit run --all-files
 ```
 
-## Exclude Folder
+### Exclude Folder
 When using this tool, you may want to skip some folders.
 
 You can specify folders to exclude from formatting and checks by replacing the exclude regex pattern with the folders you want to skip.
@@ -127,13 +128,13 @@ By default, this is empty (disabled).
 You can list multiple entries separated by commas.
 For example, .git,*.a, will skip the .git directory and all files with the .a extension.
 
-## Uncrustify
+### Uncrustify
 Using automatic source code formatting follows Silabs's coding standard.
 The Uncrustify configuration file is located at /tools/uncrustify.cfg. Base on the repo /projects/WMN_TOOLS/repos/scripts/browse/uncrustify
 
-## Clang-Tidy
+### Clang-Tidy
 - Checks for identifiers naming style mismatch
-- Clang-Tidy supports checking casing types (UPPER_CASE/lower_case) and prefixes of 
+- Clang-Tidy supports checking casing types (UPPER_CASE/lower_case) and prefixes of
 - Function, Struct, Enum, Global Constant. You can modify the prefix in the file /tools/.clang-tidy.
 
 For example, config function with lower_case and prefix 'sl_'
@@ -145,7 +146,7 @@ For example, config function with lower_case and prefix 'sl_'
   value: 'sl_'
 ```
 
-### Adding Extra Arguments
+#### Adding Extra Arguments
 You may need to provide additional paths to header files or define macros for Clang-Tidy to ensure it correctly analyzes your code.
 
 This can be done using the --extra-arg option in the hook configuration.

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # License
-# <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+# <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
 # *******************************************************************************
 #
 # The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -11,7 +11,7 @@
 # sections of the MSLA applicable to Source Code.
 # *******************************************************************************
 
-## @addtogroup IEC60730_VERIFICATION
+## @addtogroup IEC60730_INTEGRATION_TEST
 # @{
 # @defgroup IEC60730_INVARIABLE_MEMORY_VERIFICATION Invariable Memory Automated Verification Tests
 # @{
@@ -44,15 +44,19 @@ is_crc32 = False
 # Hardware setup:
 #   Connect DUT to PC. No additional hardware setup required.
 class iec60730_imc(unittest.TestCase, iec60730TestBase):
+  ## Text name of the test suite, used in XML output.
   TEST_SUITE_NAME = "IMC"
 
+  ## Set up connect device.
   def setUp(self):
     self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
+  ## Set breakpoint.
   def set_breakpoint(self, label) :
     self.adapter.set_breakpoint(address = asm_labels[label],
                                 typeflags=enums.JLinkBreakpoint.ANY)
 
+  ## Run to breakpoint.
   def reach_to_breakpoint(self, label, setbkp, time) :
     if setbkp :
       self.set_breakpoint(label)
@@ -77,7 +81,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @return True
   #
-  def test_CalCRC_Full_Memory(self):
+  def test_cal_crc_full_memory(self):
     self.adapter.halt()
     self.adapter.clear_all_breakpoints()
 
@@ -140,7 +144,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @return True
   #
-  def test_CorruptCRC_Full_Memory(self):
+  def test_corrupt_crc_full_memory(self):
     self.adapter.halt()
     self.adapter.clear_all_breakpoints()
 
@@ -185,7 +189,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @return True
   #
-  def test_CalCRC_Block_Memory(self):
+  def test_cal_crc_block_memory(self):
     self.adapter.halt()
     self.adapter.clear_all_breakpoints()
     self.adapter.reset()
@@ -251,7 +255,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @return True
   #
-  def test_CorruptCRC_CalCRC_Block_Memory(self):
+  def test_corrupt_crc_cal_crc_block_memory(self):
     self.adapter.halt()
     self.adapter.clear_all_breakpoints()
 
@@ -303,7 +307,7 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
   #
   # @return True
   #
-  def test_CorruptIntegrity_iec60730_run_crc_Block_Memory(self):
+  def test_corrupt_integrity_iec60730_run_crc_block_memory(self):
     self.adapter.halt()
     self.adapter.clear_all_breakpoints()
 
@@ -329,25 +333,33 @@ class iec60730_imc(unittest.TestCase, iec60730TestBase):
 
 if __name__ == "__main__":
 
+  ## Chip name run test
   chip_name = os.getenv('CHIP')
 
+  ## Path to file *.lst
   lst_file_path = os.getenv('LST_PATH')
 
+  ## serialno of device
   adapter_serial_no = os.getenv('ADAPTER_SN')
 
+  ## Path to jlink library
   lib_path = os.getenv('JLINK_PATH')
 
+  ## Enable test calculation with CRC32
   cal_crc_32 = os.getenv('INTEGRATION_TEST_ENABLE_CAL_CRC_32')
   if not cal_crc_32:
     cal_crc_32 = "disable"
   else:
     if cal_crc_32 == "enable":
+      ## Allows testing with CRC32
       is_crc32 = True
   print("Enable calculate crc32: "+cal_crc_32)
 
   while len(sys.argv) > 1:
+    ## Number of arguments passed into the script file
     line = sys.argv.pop()
     if len(sys.argv) == 1:
+      ## compiler creates the file *.lst
       compiler = line
 
   unittest.main()

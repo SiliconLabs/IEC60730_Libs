@@ -1,9 +1,9 @@
 /***************************************************************************/ /**
- * @file Test_vmc.c
- * @brief Variable Memory Check test cases
+ * @file integration_test_iec60730_invariable_memory.c
+ * @brief setup integration test invariable memory
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib

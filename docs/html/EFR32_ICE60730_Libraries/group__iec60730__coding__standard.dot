@@ -1,9 +1,0 @@
-digraph "Silicon Labs Coding Standard"
-{
-  edge [fontname="Helvetica",fontsize="10",labelfontname="Helvetica",labelfontsize="10"];
-  node [fontname="Helvetica",fontsize="10",shape=box];
-  rankdir=LR;
-  Node1 [label="Silicon Labs Coding\l Standard",height=0.2,width=0.4,color="black", fillcolor="grey75", style="filled", fontcolor="black",tooltip="Silicon Labs Coding Standard."];
-  Node2 [label="EFR32 IEC60730 Library\l Extra Files",height=0.2,width=0.4,color="black", fillcolor="white", style="filled",URL="$group__IEC60730__EXTRA.html",tooltip="Extra files for the EFR32 IEC Library."];
-  Node2->Node1 [shape=plaintext, dir="back", style="solid"];
-}

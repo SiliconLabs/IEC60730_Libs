@@ -3,7 +3,7 @@
  * @brief Program Counter check
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -15,8 +15,8 @@
  *
  ******************************************************************************/
 
-#ifndef SL_IEC60730_PROGRAMME_COUNTER_H
-#define SL_IEC60730_PROGRAMME_COUNTER_H
+#ifndef SL_IEC60730_PROGRAM_COUNTER_H
+#define SL_IEC60730_PROGRAM_COUNTER_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -33,13 +33,13 @@ extern "C" {
  * The frequency of test execution must be checked to ensure that tests
  * are being run in time.
  *
- * @section programme_counter_hardware_architecture Hardware Architecture
- * The programme counter check requires that each BIST test set a bit in a
+ * @section program_counter_hardware_architecture Hardware Architecture
+ * The Program counter check requires that each BIST test set a bit in a
  * bit array whenever an iteration of testing completes.
- * The programme counter check uses the test clock timer configured
+ * The Program counter check uses the test clock timer configured
  * in the system clock plausibility test to determine when to execute.  See
- * @ref IEC60730_SYSTEM_CLOCK_Test for system clock plausibility details.
- * The programme counter test executes at 1/10 the frequency of the system clock
+ * @ref IEC60730_SYSTEM_CLOCK_TEST for system clock plausibility details.
+ * The Program counter test executes at 1/10 the frequency of the system clock
  * plausibility test.  Best practice recommendations and example OEM code
  * configure the system clock plausibility test to run at 100 ms intervals,
  * resulting in BIST frequency check intervals of 1s.
@@ -48,11 +48,11 @@ extern "C" {
  * how fast their tests are running by checking this variable. If a bit is still
  * clear, that test has not completed.
  *
- * @section programme_counter_suggested_OEM_configuration Suggested OEM Configuration
+ * @section program_counter_suggested_OEM_configuration Suggested OEM Configuration
  * OEM configuration of this test is dependent on system clock plausibility
- * configuration.  Please see @ref IEC60730_SYSTEM_CLOCK_Test for details.
+ * configuration.  Please see @ref IEC60730_SYSTEM_CLOCK_TEST for details.
  *
- * @section programme_counter_failure_risks Failure Risks
+ * @section program_counter_failure_risks Failure Risks
  * The library's BIST execution frequency test will force entry into
  * safe state if a period of time defined by 1/10 test clock test frequency
  * passes without all BIST tests completing their test execution.  It is
@@ -63,27 +63,27 @@ extern "C" {
  * 1/10 test clock frequency is unexpectedly fast, the system may fall into safe state
  * because tests have not had enough time to execute to completion.
  *
- * @section programme_counter_software_architecture Software Architecture
+ * @section program_counter_software_architecture Software Architecture
  *
- * For the IEC60730 implementation, \link programme_counter_check Figure 1\endlink
+ * For the IEC60730 implementation, see \link program_counter_check Figure 1\endlink
  *
- * \image html programme_counter_check.png "Figure 1 Programme Counter Check Flowchart" \anchor programme_counter_check
+ * \image html program_counter_check.png "Figure 1 Program counter check flowchart" \anchor program_counter_check
  *
  *****************************************************************************/
 
-/// private IEC60730 Programme Counter Test
+/// public IEC60730 program counter test
 ///
 /// Checks flags in #sl_iec60730_program_counter_check set by each BIST test to determine if BIST is
 /// executing within a specified period.
 /// @return #sl_iec60730_test_result_t. If test fails, returns #SL_IEC60730_TEST_FAILED;
-/// otherwise #SL_IEC60730_TEST_PASSED.
+/// @return otherwise #SL_IEC60730_TEST_PASSED.
 void sl_iec60730_program_counter_test(void);
 
-/** @} (end addtogroup IEC60730_PROGRAMME_COUNTER) */
+/** @} (end addtogroup IEC60730_program_COUNTER) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
 
-#endif /* SL_IEC60730_PROGRAMME_COUNTER_H */
+#endif /* SL_IEC60730_PROGRAM_COUNTER_H */

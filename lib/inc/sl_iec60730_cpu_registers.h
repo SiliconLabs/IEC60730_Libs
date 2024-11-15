@@ -3,7 +3,7 @@
  * @brief CPU Registers check
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -27,25 +27,31 @@ extern "C" {
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
- * @addtogroup IEC60730_CPUREG_Test
+ * @addtogroup IEC60730_CPU_REG_TEST
  * @{
  * @section cpureg_hardware_architecture Hardware Architecture
  * The CM33 CPU registers include the following registers:
+ *
  * General-purpose registers:
  *      • R0-R12
+ *
  * Stack pointer registers:
  *      • MSP + MSPLIM (secure/non-secure)
  *      • PSP + PSPLIM (secure/non-secure)
+ *
  * Special registers:
  *      • APSR • CONTROL (secure/non-secure)
  *      • PRIMASK (secure/non-secure)
  *      • FAULTMASK (secure/non-secure)
  *      • BASEPRI (secure/non-secure)
+ *
  * Link register:
  *      • LR
+ *
  * FPU registers:
  *      • FPSCR
  *      • S0 – S31
+ *
  * There is a set of tests performed once after the MCU reset and also during
  * runtime.
  *
@@ -117,7 +123,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist_s(void);
  * @returns #SL_IEC60730_TEST_FAILED means test failed,
  *          #SL_IEC60730_TEST_PASSED means test passed.
  *
- * This function will do a test of all the CPU core registers.
+ * This function will do a test of all the CPU core registers in non-secure and secure state.
  *****************************************************************************/
 sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void);
 
@@ -128,9 +134,9 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void);
  *
  * This function simply calls the sl_iec60730_cpu_registers_bist() function.
  *****************************************************************************/
-sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void);
+sl_iec60730_test_result_t sl_iec60730_cpu_registers_post(void);
 
-/** @} (end addtogroup IEC60730_CPUREG_Test) */
+/** @} (end addtogroup IEC60730_CPU_REG_TEST) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus

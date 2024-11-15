@@ -3,7 +3,7 @@
  * @brief CPU Registers check
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -143,7 +143,7 @@ sl_iec60730_test_result_t sl_iec60730_cpu_registers_bist(void)
  *
  * This function simply calls the sl_iec60730_cpu_registers_bist() function.
  *****************************************************************************/
-sl_iec60730_test_result_t sl_ec60730_cpu_registers_post(void)
+sl_iec60730_test_result_t sl_iec60730_cpu_registers_post(void)
 {
   return sl_iec60730_cpu_registers_bist();
 }

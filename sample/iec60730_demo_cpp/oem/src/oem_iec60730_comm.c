@@ -34,76 +34,76 @@
 #include HAL_CONFIG_HEADER
 
 #if defined(_USART_ROUTELOC0_MASK)
-#define USART0_INIT                                                            \
-  {                                                                            \
-      USART0,               /* USART port                   */                 \
-      HAL_USART0_BAUD_RATE, /* Baud rate                    */                 \
-      BSP_USART0_TX_LOC,    /* USART Tx pin location number */                 \
-      BSP_USART0_RX_LOC,    /* USART Rx pin location number */                 \
-      (USART_Stopbits_TypeDef)                                                 \
-          USART_FRAME_STOPBITS_ONE, /* Stop bits                    */         \
-      (USART_Parity_TypeDef)                                                   \
-          USART_FRAME_PARITY_NONE, /* Parity                       */          \
-      (USART_OVS_TypeDef)                                                      \
-          USART_CTRL_OVS_X16, /* Oversampling mode            */               \
-      false,                  /* Majority vote disable        */               \
-      (UARTDRV_FlowControlType_t)                                              \
-          HAL_USART0_FLOW_CONTROL, /* Flow control                 */          \
-      BSP_USART0_CTS_PORT,         /* CTS port number              */          \
-      BSP_USART0_CTS_PIN,          /* CTS pin number               */          \
-      BSP_USART0_RTS_PORT,         /* RTS port number              */          \
-      BSP_USART0_RTS_PIN,          /* RTS pin number               */          \
-      NULL,                        /* RX operation queue           */          \
-      NULL,                        /* TX operation queue           */          \
-      BSP_USART0_CTS_LOC,          /* CTS pin location             */          \
-      BSP_USART0_RTS_LOC           /* RTS pin location             */          \
+#define USART0_INIT                                                    \
+  {                                                                    \
+    USART0,                 /* USART port                   */         \
+    HAL_USART0_BAUD_RATE,   /* Baud rate                    */         \
+    BSP_USART0_TX_LOC,      /* USART Tx pin location number */         \
+    BSP_USART0_RX_LOC,      /* USART Rx pin location number */         \
+    (USART_Stopbits_TypeDef)                                           \
+    USART_FRAME_STOPBITS_ONE,       /* Stop bits                    */ \
+    (USART_Parity_TypeDef)                                             \
+    USART_FRAME_PARITY_NONE,       /* Parity                       */  \
+    (USART_OVS_TypeDef)                                                \
+    USART_CTRL_OVS_X16,       /* Oversampling mode            */       \
+    false,                    /* Majority vote disable        */       \
+    (UARTDRV_FlowControlType_t)                                        \
+    HAL_USART0_FLOW_CONTROL,       /* Flow control                 */  \
+    BSP_USART0_CTS_PORT,           /* CTS port number              */  \
+    BSP_USART0_CTS_PIN,            /* CTS pin number               */  \
+    BSP_USART0_RTS_PORT,           /* RTS port number              */  \
+    BSP_USART0_RTS_PIN,            /* RTS pin number               */  \
+    NULL,                          /* RX operation queue           */  \
+    NULL,                          /* TX operation queue           */  \
+    BSP_USART0_CTS_LOC,            /* CTS pin location             */  \
+    BSP_USART0_RTS_LOC             /* RTS pin location             */  \
   }
 #elif defined(_GPIO_USART_ROUTEEN_MASK) // #define USART0_INIT
-#define USART0_INIT                                                            \
-  {                                                                            \
-      USART0,               /* USART port                   */                 \
-      HAL_USART0_BAUD_RATE, /* Baud rate                    */                 \
-      BSP_USART0_TX_PORT,   /* TX port number               */                 \
-      BSP_USART0_RX_PORT,   /* RX port number               */                 \
-      BSP_USART0_TX_PIN,    /* TX pin number                */                 \
-      BSP_USART0_RX_PIN,    /* RX pin number                */                 \
-      0,                    /* UART instance number         */                 \
-      (USART_Stopbits_TypeDef)                                                 \
-          USART_FRAME_STOPBITS_ONE, /* Stop bits                    */         \
-      (USART_Parity_TypeDef)                                                   \
-          USART_FRAME_PARITY_NONE, /* Parity                       */          \
-      (USART_OVS_TypeDef)                                                      \
-          USART_CTRL_OVS_X16, /* Oversampling mode            */               \
-      false,                  /* Majority vote disable        */               \
-      (UARTDRV_FlowControlType_t)                                              \
-          HAL_USART0_FLOW_CONTROL, /* Flow control                 */          \
-      BSP_USART0_CTS_PORT,         /* CTS port number              */          \
-      BSP_USART0_CTS_PIN,          /* CTS pin number               */          \
-      BSP_USART0_RTS_PORT,         /* RTS port number              */          \
-      BSP_USART0_RTS_PIN,          /* RTS pin number               */          \
-      NULL,                        /* RX operation queue           */          \
-      NULL,                        /* TX operation queue           */          \
+#define USART0_INIT                                                    \
+  {                                                                    \
+    USART0,                 /* USART port                   */         \
+    HAL_USART0_BAUD_RATE,   /* Baud rate                    */         \
+    BSP_USART0_TX_PORT,     /* TX port number               */         \
+    BSP_USART0_RX_PORT,     /* RX port number               */         \
+    BSP_USART0_TX_PIN,      /* TX pin number                */         \
+    BSP_USART0_RX_PIN,      /* RX pin number                */         \
+    0,                      /* UART instance number         */         \
+    (USART_Stopbits_TypeDef)                                           \
+    USART_FRAME_STOPBITS_ONE,       /* Stop bits                    */ \
+    (USART_Parity_TypeDef)                                             \
+    USART_FRAME_PARITY_NONE,       /* Parity                       */  \
+    (USART_OVS_TypeDef)                                                \
+    USART_CTRL_OVS_X16,       /* Oversampling mode            */       \
+    false,                    /* Majority vote disable        */       \
+    (UARTDRV_FlowControlType_t)                                        \
+    HAL_USART0_FLOW_CONTROL,       /* Flow control                 */  \
+    BSP_USART0_CTS_PORT,           /* CTS port number              */  \
+    BSP_USART0_CTS_PIN,            /* CTS pin number               */  \
+    BSP_USART0_RTS_PORT,           /* RTS port number              */  \
+    BSP_USART0_RTS_PIN,            /* RTS pin number               */  \
+    NULL,                          /* RX operation queue           */  \
+    NULL,                          /* TX operation queue           */  \
   }
 #else
-#define USART0_INIT                                                            \
-  {                                                                            \
-      USART0,               /* USART port                   */                 \
-      HAL_USART0_BAUD_RATE, /* Baud rate                    */                 \
-      BSP_USART0_ROUTE_LOC, /* USART pins location number   */                 \
-      (USART_Stopbits_TypeDef)                                                 \
-          USART_FRAME_STOPBITS_ONE, /* Stop bits                    */         \
-      (USART_Parity_TypeDef)                                                   \
-          USART_FRAME_PARITY_NONE, /* Parity                       */          \
-      (USART_OVS_TypeDef)                                                      \
-          USART_CTRL_OVS_X16, /* Oversampling mode            */               \
-      (UARTDRV_FlowControlType_t)                                              \
-          HAL_USART0_FLOW_CONTROL, /* Flow control                 */          \
-      BSP_USART0_CTS_PORT,         /* CTS port number              */          \
-      BSP_USART0_CTS_PIN,          /* CTS pin number               */          \
-      BSP_USART0_RTS_PORT,         /* RTS port number              */          \
-      BSP_USART0_RTS_PIN,          /* RTS pin number               */          \
-      NULL,                        /* RX operation queue           */          \
-      NULL                         /* TX operation queue           */          \
+#define USART0_INIT                                                    \
+  {                                                                    \
+    USART0,                 /* USART port                   */         \
+    HAL_USART0_BAUD_RATE,   /* Baud rate                    */         \
+    BSP_USART0_ROUTE_LOC,   /* USART pins location number   */         \
+    (USART_Stopbits_TypeDef)                                           \
+    USART_FRAME_STOPBITS_ONE,       /* Stop bits                    */ \
+    (USART_Parity_TypeDef)                                             \
+    USART_FRAME_PARITY_NONE,       /* Parity                       */  \
+    (USART_OVS_TypeDef)                                                \
+    USART_CTRL_OVS_X16,       /* Oversampling mode            */       \
+    (UARTDRV_FlowControlType_t)                                        \
+    HAL_USART0_FLOW_CONTROL,       /* Flow control                 */  \
+    BSP_USART0_CTS_PORT,           /* CTS port number              */  \
+    BSP_USART0_CTS_PIN,            /* CTS pin number               */  \
+    BSP_USART0_RTS_PORT,           /* RTS port number              */  \
+    BSP_USART0_RTS_PIN,            /* RTS pin number               */  \
+    NULL,                          /* RX operation queue           */  \
+    NULL                           /* TX operation queue           */  \
   }
 #endif //defined( _USART_ROUTELOC0_MASK )
 
@@ -136,17 +136,18 @@ DEFINE_BUF_QUEUE(1, oem_comm_buffer_queue_tx_usart0);
 static sl_iec60730_test_failure_t oem_iec60730_comm_check_status_message(void);
 
 static void oem_rx_callback(UARTDRV_Handle_t handle,
-                       Ecode_t transfer_status,
-                       uint8_t *data,
-                       UARTDRV_Count_t transfer_count)
+                            Ecode_t transfer_status,
+                            uint8_t *data,
+                            UARTDRV_Count_t transfer_count)
 {
   (void) data;
   (void) handle;
   (void) transfer_count;
 
   if (transfer_status == ECODE_EMDRV_UARTDRV_ABORTED) {
-    sl_iec60730_safety_check_error_occur(SL_IEC60730_USART0_FAIL);
     oem_error_code            = E_UART_ERROR_HARDWARE;
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_USART0_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_USART0_FAIL);
     return;
   }
 
@@ -155,22 +156,22 @@ static void oem_rx_callback(UARTDRV_Handle_t handle,
     oem_ready_to_check_rx_message = true;
     LABEL_DEF(IEC60730_COMM_BIST_FLAG_BKPT);
     sl_iec60730_program_counter_check |= IEC60730_COMMS_COMPLETE;
-
   }
 }
 
 static void oem_tx_callback(UARTDRV_Handle_t handle,
-                       Ecode_t transfer_status,
-                       uint8_t *data,
-                       UARTDRV_Count_t transfer_count)
+                            Ecode_t transfer_status,
+                            uint8_t *data,
+                            UARTDRV_Count_t transfer_count)
 {
   (void) data;
   (void) handle;
   (void) transfer_count;
 
   if (transfer_status == ECODE_EMDRV_UARTDRV_ABORTED) {
-    sl_iec60730_safety_check_error_occur(SL_IEC60730_USART0_FAIL);
     oem_error_code            = E_UART_ERROR_HARDWARE;
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_USART0_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_USART0_FAIL);
   }
 }
 
@@ -226,10 +227,11 @@ void oem_comm_send_message(uint8_t oem_message_byte)
   // Calculate CRC using CRC generating function included in library
   if (SL_IEC60730_TEST_FAILED
       == sl_iec60730_update_crc_with_data_buffer(&update,
-                                          &crc_value,
-                                          (uint8_t *) (&oem_tx_buffer),
-                                          sizeof(oem_message_buffer_t)
-                                              - sizeof(sl_iec60730_crc_t))) {
+                                                 &crc_value,
+                                                 (uint8_t *) (&oem_tx_buffer),
+                                                 sizeof(oem_message_buffer_t)
+                                                 - sizeof(sl_iec60730_crc_t))) {
+    sl_iec60730_safety_check_error_occur(SL_IEC60730_OEM_FAIL_1);
     sl_iec60730_safe_state(SL_IEC60730_OEM_FAIL_1);
   }
 
@@ -248,6 +250,7 @@ void oem_comm_init_receive_status_message(void)
     //DMADRV_StopTransfer(oem_comm_handle->rxDmaCh);
     if (oem_iec60730_comm_check_status_message() == SL_IEC60730_USART0_FAIL) {
       sl_iec60730_safety_check_error_occur(SL_IEC60730_USART0_FAIL);
+      sl_iec60730_safe_state(SL_IEC60730_USART0_FAIL);
     }
     UARTDRV_Receive(oem_comm_handle,
                     (uint8_t *) (&oem_rx_buffer),
@@ -271,10 +274,10 @@ sl_iec60730_test_failure_t oem_iec60730_comm_check_status_message(void)
   // Calculate CRC using CRC generating function included in library
   if (SL_IEC60730_TEST_FAILED
       == sl_iec60730_update_crc_with_data_buffer(&update,
-                                          &oem_calculated_crc,
-                                          (uint8_t *) (&oem_rx_buffer),
-                                          sizeof(oem_message_buffer_t)
-                                              - sizeof(sl_iec60730_crc_t))) {
+                                                 &oem_calculated_crc,
+                                                 (uint8_t *) (&oem_rx_buffer),
+                                                 sizeof(oem_message_buffer_t)
+                                                 - sizeof(sl_iec60730_crc_t))) {
     oem_error_code = E_UART_ERROR_FUNC_CRC;
     return SL_IEC60730_USART0_FAIL;
   }

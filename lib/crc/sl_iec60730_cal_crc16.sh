@@ -28,14 +28,14 @@ done
 #printf "START_ARR_ADDR: $START_ARR_ADDR\n"
 #printf "NUMBER_ELEMENT: $NUMBER_ELEMENT\n"
 
-SUFFIX_NON_SECURE=""
-if [ ! -z $6 ]; then
-  NON_SECURE=$6
-  echo NonSecure: ${NON_SECURE}
-  if [ "$NON_SECURE" = "true" ]; then
-    SUFFIX_NON_SECURE="_NS"
-  fi
-fi
+# SUFFIX_NON_SECURE=""
+# if [ ! -z $6 ]; then
+#   NON_SECURE=$6
+#   echo NonSecure: ${NON_SECURE}
+#   if [ "$NON_SECURE" = "true" ]; then
+#     SUFFIX_NON_SECURE="_NS"
+#   fi
+# fi
 
 case $(uname | tr '[:upper:]' '[:lower:]') in
   linux*)

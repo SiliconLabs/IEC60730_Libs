@@ -1,9 +1,9 @@
 /***************************************************************************/ /**
- * @file Test_programme_counter.c
- * @brief Program counter test cases
+ * @file integration_test_iec60730_program_counter.c
+ * @brief setup integration test program counter
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib

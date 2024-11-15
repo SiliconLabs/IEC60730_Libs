@@ -1,9 +1,9 @@
 /***************************************************************************/ /**
- * @file Test_watchdog.c
- * @brief Watchdog test cases
+ * @file integration_test_iec60730_watchdog.c
+ * @brief setup integration test watchdog
  *******************************************************************************
  * # License
- * <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * SPDX-License-Identifier: Zlib

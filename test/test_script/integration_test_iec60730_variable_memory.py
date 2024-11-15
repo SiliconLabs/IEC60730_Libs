@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # License
-# <b>Copyright 2021 Silicon Laboratories Inc. www.silabs.com</b>
+# <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
 # *******************************************************************************
 #
 # The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -11,7 +11,7 @@
 # sections of the MSLA applicable to Source Code.
 # *******************************************************************************
 
-## @addtogroup IEC60730_VERIFICATION
+## @addtogroup IEC60730_INTEGRATION_TEST
 # @{
 # @defgroup IEC60730_VARIABLE_MEMORY_VERIFICATION Variable Memory Automated Verification Tests
 # @{
@@ -46,15 +46,19 @@ isEnableMarchXC = True
 #   Connect DUT to PC. No additional hardware setup required.
 
 class iec60730_vmc(unittest.TestCase, iec60730TestBase):
+  ## Text name of the test suite, used in XML output.
   TEST_SUITE_NAME = "VMC"
 
+  ## Set up connect device.
   def setUp(self):
     self.env_setup(adapter_serial_no, chip_name, lst_file_path, lib_path, compiler)
 
+  ## Set breakpoint.
   def set_breakpoint(self, label) :
     self.adapter.set_breakpoint(address = asm_labels[label],
                                 typeflags=enums.JLinkBreakpoint.ANY)
 
+  ## Run to breakpoint.
   def reach_to_breakpoint(self, label, setbkp, time) :
     if setbkp :
       self.set_breakpoint(label)
@@ -66,7 +70,7 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
                     "DUT failed to stop at " + label + \
                     ", pc = " + hex(pc) + \
                     ", setbkp = " + str(setbkp))
-
+  ## Corruption changes the value at the breakpoint label
   def corruption(self,
                 address = 0,
                 value = 0,
@@ -613,25 +617,33 @@ class iec60730_vmc(unittest.TestCase, iec60730TestBase):
 
 if __name__ == "__main__":
 
+  ## Chip name run test
   chip_name = os.getenv('CHIP')
 
+  ## Path to file *.lst
   lst_file_path = os.getenv('LST_PATH')
 
+  ## serialno of device
   adapter_serial_no = os.getenv('ADAPTER_SN')
 
+  ## Path to jlink library
   lib_path = os.getenv('JLINK_PATH')
 
+  ## Enable test with MARCH-X algorithm
   use_marchx_enable = os.getenv('INTEGRATION_TEST_USE_MARCHX_DISABLE')
   if not use_marchx_enable:
     use_marchx_enable = "enable"
   else:
     if use_marchx_enable == "disable":
+      ## Disallowance  testing with MARCH-X algorithm
       isEnableMarchXC = False
   print("Using MarchXC algorithm: "+use_marchx_enable)
 
   while len(sys.argv) > 1:
+    ## Number of arguments passed into the script file
     line = sys.argv.pop()
     if len(sys.argv) == 1:
+      ## compiler creates the file *.lst
       compiler = line
 
   unittest.main()

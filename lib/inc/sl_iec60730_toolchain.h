@@ -36,7 +36,7 @@
  * remain independent of which toolchain is used for compilation.
  *
  * ## Prior Toolchain Abstraction Header File ##
- *
+ * Refer file: \link sl_iec60730_toolchain.h \endlink
  * ## Supported Toolchains ##
  *
  * - GNU GCC
@@ -46,7 +46,7 @@
  *
  *****************************************************************************/
 
-// Make sure there is a NULL defined if the toolchain does not provide it.
+/// Make sure there is a NULL defined if the toolchain does not provide it.
 #ifndef NULL
 #define NULL ((void *) 0)
 #endif
@@ -56,14 +56,14 @@
 //
 #if defined(__GNUC__)
 
-// __NOP should be declared in cmsis header core_cmInstr.h
-// extern void __NOP(void);
+/// __NOP should be declared in cmsis header core_cmInstr.h
+/// extern void __NOP(void);
 /// Macro to insert a no-operation (NOP) instruction.
 #define NOP() __NOP()
 
-// No init at startup
+/// No init at startup
 #define IEC60730_VAR_NO_INIT              __attribute__((section(".noinit")))
-// No clear at startup
+/// No clear at startup
 #define IEC60730_DATA_NO_CLEAR            __attribute__((section(".ram_no_clear")))
 
 /// The #__STACK_BOTTOM macro is used to define
@@ -90,7 +90,9 @@
 #define __OVERLAP                         __attribute__((section(".overlap")))
 #endif /* __OVERLAP */
 
+/// Add assembly code
 #define LB_ASM        __asm__
+/// Add label
 #define LB_XSTR(x)    XSTR(x:)
 
 // -------------------------------
@@ -105,7 +107,7 @@
 
 // No init at startup
 #define IEC60730_VAR_NO_INIT            __attribute__((section(".noinit")))
-// No clear at startup
+/// No clear at startup
 #define IEC60730_DATA_NO_CLEAR          __attribute__((section(".ram_no_clear")))
 
 /// The #__STACK_BOTTOM macro is used to define

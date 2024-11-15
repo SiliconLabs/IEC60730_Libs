@@ -3,7 +3,7 @@
  * @brief Watchdog check
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -29,10 +29,10 @@ extern "C" {
 /**************************************************************************/ /**
  * @addtogroup efr32_iec60730
  * @{
- * @addtogroup IEC60730_WDOG_Test
+ * @addtogroup IEC60730_WDOG_TEST
  * @{
  * @details
- * For IEC 60730, a watchdog timer must be enabled to validate proper
+ * For IEC60730, a watchdog timer must be enabled to validate proper
  * operation of the Program Counter. A watchdog timer resets the device if it
  * has not been restarted.
  * @section watchdog_hardware_architecture Hardware Architecture
@@ -62,7 +62,7 @@ extern "C" {
  * unexpected. An unexpected reset causes immediate sl_iec60730_safe_state() entry.
  * Otherwise normal operation continues.
  *
- * \image html Watchdog_flowchart.png "Figure 1 Flow chart of Watchdog Timer POST validation" \anchor watchdog_flowchart
+ * \image html watchdog_flowchart.png "Figure 1 Flow chart of watchdog timer POST validation" \anchor watchdog_flowchart
  *
  * The main loop must execute sl_iec60730_bist() faster than the nominal
  * timeout, or call sl_iec60730_restart_watchdogs(). After sl_iec60730_bist() has
@@ -72,43 +72,46 @@ extern "C" {
  * sl_iec60730_restart_watchdogs() continuously. The system must be powered down and
  * restarted to resume normal operation.
  *
- * The function iec60730_watchdog_post will set the timeout period (PERSEL) to minimum
+ * The function #sl_iec60730_watchdog_post() will set the timeout period (PERSEL) to minimum
  * when check watchdog units to avoid wasting time.
  *
  * @section watchdog_configuration Software Configuration
  *
- * The number of Watchdog units which are tested by lib should be defined by user code
- * by defining the macros "SL_IEC60730_WDOGINST_NUMB" and IEC60730_ENABLE_WDOGx (x = 0, 1).
+ * The number of watchdog units that are tested by lib is defined by config code
+ * by defining the macros "#SL_IEC60730_WDOGINST_NUMB" and **SL_IEC60730_WDOGx_ENABLE** (x = 0, 1).
  * The number of Watchdog unit depends on target EFR32 series.
  * Example for series 1:
- * #define SL_IEC60730_WDOGINST_NUMB  1
- * #define SL_IEC60730_WDOG0_ENABLE   1
  *
- * User can define macro  SL_IEC60730_WDOG_INST(n) to select appropriate Watchdog peripheral.
- * User can define macro SL_IEC60730_RST to select appropriate Reset peripheral.
+ * - #define SL_IEC60730_WDOGINST_NUMB  1
+ *
+ * - #define SL_IEC60730_WDOG0_ENABLE   1
+ *
+ * User can define macro  #SL_IEC60730_WDOG_INST(n) to select appropriate **watchdog peripheral**.
+ * User can define macro #SL_IEC60730_RST to select appropriate **reset peripheral**.
  *
  * If these macros are not defined then the default configuration will be used.
  *
  * To clear reset cause flags in the RSTCASUES register after watchdog testing
- * completed -> Enable the definition of macro "#define SL_IEC60730_RSTCAUSES_CLEAR_ENABLE"
+ * completed -> Enable the definition of macro #SL_IEC60730_RSTCAUSES_CLEAR_ENABLE
  * on file sl_iec60730_config.h. By default this feature is disabled.
  *
- * If the Watchdog module is build in non-secure mode then the macro "SL_IEC60730_NON_SECURE_ENABLE"
- * must be defined to enable the lib using non-secure address of the Watchdog peripheral.
+ * If the Watchdog module is build in secure mode then the macro must not be defined **SL_IEC60730_NON_SECURE_ENABLE** and defined **SL_TRUSTZONE_SECURE**
+ * to enable the lib using secure address of the **watchdog peripheral**.
  *
- * @warning - The static variable iec60730_watchdog_count must be located at memory
+ * @warning
+ * - The static variable **iec60730_watchdog_count** must be located at memory
  * location that is not cleared when system startup (section ".ram_no_clear").
- * - The global variable iec60730_watchdog_state must be located at memory
+ * - The global variable #iec60730_watchdog_state must be located at memory
  * location that is not cleared when system startup. And it should be located at
- * section ram_no_clear in RAM block that is available on EFR32 Series 1 devices (section ".ram_ret_no_clear").
+ * section ram_no_clear in RAM block that is available on EFR32 Series 1 devices (section ".ram_no_clear").
  * This will avoid the missing contain of the variable when device returns from
  * the power saving mode EM4.
  *
  * On EFR32 Series 2 devices, they have backup RAM (BURAM)
  * that could be used to save value of the variable.
- * To enable saving iec60730_watchdog_state to backup RAM on Series 2, enable the macro
- * "#define SL_IEC60730_SAVE_STAGE_ENABLE" on file sl_iec60730_config.h. By default it will be disabled.
- * Define macro "SL_IEC60730_BURAM_IDX" to select which register of the BURAM will be used.
+ * To enable saving #iec60730_watchdog_state to backup RAM on Series 2, enable the macro
+ * #SL_IEC60730_SAVE_STAGE_ENABLE on file **sl_iec60730_config.h**. By default it will be disabled.
+ * Define macro #SL_IEC60730_BURAM_IDX to select which register of the BURAM will be used.
  * The default value is 0x0.
  *****************************************************************************/
 /// Watchdog component configuration structure
@@ -124,7 +127,10 @@ typedef enum {
   SL_IEC60730_WATCHDOG_VALID   = 2, ///< Watchdog POST test complete, watchdog valid
 } sl_iec60730_test_watchdog_t;
 
-// Default configuration number of enabled watchdog SL_IEC60730_WDOGINST_NUMB
+#ifdef DOXYGEN
+/// Default configuration number of enabled watchdog.
+#define SL_IEC60730_WDOGINST_NUMB          1
+#else // DOXYGEN
 #if ((SL_IEC60730_WDOG0_ENABLE == 1) && (SL_IEC60730_WDOG1_ENABLE == 1))
 #define SL_IEC60730_WDOGINST_NUMB          2
 #elif ((SL_IEC60730_WDOG0_ENABLE == 0) && (SL_IEC60730_WDOG1_ENABLE == 0))
@@ -133,14 +139,42 @@ typedef enum {
 #else
 #define SL_IEC60730_WDOGINST_NUMB          1
 #endif
+#endif // DOXYGEN
 
+/// Timeout time to wait for wachdog to reset.
 #ifndef SL_IEC60730_WDOG_WAIT_TIMEOUT
 #define SL_IEC60730_WDOG_WAIT_TIMEOUT (uint32_t) 0x0000FFFFUL
 #endif
 
+#ifdef DOXYGEN
+/// Define gets the default value of watchdog(n).
+#define  SL_IEC60730_WDOG_INST(n) WDOG##n
+
+///  Hardware manages the reset cause of the device. With series 2 is **EMU**.
+#define SL_IEC60730_RST   RMU
+
+/// The reset cause of the device is power on reset.
+#define SL_IEC60730_RSTCAUSE_POR   RMU_RSTCAUSE_PORST
+
+/// The reset cause of the device is em4 reset.
+#define SL_IEC60730_RSTCAUSE_EM4   RMU_RSTCAUSE_EM4RST
+
+/// The reset cause of the device is watchdog reset.
+#define SL_IEC60730_RSTCAUSE_WDOG0   RMU_RSTCAUSE_WDOGRST
+
+/// The reset cause of the device is watchdog reset.
+#define SL_IEC60730_RSTCAUSE_WDOG1   RMU_RSTCAUSE_WDOGRST
+
+/// Function macro clear hardware reset cause bit #SL_IEC60730_RST
+#define SL_IEC60730_RSTCAUSES_CLEAR()
+
+/// Enable bit flag clear causes reset
+#define SL_IEC60730_RSTCAUSE   (SL_IEC60730_RST->RSTCAUSE)
+
+#else // DOXYGEN
 #ifndef  SL_IEC60730_WDOG_INST
 #if (_SILICON_LABS_32B_SERIES == 2)
-#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
 #define  SL_IEC60730_WDOG_INST(n) WDOG##n##_NS
 #else
 #define  SL_IEC60730_WDOG_INST(n) WDOG##n
@@ -170,7 +204,7 @@ typedef enum {
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #else // Series 2 devices
 #ifndef SL_IEC60730_RST
-#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_RST EMU_NS
 #else
 #define SL_IEC60730_RST EMU
@@ -198,6 +232,7 @@ typedef enum {
 #define SL_IEC60730_RSTCAUSES_CLEAR()  unit_test_iec60730_watchdog_mock_rstcause_clear()
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #endif // (_SILICON_LABS_32B_SERIES < 2)
+#endif // DOXYGEN
 
 #ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #define SL_IEC60730_RSTCAUSE (SL_IEC60730_RST->RSTCAUSE)
@@ -213,6 +248,12 @@ typedef enum {
 #define SL_IEC60730_RST_EM4  unit_test_iec60730_watchdog_mock_rst_em4()
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 
+#ifdef DOXYGEN
+
+#define SL_IEC60730_RST_WDOG0 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG0)
+#define SL_IEC60730_RST_WDOG1 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG1)
+
+#else // DOXYGEN
 #ifndef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 #if (SL_IEC60730_WDOG0_ENABLE == 1)
 #define SL_IEC60730_RST_WDOG0 (SL_IEC60730_RSTCAUSE & SL_IEC60730_RSTCAUSE_WDOG0)
@@ -236,12 +277,13 @@ typedef enum {
 #define SL_IEC60730_RST_WDOG1 0
 #endif // (SL_IEC60730_WDOG1_ENABLE == 1)
 #endif // UNIT_TEST_IEC60730_WATCHDOG_ENABLE
+#endif // DOXYGEN
 
 #define SL_IEC60730_RST_WDOGS (SL_IEC60730_RST_WDOG0 || SL_IEC60730_RST_WDOG1)
 
 #ifndef SL_IEC60730_BURAM
 #if (_SILICON_LABS_32B_SERIES == 2)
-#if ((defined SL_IEC60730_NON_SECURE_ENABLE) || (!defined(SL_TRUSTZONE_SECURE)))
+#if ((defined SL_IEC60730_NON_SECURE_ENABLE) && (!defined(SL_TRUSTZONE_SECURE)))
 #define SL_IEC60730_BURAM BURAM_NS
 #else
 #define SL_IEC60730_BURAM BURAM
@@ -249,14 +291,19 @@ typedef enum {
 #endif // (_SILICON_LABS_32B_SERIES == 2)
 #endif
 
+/// index buram to store the value
 #ifndef SL_IEC60730_BURAM_IDX
 #define SL_IEC60730_BURAM_IDX 0UL
 #endif
 
+#ifdef DOXYGEN
 /// Global variable used to track watchdog testing state.
 ///
 /// @warning Must be placed in a memory area not cleared to 0x0 on start!
+extern volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state;
+#else
 extern volatile sl_iec60730_test_watchdog_t iec60730_watchdog_state IEC60730_DATA_NO_CLEAR;
+#endif // DOXYGEN
 
 #ifdef UNIT_TEST_IEC60730_WATCHDOG_ENABLE
 /**************************************************************************/ /**
@@ -290,13 +337,13 @@ void sl_iec60730_watchdog_count_set(uint8_t count);
  * on the first power-up. Any subsequent watchdog reset forces entry into
  * #sl_iec60730_safe_state().
  *
- * @warning Remove all accesses to Watchdog Timer hardware from InitDevice.
+ * @warning Remove all accesses to Watchdog Timer hardware from **init device**.
  * Reset state of pins must be safe for the device. During POST test, device pins
  * will be kept in reset state while validating watchdog reset.
  *****************************************************************************/
 sl_iec60730_test_result_t sl_iec60730_watchdog_post(void);
 
-/** @} (end addtogroup IEC60730_WDOG_Test) */
+/** @} (end addtogroup IEC60730_WDOG_TEST) */
 /** @} (end addtogroup efr32_iec60730) */
 
 #ifdef __cplusplus

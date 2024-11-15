@@ -1,9 +1,9 @@
 /***************************************************************************/ /**
- * @file    iec60730_programme_counter.c
+ * @file    sl_iec60730_program_counter.c
  * @brief Program Counter check
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -35,10 +35,11 @@ void sl_iec60730_program_counter_test(void)
     __disable_irq();
 
     sl_iec60730_safety_check_error_occur(SL_IEC60730_PROGRAM_COUNTER_FAIL);
+    sl_iec60730_safe_state(SL_IEC60730_PROGRAM_COUNTER_FAIL);
   }
   // Reset flags to make sure that bist is continuously executing
   sl_iec60730_program_counter_check = 0;
 }
 
-/** @} (end addtogroup IEC60730_PROGRAMME_COUNTER) */
+/** @} (end addtogroup IEC60730_PROGRAM_COUNTER) */
 /** @} (end addtogroup efr32_iec60730) */

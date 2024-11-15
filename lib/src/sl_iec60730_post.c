@@ -3,7 +3,7 @@
  * @brief Power On Self Test
  *******************************************************************************
  * # License
- * <b>Copyright 2023 Silicon Laboratories Inc. www.silabs.com</b>
+ * <b>Copyright 2024 Silicon Laboratories Inc. www.silabs.com</b>
  *******************************************************************************
  *
  * The licensor of this software is Silicon Laboratories Inc. Your use of this
@@ -54,7 +54,7 @@ void sl_iec60730_post(void)
   }
 
   // CPU registers check
-  result = sl_ec60730_cpu_registers_post();
+  result = sl_iec60730_cpu_registers_post();
   if (result == SL_IEC60730_TEST_FAILED) {
     sl_iec60730_safety_check_error_occur(SL_IEC60730_CPU_REGISTERS_FAIL);
     sl_iec60730_safe_state(SL_IEC60730_CPU_REGISTERS_FAIL);
