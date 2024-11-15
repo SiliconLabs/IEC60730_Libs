@@ -3,6 +3,8 @@
 > [!NOTE]
 > This is a code formatter tool that helps ensure consistent coding style and detects common issues in source code files.
 It integrates with pre-commit, allowing you to automate code formatting and checks as part of your development workflow.
+>
+> **Currently it is only used internally for checking during development, not publicly available.**
 
 - See details rule check in folder tools: [tools]().
 

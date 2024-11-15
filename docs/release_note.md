@@ -61,14 +61,6 @@ This release contains the following components:
 
    - <repo>*.xml
 
-
-   ----------------
-   Coding Convention
-
-   - <repo>/tools
-
-   - <repo>.pre-commit-config.yaml
-
    ----------------
 
 ## Revision History
