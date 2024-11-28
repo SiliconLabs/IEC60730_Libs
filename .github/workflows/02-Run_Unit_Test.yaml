@@ -294,11 +294,11 @@ jobs:
         if [ "$COMPILER" == "GCC" ]; then
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         else
-          echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON"
+          echo "cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON"
           echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DENABLE_IAR=ON"
           echo "TOOL_CHAINS: $TOOL_CHAINS"
           echo "TOOL_DIRS: $TOOL_DIRS"
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON
+          cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DENABLE_IAR=ON
         fi  
         make unit_test_info -j4
@@ -324,7 +324,7 @@ jobs:
         if [ "$COMPILER" == "GCC" ]; then
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
         else
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24 -DPRE_BUILD_IAR_TOOL=ON
+          cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG24 -DPRE_BUILD_IAR_TOOL=ON
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24 -DENABLE_IAR=ON
         fi  
         make unit_test_info -j4
