@@ -259,7 +259,7 @@ jobs:
         echo "List file in simplicity_sdk folfer"
         ls -la "${{ github.workspace }}/simplicity_sdk"
         if [ "$COMPILER" == "GCC" ]; then
-          export TOOL_CHAIN=GCC
+          export TOOL_CHAINS=GCC
           export TOOL_DIRS=$PWD/$TOOL_DIRS_BUILD
           export SDK_PATH_BUILD=$PWD/gecko_sdk_$SDK_VER
           export PATH=$PATH:$PWD/commander
@@ -277,7 +277,7 @@ jobs:
           ./slc configuration -gcc=$TOOL_DIRS_BUILD
           ./slc signature trust -extpath $SDK_PATH_BUILD/extension/$REPO_NAME
         else
-          export TOOL_CHAIN=IAR
+          export TOOL_CHAINS=IAR
           export TOOL_DIRS=$TOOL_DIRS_BUILD
           export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
           export PATH=$PATH:~/slc_cli
@@ -296,7 +296,7 @@ jobs:
         else
           echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON"
           echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DENABLE_IAR=ON"
-          echo "TOOL_CHAIN: $TOOL_CHAIN"
+          echo "TOOL_CHAINS: $TOOL_CHAINS"
           echo "TOOL_DIRS: $TOOL_DIRS"
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DENABLE_IAR=ON
