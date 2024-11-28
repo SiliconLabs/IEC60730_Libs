@@ -111,7 +111,6 @@ jobs:
         if [ -z "${{ github.event.inputs.COMPILER }}" ]; then
           COMPILER=GCC >> $GITHUB_ENV
         fi
-        echo "Compiler: $COMPILER"
         if [ "$COMPILER" == "GCC" ]; then
           TOOL_DIRS_BUILD=arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin >> $GITHUB_ENV
           TOOL_DIRS_RUN=/home/sqa/SimplicityStudio-5/SimplicityStudio_v5/developer/toolchains/gnu_arm/12.2.rel1_2023.7/bin >> $GITHUB_ENV 
@@ -119,7 +118,10 @@ jobs:
           TOOL_DIRS_BUILD=/home/sqa/Downloads/EmbeddedWorkbench8.4/arm/bin >> $GITHUB_ENV
           TOOL_DIRS_RUN=/home/sqa/Downloads/EmbeddedWorkbench8.4/arm/bin >> $GITHUB_ENV          
         fi
-    
+        echo "Compiler: $COMPILER"
+        echo "TOOL_DIRS_BUILD: $TOOL_DIRS_BUILD"
+        echo "TOOL_DIRS_RUN: $TOOL_DIRS_RUN"
+        
     - name: Install Simplicity SDK
       if: env.COMPILER == 'GCC'
       run: |
@@ -277,6 +279,10 @@ jobs:
         else
           export TOOL_CHAIN=IAR
           export TOOL_DIRS=$TOOL_DIRS_BUILD
+          export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
+          export PATH=$PATH:~/slc_cli
+          export PATH=$PATH:/usr/bin/
+          export PATH=$PATH:~/amazon-corretto-17.0.12.7.1-linux-x64/bin
         fi
         echo "Current PATH:"
         echo $PATH | tr ':' '\n'
