@@ -148,6 +148,7 @@ jobs:
         path: gecko_sdk_${{env.SDK_VER}}/extension/$REPO_NAME
   
     - name: Check files
+      if: env.COMPILER == 'GCC'
       run: |
         echo "Current directory: $PWD"
         echo "List file in current folfer:"
@@ -203,6 +204,7 @@ jobs:
         ls -la
   
     - name: Install Ninja build
+      if: env.COMPILER == 'GCC'
       run: |
         sudo apt update
         sudo apt -y install ninja-build
@@ -210,11 +212,13 @@ jobs:
         ninja --version
   
     - name: Set up Python 3.11
+      if: env.COMPILER == 'GCC'
       uses: actions/setup-python@v2
       with:
         python-version: '3.11'
   
     - name: Install dependencies
+      if: env.COMPILER == 'GCC'
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-apt
@@ -222,6 +226,7 @@ jobs:
         python3 --version
   
     - name: Install CMake
+      if: env.COMPILER == 'GCC'
       run: |
         sudo apt update
         sudo apt install -y wget build-essential libssl-dev
@@ -231,12 +236,14 @@ jobs:
         cmake --version
   
     - name: Set up Java 17
+      if: env.COMPILER == 'GCC'
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
   
     - name: Install srecord
+      if: env.COMPILER == 'GCC'
       run: |
         sudo apt-get update
         sudo apt-get install -y srecord
