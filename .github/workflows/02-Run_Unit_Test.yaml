@@ -109,7 +109,7 @@ jobs:
     - name: Check compiler
       run: |
         if [ -z "${{ github.event.inputs.COMPILER }}" ]; then
-          COMPILER=GCC >> $GITHUB_ENV
+          COMPILER=GCC
         fi
         if [ "$COMPILER" == "GCC" ]; then
           echo "TOOL_DIRS_BUILD=arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin" >> $GITHUB_ENV
@@ -286,26 +286,22 @@ jobs:
         fi
         echo "Current PATH:"
         echo $PATH | tr ':' '\n'
-        cd ${{ github.workspace }}
-        make prepare
         echo "Generate MG12 image"
-        cd build
-        echo "Run Cmake"
-        if [ "$COMPILER" == "GCC" ]; then
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
-        else
-          echo "cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON"
-          echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12"
+        cd ${{ github.workspace }}
+        if [ "$COMPILER" == "IAR" ]; then
+          TASK=all
+          make prepare
+          cd build
           echo "TOOL_CHAINS: $TOOL_CHAINS"
           echo "TOOL_DIRS: $TOOL_DIRS"
           cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON
           cd ..
-          make prepare
-          cd build
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         fi  
+        make prepare
+        cd build
+        echo "Run Cmake"
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         make unit_test_info -j4
-        export HOST_IP=192.168.1.69
         cd ../test/
         mkdir log_MG12
         ls -la
@@ -314,25 +310,25 @@ jobs:
         fi
         export FLASH_REGIONS_TEST=$START_ADDR_FLASH_M12
         echo "Run bash script"
-        bash execute_unit_test.sh $BOARD_NAME_MG12 gen-only $COMPONENT $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Gen_log_MG12.txt
+        bash execute_unit_test.sh $BOARD_NAME_MG12 $TASK $COMPONENT $ADAPTER_SN_MG12 $COMPILER 2>&1 | tee log_MG12/Gen_log_MG12.txt
         echo "Generate MG24 image"
         cd ${{ github.workspace }}
         ls -la
         mv -v build build_MG12
         ls -la
         rm -rf build
+        if [ "$COMPILER" == "IAR" ]; then
+          make prepare
+          cd build
+          echo "TOOL_CHAINS: $TOOL_CHAINS"
+          echo "TOOL_DIRS: $TOOL_DIRS"
+          cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG24 -DPRE_BUILD_IAR_TOOL=ON
+          cd ..
+        fi  
         make prepare
         cd build
         echo "Run Cmake"
-        if [ "$COMPILER" == "GCC" ]; then
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
-        else
-          cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG24 -DPRE_BUILD_IAR_TOOL=ON
-          cd ..
-          make prepare
-          cd build
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
-        fi  
+        cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
         make unit_test_info -j4
         cd ../test/
         mkdir log_MG24
@@ -341,7 +337,7 @@ jobs:
             ADAPTER_SN_MG24=440111030
         fi  
         export FLASH_REGIONS_TEST=$START_ADDR_FLASH_M24
-        echo "Run bash script -> execute_unit_test.sh $BOARD_NAME_MG24 gen-only $COMPONENT $ADAPTER_SN_MG24 $COMPILER"
+        echo "Run bash script -> execute_unit_test.sh $BOARD_NAME_MG24 $TASK $COMPONENT $ADAPTER_SN_MG24 $COMPILER"
         bash execute_unit_test.sh $BOARD_NAME_MG24 gen-only $COMPONENT $ADAPTER_SN_MG24 $COMPILER 2>&1 | tee log_MG24/Gen_log_MG24.txt
   
     - name: Upload firmware MG12
@@ -376,6 +372,7 @@ jobs:
   job2:
     name: Run unit test
     runs-on: ${{ inputs.RUNNER_EXECUTE || 'DS_SQA_HN_01' }}
+    if: env.COMPILER == 'GCC'
     needs: job1
     permissions:
       contents: read
