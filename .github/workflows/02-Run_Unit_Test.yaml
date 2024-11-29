@@ -150,7 +150,7 @@ jobs:
       uses: actions/checkout@v4.1.7
       with:
         ref: ${{env.REPO_BRANCH_BUILD}}
-        path: $EXTENSION_CHECKOUT_PATH
+        path: ${{ env.EXTENSION_CHECKOUT_PATH }}
   
     - name: Check files
       if: ${{ env.COMPILER == 'GCC' }}
