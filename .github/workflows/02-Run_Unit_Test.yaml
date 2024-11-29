@@ -123,7 +123,7 @@ jobs:
         echo "TOOL_DIRS_RUN: $TOOL_DIRS_RUN"
         
     - name: Install Simplicity SDK
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         mkdir simplicity_studio
         cd simplicity_studio
@@ -134,7 +134,7 @@ jobs:
         ls -la
   
     - name: Install Gecko SDK
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         cd ${{ github.workspace }}
         echo "Current directory: $PWD"
@@ -143,14 +143,14 @@ jobs:
         git checkout tags/$SDK_VER
   
     - name: Install Gecko SDK extension
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       uses: actions/checkout@v4.1.7
       with:
         ref: ${{env.REPO_BRANCH_BUILD}}
         path: gecko_sdk_${{env.SDK_VER}}/extension/$REPO_NAME
   
     - name: Check files
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         echo "Current directory: $PWD"
         echo "List file in current folfer:"
@@ -171,7 +171,7 @@ jobs:
         ls -la
   
     - name: Install SLC CLI
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         cd ${{ github.workspace }}
         echo "Current directory: $PWD"
@@ -182,7 +182,7 @@ jobs:
         ls -la
   
     - name: Install Simplicity Commander
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         cd ${{ github.workspace }}
         echo "Current directory: $PWD"
@@ -195,7 +195,7 @@ jobs:
         ls -la
   
     - name: Install GCC
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         cd ${{ github.workspace }}
         echo "Current directory: $PWD"
@@ -206,7 +206,7 @@ jobs:
         ls -la
   
     - name: Install Ninja build
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         sudo apt update
         sudo apt -y install ninja-build
@@ -214,13 +214,13 @@ jobs:
         ninja --version
   
     - name: Set up Python 3.11
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       uses: actions/setup-python@v2
       with:
         python-version: '3.11'
   
     - name: Install dependencies
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         sudo apt-get update
         sudo apt-get install -y python3-apt
@@ -228,7 +228,7 @@ jobs:
         python3 --version
   
     - name: Install CMake
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         sudo apt update
         sudo apt install -y wget build-essential libssl-dev
@@ -238,14 +238,14 @@ jobs:
         cmake --version
   
     - name: Set up Java 17
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'temurin'
   
     - name: Install srecord
-      if: env.COMPILER == 'GCC'
+      if: $COMPILER == 'GCC'
       run: |
         sudo apt-get update
         sudo apt-get install -y srecord
@@ -372,7 +372,7 @@ jobs:
   job2:
     name: Run unit test
     runs-on: ${{ inputs.RUNNER_EXECUTE || 'DS_SQA_HN_01' }}
-    if: env.COMPILER == 'GCC'
+    if: $COMPILER == 'GCC'
     needs: job1
     permissions:
       contents: read
