@@ -293,7 +293,7 @@ jobs:
         fi
         echo "Current PATH:"
         echo $PATH | tr ':' '\n'
-        echo "::set-output name=compiler::${COMPILER}"
+        echo "compiler=$COMPILER" >> $GITHUB_OUTPUT
         echo "Generate MG12 image"
         cd ${{ github.workspace }}
         if [ "$COMPILER" == "IAR" ]; then
@@ -378,6 +378,8 @@ jobs:
             fi
           done
         done
+    outputs:
+      compiler: ${{ steps.set_compiler.outputs.compiler }}
   job2:
     name: Run unit test
     runs-on: ${{ inputs.RUNNER_EXECUTE || 'DS_SQA_HN_01' }}
