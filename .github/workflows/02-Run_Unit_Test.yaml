@@ -389,11 +389,8 @@ jobs:
     
     steps:
     - name: Trigger
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
-        if [ "$COMPILER" == "IAR" ]; then
-          echo "Run with IAR in job1"
-          exit 0
-        fi
         echo "Triggered by ${{github.event_name}} event"
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
@@ -401,6 +398,7 @@ jobs:
         mkdir ${{ github.workspace }}
   
     - name: Check Branch Input
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
             if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
               if [ -z "${{ github.event.inputs.Validate_branch }}" ]; then
@@ -412,26 +410,31 @@ jobs:
             fi              
   
     - name: Checkout
+      if: ${{ env.COMPILER == 'GCC' }}
       uses: actions/checkout@v4.1.7
       with:
         ref: "${{ github.event_name == 'workflow_dispatch' && github.event.inputs.Validate_branch || github.ref }}" 
   
     - name: Log Current Branch and Commit
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
           echo "Current branch: $(git rev-parse --abbrev-ref HEAD)"
           echo "Current commit: $(git rev-parse HEAD)" 
   
     - name: Create build folder
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
         make prepare
         #mkdir -p ${{ github.workspace }}/build/test/unit_test/build
   
     - name: Install jq (if needed)
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
         jq -V
         #sudo apt-get install jq -y
   
     - name: Download output for MG12 from Job 1
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
           export PAT="${{ secrets.SILABS_THIEUVU_PAT}}"  
           export REPO_OWNER="SiliconLabsSoftware"
@@ -456,6 +459,7 @@ jobs:
           fi
    
     - name: Run test MG12
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
         export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
         export PATH=$PATH:~/slc_cli
@@ -497,6 +501,7 @@ jobs:
         #echo 'bash execute_unit_test.sh $BOARD_NAME $TASK $COMPONENTS $ADAPTER_SN $COMPILER "-DENABLE_CRC_USE_SW=ON  -DENABLE_CAL_CRC_32=ON"' > log/Test_integration_$BOARD_NAME_GCC_5.txt
   
     - name: Upload artifact MG12
+      if: ${{ env.COMPILER == 'GCC' }}
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg12_gcc
@@ -504,6 +509,7 @@ jobs:
         retention-days: 90
   
     - name: Check log file to set status of the job MG12
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
         cd ${{ github.workspace }}
         echo "Current directory: $PWD"
@@ -528,6 +534,7 @@ jobs:
         done
         
     - name: Download output for MG24 from Job 1
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
           export PAT="${{ secrets.SILABS_THIEUVU_PAT}}"  
           export REPO_OWNER="SiliconLabsSoftware"
@@ -550,6 +557,7 @@ jobs:
           fi
   
     - name: Run test MG24
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
         export PATH=$PATH:~/SimplicityStudio-5/SimplicityStudio_v5/developer/adapter_packs/commander
         export PATH=$PATH:~/slc_cli
@@ -589,6 +597,7 @@ jobs:
         bash execute_unit_test.sh $BOARD_NAME_MG24 run-only all $ADAPTER_SN_MG24 $COMPILER  2>&1 | tee log_MG24/Unit_Test_MG24.txt
   
     - name: Upload artifact MG24
+      if: ${{ env.COMPILER == 'GCC' }}
       uses: actions/upload-artifact@v4.3.4
       with:
         name: unit_test_log_mg24_gcc
@@ -596,6 +605,7 @@ jobs:
         retention-days: 90
   
     - name: Check log file to set status of the job MG24
+      if: ${{ env.COMPILER == 'GCC' }}
       run: |
         cd ${{ github.workspace }}
         echo "Current directory: $PWD"
