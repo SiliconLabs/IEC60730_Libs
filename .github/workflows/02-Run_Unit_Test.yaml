@@ -143,13 +143,14 @@ jobs:
         git clone $GECKO_SDK_REPO gecko_sdk_$SDK_VER
         cd gecko_sdk_$SDK_VER
         git checkout tags/$SDK_VER
+        echo "EXTENSION_CHECKOUT_PATH=gecko_sdk_${{env.SDK_VER}}/extension/$REPO_NAME" >> $GITHUB_ENV
   
     - name: Install Gecko SDK extension
       if: ${{ env.COMPILER == 'GCC' }}
       uses: actions/checkout@v4.1.7
       with:
         ref: ${{env.REPO_BRANCH_BUILD}}
-        path: gecko_sdk_${{env.SDK_VER}}/extension/$REPO_NAME
+        path: $EXTENSION_CHECKOUT_PATH
   
     - name: Check files
       if: ${{ env.COMPILER == 'GCC' }}
