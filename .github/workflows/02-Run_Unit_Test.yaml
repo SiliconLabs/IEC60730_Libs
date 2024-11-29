@@ -290,6 +290,7 @@ jobs:
         cd ${{ github.workspace }}
         if [ "$COMPILER" == "IAR" ]; then
           TASK=all
+          echo "::set-output name=compiler::${COMPILER}"
           make prepare
           cd build
           echo "TOOL_CHAINS: $TOOL_CHAINS"
@@ -372,8 +373,8 @@ jobs:
   job2:
     name: Run unit test
     runs-on: ${{ inputs.RUNNER_EXECUTE || 'DS_SQA_HN_01' }}
-    if: ${{ env.COMPILER == 'GCC' }}
     needs: job1
+    if: ${{ needs.job1.outputs.compiler == 'GCC' }}
     permissions:
       contents: read
       pull-requests: write
