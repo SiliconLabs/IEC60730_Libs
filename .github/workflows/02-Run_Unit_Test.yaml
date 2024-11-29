@@ -295,11 +295,14 @@ jobs:
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         else
           echo "cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON"
-          echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DENABLE_IAR=ON"
+          echo "cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12"
           echo "TOOL_CHAINS: $TOOL_CHAINS"
           echo "TOOL_DIRS: $TOOL_DIRS"
           cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG12 -DPRE_BUILD_IAR_TOOL=ON
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12 -DENABLE_IAR=ON
+          cd ..
+          make prepare
+          cd build
+          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG12
         fi  
         make unit_test_info -j4
         export HOST_IP=192.168.1.69
@@ -325,7 +328,10 @@ jobs:
           cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
         else
           cmake --toolchain ../cmake/toolchain.cmake .. -DBOARD_NAME=$BOARD_NAME_MG24 -DPRE_BUILD_IAR_TOOL=ON
-          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24 -DENABLE_IAR=ON
+          cd ..
+          make prepare
+          cd build
+          cmake --toolchain ../cmake/toolchain.cmake .. -DENABLE_UNIT_TESTING=ON -DBOARD_NAME=$BOARD_NAME_MG24
         fi  
         make unit_test_info -j4
         cd ../test/
