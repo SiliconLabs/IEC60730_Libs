@@ -86,6 +86,7 @@ jobs:
         echo "Current directory: $PWD"
         REPO_NAME=${REPO_NAME##*/}
         echo "Repo name: $REPO_NAME"
+        echo "REPO_NAME=$REPO_NAME" >> $GITHUB_ENV
   
     - name: Check Branch Input
       run: |
