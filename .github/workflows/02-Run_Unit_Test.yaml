@@ -293,11 +293,11 @@ jobs:
         fi
         echo "Current PATH:"
         echo $PATH | tr ':' '\n'
+        echo "::set-output name=compiler::${COMPILER}"
         echo "Generate MG12 image"
         cd ${{ github.workspace }}
         if [ "$COMPILER" == "IAR" ]; then
           TASK=all
-          echo "::set-output name=compiler::${COMPILER}"
           make prepare
           cd build
           echo "TOOL_CHAINS: $TOOL_CHAINS"
