@@ -46,7 +46,7 @@ on:
         default: GCC
 env:
   REPO_BRANCH_BUILD: ${{ github.head_ref || github.ref_name }}
-  REPO_NAME: ${GITHUB_REPOSITORY##*/}
+  REPO_NAME: ${GITHUB_REPOSITORY}
   JLINK_PATH: /opt/SEGGER/JLink/libjlinkarm.so
   SDK_PATH_RUN: /home/sqa/SimplicityStudio/SDKs/gecko_sdk
   AM_CORRETTO_17: https://corretto.aws/downloads/latest/amazon-corretto-17-x64-linux-jdk.tar.gz
@@ -84,6 +84,7 @@ jobs:
         echo "Triggered by ${{github.event_name}} event"
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
+        REPO_NAME=${REPO_NAME##*/}
         echo "Repo name: $REPO_NAME"
   
     - name: Check Branch Input
