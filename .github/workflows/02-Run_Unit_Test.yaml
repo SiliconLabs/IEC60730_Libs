@@ -293,7 +293,6 @@ jobs:
         fi
         echo "Current PATH:"
         echo $PATH | tr ':' '\n'
-        echo "compiler=$COMPILER" >> $GITHUB_OUTPUT
         echo "Generate MG12 image"
         cd ${{ github.workspace }}
         if [ "$COMPILER" == "IAR" ]; then
@@ -384,7 +383,6 @@ jobs:
     name: Run unit test
     runs-on: ${{ inputs.RUNNER_EXECUTE || 'DS_SQA_HN_01' }}
     needs: job1
-    if: ${{ needs.job1.outputs.compiler == 'GCC' }}
     permissions:
       contents: read
       pull-requests: write
@@ -392,6 +390,10 @@ jobs:
     steps:
     - name: Trigger
       run: |
+        if [ "$COMPILER" == "IAR" ]; then
+          echo "Run with IAR in job1"
+          exit 0
+        fi
         echo "Triggered by ${{github.event_name}} event"
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
