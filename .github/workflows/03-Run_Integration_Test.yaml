@@ -265,7 +265,7 @@ jobs:
     steps:
     - name: Trigger
       run: |
-        echo "Triggered by ${{github.event_name}} event"
+        echo "Print machine ip" && ip a && echo "Triggered by ${{github.event_name}} event"
         echo "Repo root directory: $GITHUB_WORKSPACE"
         echo "Current directory: $PWD"
         rm -rf ${{ github.workspace }}
