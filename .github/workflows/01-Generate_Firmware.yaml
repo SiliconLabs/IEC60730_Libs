@@ -1,8 +1,5 @@
 name: 01-Generate Firmware
-on:
-  pull_request:
-    branches:
-      - 'main'       
+on:     
   workflow_dispatch:
     inputs:
       branch: 
