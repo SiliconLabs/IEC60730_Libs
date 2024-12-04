@@ -1,13 +1,5 @@
 name: 00-Check Coding Convention
 on:
-  push:
-    branches-ignore:
-      - main
-      - "tests/**"
-  pull_request:
-    branches:
-      - main
-      - "release/**"
   workflow_dispatch:
     inputs:
       branch: 
